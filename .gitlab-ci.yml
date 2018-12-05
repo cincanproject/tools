@@ -1,0 +1,15 @@
+image: docker:git
+
+services:
+  - docker:dind
+
+before_script:
+  - apk add grep
+  - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+
+build:
+  stage: build
+  script:
+    - sh detect_and_build.sh
+  only:
+    - master
