@@ -13,3 +13,12 @@ build:
     - sh detect_and_build.sh
   only:
     - master
+
+build-dev:
+  stage: build
+  script:
+    - TAG=dev sh detect_and_build.sh
+  only:
+    - branches
+  except:
+    - master
