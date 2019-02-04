@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+source=$1
+
+if [ -z "$source" ]; then
+  echo "usage: $0 </full/path/to/dir>"
+  exit 1
+fi
+
+json=$(cat config.json)
+
+source "$(dirname $0)/build.sh"
+
+echo $json | docker run \
+  -i \
+  --rm \
+  -v $source:/tmp/input \
+  18fgsa/s3-resource-simple \
+  /opt/resource/out /tmp/input

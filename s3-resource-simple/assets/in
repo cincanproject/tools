@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Resource Impl: http://concourse.ci/implementing-resources.html#in:-fetch-a-given-resource
+set -e
+
+exec 3>&1 # make stdout available as fd 3 for the result
+exec 1>&2 # redirect all output to stderr for logging
+
+dest=$1
+
+if [ -z "$dest" ]; then
+  echo "usage: $0 <path/to/volume>"
+  exit 1
+fi
+#######################################
+
+# parse incoming config data
+payload=`cat`
+bucket=$(echo "$payload" | jq -r '.source.bucket')
+endpoint=$(echo "$payload" | jq -r '.source.endpoint')
+path=$(echo "$payload" | jq -r '.source.path // ""')
+options=$(echo "$payload" | jq -r '.source.options // [] | join(" ")')
+
+# export for `aws` cli
+AWS_ACCESS_KEY_ID=$(echo "$payload" | jq -r '.source.access_key_id // empty')
+AWS_SECRET_ACCESS_KEY=$(echo "$payload" | jq -r '.source.secret_access_key // empty')
+AWS_DEFAULT_REGION=$(echo "$payload" | jq -r '.source.region // empty')
+
+# Due to precedence rules, must be unset to support AWS IAM Roles.
+if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -n "$AWS_SECRET_ACCESS_KEY" ]; then
+  export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+fi
+
+# Export AWS_DEFAULT_REGION if set
+[ -n "$AWS_DEFAULT_REGION" ] && export AWS_DEFAULT_REGION
+
+echo "Downloading from S3..."
+eval aws s3 sync --endpoint-url $endpoint "s3://$bucket/$path" $dest $options
+echo "...done."
+
+source "$(dirname $0)/emit.sh" >&3
