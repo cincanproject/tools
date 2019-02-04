@@ -20,7 +20,8 @@ FROM alpine:latest
 RUN apk update && apk add \
 	python \
 	wget \
-	unzip
+	unzip \
+	git
 
 RUN wget didierstevens.com/files/software/pdfid_v0_2_5.zip \
     && unzip pdfid_v0_2_5.zip -d /pdfid \
