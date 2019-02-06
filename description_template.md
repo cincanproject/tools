@@ -7,7 +7,7 @@ faucibus maximus mi sit amet eleifend. Nullam finibus, dolor a imperdiet ullamco
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*<TOOLNAME>/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/<TOOLNAME>/Dockerfile))
+* `latest` ([*"TOOLNAME"/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/"TOOLNAME"/Dockerfile))
 
 ## Docker Compose file (Optional)
 
