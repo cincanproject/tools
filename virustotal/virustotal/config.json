@@ -1,0 +1,6 @@
+{
+  "public": true,
+  "api_sleep": 20,
+  "url": "https://www.virustotal.com/vtapi/v2/",
+  "api_key": "./virustotal.api"
+}
