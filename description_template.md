@@ -5,6 +5,18 @@ pharetra molestie sapien, in elementum elit pellentesque ut. Quisque eget diam f
 urna mollis pretium. Proin vitae cursus felis. Nunc sit amet aliquam augue. Nulla scelerisque interdum felis, vel finibus erat fringilla a. Quisque ornare ultrices ultrices. Ut 
 faucibus maximus mi sit amet eleifend. Nullam finibus, dolor a imperdiet ullamcorper, nisi risus rhoncus lectus, nec euismod neque tellus vitae est.
 
+## Input
+
+```
+INPUT
+```
+
+## Output
+
+```
+OUTPUT
+```
+
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` ([*"TOOLNAME"/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/"TOOLNAME"/Dockerfile))
