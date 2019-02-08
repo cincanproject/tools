@@ -1,5 +1,4 @@
-# Modificated Radare2 image that analyzes passed input binaries and generates Graphviz dot files as a result. In addition the 
-container generates a proper PNG images from the results.
+# Modificated Radare2 image that analyzes passed input binaries and generates Graphviz dot files and PNG images as a result
 
 ## Input
 
@@ -20,7 +19,7 @@ DOT (graph description language), PNG
 
 ## Usage
 
-Following steps are required to perform to get correct results
+Following steps are required to perform to get correct results.
 
 
 ***1. Clone the repository***
