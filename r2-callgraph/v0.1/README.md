@@ -43,13 +43,16 @@ cp /path/to/samples/* ./samples
 ```
 
 ***4. Run the docker container***
+
 ```
 docker run --rm -it -v $(pwd):/r2 cincan/r2-callgraph:0.1
 ```
 
 ***5. List the results***
-ls ./results/dot/* ./results/images/*
 
+```
+ls ./results/dot/* ./results/images/*
+```
 
 
 ## Project homepage
