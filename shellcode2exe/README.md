@@ -16,11 +16,6 @@ ELF / PE
 
 * `latest` ([*shellcode2exe/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/shellcode2exe/Dockerfile))
 
-## Docker Compose file (Optional)
-
-```yml
----
-```
 
 ## Usage
 
