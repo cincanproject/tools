@@ -46,14 +46,12 @@ docker run --rm -v $(pwd):/samples shellcode2exe /samples/shellcode -u --arch=i3
 -s, --asciifile       : enable ascii entry in input file  
 
 -d, --unicodecmd      : enable unicode entry in command line (e.g. -d  
-
                         '%u9090')  
 
 -u, --unicodefile     : enable unicode entry in input file  
-
 
 ```
 
 ## Project homepage
 
-[https://github.com/MarioVilas/shellcode_tools/blob/master/shellcode2exe.py](https://github.com/MarioVilas/shellcode_tools/blob/master/shellcode2exe.py)
+[https://github.com/MarioVilas/shellcode_tools](https://github.com/MarioVilas/shellcode_tools)
