@@ -36,17 +36,15 @@ docker run --rm -v $(pwd):/samples shellcode2exe /samples/shellcode -u --arch=i3
 ```
 -h, --help            : show this help message and exit  
 
--a ARCH, --arch=ARCH  : target architecture [default: i386]  
+-a ARCH, --arch=ARCH  : target architecture [i386(default)|powerpc|sparc|arm]  
 
--o OS, --os=OS        : target operating system [default: windows]
+-o OS, --os=OS        : target operating system [windows(default)|linux|freebsd|openbsd|solaris]
 
--c, --asciicmd        : enable ascii entry in command line (e.g. -c
-                        '\x90\x90')  
+-c, --asciicmd        : enable ascii entry in command line (e.g. -c '\x90\x90')  
 
 -s, --asciifile       : enable ascii entry in input file  
 
--d, --unicodecmd      : enable unicode entry in command line (e.g. -d  
-                        '%u9090')  
+-d, --unicodecmd      : enable unicode entry in command line (e.g. -d '%u9090')  
 
 -u, --unicodefile     : enable unicode entry in input file  
 
