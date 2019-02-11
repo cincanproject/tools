@@ -45,14 +45,12 @@ docker run --rm -v $(pwd):/samples cincan/pdfid /samples/sample.pdf -p plugin_tr
 
 -e, --extra           : display extra data, like dates
 
--f, --force           : force the scan of the file, even without proper %PDF
-                        header
+-f, --force           : force the scan of the file, even without proper %PDF header
                         
 -d, --disarm          :  disable JavaScript and auto launch
 
 -p PLUGINS, --plugins=PLUGINS
-                      : plugins to load (separate plugins with a comma , ;
-                        @file supported)
+                      : plugins to load (separate plugins with a comma , ; @file supported)
                       
 -c, --csv             : output csv data when using plugins
 
@@ -74,8 +72,7 @@ docker run --rm -v $(pwd):/samples cincan/pdfid /samples/sample.pdf -p plugin_tr
                 
 -l, --literalfilenames: take filenames literally, no wildcard matching
                 
---recursedir          : Recurse directories (wildcards and here files (@...)
-                        allowed)
+--recursedir          : Recurse directories (wildcards and here files (@...) allowed)
 ```
 
 ## Project homepage
