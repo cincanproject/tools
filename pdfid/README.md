@@ -14,7 +14,7 @@ PDFiD report
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*shellcode2exe/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/shellcode2exe/Dockerfile))
+* `latest` ([*pdfid/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdfid/Dockerfile))
 
 
 ## Usage
@@ -22,34 +22,62 @@ PDFiD report
 ***EXAMPLE 1***
 
 ```
-docker run --rm -v /samples:/samples shellcode2exe /samples/shellcode
+docker run --rm -v /samples:/samples cincan/pdfid /samples/sample.pdf
 ```
 
 ***EXAMPLE 2***
 
 ```
-docker run --rm -v $(pwd):/samples shellcode2exe /samples/shellcode -u --arch=i386 --os=linux
+docker run --rm -v $(pwd):/samples cincan/pdfid /samples/sample.pdf -p plugin_triage
 ```
 
 
 ***Options***
-```
--h, --help            : show this help message and exit  
+```  
 
--a ARCH, --arch=ARCH  : target architecture [i386(default)|powerpc|sparc|arm]  
+--version             : show program's version number and exit
 
--o OS, --os=OS        : target operating system [windows(default)|linux|freebsd|openbsd|solaris]
+-h, --help            : show this help message and exit
 
--c, --asciicmd        : enable ascii entry in command line (e.g. -c '\x90\x90')  
+-s, --scan            : scan the given directory
 
--s, --asciifile       : enable ascii entry in input file  
+-a, --all             : display all the names
 
--d, --unicodecmd      : enable unicode entry in command line (e.g. -d '%u9090')  
+-e, --extra           : display extra data, like dates
 
--u, --unicodefile     : enable unicode entry in input file  
+-f, --force           : force the scan of the file, even without proper %PDF
+                        header
+                        
+-d, --disarm          :  disable JavaScript and auto launch
 
+-p PLUGINS, --plugins=PLUGINS
+                      : plugins to load (separate plugins with a comma , ;
+                        @file supported)
+                      
+-c, --csv             : output csv data when using plugins
+
+-m MINIMUMSCORE, --minimumscore=MINIMUMSCORE
+                      : minimum score for plugin results output
+                  
+-v, --verbose         : verbose (will also raise catched exceptions)
+
+-S SELECT, --select=SELECT
+                      : selection expression
+                      
+-n, --nozero          : supress output for counts equal to zero
+
+-o OUTPUT, --output=OUTPUT
+                      : output to log file
+                    
+--pluginoptions=PLUGINOPTIONS
+                      : options for the plugin
+                
+-l, --literalfilenames: take filenames literally, no wildcard matching
+                
+--recursedir          : Recurse directories (wildcards and here files (@...)
+                        allowed)
 ```
 
 ## Project homepage
 
-[https://github.com/MarioVilas/shellcode_tools](https://github.com/MarioVilas/shellcode_tools)
+[https://blog.didierstevens.com/programs/pdf-tools/#pdfid](https://blog.didierstevens.com/programs/pdf-tools/#pdfid)
