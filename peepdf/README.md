@@ -1,4 +1,4 @@
-# Scan PDF's for certain keywords, Javascript, auto-open functions etc.
+# Powerful Python tool to analyze PDF documents.
 
 ## Input
 
