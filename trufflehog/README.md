@@ -17,7 +17,7 @@ or
 docker run cincan/trufflehog https://github.com/<USERNAME>/sample.git <OPTIONS>
 ```
 
-### Some <OPTIONS>:
+### Some options:
 ```
 --json        Output in JSON
 --regex       High signal regex checks
