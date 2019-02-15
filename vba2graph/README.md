@@ -3,13 +3,17 @@
 ## Input
 
 ```
-PDF, URL, PCAP, JavaSCript, SWF
+office documents such as .doc, .xls, .bas
 ```
 
 ## Output
 
 ```
-jsunpack-n report
+png: the actual graph image you are looking for
+svg: same graph image, just in vector graphics
+dot: the dot file which was used to create the graph image
+bas: the VBA functions code that was recognized by the script (for debugging)
+
 ```
 
 
@@ -38,3 +42,8 @@ docker run --rm -v /samples:/samples -t cincan/vba2graph -i /samples/sample.bas 
 -o OUTPUT, --output OUTPUT          :output folder (default: "output")
 -c {0,1,2,3}, --colors {0,1,2,3}    :color scheme number [0, 1, 2, 3] (default: 0 - B&W)
 ```  
+
+
+## Project homepage
+
+[https://github.com/MalwareCantFly/Vba2Graph](https://github.com/MalwareCantFly/Vba2Graph)
