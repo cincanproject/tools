@@ -19,18 +19,31 @@ ELF / PE
 
 ## Usage
 
-***EXAMPLE 1***
+***1. Clone the repository***
 
 ```
-docker run --rm -v /samples:/samples shellcode2exe /samples/shellcode
+git clone https://gitlab.com/CinCan/dockerfiles
+cd dockerfiles/shellcode2exe/
 ```
 
-***EXAMPLE 2***
+***2. Build OR pull the docker image*** 
 
 ```
-docker run --rm -v $(pwd):/samples shellcode2exe /samples/shellcode -u --arch=i386 --os=linux
+docker build . -t cincan/shellcode2exe
+docker pull cincan/shellcode2exe
 ```
 
+***3. Run the docker container***
+
+Shellcode file "shellcode.file" in folder "/samples" :  
+
+`$ docker run --rm -v /samples:/samples cincan/shellcode2exe /samples/shellcode.file`  
+
+Shellcode file "shellcode.file" of unicode format is in current folder, outputs linux 
+ELF binary for i386 architecture:  
+
+`$ docker run --rm -v $(pwd):/samples cincan/shellcode2exe /samples/shellcode.file -u 
+--arch=i386 --os=linux`  
 
 ***Options***
 ```

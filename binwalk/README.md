@@ -1,21 +1,22 @@
-# Binwalk with all optional run-time dependencies
+# "Firmware Analysis Tool"
 
-## Usage:
+Binwalk with all optional run-time dependencies.
 
-### Use existing image:
-```
-docker pull cincan/binwalk
-```
+## Supported tags and respective `Dockerfile` links
 
-### Or build image locally from Dockerfile:
-```
-docker build . --tag cincan/binwalk
-```
+* `latest` 
+([*binwalk/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binwalk/Dockerfile))
 
-### Run the container using the image:
-```
-docker run -v /samples:/samples cincan/binwalk /samples/firmware.bin
-```
+## Usage
 
-## Optimization:
- - Find out how Binwalk with all optional run-time dependencies can be installed on Alpine
+***Binwalk help***
+
+`$ docker run cincan/binwalk --help`
+
+***Binwalk basic usage***
+
+`$ docker run -v /samples:/samples cincan/binwalk /samples/firmware.bin`
+
+## Project homepage
+
+https://github.com/ReFirmLabs/binwalk

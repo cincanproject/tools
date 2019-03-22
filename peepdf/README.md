@@ -20,8 +20,29 @@ Peepdf report (XML, JSON)
 ## Usage
 
 
+***1. Clone the repository***
+
 ```
-docker run --rm -v /samples:/samples cincan/peepdf /samples/sample.pdf -f
+git clone https://gitlab.com/CinCan/dockerfiles
+cd dockerfiles/peepdf/
+```
+
+***2. Build OR pull the docker image*** 
+
+```
+docker build . -t cincan/peepdf
+docker pull cincan/peepdf
+```
+
+***3. Run the docker container***
+
+```
+docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f
+```
+
+***Interactive mode***
+```
+docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f -i
 ```
 
 

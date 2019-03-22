@@ -1,26 +1,26 @@
-# Binary Analysis Tool BAT with extratools
+# Binary Analysis Tool BAT with extra tools
 
-## Usage:
+## Supported tags and respective `Dockerfile` links
 
-### Use existing image:
-```
-docker pull cincan/binary-analysis-tool-bat
-```
+* `latest` 
+([*binary-analysis-tool-bat/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binary-analysis-tool-bat/Dockerfile))
 
-### Or build image locally from Dockerfile:
-```
-docker build . --tag cincan/binary-analysis-tool-bat
-```
+## Usage
 
-### Run the container using the image for one sample:
-```
-docker run -v /samples:/samples cincan/binary-analysis-tool-bat -b /samples/example.bin -o /samples/example.gz
-```
+***BAT help***
 
-### Or for multiple samples locating in samples directory:
-```
-docker run -v /samples:/samples cincan/binary-analysis-tool-bat -d /samples -u /samples/output
-```
+`$ docker run cincan/binary-analysis-tool-bat --help`
 
-## Optimization:
- - Find out how BAT can be installed on Alpine
+***BAT basic usage (for one sample)***
+
+`$ docker run -v /samples:/samples cincan/binary-analysis-tool-bat -b 
+/samples/example.bin -o /samples/example_output.gz`
+
+***BAT basic usage (for multiple samples)***
+
+`$ docker run -v /samples:/samples cincan/binary-analysis-tool-bat -d /samples -u 
+/samples/output`
+
+## Project homepage
+
+https://github.com/armijnhemel/binaryanalysis

@@ -1,12 +1,13 @@
-# Flawfinder
-a simple program that examines C/C++ source code and reports possible security weaknesses (“flaws”) sorted by risk level
+# "Finds possible security weaknesses in C/C++ source code"
 
-## Build:
-```
-docker build -t cincan/flawfinder .
-```
+## Supported tags and respective `Dockerfile` links
+* `latest` 
+([*flawfinder/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/flawfinder/Dockerfile))
 
-## Usage:
-```
-docker run -v /samples:/samples cincan/flawfinder /samples/sample.c
-```
+## Usage
+
+`$ docker run -v /samples:/samples cincan/flawfinder /samples/sample.c`
+
+## Project homepage
+
+https://github.com/david-a-wheeler/flawfinder

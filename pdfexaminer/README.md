@@ -1,17 +1,14 @@
-# PDFexaminer  
+# Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results
 
-Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results.
+## Supported tags and respective `Dockerfile` links
+* `latest` 
+([*pdfexaminer/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdfexaminer/Dockerfile))
 
-## Build:
-```
-docker build -t cincan/pdfexaminer .
-```
+## Usage
 
-## Usage:
-```
-docker run -v /samples:/samples cincan/pdfexaminer /samples/input/sample.pdf [options]  
+`$ docker run -v /samples:/samples cincan/pdfexaminer /samples/input/sample.pdf  
+[OUTPUT FORMAT(default JSON)]`
 
-[options] = output format (default json)
+## Project homepage
 
-```
-
+https://github.com/mwtracker/pdfexaminer_tools

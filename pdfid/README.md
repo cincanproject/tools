@@ -19,17 +19,30 @@ PDFiD report
 
 ## Usage
 
-***EXAMPLE 1***
+***1. Clone the repository***
 
 ```
-docker run --rm -v /samples:/samples cincan/pdfid /samples/sample.pdf
+git clone https://gitlab.com/CinCan/dockerfiles
+cd dockerfiles/pdfid/
 ```
 
-***EXAMPLE 2***
+***2. Build OR pull the docker image*** 
 
 ```
-docker run --rm -v $(pwd):/samples cincan/pdfid /samples/sample.pdf -p plugin_triage
+docker build . -t cincan/pdfid
+docker pull cincan/pdfid
 ```
+
+***3. Run the docker container***
+
+Analyse a sample in directory "/sample":
+
+`$ docker run -v /samples:/samples cincan/pdfid /samples/sample.pdf`  
+
+
+Run with triage-plugin:  
+
+`$ docker run -v /samples:/samples cincan/pdfid /samples/sample.pdf -p plugin_triage`
 
 
 ***Options***
