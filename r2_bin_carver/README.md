@@ -1,3 +1,5 @@
+# R2 bin carver
+
 # " A script used to carve files from memory dumps."
 
 ## Input
@@ -48,8 +50,8 @@ docker run --rm -v /samples/:/samples cincan/r2_bin_carver -p -b MZ
 ***Options***  
 
 ```
--h, --help   	show this help message and exit
--b B         	Magic bytes to check for, e.g. MZ
+-h, --help   	show this help message and exit  
+-b B         	Magic bytes to check for, e.g. MZ  
 -p, --patch  	Patch carved PE files```
 
 
