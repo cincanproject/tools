@@ -1,4 +1,4 @@
-# "Program to analyse OLE files."
+# "A Program to analyse OLE files."
 
 ## Input
 
