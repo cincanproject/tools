@@ -55,7 +55,7 @@ Options:
                         to a file, for example "-s 2". Use "-s all" to save
                         all objects at once.
   -d OUTPUT_DIR         use specified directory to save output files.```
-
+```
 
 ## Project homepage
 
