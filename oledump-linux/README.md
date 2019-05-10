@@ -10,6 +10,7 @@
 
 ```
 oledump report
+JSON
 ```
 
 ## Supported tags and respective `Dockerfile` links
