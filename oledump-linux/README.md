@@ -28,6 +28,11 @@ docker run --rm -v /samples:/samples cincan/oledump-linux /samples/<OLE-FILE>
 docker run --rm -v /samples:/samples cincan/oledump-linux -s <STREAM NUMBER> /samples/<OLE-FILE>
 ```
 
+*** Identify encryption version ***
+```
+docker run --rm -v /samples:/samples cincan/oledump-linux -p plugin_office_crypto /samples/<OLE-FILE>
+```
+
 
 ***Options***  
 
