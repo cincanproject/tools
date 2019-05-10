@@ -15,13 +15,19 @@ ClamAV report
 ## Supported tags and respective `Dockerfile` links
 * `latest` ([*clamscan/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/clamscan/Dockerfile))
 
-## Usage
+## Usage examples
 
 *** Scan all files in a folder ***
 
 ```
 docker run --rm -v /samples:/samples cincan/clamscan -r /samples/
 ```
+
+*** Scan all files, list only infected ones ***
+
+```
+docker run --rm -v /samples:/samples cincan/clamscan -r -i /samples/
+``` 
 
 ***Options***  
 
