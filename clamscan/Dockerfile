@@ -3,7 +3,8 @@ FROM alpine:3.9
 LABEL MAINTAINER=cincan.io
 
 RUN apk update && apk add --no-cache\
-	clamav=0.100.3-r0
+	clamav=0.100.3-r0 \
+	git=2.20.1-r0
 
 RUN freshclam
 
