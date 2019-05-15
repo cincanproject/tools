@@ -7,7 +7,7 @@ SHELL ["/bin/sh", "-euxo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
 	py-setuptools=40.6.3-r0 \
 	py2-pip=18.1-r0 \
-        git=2.20.1-r0
+	git=2.20.1-r0
 
 # Get oledump, check integrity, unzip, clean up and install olefile.
 RUN wget https://didierstevens.com/files/software/oledump_V0_0_42.zip \
