@@ -2,6 +2,7 @@
 'use strict';
 
 const puppeteer = require('puppeteer');
+const PuppeteerHar = require('puppeteer-har');
 const url = require('url');
 const fs = require('fs');
 
@@ -21,7 +22,7 @@ parser.addArgument([ '--resolution' ], {
   defaultValue: "1366x768"
 });
 
-parser.addArgument([ '--output-mhtml' ], {
+parser.addArgument([ '--output-har' ], {
   action: 'storeTrue'
 });
 
@@ -76,6 +77,9 @@ let stdout = {
     const browser = await puppeteer.launch({
         executablePath: process.env.CHROME_BIN || null,
         args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+
         '--disable-dev-shm-usage',
         '--disable-translate',
         '--no-first-run',
@@ -96,6 +100,7 @@ let stdout = {
     });
 
     const page = await browser.newPage();
+    const harsession = new PuppeteerHar(page);
 
     page.setViewport({
         width,
@@ -110,6 +115,12 @@ let stdout = {
         });
     });
 
+    if (args.output_har) {
+        let har = `${hostname}_${dateStr}.har`;
+        stdout['har_output'] = har
+        await harsession.start({ path: `${args.output_dir}/${har}` });
+    }
+
     await page.goto(args.url, {waitUntil: 'networkidle0'});
     await sleep(delay);
 
@@ -119,12 +130,9 @@ let stdout = {
         stdout['png_output'] = png
     }
 
-    if (args.output_mhtml) {
-        let mhtml = `${hostname}_${dateStr}.mhtml`;
-        const cdp = await page.target().createCDPSession();
-        const { data } = await cdp.send('Page.captureSnapshot', { format: 'mhtml' });
-        fs.writeFileSync(`${args.output_dir}/${mhtml}`, data);
-        stdout['mhtml_output'] = mhtml
+
+    if (args.output_har) {
+        await harsession.stop();
     }
 
     browser.close();

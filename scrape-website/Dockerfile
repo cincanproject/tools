@@ -9,8 +9,9 @@ RUN apk add --no-cache \
     chromium \
     harfbuzz \
     nss \
-    && yarn global add puppeteer@1.14.0 \
-    && yarn global add argparse@1.0.10 \
+    && yarn add puppeteer@1.14.0 \
+    && yarn add argparse@1.0.10 \
+    && yarn add puppeteer-har@1.0.6 \
     && yarn cache clean \
     && rm -rf /var/cache/* \
     && mkdir /var/cache/apk
