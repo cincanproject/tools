@@ -31,7 +31,9 @@ parser.addArgument([ '--output-png' ], {
 });
 
 parser.addArgument([ '--url' ], {
-  required: true
+});
+
+parser.addArgument([ '--url-file' ], {
 });
 
 parser.addArgument([ '--output-dir' ], {
@@ -60,11 +62,21 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 
+if (args.url_file) {
+    const metadata = JSON.parse(fs.readFileSync(args.url_file, 'utf8'));
+    const url_list = metadata.url_list;
+    for (let index = 0; index < url_list.length; ++index) {
+        scrape(args, url_list[index]);
+    }
+}
+
+function scrape(args, scrape_url) {
+
 let now = new Date();
 let dateStr = now.toISOString();
 let [width, height] = args.resolution.split('x').map(v => parseInt(v, 10));
 let delay = parseInt(args.delay, 10);
-let hostname = url.parse(args.url).hostname;
+let hostname = url.parse(scrape_url).hostname;
 
 let stdout = {
     date: dateStr,
@@ -121,7 +133,7 @@ let stdout = {
         await harsession.start({ path: `${args.output_dir}/${har}` });
     }
 
-    await page.goto(args.url, {waitUntil: 'networkidle0'});
+    await page.goto(scrape_url, {waitUntil: 'networkidle0'});
     await sleep(delay);
 
     if (args.output_png) {
@@ -139,3 +151,4 @@ let stdout = {
 
     console.log(JSON.stringify(stdout));
 })();
+}
