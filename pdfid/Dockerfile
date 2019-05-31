@@ -18,10 +18,7 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 	"4DD43D7BDA885C5A579FC1F797E93A536E1DB5A4AB52A9337759A69D3B0250E0" ]; then \
 	echo "Integrity check failed"; exit 1; fi \
 	&& unzip pdfid_v0_2_5.zip -d /pdfid \
-	&& rm pdfid_v0_2_5.zip \
-	&& adduser -s /sbin/nologin -D appuser
-
-USER appuser
+	&& rm pdfid_v0_2_5.zip
 
 ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
 CMD ["--help"]
