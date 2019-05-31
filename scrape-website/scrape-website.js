@@ -61,7 +61,6 @@ process.on('unhandledRejection', (reason, p) => {
     process.exit(1);
 });
 
-
 if (args.url_file) {
     const metadata = JSON.parse(fs.readFileSync(args.url_file, 'utf8'));
     const url_list = metadata.url_list;
@@ -70,22 +69,25 @@ if (args.url_file) {
     }
 }
 
-function scrape(args, scrape_url) {
+if (args.url) {
+    scrape(args, args.url);
+}
 
-let now = new Date();
-let dateStr = now.toISOString();
-let [width, height] = args.resolution.split('x').map(v => parseInt(v, 10));
-let delay = parseInt(args.delay, 10);
-let hostname = url.parse(scrape_url).hostname;
+async function scrape(args, scrape_url) {
+    let now = new Date();
+    let dateStr = now.toISOString();
+    let [width, height] = args.resolution.split('x').map(v => parseInt(v, 10));
+    let delay = parseInt(args.delay, 10);
+    let hostname = url.parse(scrape_url).hostname;
 
-let stdout = {
-    date: dateStr,
-    timestamp: Math.floor(now.getTime() / 1000),
-    width: width,
-    height: height
-};
+    let stdout = {
+        url: scrape_url,
+        date: dateStr,
+        timestamp: Math.floor(now.getTime() / 1000),
+        width: width,
+        height: height
+    };
 
-(async() => {
     const browser = await puppeteer.launch({
         executablePath: process.env.CHROME_BIN || null,
         args: [
@@ -109,6 +111,7 @@ let stdout = {
         '--disable-client-side-phishing-detection',
         ],
         ignoreHTTPSErrors: true,
+        pipe: true, // TODO: does this help?
     });
 
     const page = await browser.newPage();
@@ -142,7 +145,6 @@ let stdout = {
         stdout['png_output'] = png
     }
 
-
     if (args.output_har) {
         await harsession.stop();
     }
@@ -150,5 +152,4 @@ let stdout = {
     browser.close();
 
     console.log(JSON.stringify(stdout));
-})();
 }
