@@ -36,7 +36,7 @@ RUN echo "/root/packages/" | tee -a /etc/apk/repositories && \
     apk --no-cache add --repository /root/packages/ clamav
 
 RUN freshclam
-
+  
 ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]
 
