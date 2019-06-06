@@ -14,9 +14,9 @@ RUN apk update && apk add --no-cache\
 
 RUN addgroup root abuild 
 
-RUN cd buildconf && \
+RUN cd buildconf && \ 
     abuild-keygen -a -i && \
-    abuild -r -F && \
+    abuild -R -F -v && \
     echo "Build finished"
     #  && \
     # echo "/root/packages" | tee -a /etc/apk/repositories && \

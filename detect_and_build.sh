@@ -2,6 +2,7 @@
 TAG=${TAG:-latest}
 echo -e "\e[4mFollowing has changed:\e[24m"
 echo -e "\e[36m $(git diff --name-only $CI_COMMIT_BEFORE_SHA..HEAD|grep -Po "^[^/]+(?=/)"|uniq)\e[39m"
+docker info
 
 for image in $(git diff --name-only $CI_COMMIT_BEFORE_SHA..HEAD|grep -Po "^[^/]+(?=/)"|uniq)
 do
