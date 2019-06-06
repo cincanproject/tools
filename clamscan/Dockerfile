@@ -14,8 +14,6 @@ RUN apk update && apk add --no-cache\
 
 RUN addgroup root abuild 
 
-RUN apk add --no-cache attr attr-dev
-
 RUN cd buildconf && \ 
     abuild-keygen -a -i && \
     abuild -R -F && \
