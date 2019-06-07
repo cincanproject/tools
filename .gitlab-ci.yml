@@ -1,10 +1,10 @@
-image: docker:latest
+image: docker:git
 
 services:
   - docker:dind
 
 before_script:
-  - apk add grep git
+  - apk add grep
   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
 
 build:
