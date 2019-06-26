@@ -17,6 +17,12 @@ RUN apk update && \
 
 RUN pip3 install -U oletools
 
+RUN apk del openssl-dev \
+	gcc \
+	libffi-dev \
+	python3-dev \
+	libc-dev
+
 ADD Oletools-license .
 
 ENTRYPOINT ["olevba"]
