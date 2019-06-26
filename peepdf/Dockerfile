@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
 	pkg-config \
 	autoconf \
 	python-libemu \
-	python-pil
+	python-pil \
+	jq
 
 RUN git clone https://github.com/buffer/pyv8.git \
 	&& cd pyv8 && python setup.py build && python setup.py install \
