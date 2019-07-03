@@ -18,6 +18,11 @@ parser.addArgument([ '--delay' ], {
   defaultValue: 5,
 });
 
+parser.addArgument([ '--process-timeout' ], {
+  type: 'int',
+  defaultValue: 30000,
+});
+
 parser.addArgument([ '--resolution' ], {
   defaultValue: "1366x768"
 });
@@ -49,6 +54,14 @@ var args = parser.parseArgs();
 function sleep(ms) {
     ms = (ms) ? ms : 0;
     return new Promise(resolve => {setTimeout(resolve, ms);});
+}
+
+function processTimeout(pid, ms) {
+    ms = (ms) ? ms : 0;
+    return setTimeout(() => {
+            process.kill(pid, 'SIGTERM');
+            console.log('Browser process terminated')
+    }, ms);
 }
 
 process.on('uncaughtException', (error) => {
@@ -114,6 +127,9 @@ async function scrape(args, scrape_url) {
         pipe: true, // TODO: does this help?
     });
 
+    const pid = browser.process().pid;
+    const browserTimeout = processTimeout(pid, args.process_timeout);
+
     const page = await browser.newPage();
     const harsession = new PuppeteerHar(page);
 
@@ -150,6 +166,7 @@ async function scrape(args, scrape_url) {
     }
 
     browser.close();
+    clearTimeout(browserTimeout);
 
     console.log(JSON.stringify(stdout));
 }
