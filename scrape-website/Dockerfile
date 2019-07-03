@@ -6,10 +6,10 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
     NODE_PATH="/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}"
 
 RUN apk add --no-cache \
-    chromium \
+    chromium>73.0.3683.103-r0 \
     harfbuzz \
     nss \
-    && yarn add puppeteer@1.14.0 \
+    && yarn add puppeteer@1.18.0 \
     && yarn add argparse@1.0.10 \
     && yarn add puppeteer-har@1.0.6 \
     && yarn cache clean \
