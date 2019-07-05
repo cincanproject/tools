@@ -1,4 +1,4 @@
-# Ilspy, decompiler of .net code https://www.nuget.org/packages/ilspycmd/
+# Ilspycmd, decompiler of .net code https://www.nuget.org/packages/ilspycmd/
 # docker run -v /samples:/samples cincan/dotnetdecompile /samples/dotnetsample.exe
 
 FROM ubuntu:16.04
