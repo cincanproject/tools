@@ -7,8 +7,8 @@ ADD buildconf.tar.gz ./
 
 
 RUN apk update && apk add --no-cache\
-	alpine-sdk \
-	git=2.20.1-r0
+	alpine-sdk
+	# git=2.20.1-r0
 
 # Build ClamAv from source
 
@@ -25,13 +25,13 @@ RUN cd buildconf && \
 
 # Copy binaries to actual image
 FROM alpine:latest
-COPY --from=0 /root/packages /root/packages/
+COPY --from=0 /root/packages /root/packages
 
 # Copy build keys to make new binaries trusted
 COPY --from=0 /etc/apk/keys /etc/apk/keys
 COPY --from=0 /root/.abuild/ /root/.abuild/
 
-RUN echo "/root/packages/" | tee -a /etc/apk/repositories && \
+RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk update && \
     apk --no-cache add --repository /root/packages/ clamav && \
     apk --no-cache add file && \
