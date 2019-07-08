@@ -39,9 +39,8 @@ RUN echo "/root/packages/" | tee -a /etc/apk/repositories && \
     apk add --no-cache jq
 
 RUN freshclam
-RUN rc-update add clamd 
-# && \
-    # rc-service clamd start
+RUN rc-update add clamd && \
+    rc-service clamd start
 
 ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]
