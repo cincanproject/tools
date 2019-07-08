@@ -19,6 +19,6 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 	echo "Integrity check failed"; exit 1; fi \
 	&& unzip pdfid_v0_2_5.zip -d /pdfid \
 	&& rm pdfid_v0_2_5.zip
-
-ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
-CMD ["--help"]
+ENTRYPOINT ["/bin/sh"]
+#ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
+#CMD ["--help"]
