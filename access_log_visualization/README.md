@@ -35,7 +35,7 @@ docker pull cincan/access_log_visualization
 
 ***3. Run the docker container***
 ```
-docker run -v "$PWD":/samples cincan/access_log_visualization
+docker run -v "$PWD/samples":/samples cincan/access_log_visualization
 ```
 
 ## Project homepage
