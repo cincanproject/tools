@@ -7,6 +7,10 @@
 
 ## Usage
 
+***Pull the docker image***
+
+`$ docker pull cincan/binary-analysis-tool-bat`
+
 ***BAT help***
 
 `$ docker run cincan/binary-analysis-tool-bat --help`
