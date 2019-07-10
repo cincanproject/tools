@@ -23,7 +23,7 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 	rm pdfid/pdfid.py && \
 	wget https://raw.githubusercontent.com/Nicceboy/DidierStevensSuite/master/pdfid.py -P pdfid \
 	&& if [ ! "$(sha256sum pdfid/pdfid.py |awk '{print toupper($1)}')" = \
-	"EA7392B53186BEA4879085286144EF22CE0C1ECEBBEC81FE91FEB87526B66EA9" ]; then \
+	"FF80CCE6063BB7D9B4FA5474F469AC57EED86BA18B9AF21FF3536ABD73C4CA37" ]; then \
 	echo "Integrity check failed"; exit 1; fi
 
 ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
