@@ -6,11 +6,13 @@
 # Url scan:
 # docker run -v /samples:/samples cincan/jsunpack-n -u https://<TARGET.URL> -d /samples/output -V
 
-FROM ubuntu:16.04
+FROM debian:9-slim
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
 	python \
-	git \
+    gcc g++ make \
+    python-dev \
+    git \
 	libpcap-dev \
 	pkg-config \
 	python-dev \
@@ -20,10 +22,11 @@ RUN apt-get update && apt-get install -y \
 	libpcre3-dev \
 	python-magic \
 	python-pygraphviz \
-	libboost1.58-all-dev \
-	wget 
-
-RUN git clone https://github.com/urule99/jsunpack-n.git
+    libboost-all-dev \
+	wget \
+    ca-certificates \ 
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone https://github.com/urule99/jsunpack-n.git
 
 WORKDIR jsunpack-n/depends
 RUN tar xvfz pynids-0.6.1.tar.gz && cd pynids-0.6.1 && python setup.py build && python setup.py install \
