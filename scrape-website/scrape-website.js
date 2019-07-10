@@ -18,6 +18,11 @@ parser.addArgument([ '--delay' ], {
   defaultValue: 5,
 });
 
+parser.addArgument([ '--process-timeout' ], {
+  type: 'int',
+  defaultValue: 30000,
+});
+
 parser.addArgument([ '--resolution' ], {
   defaultValue: "1366x768"
 });
@@ -44,11 +49,40 @@ parser.addArgument([ '--user-agent' ], {
   defaultValue: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36"
 });
 
+parser.addArgument([ '--chromium-args' ], {
+});
+
+
 var args = parser.parseArgs();
+
+args.puppeteerOptions = {
+  executablePath: process.env.CHROME_BIN || null,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox'
+  ],
+  devtools: false,
+  headless: true,
+  ignoreHTTPSErrors: true,
+  pipe: true, // TODO: does this help?
+};
+
+
+if (args.chromium_args) {
+  args.puppeteerOptions.args = args.chromium_args.split(',');
+}
 
 function sleep(ms) {
     ms = (ms) ? ms : 0;
     return new Promise(resolve => {setTimeout(resolve, ms);});
+}
+
+function processTimeout(pid, ms) {
+    ms = (ms) ? ms : 0;
+    return setTimeout(() => {
+            process.kill(pid, 'SIGTERM');
+            console.log('Browser process terminated')
+    }, ms);
 }
 
 process.on('uncaughtException', (error) => {
@@ -65,15 +99,15 @@ if (args.url_file) {
     const metadata = JSON.parse(fs.readFileSync(args.url_file, 'utf8'));
     const url_list = metadata.url_list;
     for (let index = 0; index < url_list.length; ++index) {
-        scrape(args, url_list[index]);
+        scrape(url_list[index], args);
     }
 }
 
 if (args.url) {
-    scrape(args, args.url);
+    scrape(args.url, args);
 }
 
-async function scrape(args, scrape_url) {
+async function scrape(scrape_url, args) {
     let now = new Date();
     let dateStr = now.toISOString();
     let [width, height] = args.resolution.split('x').map(v => parseInt(v, 10));
@@ -89,30 +123,11 @@ async function scrape(args, scrape_url) {
     };
 
     const browser = await puppeteer.launch({
-        executablePath: process.env.CHROME_BIN || null,
-        args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-
-        '--disable-dev-shm-usage',
-        '--disable-translate',
-        '--no-first-run',
-
-        '--ignore-certificate-errors',
-        '--no-default-browser-check',
-        '--disable-bundled-ppapi-flash',
-
-        // TODO: Enable or disable these?
-        '--disable-xss-auditor',
-        '--reduce-security-for-testing',
-
-        '--safebrowsing-disable-auto-update',
-        '--safebrowsing-disable-download-protection',
-        '--disable-client-side-phishing-detection',
-        ],
-        ignoreHTTPSErrors: true,
-        pipe: true, // TODO: does this help?
+        ...args.puppeteerOptions
     });
+
+    const pid = browser.process().pid;
+    const browserTimeout = processTimeout(pid, args.process_timeout);
 
     const page = await browser.newPage();
     const harsession = new PuppeteerHar(page);
@@ -150,6 +165,7 @@ async function scrape(args, scrape_url) {
     }
 
     browser.close();
+    clearTimeout(browserTimeout);
 
     console.log(JSON.stringify(stdout));
 }
