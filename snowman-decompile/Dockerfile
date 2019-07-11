@@ -1,7 +1,7 @@
 # Snowman decompiler, https://derevenets.com/
 # docker run -v /samples:/samples cincan/snowman-decompile /samples/executable
 
-FROM ubuntu:18.04
+FROM debian:9-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     unzip \
@@ -25,4 +25,4 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 USER appuser
 
 ENTRYPOINT ["/snowman-master/build/nocode/nocode"]
-CMD ["--h"]
+CMD ["--help"]
