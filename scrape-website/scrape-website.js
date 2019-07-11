@@ -79,14 +79,16 @@ function sleep(ms) {
 
 function processTimeout(pid, ms, stdout) {
     ms = (ms) ? ms : 0;
-    return setTimeout((stdout) => {
-            console.log(JSON.stringify(stdout));
-            try {
-                process.kill(pid, 'SIGTERM');
-            } catch (e) {
+    const err_logging = (stdout) => {
+        try {
+            process.kill(pid, 'SIGTERM');
+        } catch (e) {
+            stdout['logs'] = String(e);
+        }
+        console.log(JSON.stringify(stdout));
+    }
 
-            }
-    }, ms, stdout);
+    return setTimeout(err_logging, ms, stdout);
 }
 
 process.on('uncaughtException', (error) => {
@@ -159,6 +161,7 @@ async function scrape(scrape_url, args) {
         await page.goto(scrape_url, {waitUntil: 'networkidle0'});
         await sleep(delay);
     } catch (e) {
+        clearTimeout(browserTimeout);
         stdout['logs'] = String(e);
         browser.close();
         console.log(JSON.stringify(stdout));
