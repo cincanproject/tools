@@ -7,13 +7,12 @@
 # docker run -v /samples:/samples cincan/pdf2john /samples/encrypted.pdf
 
 
-FROM alpine:latest
+FROM alpine:3.10
 
-RUN apk update && apk add \
-        git \
-        perl \
-        exiftool
-
-RUN git clone https://github.com/magnumripper/JohnTheRipper.git
+RUN apk update && apk add --no-cache \
+    git \
+    perl \
+    exiftool \
+    && git clone https://github.com/magnumripper/JohnTheRipper.git
 
 ENTRYPOINT ["/usr/bin/perl","/JohnTheRipper/run/pdf2john.pl"]
