@@ -7,13 +7,12 @@
 #analyze all files in a directory:
 #docker run -v /samples:/samples cincan/pdfxray_lite -d /samples/input/ -r /samples/output/report
 
-FROM alpine:latest
+FROM alpine:3.10
 
-RUN apk update && apk add \
+RUN apk update && apk add --no-cache \
 	git \
 	python \
-	py-simplejson
-
-RUN git clone https://github.com/9b/pdfxray_lite.git
+	py-simplejson \
+    && git clone https://github.com/9b/pdfxray_lite.git
 ENTRYPOINT ["/usr/bin/python","pdfxray_lite/pdfxray_lite.py"]
 
