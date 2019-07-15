@@ -3,6 +3,8 @@
 
 FROM debian:9-slim
 
+LABEL MAINTAINER=cincan.io
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
     unzip \
     wget \

@@ -14,9 +14,16 @@
 # --regex       High signal regex checks
 
 FROM alpine:3.10
+
+LABEL MAINTAINER=cincan.io
+
 RUN apk update && apk add --no-cache \
-    python3 \
-    git \
-    && pip3 install trufflehog
+        python3 \
+        git \
+    && pip3 install trufflehog \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
+
 ENTRYPOINT ["trufflehog"]
 CMD ["-h"]
