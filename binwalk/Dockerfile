@@ -1,7 +1,12 @@
 FROM debian:9-slim
+
+LABEL MAINTAINER=cincan.io
+
 ENV DEBIAN_FRONTEND=noninteractive
-RUN mkdir -p /usr/share/man/man1mkdir -p /usr/share/man/man1
-RUN apt-get update && apt-get install --no-install-recommends -y \
+
+RUN mkdir -p /usr/share/man/man1 \
+    && mkdir -p /usr/share/man/man1 \
+    && apt-get update && apt-get install --no-install-recommends -y \
         wget ca-certificates git build-essential \
         libqt4-opengl \
         mtd-utils=1:2.0.0-1 \ 
@@ -24,6 +29,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         srecord=1.58-1.1+b2 \
         cpio \
         python-crypto=2.6.1-7 \
+        python-dev \
         python-lzo=1.08-1 \
         python-lzma=0.5.3-3 \
         python-pip \
@@ -35,13 +41,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         python=2.7.13-2 \
         python3=3.5.3-1 \
         unzip=6.0-21+deb9u1 && \
-        rm -rf /var/lib/apt/lists/*
-
-RUN wget -O binwalk.zip https://github.com/ReFirmLabs/binwalk/archive/master.zip && \
-    unzip binwalk.zip
+        rm -rf /var/lib/apt/lists/* \
+    && wget -O binwalk.zip https://github.com/ReFirmLabs/binwalk/archive/master.zip \
+    && unzip binwalk.zip
 WORKDIR binwalk-master
-RUN sed -i 's/"${2:-$(lsb_release -r|cut -f 2|cut -c1-2)}"/18/g' deps.sh && \
-    ./deps.sh --yes && \
-    python setup.py install
+RUN sed -i 's/"${2:-$(lsb_release -r|cut -f 2|cut -c1-2)}"/18/g' deps.sh \
+    && ./deps.sh --yes \
+    && python setup.py install \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
+
+USER appuser
 
 ENTRYPOINT ["/usr/local/bin/binwalk"]

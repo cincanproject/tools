@@ -1,4 +1,7 @@
 FROM ubuntu:16.04
+
+LABEL MAINTAINER=cincan.io
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
         fakeroot \
         software-properties-common \
@@ -53,14 +56,14 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         john=1.8.0-2 \
         python-psycopg2 \
         unzip &&\
-        rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /tmp/bat/packages/ && \
-    wget -O bat.zip https://github.com/armijnhemel/binaryanalysis/archive/master.zip && \
-    wget -O bat-extratools.zip https://github.com/armijnhemel/bat-extratools/archive/master.zip && \
-    wget -O /tmp/bat/packages/1-python-support.deb https://launchpad.net/ubuntu/+archive/primary/+files/python-support_1.0.15_all.deb && \
-    unzip bat.zip && \
-    unzip bat-extratools.zip
+    rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /tmp/bat/packages/ \
+    && wget -O bat.zip https://github.com/armijnhemel/binaryanalysis/archive/master.zip \
+    && wget -O bat-extratools.zip https://github.com/armijnhemel/bat-extratools/archive/master.zip \
+    && wget -O /tmp/bat/packages/1-python-support.deb https://launchpad.net/ubuntu/+archive/primary/+files/python-support_1.0.15_all.deb \
+    && unzip bat.zip \
+    && unzip bat-extratools.zip \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 WORKDIR  /bat-extratools-master
 RUN debuild -uc -us
 WORKDIR /
@@ -73,5 +76,7 @@ RUN mv *.deb 3-bat.deb && \
     cp *.deb /tmp/bat/packages
 WORKDIR /tmp/bat/packages
 RUN for f in /tmp/bat/packages/*; do echo "Installing $f package" && dpkg -i $f; done
+
+USER appuser
 
 ENTRYPOINT ["/usr/bin/bat-scan", "-c", "/etc/bat/bat-scan.config"]

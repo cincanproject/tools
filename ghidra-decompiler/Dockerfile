@@ -1,6 +1,8 @@
 # Modified from https://github.com/blacktop/docker-ghidra
 FROM openjdk:11-jdk-slim
 
+LABEL MAINTAINER=cincan.io
+
 ENV VERSION 9.0.2
 ENV GHIDRA_SHA 10ffd65c266e9f5b631c8ed96786c41ef30e2de939c3c42770573bb3548f8e9f
 
@@ -19,6 +21,9 @@ WORKDIR /ghidra
 RUN mkdir /ghidra/projects/
 COPY DecompileHeadless.java /ghidra/Ghidra/Features/Decompiler/ghidra_scripts/
 COPY loggings.tgz /ghidra/support/
-RUN tar -C /ghidra/support -zxvf /ghidra/support/loggings.tgz
+RUN tar -C /ghidra/support -zxvf /ghidra/support/loggings.tgz \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
+
+USER appuser
 
 ENTRYPOINT ["/ghidra/support/analyzeHeadless", "/ghidra/projects/", "ANewProject", "-postScript", "DecompileHeadless.java", "-readOnly", "-import", "2>/dev/null"]
