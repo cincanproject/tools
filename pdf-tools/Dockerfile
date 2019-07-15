@@ -16,13 +16,19 @@
 
 FROM alpine:3.10
 
+LABEL MAINTAINER=cincan.io
+
 RUN apk update && apk add --no-cache \
-	python \
-	git  \
-	py-pip \
+	    python \
+	    git  \
+	    py-pip \
     && git clone https://github.com/DidierStevens/DidierStevensSuite.git \
-	&& pip install pefile
+	&& pip install pefile \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
 
 WORKDIR /DidierStevensSuite
+
 CMD echo "See all commands: https://github.com/DidierStevens/DidierStevensSuite"
 

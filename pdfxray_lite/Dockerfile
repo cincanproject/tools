@@ -10,9 +10,13 @@
 FROM alpine:3.10
 
 RUN apk update && apk add --no-cache \
-	git \
-	python \
-	py-simplejson \
-    && git clone https://github.com/9b/pdfxray_lite.git
+	    git \
+	    python \
+	    py-simplejson \
+    && git clone https://github.com/9b/pdfxray_lite.git \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
+
 ENTRYPOINT ["/usr/bin/python","pdfxray_lite/pdfxray_lite.py"]
 

@@ -9,10 +9,12 @@
 
 FROM alpine:3.10
 
+LABEL MAINTAINER=cincan.io
+
 RUN apk update && apk add --no-cache \
-    git \
-    perl \
-    exiftool \
+        git \
+        perl \
+        exiftool \
     && git clone https://github.com/magnumripper/JohnTheRipper.git
 
 ENTRYPOINT ["/usr/bin/perl","/JohnTheRipper/run/pdf2john.pl"]

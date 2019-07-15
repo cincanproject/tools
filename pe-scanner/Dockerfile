@@ -1,21 +1,43 @@
-FROM centos:latest
+FROM alpine:3.10
 
+LABEL MAINTAINER=cincan.io
 
-RUN yum install -y epel-release 
-RUN yum install -y git gcc clang cmake make gcc-c++ upx openssl-devel pcre-dev pcre python2 libpcap yara python-pip jq
+RUN apk add --update --no-cache \
+        python \
+        alpine-sdk \
+        upx \
+        linux-headers \
+        openssl-dev \
+        pcre-dev \
+        pcre \
+        build-base \
+        bsd-compat-headers \
+        musl-dev libc-dev \
+    && mkdir build \
+    && mkdir samples
 
-#RUN apk add --update alpine-sdk upx openssl-dev pcre-dev pcre build-base bsd-compat-headers musl-dev libc-dev
-RUN mkdir build && mkdir samples
 COPY pev.tar.gz /build
-RUN cd /build && tar xf pev.tar.gz && cd pev && make && make install
 COPY trid.tar.gz /build 
-RUN cd /build && tar xf trid.tar.gz -C /usr/bin
 COPY salsa.tar.gz /build
 COPY entrypoint.py /build
 COPY pefile.py /build
 COPY pev.py /build
-RUN cd /build && tar xf salsa.tar.gz
-RUN ln -s /usr/local/lib/libpe.so.1.0 /usr/lib/libpe.so.1 && ldconfig
+
+WORKDIR /build
+RUN tar xf pev.tar.gz \
+    && tar xf trid.tar.gz -C /usr/bin \
+    && tar xf salsa.tar.gz
+WORKDIR /build/pev 
+RUN make \
+    && make install
+
+WORKDIR /build
+RUN ln -s /usr/local/lib/libpe.so.1.0 /usr/lib/libpe.so.1 \
+    && ldconfig /etc/ld.so.conf.d \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
+
 ENTRYPOINT ["/usr/bin/python", "/build/entrypoint.py","/samples/sample"]
 
 
