@@ -1,8 +1,13 @@
 FROM python:3.5-alpine
 
-RUN apk add --update jq
+LABEL MAINTAINER=cincan.io
 
-RUN pip install --upgrade pip
-RUN pip install --upgrade awscli
+RUN apk add --no-cache jq \
+    && pip install --upgrade pip \
+    && pip install --upgrade awscli \
+    && adduser -s /sbin/login -D appuser
+
 
 ADD assets/ /opt/resource/
+
+USER appuser

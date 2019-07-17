@@ -15,6 +15,14 @@
 # [--verbose, -v] Sets verbosity to high
 
 FROM python:3.6-alpine
+
+LABEL MAINTAINER=cincan.io
+
 COPY /virustotal .
-RUN pip3 install -r requirements.txt
+
+RUN pip3 install -r requirements.txt \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
+
 ENTRYPOINT ["python3", "virustotal.py"]

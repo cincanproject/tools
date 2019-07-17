@@ -1,11 +1,15 @@
-FROM ubuntu:18.04
-USER root
+FROM python:3.7-slim
 
-RUN apt-get update && apt-get install -y \
-        python3 \
-        python3-pip
+LABEL MAINTAINER=cincan.io
 
-RUN pip3 install jupyter plotly apache-log-parser pandas tqdm
+RUN pip3 install pandas==0.24.2 \
+        jupyter==1.0.0 \ 
+        plotly==3.10.0 \
+        apache-log-parser==1.7.0 \
+        tqdm==4.32.2 \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
+
+USER appuser
 
 ENTRYPOINT ["/usr/local/bin/jupyter", "nbconvert", "--to", "html", \
         "--execute", \

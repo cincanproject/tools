@@ -1,21 +1,26 @@
-FROM centos:latest
+FROM debian:9-slim
 
+LABEL MAINTAINER=cincan.io
 
-RUN yum -y groupinstall "Development Tools" && yum install -y epel-release 
-RUN yum install -y git gcc clang cmake make gcc-c++ upx openssl-devel pcre-dev pcre python2 libpcap yara python-pip jq perl-devel libffi-devel python-devel python-pip automake autoconf libtool libffi-devel python-devel python-pip ssdeep-devel ssdeep-libs
+RUN apt-get update && apt-get install --no-install-recommends -y \
+        build-essential \
+        libffi-dev \
+        python3 \
+        libssl-dev \
+        python3-magic \
+        git \ 
+        python3-dev \
+        python3-pip \
+        libfuzzy-dev \
+        && rm -rf /var/lib/apt/lists/* \
+        && mkdir build && mkdir samples
 
-RUN pip install python-magic
-
-#RUN apk add --update alpine-sdk upx openssl-dev pcre-dev pcre build-base bsd-compat-headers musl-dev libc-dev
-RUN mkdir build && mkdir samples
 COPY pev.tar.gz /build
-RUN cd /build && tar xf pev.tar.gz && cd pev && make && make install
+WORKDIR /build
+RUN tar xf pev.tar.gz && cd pev && make && make install
 COPY trid.tar.gz /build 
-RUN cd /build && tar xf trid.tar.gz -C /usr/bin
-#COPY salsa.tar.gz /build
-#COPY pefile.py /build
-#COPY pev.py /build
-#RUN cd /build && tar xf salsa.tar.gz
+WORKDIR /build
+RUN tar xf trid.tar.gz -C /usr/bin
 
 ENV EXIFTOOL 11.16
 ENV SSDEEP 2.14.1
@@ -24,23 +29,36 @@ ENV LIBDIR /usr/local/lib
 COPY Image-ExifTool-11.16.tar.gz /build/exiftool.tar.gz
 COPY ssdeep-2.14.1.tar.gz /build
 
-RUN cd /build && tar xf exiftool.tar.gz && cd Image-ExifTool-$EXIFTOOL \
+WORKDIR /build
+RUN tar xf exiftool.tar.gz && cd Image-ExifTool-$EXIFTOOL \
 	&& perl Makefile.PL && make test && make install
 
-RUN cd /build && git clone git://github.com/smarnach/pyexiftool.git \
-	&& cd pyexiftool && python setup.py install
+WORKDIR /build
+RUN git clone git://github.com/smarnach/pyexiftool.git \
+	&& cd pyexiftool && python3 setup.py install
 
-RUN cd /build && tar xzf ssdeep-$SSDEEP.tar.gz \
-  	&& cd ssdeep-$SSDEEP \
-  	&& ./configure \
-  	&& make \
-	&& make install
+WORKDIR /build
+RUN tar xzf ssdeep-$SSDEEP.tar.gz
 
-RUN pip install --upgrade setuptools && pip install ssdeep && pip install hashfile
-
-RUN ln -s /usr/local/lib/libpe.so.1.0 /usr/lib/libpe.so.1 && ldconfig
-ENTRYPOINT ["/usr/bin/python", "/build/entrypoint.py","/samples/sample"]
+WORKDIR /build/ssdeep-$SSDEEP
+RUN ./configure \
+    && make \
+    && make install \
+    && pip3 install --upgrade setuptools \
+    && pip3 install wheel \
+    && pip3 install \
+        hashfile \
+        ssdeep \
+        python-magic \
+    && ln -s /usr/local/lib/libpe.so.1.0 /usr/lib/libpe.so.1 \
+    && ldconfig \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
 COPY entrypoint.py /build
+
+USER appuser
+
+ENTRYPOINT ["/usr/bin/python3", "/build/entrypoint.py","/samples/sample"]
+
 
 #docker run -t -i --rm -v /path/to/the.exe:/samples/sample pe_test:latest

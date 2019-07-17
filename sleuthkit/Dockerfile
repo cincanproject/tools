@@ -1,11 +1,31 @@
 ### Usage: docker run -it -v `pwd`/samples:/samples cincan/sleuthkit [tool from sleuthkit]
 
-FROM debian
+FROM debian:9-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends git build-essential autotools-dev autoconf automake libtool man ca-certificates
+LABEL MAINTAINER=cincan.io
 
-RUN git clone --depth 1 https://github.com/sleuthkit/sleuthkit.git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    autotools-dev \
+    autoconf \
+    automake \
+    libtool \
+    man \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/sleuthkit/sleuthkit.git \
+    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
-RUN cd /sleuthkit && ./bootstrap && ./configure && make && make install && cd .. && rm -r sleuthkit
+WORKDIR sleuthkit
+RUN ./bootstrap \
+    && ./configure \
+    && make \
+    && make install 
+
+WORKDIR /
+RUN rm -r sleuthkit
+
+USER appuser
 
 CMD fls

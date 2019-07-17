@@ -1,18 +1,32 @@
-FROM alpine:latest
+FROM python:3.5.7-alpine3.10
 
-RUN apk --update --no-cache \
-        add python \
-        py-pip \
+LABEL MAINTAINER=cincan.io
+
+RUN apk update && apk add --no-cache \
         git \
-        graphviz
+        graphviz \
+        g++ \
+        make \
+        subversion \
+        gcc \
+        ca-certificates \
+        python3-dev \
+        libpng-dev \
+        freetype-dev \
+        libffi-dev \
+        openssl-dev \
+        musl-dev \
+        linux-headers \
+    && git clone https://github.com/MalwareCantFly/Vba2Graph.git \
+    && ln -s /usr/include/locale.h /usr/include/xlocale.h \
+    && pip3 install -U oletools \
+    && python3 -m pip --no-cache-dir install matplotlib \
+    && adduser -s /sbin/login -D appuser
 
-RUN git clone https://github.com/MalwareCantFly/Vba2Graph.git
-RUN pip install -U oletools
+WORKDIR /Vba2Graph
+RUN pip3 install -r requirements.txt
 
-RUN apk add g++ make subversion gcc gfortran ca-certificates python-dev libpng-dev freetype-dev
-RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-RUN python -m pip install matplotlib
-RUN cd /Vba2Graph && pip install -r requirements.txt
+USER appuser
 
 ENTRYPOINT ["/usr/bin/python","/Vba2Graph/vba2graph.py"]
 CMD ["-h"]
