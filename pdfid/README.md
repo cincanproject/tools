@@ -16,7 +16,7 @@ PDFiD report
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*pdfid/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdfid/Dockerfile))
+* `latest` ([*pdfid/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/pdfid))
 
 
 ## Usage
@@ -24,8 +24,8 @@ PDFiD report
 ***1. Clone the repository***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
-cd dockerfiles/pdfid/
+git clone https://gitlab.com/CinCan/tools
+cd tools/pdfid/
 ```
 
 ***2. Build OR pull the docker image*** 
@@ -37,7 +37,7 @@ docker pull cincan/pdfid
 
 ***3. Run the docker container***
 
-Analyse a sample in directory "/sample":
+Analyse a sample in directory "/samples":
 
 `$ docker run -v /samples:/samples cincan/pdfid /samples/sample.pdf`  
 

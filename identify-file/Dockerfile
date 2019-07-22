@@ -58,7 +58,7 @@ COPY entrypoint.py /build
 
 USER appuser
 
-ENTRYPOINT ["/usr/bin/python3", "/build/entrypoint.py","/samples/sample"]
+ENTRYPOINT ["/usr/bin/python3", "/build/entrypoint.py"]
 
 
 #docker run -t -i --rm -v /path/to/the.exe:/samples/sample pe_test:latest
