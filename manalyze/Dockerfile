@@ -1,6 +1,3 @@
-# Usage:
-# $ docker build <path/to/manalyze/>
-
 FROM debian:9-slim
 
 LABEL MAINTAINER=cincan.io
@@ -16,11 +13,14 @@ RUN apt update && apt-get install -y --no-install-recommends \
         git \
         ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone https://github.com/JusticeRage/Manalyze.git /root/Manalyze \
+    && git clone https://github.com/JusticeRage/Manalyze.git /Manalyze \
     && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
-WORKDIR /root/Manalyze
+WORKDIR /Manalyze
 RUN cmake . && make
-ENV PATH="/root/Manalyze/bin:${PATH}"
+ENV PATH="/Manalyze/bin:${PATH}"
 
+USER appuser
 
+ENTRYPOINT ["manalyze"]
+CMD ["--help"]
