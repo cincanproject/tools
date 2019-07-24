@@ -26,12 +26,12 @@ docker build -t cincan/vba2graph .
 
 ***Office file with macros***
 ```
-docker run --rm -v /samples:/samples -t cincan/vba2graph -f /samples/sample.dotm -o /samples/output/
+docker run --rm -v $PWD:/samples -t cincan/vba2graph -f /samples/sample.dotm -o /samples/output/
 ```
 
 *Olevba generated file or .bas***
 ```
-docker run --rm -v /samples:/samples -t cincan/vba2graph -i /samples/sample.bas -o /samples/output/
+docker run --rm -v $PWD:/samples -t cincan/vba2graph -i /samples/sample.bas -o /samples/output/
 ```
 
 
