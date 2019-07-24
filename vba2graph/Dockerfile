@@ -23,7 +23,6 @@ WORKDIR /Vba2Graph
 
 RUN git checkout 7a0493c9724a6c4ee5bd188beb0f813494e379c8 \
 	&& pip install -U oletools==0.54.1 -r requirements.txt \
-        && pip install -r requirements.txt \
 	&& adduser -s /sbin/login -D appuser
 
 USER appuser
