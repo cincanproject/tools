@@ -41,11 +41,11 @@ docker pull cincan/iocextract
 
 Load all files from /files/ and extracts hashes:  
 
-`$ docker run -v /files:/files cincan/iocextract --output /files/output/ --path /files/ --hash`  
+`$ docker run -v $(pwd):/files cincan/iocextract --output /files/output/ --path /files/ --hash`  
 
 Load specific file from mounted volume and exracts emails, urls:  
 
-`$ docker run -v /files:/files cincan/iocextract --output /files/output/ --path /files/file -u -e`
+`$ docker run -v $(pwd):/files cincan/iocextract --output /files/output/ --path /files/file -u -e`
 
 
 ***Options***  
