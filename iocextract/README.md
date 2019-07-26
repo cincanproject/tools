@@ -11,7 +11,7 @@ File
 ## Output
 
 ```
-Iocextract report. Writes results in seperate directories under given output directory.
+Iocextract report. Writes results in separate directories under given output directory.
 ```
 
 

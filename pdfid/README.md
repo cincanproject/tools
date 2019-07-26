@@ -1,6 +1,6 @@
 # PDFID
 
-# Scan PDF's for certain keywords, Javascript, auto-open functions etc.
+# Scan PDFs for certain keywords, Javascript, auto-open functions etc.
 
 ## Input
 

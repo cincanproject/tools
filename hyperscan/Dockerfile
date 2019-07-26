@@ -13,7 +13,7 @@ cd /usr/local/include/ && \
         cd /usr/local/include/ && \
 	    git clone https://github.com/intel/hyperscan.git && \
         ln -s /usr/local/include/boost_1_68_0/boost /usr/local/include/hyperscan/include/boost && \
- 		mkdir /usr/local/include/hs && \
+	mkdir /usr/local/include/hs && \
         cd /usr/local/include/hs && \
         #HotFix for boost 1.68.0
         sed -i '983s/distance/std::distance/' /usr/local/include/hyperscan/src/nfa/limex_compile.cpp && \

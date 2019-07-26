@@ -8,6 +8,18 @@ A Dotnet decompiler
 ([*dotnetdecompile/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile))
 
 
+## Input
+
+```
+.NET 
+```
+
+## Output
+
+```
+DotNetDecompile report
+```
+
 ## Usage
 
 ***1. Clone the repository***

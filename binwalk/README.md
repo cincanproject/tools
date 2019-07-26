@@ -7,6 +7,18 @@ Binwalk with all optional run-time dependencies.
 * `latest` 
 ([*binwalk/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binwalk/Dockerfile))
 
+## Input
+
+```
+binary
+```
+
+## Output
+
+```
+Binwalk report
+```
+
 ## Usage
 
 ***Binwalk help***
