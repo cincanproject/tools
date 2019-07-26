@@ -84,7 +84,6 @@ Actual images can be found from:
 | binskim                  | A Light-weight PE scanner                          | binary              | Windows  |
 | jakstab                  | Analyze executables,recover control flow graphs    | ELF / PE binary     | Windows  |
 | pestudio                 | Scan binary files for security related information | EXE,DLL,CPL,OCX...  | Windows  |
-
 | System and file analysis |                                                    |                     |          |
 |--------------------------|----------------------------------------------------|---------------------|----------|
 | capture-bat              | A Behavioral analysis tool of WIN32 apps           |                     | Windows  |
@@ -92,11 +91,9 @@ Actual images can be found from:
 | regshot                  | Registry compare utility                           |                     | Windows  |
 | sysanalyzer              | An Automated malcode runtime analysis application  |                     | Windows  |
 | sysinternals             | Manage, troubleshoot and diagnose Win systems/apps |                     | Windows  |
-
 | Shellcode analysis       |                                                    |                     |          |
 |--------------------------|----------------------------------------------------|---------------------|----------|
 | convertshellcode         | Shellcode disassembler                             | shellcode           | Windows  |
-
 | Document analysis        |                                                    |                     |          |
 |--------------------------|----------------------------------------------------|---------------------|----------|
 | officemalscanner         | Scan MS Office files for malicious traces          | DOC, XLS, PPT       | Windows  |
