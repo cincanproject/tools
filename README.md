@@ -79,23 +79,20 @@ Actual images can be found from:
 
 ### Windows tools
 
-| Binary analysis          |                                                    |                     |          |
+| **Binary analysis**          |                                                    |                     |          |
 |--------------------------|----------------------------------------------------|---------------------|----------|
 | binskim                  | A Light-weight PE scanner                          | binary              | Windows  |
 | jakstab                  | Analyze executables,recover control flow graphs    | ELF / PE binary     | Windows  |
 | pestudio                 | Scan binary files for security related information | EXE,DLL,CPL,OCX...  | Windows  |
-| System and file analysis |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **System and file analysis** |                                                    |                     |          |
 | capture-bat              | A Behavioral analysis tool of WIN32 apps           |                     | Windows  |
 | processhacker            | Monitor resources, debug software, detect malware  |                     | Windows  |
 | regshot                  | Registry compare utility                           |                     | Windows  |
 | sysanalyzer              | An Automated malcode runtime analysis application  |                     | Windows  |
 | sysinternals             | Manage, troubleshoot and diagnose Win systems/apps |                     | Windows  |
-| Shellcode analysis       |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Shellcode analysis**       |                                                    |                     |          |
 | convertshellcode         | Shellcode disassembler                             | shellcode           | Windows  |
-| Document analysis        |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Document analysis**        |                                                    |                     |          |
 | officemalscanner         | Scan MS Office files for malicious traces          | DOC, XLS, PPT       | Windows  |
 | oledump                  | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Windows  | 
 | pdf-parser               | Parse PDF to identify the fundamental elements     | PDF                 | Windows  |
