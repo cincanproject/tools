@@ -14,9 +14,7 @@ Actual images can be found from:
 
 | Tool name                | Description                                        | Input               | Platform |
 |--------------------------|----------------------------------------------------|---------------------|----------|
-
-| Binary analysis          |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Binary analysis**          |                                                    |                     |          |
 | binary-analysis-tool-bat | Binary Analysis Tool BAT with extra tools          | binary              | Linux    |
 | binwalk                  | Firmware analysis tool                             | binary              | Linux    |
 | dotnetdecompile          | Decompiler using th ILSpy engine                   | .NET                | Linux    |
@@ -25,25 +23,17 @@ Actual images can be found from:
 | snowman-decompile        | A Native code to C/C++ decompiler                  | ELF Mach-O PE LE    | Linux    |
 | twiggy                   | Analyze a binary's call graph                      | .wasm (ELF/Mach-O)  | Linux    |
 | pe-scanner               |                                                    |                     | Linux    |
-
-| Memory analysis          |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Memory analysis**          |                                                    |                     |          |
 | r2-bin-carver            | A Script to carve files from memory dumps          | memory dumps        | Linux    |
 | volatility               | An Advanced memory forensics framework             | memory samples      | Linux    |
-
-| Network analysis         |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Network analysis**         |                                                    |                     |          |
 | dns-tools                |                                                    |                     | Linux    |
 | suricata                 | Network threat detection engine (IDS, IPS, NSM)    | PCAP,network traffic| Linux    |
 | tshark                   | Parse PCAP and capture network traffic             | PCAP,network traffic| Linux    |
 | pywhois                  | Retrieve information of IP addresses               | IP                  | Linux    |
-
-| Shellcode analysis       |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Shellcode analysis**       |                                                    |                     |          |
 | shellcode2exe            | Converts shellcode into executables                | shellcode           | Linux    |
-
-| Document analysis        |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Document analysis**        |                                                    |                     |          |
 | jsunpack-n               | Scans URLs and PDFs.                               | PDF,URL,PCAP,JS,SWF | Linux    |
 | oledump-linux            | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Linux    |
 | olevba                   | Extract and analyze VBA macros from Office files   | DOC,DOT,XML,PPTM,VBA| Linux    |
@@ -55,9 +45,7 @@ Actual images can be found from:
 | peepdf                   | A Powerful python tool to analyze PDFs             | PDF, shellcode      | Linux    |
 | rtfobj                   | Detect and extract (OLE) objects in RTF files      | RTF                 | Linux    |
 | vba2graph                | Generate call graphs from VBA code                 | DOC,XLS,BAS         | Linux    |
-
-| Other                    |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
+| **Other**                    |                                                    |                     |          |
 | access-log-visualization | Visualizing webserver's access log data            | access.log (Apache) | Linux    |
 | c-ci                     | The Concourse CI                                   |                     | Linux    |
 | c-worker                 | The Concourse Worker                               |                     | Linux    |
@@ -74,7 +62,6 @@ Actual images can be found from:
 | trufflehog               | Search git repos for accidentally committed secrets| git repository      | Linux    |
 | virustotal               | Analyze files and URLs to detect malware           | any                 | Linux    |
 | xmldump                  | Parse XML files                                    | XML                 | Linux    |
-
 
 
 ### Windows tools
