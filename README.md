@@ -42,7 +42,7 @@ Actual images can be found from:
 | [pdf2john](https://gitlab.com/CinCan/tools/tree/master/pdf2john)                 | John The Ripper for extracting hash from PDF       | Encrypted PDF       | Linux    |
 | [pdfexaminer](https://gitlab.com/CinCan/tools/tree/master/pdfexaminer)              | Uploads PDF to www.pdfexaminer.com for scanning    | PDF                 | Linux    |
 | [pdfid](https://gitlab.com/CinCan/tools/tree/master/pdfid)                    | Scan PDFs for keywords, Javascript, auto-open...   | PDF                 | Linux    |
-| [pdfxray_lite](https://gitlab.com/CinCan/tools/tree/master/pdfxray_lite)             | Analyze PDFs                                       | PDF                 | Linux    |
+| [pdfxray-lite](https://gitlab.com/CinCan/tools/tree/master/pdfxray-lite)             | Analyze PDFs                                       | PDF                 | Linux    |
 | [peepdf](https://gitlab.com/CinCan/tools/tree/master/peepdf)                   | A Powerful python tool to analyze PDFs             | PDF, shellcode      | Linux    |
 | [rtfobj](https://gitlab.com/CinCan/tools/tree/master/rtfobj)                   | Detect and extract (OLE) objects in RTF files      | RTF                 | Linux    |
 | [vba2graph](https://gitlab.com/CinCan/tools/tree/master/vba2graph)                | Generate call graphs from VBA code                 | DOC,XLS,BAS         | Linux    |
