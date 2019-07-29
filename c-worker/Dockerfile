@@ -21,6 +21,6 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list \
 
 VOLUME /etc/concourse
 
-USER appuser
+#USER appuser
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/concourse"]
