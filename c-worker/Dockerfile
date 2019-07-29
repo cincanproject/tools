@@ -16,8 +16,9 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list \
     && wget --progress=dot:giga -O /usr/local/bin/concourse https://github.com/concourse/concourse/releases/download/v4.2.2/concourse_linux_amd64 \
     && chmod +x /usr/local/bin/concourse \
     && mkdir /etc/concourse \
-    && mkdir -p /opt/concourse/worker \
-    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
+    && mkdir -p /opt/concourse/worker 
+#\
+#    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
 VOLUME /etc/concourse
 
