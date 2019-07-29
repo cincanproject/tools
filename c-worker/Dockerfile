@@ -1,5 +1,6 @@
 # Dockerfile for Concourse worker
-FROM debian:8.11-slim
+FROM ubuntu:18.04
+#FROM debian:8.11-slim
 
 LABEL MAINTAINER=cincan.io
 
