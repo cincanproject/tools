@@ -76,7 +76,7 @@ RUN sed -i 's/use_boost = True/use_boost = False/g' config_linux2.py \
     && python setup.py build \
     && python setup.py install
 
-USER appuser
+#USER appuser
 
 WORKDIR /jsunpack-n
 ENTRYPOINT ["/usr/bin/python","jsunpackn.py"]
