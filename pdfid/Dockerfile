@@ -19,7 +19,7 @@ RUN apk update && apk add --no-cache \
 	&& rm pdfid_v0_2_5.zip \
     && adduser -s /sbin/login -D appuser
 
-USER appuser
+#USER appuser
 
 ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
 CMD ["--help"]
