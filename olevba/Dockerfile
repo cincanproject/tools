@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache \
 
 ADD Oletools-license .
 
-USER appuser
+#USER appuser
 
 ENTRYPOINT ["olevba"]
 CMD ["--help"]

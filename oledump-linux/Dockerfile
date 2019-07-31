@@ -17,7 +17,7 @@ RUN apk update && apk add --no-cache \
     && pip install olefile==0.46 \
     && adduser -s /sbin/login -D appuser
 
-USER appuser
+#USER appuser
 
 ENTRYPOINT ["/usr/bin/python","oledump.py"]
 CMD ["--help"]
