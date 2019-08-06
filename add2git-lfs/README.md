@@ -1,6 +1,6 @@
 # ADD2GIT-LFS
 
-# GUI service for CinCan pipelines
+# GUI for uploading files to use with CinCan pipelines
 
 
 
