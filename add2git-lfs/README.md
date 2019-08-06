@@ -31,7 +31,7 @@ docker pull cincan/add2git-lfs
 Example:  
 
 
-`$ docker run --rm -v $(pwd):/samples --net build_cincan --ip 172.20.0.7 -p 12358:12358 cincan/add2git-fs -branch pdf-source -folder .`  
+`$ docker run --rm -v $(pwd):/samples --net build_cincan --ip 172.20.0.7 -p 12358:12358 cincan/add2git-lfs -branch pdf-source -folder .`  
 
 
 
