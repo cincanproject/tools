@@ -49,6 +49,8 @@ Usage of /add2git-lfs/add2git-lfs:
     	remote (default "origin")
   -token string
     	personal access token (https)
+  -url string
+      url for a web application
   -user string
     	user.name for commit
 ```

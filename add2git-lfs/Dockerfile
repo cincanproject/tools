@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache \
 
 WORKDIR /add2git-lfs
 
-RUN wget https://github.com/saguywalker/add2git-lfs/releases/download/0.1.7/add2git-lfs \
+RUN wget https://github.com/saguywalker/add2git-lfs/releases/download/0.1.8/add2git-lfs \
     && chmod +x add2git-lfs
 
 WORKDIR /samples
