@@ -24,7 +24,7 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 	rm pdfid/pdfid.py && \
 	wget https://raw.githubusercontent.com/Nicceboy/DidierStevensSuite/master/pdfid.py -P pdfid \
 	&& if [ ! "$(sha256sum pdfid/pdfid.py |awk '{print toupper($1)}')" = \
-	"FF80CCE6063BB7D9B4FA5474F469AC57EED86BA18B9AF21FF3536ABD73C4CA37" ]; then \
+	"8D70E711929079B3B3BD64C957AA78C86202DAEB6510851D6FDEEE387ED32CA1" ]; then \
 	echo "Integrity check failed"; exit 1; fi
 
 RUN adduser -s /sbin/login -D appuser
