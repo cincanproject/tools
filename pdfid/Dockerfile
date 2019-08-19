@@ -10,7 +10,8 @@ RUN apk update && apk add --no-cache \
 	python2=2.7.16-r1 \
 	wget=1.20.3-r0 \
 	unzip=6.0-r4 \
-	git=2.20.1-r0
+	git=2.20.1-r0 \
+	jq
 
 # Get pdfid, check integrity, unzip, clean up.
 # Replace main script of pdfid with one supporting JSON output
@@ -25,6 +26,8 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 	&& if [ ! "$(sha256sum pdfid/pdfid.py |awk '{print toupper($1)}')" = \
 	"FF80CCE6063BB7D9B4FA5474F469AC57EED86BA18B9AF21FF3536ABD73C4CA37" ]; then \
 	echo "Integrity check failed"; exit 1; fi
+
+RUN adduser -s /sbin/login -D appuser
 
 ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
 CMD ["--help"]
