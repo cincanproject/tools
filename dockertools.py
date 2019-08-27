@@ -1,7 +1,13 @@
 import argparse
 
-def runImage(file, args):
-    print("{} args={}".format(file, args))
+
+class ToolImage:
+    """A tool wrapped to docker image"""
+
+    def __init__(self, file, args):
+        self.file = file
+        self.args = args
+        print("{} args={}".format(file, args))
 
 
 def main():
@@ -12,7 +18,8 @@ def main():
     run_parser.add_argument('-p', '--path')
     run_parser.add_argument('-a', '--args')
     args = m_parser.parse_args()
-    print("FIXME docker run -v FIXME {} {}".format(args.path, args.args))
+    tool = ToolImage(args.path, args.args)
+
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 import sys
-#sys.path.append('/home/raulik/cincan/tools')
 import pytest
-from .. import cincan_tools
+from .. import dockertools
+
 
 def test_image():
-    cincan_tools.hello_world()
+    dockertools.ToolImage(".", "samples/simple.xml")
