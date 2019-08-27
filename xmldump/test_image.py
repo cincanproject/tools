@@ -4,4 +4,5 @@ from .. import dockertools
 
 
 def test_image():
-    dockertools.ToolImage("xmldump", ["samples/simple.xml"])
+    tool = dockertools.ToolImage("xmldump")
+    tool.run(["text", "samples/simple.xml"])

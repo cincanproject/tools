@@ -1,20 +1,32 @@
 import argparse
 import docker
 import logging
+import os
 from typing import List, Set, Dict, Tuple, Optional
 
 
 class ToolImage:
     """A tool wrapped to docker image"""
 
-    def __init__(self, file: str, args: List[str]):
+    def __init__(self, file: str):
         self.file = file
-        self.args = args
         self.logger = logging.getLogger(file)
+        self.context = os.path.realpath(file)
+        self.logger.info("context: %s", self.context)
         self.client = docker.from_env()
         self.image, log = self.client.images.build(path=file)
         self.do_log(log)
-        print("{} args={}".format(file, args))
+        # print("{} args={}".format(file, args))
+
+    def run(self, args: List[str]):
+        samples_dir = self.context + '/samples'
+        print(self.client.containers.run(self.image,
+                                    volumes={
+                                       samples_dir: {
+                                           'bind': "/samples"
+                                       }
+                                   },
+                                   command=args))
 
     def do_log(self, log: Set[Dict[str, str]]) -> None:
         for i in log:
@@ -34,7 +46,8 @@ def main():
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    tool = ToolImage(args.path, args.args)
+    tool = ToolImage(args.path)
+    tool.run(args.args)
 
 
 if __name__ == '__main__':
