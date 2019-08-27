@@ -30,7 +30,7 @@ def main():
     subparsers = m_parser.add_subparsers()
     run_parser = subparsers.add_parser('run')
     run_parser.add_argument('-p', '--path')
-    run_parser.add_argument('-a', '--args')
+    run_parser.add_argument('-a', '--args', nargs='*')
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
