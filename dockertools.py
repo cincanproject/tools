@@ -20,7 +20,10 @@ class ToolImage:
 
     def run(self, args: List[str]):
         samples_dir = self.context + '/samples'
-        print(self.client.containers.run(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args))
+        return self.client.containers.run(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
+
+    def run_get_string(self, args: List[str]):
+        return self.run(args).decode('ascii')
 
     def do_log(self, log: Set[Dict[str, str]]) -> None:
         for i in log:
@@ -41,7 +44,7 @@ def main():
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
     tool = ToolImage(args.path)
-    tool.run(args.args)
+    print(tool.run(args.args))
 
 
 if __name__ == '__main__':

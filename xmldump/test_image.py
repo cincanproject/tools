@@ -5,4 +5,5 @@ from .. import dockertools
 
 def test_image():
     tool = dockertools.ToolImage("xmldump")
-    tool.run(["text", "samples/simple.xml"])
+    out = tool.run_get_string(["text", "samples/simple.xml"])
+    assert out == 'Hello World\n'
