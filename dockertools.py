@@ -20,13 +20,7 @@ class ToolImage:
 
     def run(self, args: List[str]):
         samples_dir = self.context + '/samples'
-        print(self.client.containers.run(self.image,
-                                    volumes={
-                                       samples_dir: {
-                                           'bind': "/samples"
-                                       }
-                                   },
-                                   command=args))
+        print(self.client.containers.run(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args))
 
     def do_log(self, log: Set[Dict[str, str]]) -> None:
         for i in log:
