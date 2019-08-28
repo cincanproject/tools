@@ -25,10 +25,10 @@ class ToolImage:
 
     def run(self, args: List[str]):
         samples_dir = self.context + '/samples'
-        self.container = self.client.containers.create(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
-        self.container.start()
-        self.container.wait()
-        return self.container.attach(logs=True)
+        container = self.client.containers.create(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
+        container.start()
+        container.wait()
+        return container.attach(logs=True)
 
     def run_get_string(self, args: List[str]):
         return self.run(args).decode('ascii')
