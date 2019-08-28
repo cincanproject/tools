@@ -20,11 +20,15 @@ class ToolImage:
             self.image = self.client.images.get(image)
         else:
             raise Exception("No file nor image specified")
+        self.container = None
         # print("{} args={}".format(file, args))
 
     def run(self, args: List[str]):
         samples_dir = self.context + '/samples'
-        return self.client.containers.run(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
+        self.container = self.client.containers.create(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
+        self.container.start()
+        self.container.wait()
+        return self.container.attach(logs=True)
 
     def run_get_string(self, args: List[str]):
         return self.run(args).decode('ascii')
