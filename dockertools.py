@@ -24,11 +24,10 @@ class ToolImage:
             self.image = self.client.images.get(image)
         else:
             raise Exception("No file nor image specified")
-        self.tarball = None
         self.mapped_files = {}
         self.file_pattern = re.compile("\\^(.+)")
 
-    def extract_file_and_copy_if(self, name: str) -> str:
+    def __process_arg(self, name: str) -> str:
         m = self.file_pattern.search(name)
         f_name = name
         if m is not None:
@@ -38,28 +37,28 @@ class ToolImage:
             self.logger.info("copy: %s -> %s", b_name, f_name)
         return f_name
 
-    def extract_files_to_copy(self, args: List[str]) -> List[str]:
-        return list(map(lambda a: self.extract_file_and_copy_if(a), args))
+    def __process_args(self, args: List[str]) -> List[str]:
+        return list(map(lambda a: self.__process_arg(a), args))
 
-    def copy_files_to_container(self) -> None:
+    def __copy_extracted_files(self) -> bytes:
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, t in self.mapped_files.items():
             self.logger.debug("in-file %s", name)
             tar.add(name, arcname=t[1:])  # strip first '/'
         tar.close()
-        self.tarball = file_out.getvalue()
-        self.logger.debug("Tarball to upload, size %d", len(self.tarball))
-        # with open("files_to_upload.tar", "wb") as f:
-        #    f.write(self.tarball)
+        return file_out.getvalue()
 
     def run(self, args: List[str]):
-        cmd_args = self.extract_files_to_copy(args)
+        cmd_args = self.__process_args(args)
         self.logger.info("command: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
-        self.copy_files_to_container()
-        if self.tarball is not None:
-            container.put_archive(path='/', data=self.tarball)
+        tarball = self.__copy_extracted_files()
+        if self.mapped_files:
+            self.logger.debug("Tarball to upload, size %d", len(tarball))
+            # with open("files_to_upload.tar", "wb") as f:
+            #    f.write(tarball)
+            container.put_archive(path='/', data=tarball)
         container.start()
         container.wait()
         return container.attach(logs=True)
