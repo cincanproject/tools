@@ -1,5 +1,6 @@
 import argparse
 import docker
+import docker.errors
 import logging
 import tarfile
 import io
@@ -11,18 +12,32 @@ from typing import List, Set, Dict, Tuple, Optional
 class ToolImage:
     """A tool wrapped to docker image"""
 
-    def __init__(self, file: Optional[str] = None, image: Optional[str] = None):
+    def __init__(self, file: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
         self.logger = logging.getLogger(file)
         self.client = docker.from_env()
         if file is not None:
             self.image, log = self.client.images.build(path=file)
             self.do_log(log)
         elif image is not None:
-            self.image = self.client.images.get(image)
+            if pull:
+                # pull first
+                self.__get_image(image, pull=True)
+            else:
+                # just get the image
+                try:
+                    self.__get_image(image, pull=False)
+                except docker.errors.ImageNotFound:
+                    # image not found, try to pull it
+                    self.__get_image(image, pull=True)
         else:
             raise Exception("No file nor image specified")
         self.mapped_files = {}
         self.file_pattern = re.compile("\\^(.+)")
+
+    def __get_image(self, image, pull: bool = False):
+        if pull:
+            self.client.images.pull(image)
+        self.image = self.client.images.get(image)
 
     def __process_arg(self, name: str) -> str:
         m = self.file_pattern.search(name)
@@ -79,11 +94,12 @@ def main():
     run_parser = subparsers.add_parser('run')
     run_parser.add_argument('tool', help="the tool and possible arguments",  nargs=argparse.REMAINDER)
     run_parser.add_argument('-p', '--path', help='path to Docker context')
+    run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
     if args.path is None:
-        tool = ToolImage(image=args.tool[0])
+        tool = ToolImage(image=args.tool[0], pull=args.pull)
     elif args.path is not None:
         tool = ToolImage(file=args.path)
     else:
