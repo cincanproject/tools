@@ -48,7 +48,7 @@ class ToolImage:
 
     def run(self, args: List[str]) -> bytes:
         cmd_args = self.__process_args(args)
-        self.logger.info("command: %s", ' '.join(cmd_args))
+        self.logger.info("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
         tarball = self.__copy_extracted_files()
         if self.mapped_files:
