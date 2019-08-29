@@ -58,7 +58,9 @@ class ToolImage:
             container.put_archive(path='/', data=tarball)
         container.start()
         container.wait()
-        return container.attach(logs=True)
+        logs = container.attach(logs=True)
+        container.remove()
+        return logs
 
     def run_get_string(self, args: List[str]):
         return self.run(args).decode('ascii')
