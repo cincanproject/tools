@@ -12,11 +12,11 @@ from typing import List, Set, Dict, Tuple, Optional
 class ToolImage:
     """A tool wrapped to docker image"""
 
-    def __init__(self, file: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
-        self.logger = logging.getLogger(file)
+    def __init__(self, path: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
+        self.logger = logging.getLogger(path)
         self.client = docker.from_env()
-        if file is not None:
-            self.image, log = self.client.images.build(path=file)
+        if path is not None:
+            self.image, log = self.client.images.build(path=path)
             self.do_log(log)
         elif image is not None:
             if pull:
@@ -101,7 +101,7 @@ def main():
     if args.path is None:
         tool = ToolImage(image=args.tool[0], pull=args.pull)
     elif args.path is not None:
-        tool = ToolImage(file=args.path)
+        tool = ToolImage(path=args.path)
     else:
         tool = ToolImage()  # should raise exception
     all_args = args.tool[1:]
