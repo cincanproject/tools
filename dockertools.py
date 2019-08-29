@@ -88,7 +88,7 @@ def main():
     elif args.path is not None:
         tool = ToolImage(file=args.path)
     else:
-        tool = ToolImage() # should raise exception
+        tool = ToolImage()  # should raise exception
     all_args = args.tool[1:]
     print(tool.run(all_args))
 
