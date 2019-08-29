@@ -4,6 +4,7 @@ import logging
 import tarfile
 import io
 import os
+import re
 from typing import List, Set, Dict, Tuple, Optional
 
 
@@ -24,25 +25,41 @@ class ToolImage:
         else:
             raise Exception("No file nor image specified")
         self.tarball = None
+        self.mapped_files = {}
+        self.file_pattern = re.compile("\\^(.+)")
 
-    def copy_files_to_temp(self, files: List[str]) -> None:
+    def extract_file_and_copy_if(self, name: str) -> str:
+        m = self.file_pattern.search(name)
+        f_name = name
+        if m is not None:
+            b_name = m.group(1)
+            f_name = "/tmp/work_files" + (b_name if b_name.startswith('/') else '/' + b_name).replace(':', '_')
+            self.mapped_files[b_name] = f_name
+            self.logger.info("copy: %s -> %s", b_name, f_name)
+        return f_name
+
+    def extract_files_to_copy(self, args: List[str]) -> List[str]:
+        return list(map(lambda a: self.extract_file_and_copy_if(a), args))
+
+    def copy_files_to_container(self) -> None:
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
-        for p in files:
-            self.logger.debug("in-file %s", p)
-            tar.add(p)
+        for name, t in self.mapped_files.items():
+            self.logger.debug("in-file %s", name)
+            tar.add(name, arcname=t[1:])  # strip first '/'
         tar.close()
         self.tarball = file_out.getvalue()
         self.logger.debug("Tarball to upload, size %d", len(self.tarball))
         # with open("files_to_upload.tar", "wb") as f:
-        #     f.write(self.tarball)
+        #    f.write(self.tarball)
 
     def run(self, args: List[str]):
-        samples_dir = self.context + '/samples'
-        container = self.client.containers.create(self.image, volumes={samples_dir: {'bind': "/samples"}}, command=args)
+        cmd_args = self.extract_files_to_copy(args)
+        self.logger.info("command: %s", ' '.join(cmd_args))
+        container = self.client.containers.create(self.image, command=cmd_args)
+        self.copy_files_to_container()
         if self.tarball is not None:
-            # container.exec_run(cmd='mkdir -p /tmp/cincan-work')
-            container.put_archive(path='/tmp', data=self.tarball)
+            container.put_archive(path='/', data=self.tarball)
         container.start()
         container.wait()
         return container.attach(logs=True)
@@ -58,28 +75,23 @@ class ToolImage:
 
 def main():
     m_parser = argparse.ArgumentParser()
-    m_parser.add_argument('-c', '--command')
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                           help="Set the logging level")
-    subparsers = m_parser.add_subparsers()
+    subparsers = m_parser.add_subparsers(help='sub-command')
     run_parser = subparsers.add_parser('run')
-    run_parser.add_argument('-p', '--path')
-    run_parser.add_argument('-i', '--image')
-    run_parser.add_argument('-s', '--in-string')
-    run_parser.add_argument('-f', '--in-file')
-    run_parser.add_argument('-a', '--args', nargs='*')
+    run_parser.add_argument('tool', help="the tool and possible arguments",  nargs=argparse.REMAINDER)
+    run_parser.add_argument('-p', '--path', help='path to Docker context')
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    if args.image is not None:
-        tool = ToolImage(image=args.image)
+    if args.path is None:
+        tool = ToolImage(image=args.tool[0])
     elif args.path is not None:
         tool = ToolImage(file=args.path)
     else:
         tool = ToolImage() # should raise exception
-    if args.in_file is not None:
-        tool.copy_files_to_temp([args.in_file])
-    print(tool.run(args.args))
+    all_args = args.tool[1:]
+    print(tool.run(all_args))
 
 
 if __name__ == '__main__':
