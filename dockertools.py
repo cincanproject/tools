@@ -3,7 +3,7 @@ import docker
 import logging
 import tarfile
 import io
-import os
+import sys
 import re
 from typing import List, Set, Dict, Tuple, Optional
 
@@ -46,7 +46,7 @@ class ToolImage:
         tar.close()
         return file_out.getvalue()
 
-    def run(self, args: List[str]):
+    def run(self, args: List[str]) -> bytes:
         cmd_args = self.__process_args(args)
         self.logger.info("command: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
@@ -87,7 +87,7 @@ def main():
     else:
         tool = ToolImage()  # should raise exception
     all_args = args.tool[1:]
-    print(tool.run(all_args))
+    sys.stdout.buffer.write(tool.run(all_args))
 
 
 if __name__ == '__main__':
