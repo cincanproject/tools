@@ -13,9 +13,6 @@ class ToolImage:
 
     def __init__(self, file: Optional[str] = None, image: Optional[str] = None):
         self.logger = logging.getLogger(file)
-        self.context = os.path.realpath(file)
-        self.temp_dir = os.path.realpath('cincan-temp')
-        self.logger.info("context: %s", self.context)
         self.client = docker.from_env()
         if file is not None:
             self.image, log = self.client.images.build(path=file)
