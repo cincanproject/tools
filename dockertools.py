@@ -6,6 +6,7 @@ import tarfile
 import io
 import sys
 import re
+import pathlib
 from typing import List, Set, Dict, Tuple, Optional
 
 
@@ -17,6 +18,7 @@ class ToolImage:
         self.client = docker.from_env()
         if path is not None:
             self.image, log = self.client.images.build(path=path)
+            self.context = path
             self.do_log(log)
         elif image is not None:
             if pull:
@@ -29,6 +31,7 @@ class ToolImage:
                 except docker.errors.ImageNotFound:
                     # image not found, try to pull it
                     self.__get_image(image, pull=True)
+            self.context = '.'  # not really correct, but will do
         else:
             raise Exception("No file nor image specified")
         self.mapped_files = {}
@@ -84,6 +87,9 @@ class ToolImage:
         for i in log:
             v = i.values()
             self.logger.debug("{}".format(*v).strip())
+
+    def file_to_copy(self, file : str) -> str:
+        return '^' + str(pathlib.Path(self.context) / file)
 
 
 def main():
