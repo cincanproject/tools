@@ -1,4 +1,4 @@
-from .. import dockertools
+import dockertools
 import re
 
 pattern = re.compile("^\\s*(\\S+)\\s+(\\S.*)$")

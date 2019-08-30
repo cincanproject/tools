@@ -1,4 +1,4 @@
-from .. import dockertools
+import dockertools
 
 
 def test_image():
