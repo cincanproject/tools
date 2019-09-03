@@ -7,6 +7,7 @@ import io
 import sys
 import re
 import pathlib
+import json
 from typing import List, Set, Dict, Tuple, Optional
 
 from metatool import registry
@@ -93,29 +94,60 @@ class ToolImage:
     def file_to_copy(self, file : str) -> str:
         return '^' + str(pathlib.Path(self.context) / file)
 
+    def list_command_line(self) -> str:
+        container = self.client.containers.create(self.image)
+        raw_tar, stat = container.get_archive(path='/cincan/commands.json')
+        buffer = io.BytesIO()
+        for r in raw_tar:
+            buffer.write(r)
+        buffer.seek(0)
+        tarball = tarfile.open("r", fileobj=buffer)
+        lines = []
+        for f in tarball.getmembers():
+            c = tarball.extractfile(f).read()
+            js = json.loads(c)
+            self.logger.debug(json.dumps(js))
+            commands = js['commands']
+            for c in commands:
+                lines.append(c['command'])
+        container.remove()
+        return '\n'.join(lines)
+
 
 def main():
     m_parser = argparse.ArgumentParser()
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                           help="Set the logging level")
     subparsers = m_parser.add_subparsers(dest='sub_command')
+
     run_parser = subparsers.add_parser('run')
     run_parser.add_argument('tool', help="the tool and possible arguments",  nargs=argparse.REMAINDER)
     run_parser.add_argument('-p', '--path', help='path to Docker context')
     run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
-    list_parser = subparsers.add_parser('list')
+
+    subparsers.add_parser('list')
+
+    run_parser = subparsers.add_parser('help')
+    run_parser.add_argument('tool', help="the tool",  nargs=1)
+    run_parser.add_argument('-p', '--path', help='path to Docker context')
+    run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    if args.sub_command == 'run':
+    if args.sub_command == 'run' or args.sub_command == 'help':
         if args.path is None:
             tool = ToolImage(image=args.tool[0], pull=args.pull)
         elif args.path is not None:
             tool = ToolImage(path=args.path)
         else:
             tool = ToolImage()  # should raise exception
-        all_args = args.tool[1:]
-        sys.stdout.buffer.write(tool.run(all_args))
+        if args.sub_command == 'run':
+            all_args = args.tool[1:]
+            sys.stdout.buffer.write(tool.run(all_args))
+        else:
+            print(tool.list_command_line())
+
     else:
         reg = registry.ToolRegistry()
         list = reg.list_tools()

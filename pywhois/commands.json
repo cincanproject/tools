@@ -1,0 +1,8 @@
+{
+  "commands": [
+    {
+      "command": "<input>",
+      "input": "ip",
+      "help": "Just give me the ip, please" }
+  ]
+}
