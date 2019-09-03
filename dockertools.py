@@ -9,6 +9,8 @@ import re
 import pathlib
 from typing import List, Set, Dict, Tuple, Optional
 
+from metatool import registry
+
 
 class ToolImage:
     """A tool wrapped to docker image"""
@@ -96,23 +98,27 @@ def main():
     m_parser = argparse.ArgumentParser()
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                           help="Set the logging level")
-    subparsers = m_parser.add_subparsers(help='sub-command')
+    subparsers = m_parser.add_subparsers(dest='sub_command')
     run_parser = subparsers.add_parser('run')
     run_parser.add_argument('tool', help="the tool and possible arguments",  nargs=argparse.REMAINDER)
     run_parser.add_argument('-p', '--path', help='path to Docker context')
     run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+    list_parser = subparsers.add_parser('list')
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    if args.path is None:
-        tool = ToolImage(image=args.tool[0], pull=args.pull)
-    elif args.path is not None:
-        tool = ToolImage(path=args.path)
+    if args.sub_command == 'run':
+        if args.path is None:
+            tool = ToolImage(image=args.tool[0], pull=args.pull)
+        elif args.path is not None:
+            tool = ToolImage(path=args.path)
+        else:
+            tool = ToolImage()  # should raise exception
+        all_args = args.tool[1:]
+        sys.stdout.buffer.write(tool.run(all_args))
     else:
-        tool = ToolImage()  # should raise exception
-    all_args = args.tool[1:]
-    sys.stdout.buffer.write(tool.run(all_args))
-
+        reg = registry.ToolRegistry()
+        reg.list_tools()
 
 if __name__ == '__main__':
     main()
