@@ -1,6 +1,7 @@
 FROM alpine:3.9
 
 LABEL MAINTAINER=cincan.io
+LABEL io.cincan.input="text/xml"
 
 SHELL ["/bin/sh", "-euxo", "pipefail", "-c"]
 
