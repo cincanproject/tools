@@ -118,7 +118,8 @@ def main():
         sys.stdout.buffer.write(tool.run(all_args))
     else:
         reg = registry.ToolRegistry()
-        reg.list_tools()
+        list = reg.list_tools()
+        print("\n".join(map(str, list.values())))
 
 if __name__ == '__main__':
     main()

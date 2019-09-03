@@ -7,6 +7,13 @@ from typing import List, Set, Dict, Tuple, Optional
 
 class ToolInfo:
     """A tool in registry"""
+    def __init__(self, name: str, input: List[str], output: List[str]):
+        self.name = name
+        self.input = input
+        self.output = output
+
+    def __str__(self):
+        return "{} {} => {}".format(self.name, self.input, self.output)
 
 class ToolRegistry:
     """A tool registy"""
@@ -16,12 +23,14 @@ class ToolRegistry:
 
     def list_tools(self) -> Dict[str, ToolInfo]:
         images = self.client.images.list(filters={'label': 'io.cincan.input'})
+        ret = {}
         for i in images:
             name = i.tags[0] if len(i.tags) >0 else "untagged"
             input = i.labels.get('io.cincan.input', 'application/octet-stream')
             output = i.labels.get('io.cincan.output', 'text/plain')
             self.logger.debug("%s input: %s output: %s", name, input, output)
-        return {}
+            ret[name] = ToolInfo(name, input, output)
+        return ret
 
 
 # TheHive accepts the following datatypes:
