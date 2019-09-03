@@ -13,7 +13,7 @@ class ToolInfo:
         self.output = output
 
     def __str__(self):
-        return "{} {} => {}".format(self.name, self.input, self.output)
+        return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
 
 class ToolRegistry:
     """A tool registy"""
