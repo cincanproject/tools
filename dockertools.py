@@ -94,7 +94,7 @@ class ToolImage:
     def file_to_copy(self, file : str) -> str:
         return '^' + str(pathlib.Path(self.context) / file)
 
-    def get_commands(self) -> Dict[str, Any]:
+    def get_commands(self) -> List[Dict[str, Any]]:
         container = self.client.containers.create(self.image)
         raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         buffer = io.BytesIO()
@@ -119,9 +119,29 @@ class ToolImage:
             lines.append(c_str.replace("<file>", "^<file>"))
         return lines
 
-    def do_run(self, args: List[str], input: Optional[str], output: Optional[str]) -> bytes:
-        mod_args = args
-        return self.run(mod_args)
+    def do_run(self, args: List[str], in_file: str, in_type: Optional[str], out_type: Optional[str]) -> bytes:
+        commands = self.get_commands()
+        command = None
+        for c in commands:
+            if in_type is not None and in_type != c['input']:
+                continue
+            if out_type is not None and out_type != c['output']:
+                continue
+            if command is not None:
+                raise Exception("One or more command flavors match the given input/output")
+            command = c['command']
+        if command is None:
+            raise Exception("No command flavors match the given input/output")
+        true_args = []
+        for arg in command:
+            if arg == "<file>":
+                true_args.append("^{}".format(in_file))
+            else:
+                true_args.append(arg)
+        for arg in args:
+            true_args.append(arg)
+        return self.run(true_args)
+
 
 def image_default_args(sub_parser):
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
@@ -145,7 +165,7 @@ def main():
 
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
-    do_parser.add_argument('-r', '--read-file', help='Input file to read')
+    do_parser.add_argument('-r', '--read-file', help='Input file to read', required=True)
     do_parser.add_argument('-i', '--in-format', help='Input format')
     do_parser.add_argument('-o', '--out-format', help='Output format')
 
@@ -164,7 +184,8 @@ def main():
         if args.sub_command == 'run':
             sys.stdout.buffer.write(tool.run(all_args))
         elif args.sub_command == 'do':
-            sys.stdout.buffer.write(tool.do_run(all_args, input=args.in_format, output=args.out_format))
+            sys.stdout.buffer.write(tool.do_run(all_args, in_file=args.read_file,
+                                                in_type=args.in_format, out_type=args.out_format))
         else:
             prefix = "run {} ".format(name)
             print(prefix + ("\n" + prefix).format(name).join(tool.list_command_line()))
