@@ -94,7 +94,7 @@ class ToolImage:
     def file_to_copy(self, file : str) -> str:
         return '^' + str(pathlib.Path(self.context) / file)
 
-    def list_command_line(self) -> str:
+    def list_command_line(self) -> List[str]:
         container = self.client.containers.create(self.image)
         raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         buffer = io.BytesIO()
@@ -111,7 +111,7 @@ class ToolImage:
             for c in commands:
                 lines.append(c['command'])
         container.remove()
-        return '\n'.join(lines)
+        return lines
 
 
 def main():
@@ -136,8 +136,9 @@ def main():
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
     if args.sub_command == 'run' or args.sub_command == 'help':
+        name = args.tool[0]
         if args.path is None:
-            tool = ToolImage(image=args.tool[0], pull=args.pull)
+            tool = ToolImage(image=name, pull=args.pull)
         elif args.path is not None:
             tool = ToolImage(path=args.path)
         else:
@@ -146,13 +147,14 @@ def main():
             all_args = args.tool[1:]
             sys.stdout.buffer.write(tool.run(all_args))
         else:
-            print(tool.list_command_line())
+            print(name + "\n{}".format(name).join(tool.list_command_line()))
 
     else:
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools().values()
         for lst in tool_list:
             print('{0:<30}{1:<40}{2}'.format(lst.name, lst.input, lst.output))
+
 
 if __name__ == '__main__':
     main()
