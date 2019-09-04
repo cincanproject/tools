@@ -140,11 +140,12 @@ class ToolImage:
                 true_args.append(arg)
         for arg in args:
             true_args.append(arg)
+        print(" ".join(true_args))
         return self.run(true_args)
 
 
 def image_default_args(sub_parser):
-    sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
+    sub_parser.add_argument('tool', help="the tool and possible arguments", nargs='+')
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
 
