@@ -120,18 +120,18 @@ class ToolImage:
         return lines
 
     def do_run(self, args: List[str], in_file: str, in_type: Optional[str], out_type: Optional[str]) -> bytes:
-        commands = self.get_commands()
-        command = None
-        for c in commands:
+        all_commands = self.get_commands()
+        match_commands = []
+        for c in all_commands:
             if in_type is not None and in_type != c['input']:
                 continue
             if out_type is not None and out_type != c['output']:
                 continue
-            if command is not None:
-                raise Exception("One or more command flavors match the given input/output")
-            command = c['command']
-        if command is None:
-            raise Exception("No command flavors match the given input/output")
+            match_commands.append(c)
+        if len(match_commands) != 1:
+            raise Exception("Single command should match given input/output filter, now:\n{}".format(
+                "\n".join(map(lambda x: "  -i {} -o {}".format(x.get('input', '*'), x.get('output', '*')), match_commands))))
+        command = match_commands[0]['command']
         true_args = []
         for arg in command:
             if arg == "<file>":
