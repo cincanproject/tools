@@ -38,6 +38,7 @@ class ToolImage:
         else:
             raise Exception("No file nor image specified")
         self.mapped_files = {}
+        self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
 
     def __get_image(self, image, pull: bool = False):
@@ -74,8 +75,9 @@ class ToolImage:
         tarball = self.__copy_extracted_files()
         if self.mapped_files:
             self.logger.debug("Tarball to upload, size %d", len(tarball))
-            # with open("files_to_upload.tar", "wb") as f:
-            #    f.write(tarball)
+            if self.dump_upload_tar:
+                with open("upload_files.tar", "wb") as f:
+                    f.write(tarball)
             container.put_archive(path='/', data=tarball)
         container.start()
         container.wait()
@@ -152,6 +154,8 @@ def image_default_args(sub_parser):
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+    sub_parser.add_argument('--dump-upload-files', action='store_true',
+                            help="Dump the uploaded tar file into 'upload_files.tar'")
 
 
 def main():
@@ -187,6 +191,7 @@ def main():
             tool = ToolImage(path=args.path)
         else:
             tool = ToolImage()  # should raise exception
+        tool.dump_upload_tar = args.dump_upload_files
         all_args = args.tool[1:]
         if args.sub_command == 'run':
             sys.stdout.buffer.write(tool.run(all_args))
