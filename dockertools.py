@@ -127,7 +127,7 @@ def main():
 
     subparsers.add_parser('list')
 
-    run_parser = subparsers.add_parser('help')
+    run_parser = subparsers.add_parser('hint')
     run_parser.add_argument('tool', help="the tool",  nargs=1)
     run_parser.add_argument('-p', '--path', help='path to Docker context')
     run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
@@ -135,7 +135,7 @@ def main():
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    if args.sub_command == 'run' or args.sub_command == 'help':
+    if args.sub_command == 'run' or args.sub_command == 'hint':
         name = args.tool[0]
         if args.path is None:
             tool = ToolImage(image=name, pull=args.pull)
