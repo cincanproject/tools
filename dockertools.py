@@ -8,7 +8,7 @@ import sys
 import re
 import pathlib
 import json
-from typing import List, Set, Dict, Tuple, Optional
+from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
 
@@ -94,7 +94,7 @@ class ToolImage:
     def file_to_copy(self, file : str) -> str:
         return '^' + str(pathlib.Path(self.context) / file)
 
-    def list_command_line(self) -> List[str]:
+    def get_commands(self) -> Dict[str, Any]:
         container = self.client.containers.create(self.image)
         raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         buffer = io.BytesIO()
@@ -102,18 +102,26 @@ class ToolImage:
             buffer.write(r)
         buffer.seek(0)
         tarball = tarfile.open("r", fileobj=buffer)
-        lines = []
+        commands = {}
         for f in tarball.getmembers():
             c = tarball.extractfile(f).read()
             js = json.loads(c)
             self.logger.debug(json.dumps(js))
             commands = js['commands']
-            for c in commands:
-                c_str = " ".join(c['command'])
-                lines.append(c_str.replace("<file>", "^<file>"))
         container.remove()
+        return commands
+
+    def list_command_line(self) -> List[str]:
+        commands = self.get_commands()
+        lines = []
+        for c in commands:
+            c_str = " ".join(c['command'])
+            lines.append(c_str.replace("<file>", "^<file>"))
         return lines
 
+    def do_run(self, args: List[str], input: Optional[str], output: Optional[str]) -> bytes:
+        mod_args = args
+        return self.run(mod_args)
 
 def image_default_args(sub_parser):
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
@@ -135,10 +143,16 @@ def main():
     hint_parser = subparsers.add_parser('hint')
     image_default_args(hint_parser)
 
+    do_parser = subparsers.add_parser('do')
+    image_default_args(do_parser)
+    do_parser.add_argument('-r', '--read-file', help='Input file to read')
+    do_parser.add_argument('-i', '--in-format', help='Input format')
+    do_parser.add_argument('-o', '--out-format', help='Output format')
+
     args = m_parser.parse_args()
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
-    if args.sub_command == 'run' or args.sub_command == 'hint':
+    if args.sub_command in {'run', 'hint', 'do'}:
         name = args.tool[0]
         if args.path is None:
             tool = ToolImage(image=name, pull=args.pull)
@@ -146,13 +160,14 @@ def main():
             tool = ToolImage(path=args.path)
         else:
             tool = ToolImage()  # should raise exception
+        all_args = args.tool[1:]
         if args.sub_command == 'run':
-            all_args = args.tool[1:]
             sys.stdout.buffer.write(tool.run(all_args))
+        elif args.sub_command == 'do':
+            sys.stdout.buffer.write(tool.do_run(all_args, input=args.in_format, output=args.out_format))
         else:
             prefix = "run {} ".format(name)
             print(prefix + ("\n" + prefix).format(name).join(tool.list_command_line()))
-
     else:
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools().values()
