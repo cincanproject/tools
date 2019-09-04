@@ -149,7 +149,7 @@ class ToolImage:
 
 
 def image_default_args(sub_parser):
-    sub_parser.add_argument('tool', help="the tool and possible arguments", nargs='+')
+    sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
 
@@ -178,6 +178,8 @@ def main():
     if args.logLevel:
         logging.basicConfig(level=getattr(logging, args.logLevel))
     if args.sub_command in {'run', 'hint', 'do'}:
+        if len(args.tool) == 0:
+            raise Exception('Missing tool name argument')
         name = args.tool[0]
         if args.path is None:
             tool = ToolImage(image=name, pull=args.pull)
