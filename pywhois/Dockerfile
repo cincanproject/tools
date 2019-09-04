@@ -3,7 +3,7 @@ FROM python:3.5-alpine
 LABEL MAINTAINER=cincan.io
 LABEL io.cincan.input="ip"
 
-COPY commands.json /cincan/commands.json
+COPY cincan /cincan
 
 RUN pip install python-whois==0.7.1 \
         PySocks==1.6.8 \
