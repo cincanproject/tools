@@ -1,7 +1,7 @@
 {
   "commands": [
     {
-      "command": "text <file>",
+      "command": ["text", "<file>"],
       "input": "plain/xml",
       "help": "Extract text from XML file" }
   ]

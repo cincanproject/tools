@@ -109,7 +109,8 @@ class ToolImage:
             self.logger.debug(json.dumps(js))
             commands = js['commands']
             for c in commands:
-                lines.append(c['command'].replace("<file>", "^<file>"))
+                c_str = " ".join(c['command'])
+                lines.append(c_str.replace("<file>", "^<file>"))
         container.remove()
         return lines
 
