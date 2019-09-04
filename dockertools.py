@@ -115,6 +115,12 @@ class ToolImage:
         return lines
 
 
+def image_default_args(sub_parser):
+    sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
+    sub_parser.add_argument('-p', '--path', help='path to Docker context')
+    sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+
+
 def main():
     m_parser = argparse.ArgumentParser()
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
@@ -122,16 +128,12 @@ def main():
     subparsers = m_parser.add_subparsers(dest='sub_command')
 
     run_parser = subparsers.add_parser('run')
-    run_parser.add_argument('tool', help="the tool and possible arguments",  nargs=argparse.REMAINDER)
-    run_parser.add_argument('-p', '--path', help='path to Docker context')
-    run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+    image_default_args(run_parser)
 
     subparsers.add_parser('list')
 
-    run_parser = subparsers.add_parser('hint')
-    run_parser.add_argument('tool', help="the tool",  nargs=1)
-    run_parser.add_argument('-p', '--path', help='path to Docker context')
-    run_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+    hint_parser = subparsers.add_parser('hint')
+    image_default_args(hint_parser)
 
     args = m_parser.parse_args()
     if args.logLevel:
