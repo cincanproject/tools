@@ -123,6 +123,8 @@ class ToolImage:
         all_commands = self.get_commands()
         match_commands = []
         for c in all_commands:
+            if '<file>' not in c['command']:
+                continue
             if in_type is not None and in_type != c.get('input'):
                 continue
             if out_type is not None and out_type != c.get('output'):
