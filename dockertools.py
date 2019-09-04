@@ -147,7 +147,7 @@ def main():
             all_args = args.tool[1:]
             sys.stdout.buffer.write(tool.run(all_args))
         else:
-            print(name + "\n{}".format(name).join(tool.list_command_line()))
+            print(name + " " + "\n{} ".format(name).join(tool.list_command_line()))
 
     else:
         reg = registry.ToolRegistry()
