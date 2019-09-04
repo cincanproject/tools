@@ -3,6 +3,6 @@
     {
       "command": "text <file>",
       "input": "plain/xml",
-      "help": "What is the point, anyway" }
+      "help": "Extract text from XML file" }
   ]
 }

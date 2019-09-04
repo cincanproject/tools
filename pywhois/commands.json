@@ -1,7 +1,7 @@
 {
   "commands": [
     {
-      "command": "<input>",
+      "command": "<ip>",
       "input": "ip",
       "help": "Just give me the ip, please" }
   ]
