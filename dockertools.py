@@ -142,7 +142,7 @@ class ToolImage:
                 true_args.append(arg)
         for arg in args:
             true_args.append(arg)
-        print(" ".join(true_args))
+        self.logger.info(" ".join(true_args))
         return self.run(true_args)
 
 
