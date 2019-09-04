@@ -150,8 +150,9 @@ def main():
 
     else:
         reg = registry.ToolRegistry()
-        list = reg.list_tools()
-        print("\n".join(map(str, list.values())))
+        tool_list = reg.list_tools().values()
+        for lst in tool_list:
+            print('{0:<30}{1:<40}{2}'.format(lst.name, lst.input, lst.output))
 
 if __name__ == '__main__':
     main()
