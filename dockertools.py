@@ -219,8 +219,9 @@ def main():
             print(prefix + ("\n" + prefix).format(name).join(tool.list_command_line()))
     else:
         reg = registry.ToolRegistry()
-        tool_list = reg.list_tools().values()
-        for lst in tool_list:
+        tool_list = reg.list_tools()
+        for tool in sorted(tool_list):
+            lst = tool_list[tool]
             print('{0:<30}{1:<40}{2}'.format(lst.name, lst.input, lst.output))
 
 
