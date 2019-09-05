@@ -94,7 +94,7 @@ class ToolImage:
         container.remove()
         return logs
 
-    def run_get_string(self, args: List[str]):
+    def run_get_string(self, args: List[str]) -> str:
         return self.run(args).decode('ascii')
 
     def do_log(self, log: Set[Dict[str, str]]) -> None:
