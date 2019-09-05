@@ -1,4 +1,3 @@
-import argparse
 import docker
 import docker.errors
 import logging
@@ -14,6 +13,7 @@ class ToolInfo:
 
     def __str__(self):
         return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
+
 
 class ToolRegistry:
     """A tool registy"""
