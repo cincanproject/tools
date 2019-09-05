@@ -130,6 +130,10 @@ class ToolImage:
             lines.append(c_str.replace("<file>", "^<file>"))
         return lines
 
+    def set_file_content(self, content: str) -> str:
+        self.file_content['in-str'] = content
+        return 'in-str'
+
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
         all_commands = self.get_commands()
@@ -209,8 +213,7 @@ def main():
         elif args.sub_command == 'do':
             read_file = args.read_file
             if args.in_str is not None:
-                read_file = 'in-str'
-                tool.file_content[read_file] = args.in_str
+                read_file = tool.set_file_content(args.in_str)
             elif read_file is None:
                 raise Exception('Must specify either --read-file or --in-str')
             sys.stdout.buffer.write(tool.do_run(in_file=read_file, args=all_args,
