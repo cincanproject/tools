@@ -37,7 +37,8 @@ class ToolImage:
             self.context = '.'  # not really correct, but will do
         else:
             raise Exception("No file nor image specified")
-        self.mapped_files = {}
+        self.mapped_files = {}  # files to upload, key = name in host, value = name in image
+        self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
 
@@ -64,7 +65,15 @@ class ToolImage:
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, t in self.mapped_files.items():
             self.logger.debug("in-file %s", name)
-            tar.add(name, arcname=t[1:])  # strip first '/'
+            if name in self.file_content:
+                # file contents in memory
+                data = self.file_content[name].encode('ascii')
+                tarinfo = tarfile.TarInfo(name=t[1:])  # strip first '/'
+                tarinfo.size = len(data)
+                tar.addfile(tarinfo=tarinfo, fileobj=io.BytesIO(data))
+            else:
+                # go and pick file from file system
+                tar.add(name, arcname=t[1:])  # strip first '/'
         tar.close()
         return file_out.getvalue()
 
@@ -174,7 +183,8 @@ def main():
 
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
-    do_parser.add_argument('-r', '--read-file', help='Input file to read', required=True)
+    do_parser.add_argument('-r', '--read-file', help='Input file to read')
+    do_parser.add_argument('-s', '--in-str', help='Input string')
     do_parser.add_argument('-i', '--in-format', help='Input format')
     do_parser.add_argument('-o', '--out-format', help='Output format')
 
@@ -196,7 +206,13 @@ def main():
         if args.sub_command == 'run':
             sys.stdout.buffer.write(tool.run(all_args))
         elif args.sub_command == 'do':
-            sys.stdout.buffer.write(tool.do_run(all_args, in_file=args.read_file,
+            read_file = args.read_file
+            if args.in_str is not None:
+                read_file = 'in-str'
+                tool.file_content[read_file] = args.in_str
+            elif read_file is None:
+                raise Exception('Must specify either --read-file or --in-str')
+            sys.stdout.buffer.write(tool.do_run(all_args, in_file=read_file,
                                                 in_type=args.in_format, out_type=args.out_format))
         else:
             prefix = "run {} ".format(name)
