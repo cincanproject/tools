@@ -102,8 +102,8 @@ class ToolImage:
             v = i.values()
             self.logger.debug("{}".format(*v).strip())
 
-    def file_to_copy(self, file : str) -> str:
-        return '^' + str(pathlib.Path(self.context) / file)
+    def file_to_copy(self, file: str, prefix: bool = True) -> str:
+        return ('^' if prefix else '') + str(pathlib.Path(self.context) / file)
 
     def get_commands(self) -> List[Dict[str, Any]]:
         container = self.client.containers.create(self.image)
@@ -162,6 +162,10 @@ class ToolImage:
             true_args.append(arg)
         self.logger.info(" ".join(true_args))
         return self.run(true_args)
+
+    def do_get_string(self, in_file: str, args: List[str] = None,
+                      in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
+        return self.do_run(in_file, args, in_type, out_type).decode('ascii')
 
 
 def image_default_args(sub_parser):
