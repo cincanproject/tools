@@ -130,7 +130,8 @@ class ToolImage:
             lines.append(c_str.replace("<file>", "^<file>"))
         return lines
 
-    def do_run(self, args: List[str], in_file: str, in_type: Optional[str], out_type: Optional[str]) -> bytes:
+    def do_run(self, in_file: str, args: List[str] = None,
+               in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
         all_commands = self.get_commands()
         match_commands = []
         for c in all_commands:
@@ -153,7 +154,7 @@ class ToolImage:
                 true_args.append("^{}".format(in_file))
             else:
                 true_args.append(arg)
-        for arg in args:
+        for arg in args if args is not None else []:
             true_args.append(arg)
         self.logger.info(" ".join(true_args))
         return self.run(true_args)
@@ -212,7 +213,7 @@ def main():
                 tool.file_content[read_file] = args.in_str
             elif read_file is None:
                 raise Exception('Must specify either --read-file or --in-str')
-            sys.stdout.buffer.write(tool.do_run(all_args, in_file=read_file,
+            sys.stdout.buffer.write(tool.do_run(in_file=read_file, args=all_args,
                                                 in_type=args.in_format, out_type=args.out_format))
         else:
             prefix = "run {} ".format(name)
