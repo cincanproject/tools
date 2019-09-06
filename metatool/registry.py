@@ -1,6 +1,8 @@
 import docker
 import docker.errors
 import logging
+import pathlib
+import requests
 from typing import List, Set, Dict, Tuple, Optional
 
 
@@ -10,7 +12,6 @@ class ToolInfo:
         self.name = name
         self.input = input
         self.output = output
-
     def __str__(self):
         return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
 
@@ -20,6 +21,9 @@ class ToolRegistry:
     def __init__(self):
         self.logger = logging.getLogger('registry')
         self.client = docker.from_env()
+        self.cache_dir = pathlib.Path.home() / '.cincan' / 'commands'
+        self.auth_url = "https://auth.docker.io/token"
+        self.registry_url = "https://registry.hub.docker.com/v2"
 
     def list_tools(self) -> Dict[str, ToolInfo]:
         """List all tools"""
@@ -43,6 +47,10 @@ class ToolRegistry:
 
         # Local cache file in
         # ~/.cincan/commands/<name>.json
+
+        # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
+        # curl - sSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:raulik/test-test-tool:pull" | jq - r.token > bearer - token
+        # curl - s H "Authorization: Bearer `cat bearer-token`" "https://registry.hub.docker.com/v2/raulik/test-test-tool/manifests/latest" | python - m json.tool
 
     def list_tools_registry(self) -> Dict[str, ToolInfo]:
         """List tools from registry with help of local cache"""
