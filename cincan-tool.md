@@ -1,6 +1,6 @@
 ## Tool 'cincan'
 
-Tool frontend 'cincan' provide a frontend for easier use of the tools dockerized in the 
+The 'cincan' frontend command provide a way for easier use of the tools dockerized in the 
 Cincan project.
 Currently the frontend is a proof-of-concept with some aspects under construction.
 Especially it is undecided how the this should be deployed to the users. 
@@ -27,7 +27,6 @@ The steps required currently to set 'cincan' for Linux:
  3. Install required python modules 
 
         % pipenv install docker
-        % pipenv install pytest  (only required for unit tests)
          
  4. Create alias 'cincan'
  
@@ -48,7 +47,7 @@ like this:
 
     % cincan list
 
-The output is made from columns of: tool name, input types, output types
+The output is made from columns of tool name, input types, output types
 
 The list is compiled from metadata LABELs inside dokertized tools, 
 as seen in this clip from `Dockerfile` for the tool 'tshark':
@@ -70,11 +69,11 @@ for example
 
 You can then invoke the actual too using sub command 'run', 
 For example, if you have file `myfile.pcap`, 
-the following command should give you JSON-formatted output from `tshark`:
+the following command should give you JSON-formatted output from 'tshark':
 
     % cincan run cincan/tshark -r ^myfile.pcap -Tjson
 
-Please note that the `^`-character is a __required prefix__ for a file given in command line, 
+Please note that the __`^`-character is a required prefix__ for a file given in command line, 
 as it marks which parameters are actually files. This information is required
 to upload the required files into Docker container before running the actual tool.
 
@@ -82,7 +81,12 @@ You can still access the native help of a tool with tool-specific way,
 usually providing parameter `-h` or `--help`. For example:
 
     % cincan run cincan/tshark --help
-    
+
+Finally note that you are free to invoke the native tool in any supported way
+irrelevant of which hints, if any, are available. Just remember to prefix
+all filenames with `^` so that they get uploaded to docker image.
+
+
 ### Harmonized tool input
 
 Instead of looking at tool hints, you can use the harmonized way to invoking a tool
@@ -97,12 +101,18 @@ The sub command accepts the following arguments
 | Argument                | Description                                        |
 |-------------------------|----------------------------------------------------|
 | --read-file, -r         |  Read a file as input (without ^-prefix)           |
-| --in-str                |  Provide input directly as a string                |
-| --in                    |  Specify the desired input format                  |
-| --out                   |  Specify the desired output format                 |
+| --in-str, -s            |  Provide input directly as a string                |
+| --in, -i                |  Specify the desired input format                  |
+| --out, -o               |  Specify the desired output format                 |
 
 You must specify either a file to read or the input directly from command line.
-Input or output must be specified if there are multiple alternatives.
+Input or output formats are only required if there are multiple alternatives.
+
 The actual command line for the native tool is created based on the arguments
 give for the 'do' sub command.
 
+### Running unit tests
+
+You can run the unit tests of the front and and some test tools like this:
+
+    % PYTHONPATH=`pwd` pipenv run pytest
