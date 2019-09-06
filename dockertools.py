@@ -107,7 +107,10 @@ class ToolImage:
 
     def get_commands(self) -> List[Dict[str, Any]]:
         container = self.client.containers.create(self.image)
-        raw_tar, stat = container.get_archive(path='/cincan/commands.json')
+        try:
+            raw_tar, stat = container.get_archive(path='/cincan/commands.json')
+        except docker.errors.APIError:
+            return []
         buffer = io.BytesIO()
         for r in raw_tar:
             buffer.write(r)
@@ -224,7 +227,12 @@ def main():
                                                 in_type=args.in_format, out_type=args.out_format))
         else:
             prefix = "run {} ".format(name)
-            print(prefix + ("\n" + prefix).format(name).join(tool.list_command_line()))
+            hints = tool.list_command_line()
+            if len(hints) >0:
+                print(prefix + ("\n" + prefix).format(name).join(hints))
+            else:
+                print("No hint available")
+                sys.exit(1)
     else:
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools()
