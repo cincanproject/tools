@@ -60,7 +60,12 @@ class ToolRegistry:
         if fresh_resp.status_code != 200:
             self.logger.error("Error getting list of remote tools, code: {}".format(fresh_resp.status_code))
         else:
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
             fresh_json = json.loads(fresh_resp.content)
+            cache_file = self.cache_dir / ".cached"
+            with cache_file.open("w") as f:
+                self.logger.debug("saving cache %s")
+                json.dump(fresh_json, f)
             for t in fresh_json['results']:
                 print("{}".format(t['name']))  # FIXME
         return {}
