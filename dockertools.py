@@ -216,8 +216,10 @@ def main():
         tool.dump_upload_tar = args.dump_upload_files
         all_args = args.tool[1:]
         if args.sub_command == 'run':
+            # sub command 'run'
             sys.stdout.buffer.write(tool.run(all_args))
         elif args.sub_command == 'do':
+            # sub command 'do'
             read_file = args.read_file
             if args.in_str is not None:
                 read_file = tool.set_file_content(args.in_str)
@@ -226,6 +228,7 @@ def main():
             sys.stdout.buffer.write(tool.do_run(in_file=read_file, args=all_args,
                                                 in_type=args.in_format, out_type=args.out_format))
         else:
+            # sub command 'hint'
             prefix = "run {} ".format(name)
             hints = tool.list_command_line()
             if len(hints) >0:
