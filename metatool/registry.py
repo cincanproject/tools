@@ -22,7 +22,13 @@ class ToolRegistry:
         self.client = docker.from_env()
 
     def list_tools(self) -> Dict[str, ToolInfo]:
-        """List tools from the registry"""
+        """List all tools"""
+        tools = self.list_tools_local_images()
+        tools.update(self.list_tools_registry())
+        return tools
+
+    def list_tools_local_images(self) -> Dict[str, ToolInfo]:
+        """List tools from the locally available docker images"""
         images = self.client.images.list(filters={'label': 'io.cincan.input'})
         ret = {}
         for i in images:
@@ -34,6 +40,14 @@ class ToolRegistry:
             self.logger.debug("%s input: %s output: %s", name, input, output)
             ret[name] = ToolInfo(name, input, output)
         return ret
+
+        # Local cache file in
+        # ~/.cincan/commands/<name>.json
+
+    def list_tools_registry(self) -> Dict[str, ToolInfo]:
+        """List tools from registry with help of local cache"""
+        # FIXME
+        return {}
 
         # TheHive accepts the following datatypes:
         # domain
