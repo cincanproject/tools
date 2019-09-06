@@ -3,13 +3,13 @@ import dockertools
 
 def test_image():
     tool = dockertools.ToolImage(path="xmldump")
-    out = tool.run_get_string(["text", tool.file_to_copy("samples/simple.xml")])
+    out = tool.run_get_string(["text", tool.file_to_copy_from_context("samples/simple.xml")])
     assert out == 'Hello World\n'
 
 
 def test_do_run():
     tool = dockertools.ToolImage(path="xmldump")
-    out = tool.do_get_string(in_file=tool.file_to_copy("samples/simple.xml", prefix=False))
+    out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples/simple.xml", prefix=False))
     assert out == 'Hello World\n'
 
 

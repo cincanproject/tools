@@ -6,7 +6,7 @@ pattern = re.compile("^\\s*(\\S+)\\s+(\\S.*)$")
 
 def test_image():
     tool = dockertools.ToolImage(path="pdfid")
-    out = tool.run_get_string([tool.file_to_copy("samples/text_txt.pdf")])
+    out = tool.run_get_string([tool.file_to_copy_from_context("samples/text_txt.pdf")])
     values = {}
     for line in out.splitlines():
         m = re.match(pattern, line)

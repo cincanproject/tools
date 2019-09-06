@@ -22,6 +22,7 @@ class ToolRegistry:
         self.client = docker.from_env()
 
     def list_tools(self) -> Dict[str, ToolInfo]:
+        """List tools from the registry"""
         images = self.client.images.list(filters={'label': 'io.cincan.input'})
         ret = {}
         for i in images:
@@ -34,19 +35,19 @@ class ToolRegistry:
             ret[name] = ToolInfo(name, input, output)
         return ret
 
+        # TheHive accepts the following datatypes:
+        # domain
+        # file
+        # filename
+        # fqdn
+        # hash
+        # ip
+        # mail
+        # mail_subject
+        # other
+        # regexp
+        # registry
+        # uri_path
+        # url
+        # user-agent
 
-# TheHive accepts the following datatypes:
-# domain
-# file
-# filename
-# fqdn
-# hash
-# ip
-# mail
-# mail_subject
-# other
-# regexp
-# registry
-# uri_path
-# url
-# user-agent

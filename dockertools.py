@@ -22,7 +22,7 @@ class ToolImage:
         if path is not None:
             self.image, log = self.client.images.build(path=path)
             self.context = path
-            self.do_log(log)
+            self.__log_dict_values(log)
         elif image is not None:
             if pull:
                 # pull first
@@ -43,11 +43,13 @@ class ToolImage:
         self.file_pattern = re.compile("\\^(.+)")
 
     def __get_image(self, image, pull: bool = False):
+        """Get Docker image, possibly pulling it first"""
         if pull:
             self.client.images.pull(image)
         self.image = self.client.images.get(image)
 
     def __process_arg(self, name: str) -> str:
+        """Process an argument, detect if a to upload and change to point to the file inside the container"""
         m = self.file_pattern.search(name)
         f_name = name
         if m is not None:
@@ -58,9 +60,11 @@ class ToolImage:
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
+        """Process list of arguments"""
         return list(map(lambda a: self.__process_arg(a), args))
 
-    def __copy_extracted_files(self) -> bytes:
+    def __copy_uploaded_files(self) -> bytes:
+        """Copy uploaded files into tar archive"""
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, t in self.mapped_files.items():
@@ -78,10 +82,11 @@ class ToolImage:
         return file_out.getvalue()
 
     def run(self, args: List[str]) -> bytes:
+        """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(args)
         self.logger.info("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
-        tarball = self.__copy_extracted_files()
+        tarball = self.__copy_uploaded_files()
         if self.mapped_files:
             self.logger.debug("Tarball to upload, size %d", len(tarball))
             if self.dump_upload_tar:
@@ -95,17 +100,21 @@ class ToolImage:
         return logs
 
     def run_get_string(self, args: List[str]) -> str:
+        """Run native tool in container, return output as a string"""
         return self.run(args).decode('ascii')
 
-    def do_log(self, log: Set[Dict[str, str]]) -> None:
+    def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
+        """Log values from a dict as debug"""
         for i in log:
             v = i.values()
             self.logger.debug("{}".format(*v).strip())
 
-    def file_to_copy(self, file: str, prefix: bool = True) -> str:
+    def file_to_copy_from_context(self, file: str, prefix: bool = True) -> str:
+        """Create path for sample file inside docker context (for unit testing) """
         return ('^' if prefix else '') + str(pathlib.Path(self.context) / file)
 
     def get_commands(self) -> List[Dict[str, Any]]:
+        """Read commands from commands.json from docker image, empty list if none"""
         container = self.client.containers.create(self.image)
         try:
             raw_tar, stat = container.get_archive(path='/cincan/commands.json')
@@ -126,6 +135,7 @@ class ToolImage:
         return commands
 
     def list_command_line(self) -> List[str]:
+        """List command line hints"""
         commands = self.get_commands()
         lines = []
         for c in commands:
@@ -134,11 +144,13 @@ class ToolImage:
         return lines
 
     def set_file_content(self, content: str) -> str:
+        """Set input file content directly"""
         self.file_content['in-str'] = content
         return 'in-str'
 
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
+        """Do -sub command to run the native tool"""
         all_commands = self.get_commands()
         match_commands = []
         for c in all_commands:
@@ -168,10 +180,12 @@ class ToolImage:
 
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
+        """Do -sub command to run the native tool, get output as string"""
         return self.do_run(in_file, args, in_type, out_type).decode('ascii')
 
 
 def image_default_args(sub_parser):
+    """Default arguments for sub commands which load docker image"""
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
