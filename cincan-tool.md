@@ -111,6 +111,14 @@ Input or output formats are only required if there are multiple alternatives.
 The actual command line for the native tool is created based on the arguments
 give for the 'do' sub command.
 
+### Invoking tool without frontend
+
+Sometimes you cannot use the services provided by the 'cincan' frontend.
+For example, you wish to provide the files through mounts for their size
+rather using the copy approach.
+
+Good luck with that! (seriously, no pun intended)
+
 ### Running unit tests
 
 You can run the unit tests of the front and and some test tools like this:
