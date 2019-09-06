@@ -3,6 +3,7 @@ import docker.errors
 import logging
 import pathlib
 import requests
+import json
 from typing import List, Set, Dict, Tuple, Optional
 
 
@@ -54,7 +55,14 @@ class ToolRegistry:
 
     def list_tools_registry(self) -> Dict[str, ToolInfo]:
         """List tools from registry with help of local cache"""
-        # FIXME
+        # Get fresh list of tools from remote registry
+        fresh_resp = requests.get(self.registry_url + "/repositories/cincan/?page_size=1000")
+        if fresh_resp.status_code != 200:
+            self.logger.error("Error getting list of remote tools, code: {}".format(fresh_resp.status_code))
+        else:
+            fresh_json = json.loads(fresh_resp.content)
+            for t in fresh_json['results']:
+                print("{}".format(t['name']))  # FIXME
         return {}
 
         # TheHive accepts the following datatypes:
