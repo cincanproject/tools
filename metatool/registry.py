@@ -48,9 +48,19 @@ class ToolRegistry:
 
     def list_tools(self) -> Dict[str, ToolInfo]:
         """List all tools"""
-        tools = self.list_tools_local_images()
-        tools.update(self.list_tools_registry())
-        return tools
+        local_tools = self.list_tools_local_images()
+        remote_tools = self.list_tools_registry()
+        use_tools = {}
+        for i in set().union(local_tools.keys(), remote_tools.keys()):
+            if i not in local_tools:
+                use_tools[i] = remote_tools[i]
+            elif i not in remote_tools:
+                use_tools[i] = local_tools[i]
+            else:
+                local = local_tools[i]
+                remote = remote_tools[i]
+                use_tools[i] = local if local.updated >= remote.updated else remote
+        return use_tools
 
     def list_tools_local_images(self) -> Dict[str, ToolInfo]:
         """List tools from the locally available docker images"""
