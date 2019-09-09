@@ -5,7 +5,7 @@ import pathlib
 import requests
 import json
 import datetime
-from typing import List, Set, Dict, Tuple, Optional, Any
+from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 
 class ToolInfo:
@@ -25,12 +25,19 @@ def parse_json_time(string: str) -> datetime.datetime:
     return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
 
 
+def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str,Any]:
+    r = {}
+    for t in tools:
+        r[t.name] = {'updated': t.updated.strftime('%Y-%m-%dT%H:%M:%S') }
+    return r
+
+
 class ToolRegistry:
     """A tool registy"""
     def __init__(self):
         self.logger = logging.getLogger('registry')
         self.client = docker.from_env()
-        self.cache_dir = pathlib.Path.home() / '.cincan' / 'commands'
+        self.tool_cache = pathlib.Path.home() / '.cincan' / 'tools.json'
         self.auth_url = "https://auth.docker.io/token"
         self.registry_url = "https://registry.hub.docker.com/v2"
 
@@ -69,14 +76,14 @@ class ToolRegistry:
         if fresh_resp.status_code != 200:
             self.logger.error("Error getting list of remote tools, code: {}".format(fresh_resp.status_code))
         else:
-            self.cache_dir.mkdir(parents=True, exist_ok=True)
             fresh_json = json.loads(fresh_resp.content)
-            cache_file = self.cache_dir / ".cached"
-            with cache_file.open("w") as f:
-                self.logger.debug("saving cache %s")
-                json.dump(fresh_json, f)
+            tool_list = {}
             for t in fresh_json['results']:
-                print("{}".format(t['name']))  # FIXME
+                tool_list[t['name']] = ToolInfo(t['name'], updated=parse_json_time(t['last_updated']))
+            self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
+            with self.tool_cache.open("w") as f:
+                self.logger.debug("saving tool cache %s", self.tool_cache)
+                json.dump(tools_to_json(tool_list.values()), f)
         return {}
 
         # TheHive accepts the following datatypes:
