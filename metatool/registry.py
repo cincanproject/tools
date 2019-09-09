@@ -139,6 +139,11 @@ class ToolRegistry:
                 self.logger.debug("saving tool cache %s", self.tool_cache)
                 json.dump(tools_to_json(tool_list.values()), f)
         # read saved tools and return
+        return self.read_tool_cache()
+
+    def read_tool_cache(self) -> Dict[str, ToolInfo]:
+        if not self.tool_cache.exists():
+            return {}
         r = {}
         with self.tool_cache.open("r") as f:
             root_json = json.load(f)
