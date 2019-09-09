@@ -130,9 +130,12 @@ class ToolRegistry:
                 name = "{}/{}".format(t['user'], t['name'])
                 tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
             # update tool info, when required
+            old_tools = self.read_tool_cache()
             for t in tool_list.values():
-                if t.name == 'cincan/xmldump':  # FIXME: should check using update times
+                if t.name not in old_tools or t.updated >= old_tools[t.name].updated:
                     self.fetch_remote_labels(t)
+                else:
+                    self.logger.info("no updates for %s", t.name)
             # save the tool list
             self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
             with self.tool_cache.open("w") as f:
