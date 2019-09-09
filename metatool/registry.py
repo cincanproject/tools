@@ -80,6 +80,23 @@ class ToolRegistry:
         # Local cache file in
         # ~/.cincan/commands/<name>.json
 
+    def fetch_remote_labels(self, tool: ToolInfo):
+        self.logger.info("updating %s...", tool.name)
+        token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
+                                    + tool.name + ':pull')
+        if token_req.status_code != 200:
+            self.logger.error("Error getting token for tool {}, code: {}".format(tool.name, token_req.status_code))
+            return
+        token_json = json.loads(token_req.content)
+        token = token_json['token']
+        manifest_req = requests.get(self.registry_url + "/" + tool.name + "/manifests/latest",
+                                    headers={'Authorization': ('Bearer ' + token)})
+        if manifest_req.status_code != 200:
+            self.logger.error("Error getting token for tool {}, code: {}".format(tool.name, manifest_req.status_code))
+            return
+        manifest = json.loads(manifest_req.content)
+        return
+
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
         # curl - sSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:raulik/test-test-tool:pull" | jq - r.token > bearer - token
         # curl - s H "Authorization: Bearer `cat bearer-token`" "https://registry.hub.docker.com/v2/raulik/test-test-tool/manifests/latest" | python - m json.tool
@@ -97,6 +114,10 @@ class ToolRegistry:
             for t in fresh_json['results']:
                 name = "{}/{}".format(t['user'], t['name'])
                 tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
+            # update tool info, when required
+            for t in tool_list.values():
+                if t.name == 'cincan/xmldump':  # FIXME: should check using update times
+                    self.fetch_remote_labels(t)
             # save the tool list
             self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
             with self.tool_cache.open("w") as f:
