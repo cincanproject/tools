@@ -84,7 +84,8 @@ class ToolRegistry:
             fresh_json = json.loads(fresh_resp.content)
             tool_list = {}
             for t in fresh_json['results']:
-                tool_list[t['name']] = ToolInfo(t['name'], updated=parse_json_time(t['last_updated']))
+                name = "{}/{}".format(t['user'], t['name'])
+                tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
             self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
             with self.tool_cache.open("w") as f:
                 self.logger.debug("saving tool cache %s", self.tool_cache)
