@@ -89,7 +89,13 @@ class ToolRegistry:
             with self.tool_cache.open("w") as f:
                 self.logger.debug("saving tool cache %s", self.tool_cache)
                 json.dump(tools_to_json(tool_list.values()), f)
-        return {}
+        r = {}
+        with self.tool_cache.open("r") as f:
+            root_json = json.load(f)
+            for name, j in root_json.items():
+                r[name] = ToolInfo(name, updated=parse_json_time(j['updated']),
+                                   input=j.get('input', []), output=j.get('output'))
+        return r
 
         # TheHive accepts the following datatypes:
         # domain
