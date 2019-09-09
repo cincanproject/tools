@@ -91,15 +91,18 @@ class ToolRegistry:
         if fresh_resp.status_code != 200:
             self.logger.error("Error getting list of remote tools, code: {}".format(fresh_resp.status_code))
         else:
+            # get a images JSON, form new tool list
             fresh_json = json.loads(fresh_resp.content)
             tool_list = {}
             for t in fresh_json['results']:
                 name = "{}/{}".format(t['user'], t['name'])
                 tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
+            # save the tool list
             self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
             with self.tool_cache.open("w") as f:
                 self.logger.debug("saving tool cache %s", self.tool_cache)
                 json.dump(tools_to_json(tool_list.values()), f)
+        # read saved tools and return
         r = {}
         with self.tool_cache.open("r") as f:
             root_json = json.load(f)
