@@ -4,17 +4,25 @@ import logging
 import pathlib
 import requests
 import json
-from typing import List, Set, Dict, Tuple, Optional
+import datetime
+from typing import List, Set, Dict, Tuple, Optional, Any
 
 
 class ToolInfo:
     """A tool in registry"""
-    def __init__(self, name: str, input: List[str], output: List[str]):
+    def __init__(self, name: str, updated: datetime.datetime, input: List[str] = None, output: List[str] = None):
         self.name = name
-        self.input = input
-        self.output = output
+        self.updated = updated
+        self.input = input if input is not None else []
+        self.output = output if output is not None else []
+
     def __str__(self):
         return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
+
+
+def parse_json_time(string: str) -> datetime.datetime:
+    s = string[0: 19]
+    return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
 
 
 class ToolRegistry:
@@ -40,10 +48,11 @@ class ToolRegistry:
             if len(i.tags) == 0:
                 continue  # not sure what these are...
             name = i.tags[0].replace(':latest', '')
+            updated = parse_json_time(i.attrs['Created'])
             input = i.labels.get('io.cincan.input', 'application/octet-stream')
             output = i.labels.get('io.cincan.output', 'text/plain')
             self.logger.debug("%s input: %s output: %s", name, input, output)
-            ret[name] = ToolInfo(name, input, output)
+            ret[name] = ToolInfo(name, updated, input, output)
         return ret
 
         # Local cache file in
