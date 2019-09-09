@@ -132,16 +132,19 @@ class ToolRegistry:
                 tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
             # update tool info, when required
             old_tools = self.read_tool_cache()
+            updated = 0
             for t in tool_list.values():
-                if t.name not in old_tools or t.updated >= old_tools[t.name].updated:
+                if t.name not in old_tools or t.updated > old_tools[t.name].updated:
                     self.fetch_remote_labels(t)
+                    updated += 1
                 else:
                     self.logger.info("no updates for %s", t.name)
             # save the tool list
-            self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
-            with self.tool_cache.open("w") as f:
-                self.logger.debug("saving tool cache %s", self.tool_cache)
-                json.dump(tools_to_json(tool_list.values()), f)
+            if updated > 0:
+                self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
+                with self.tool_cache.open("w") as f:
+                    self.logger.debug("saving tool cache %s", self.tool_cache)
+                    json.dump(tools_to_json(tool_list.values()), f)
         # read saved tools and return
         return self.read_tool_cache()
 
