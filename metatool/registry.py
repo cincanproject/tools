@@ -28,7 +28,12 @@ def parse_json_time(string: str) -> datetime.datetime:
 def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str,Any]:
     r = {}
     for t in tools:
-        r[t.name] = {'updated': t.updated.strftime('%Y-%m-%dT%H:%M:%S') }
+        td = {'updated': t.updated.strftime('%Y-%m-%dT%H:%M:%S') }
+        if len(t.input) > 0:
+            td['input'] = t.input
+        if len(t.output) > 0:
+            td['output'] = t.output
+        r[t.name] = td
     return r
 
 
