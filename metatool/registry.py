@@ -108,8 +108,9 @@ class ToolRegistry:
         v1_comp_string = manifest['history'][0]['v1Compatibility']
         v1_comp = json.loads(v1_comp_string)
         labels = v1_comp['container_config']['Labels']
-        input = parse_data_types(labels.get('io.cincan.input', ''))
-        output = parse_data_types(labels.get('io.cincan.output', ''))
+        if labels:
+            tool.input = parse_data_types(labels.get('io.cincan.input', ''))
+            tool.output = parse_data_types(labels.get('io.cincan.output', ''))
         return
 
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
