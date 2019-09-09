@@ -61,10 +61,10 @@ class ToolRegistry:
                 continue  # not sure what these are...
             name = i.tags[0].replace(':latest', '')
             updated = parse_json_time(i.attrs['Created'])
-            input = i.labels.get('io.cincan.input', 'application/octet-stream')
-            output = i.labels.get('io.cincan.output', 'text/plain')
+            input = map(lambda s: s.strip(), i.labels.get('io.cincan.input', 'application/octet-stream').split(','))
+            output = map(lambda s: s.strip(), i.labels.get('io.cincan.output', 'text/plain').split(','))
             self.logger.debug("%s input: %s output: %s", name, input, output)
-            ret[name] = ToolInfo(name, updated, input, output)
+            ret[name] = ToolInfo(name, updated, list(input), list(output))
         return ret
 
         # Local cache file in
