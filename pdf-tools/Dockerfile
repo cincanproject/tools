@@ -14,16 +14,21 @@
 # example for base64dump.py:
 # docker run -v /samples:/samples cincan/pdf-tools python base64dump.py -e pu -a -s 1  /samples/input/sample
 
-FROM alpine:latest
+FROM alpine:3.10
 
-RUN apk update && apk add \
-	python \
-	git  \
-	py-pip
+LABEL MAINTAINER=cincan.io
 
-RUN git clone https://github.com/DidierStevens/DidierStevensSuite.git \
-	&& pip install pefile
+RUN apk update && apk add --no-cache \
+	    python \
+	    git  \
+	    py-pip \
+    && git clone https://github.com/DidierStevens/DidierStevensSuite.git \
+	&& pip install pefile \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
 
 WORKDIR /DidierStevensSuite
+
 CMD echo "See all commands: https://github.com/DidierStevens/DidierStevensSuite"
 

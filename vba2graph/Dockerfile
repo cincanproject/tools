@@ -1,35 +1,31 @@
-FROM alpine:latest
+FROM alpine:3.10.1
+
+LABEL MAINTAINER=cincan.io
 
 RUN apk --update --no-cache \
-        add python \
-        py-pip \
-        git \
-        graphviz
+	add python=2.7.16-r1 \
+	python-dev=2.7.16-r1 \
+	py2-pip=18.1-r0 \
+	git=2.22.0-r0 \
+	graphviz=2.40.1-r1 \
+	g++=8.3.0-r0 \
+	make=4.2.1-r2 \
+	subversion=1.12.0-r0 \
+	gcc=8.3.0-r0 \
+	gfortran=8.3.0-r0 \
+	ca-certificates=20190108-r0 \
+	libpng-dev=1.6.37-r1 \
+	freetype-dev=2.10.0-r0 \
+	py2-matplotlib=2.2.3-r1 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+	&& git clone https://github.com/MalwareCantFly/Vba2Graph.git
 
-RUN git clone https://github.com/MalwareCantFly/Vba2Graph.git
-RUN pip install -U oletools
+WORKDIR /Vba2Graph
 
-RUN apk add g++ make subversion gcc gfortran ca-certificates python-dev libpng-dev freetype-dev
-RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-RUN python -m pip install matplotlib
-RUN cd /Vba2Graph && pip install -r requirements.txt
+RUN git checkout 7a0493c9724a6c4ee5bd188beb0f813494e379c8 \
+	&& pip install -U oletools==0.54.1 -r requirements.txt \
+	&& adduser -s /sbin/login -D appuser
+
+USER appuser
 
 ENTRYPOINT ["/usr/bin/python","/Vba2Graph/vba2graph.py"]
 CMD ["-h"]
-
-
-
-
-#Ubuntu-version, faster to build, but bigger by ~100Mb
-#
-#FROM ubuntu:16.04
-#RUN apt-get update && apt-get install -y \
-#        python-pip \
-#        git \
-#        graphviz
-#
-#RUN git clone https://github.com/MalwareCantFly/Vba2Graph.git
-#RUN pip install -U oletools && cd /Vba2Graph && pip install -r requirements.txt
-#ENTRYPOINT ["/usr/bin/python","/Vba2Graph/vba2graph.py"]
-#CMD ["-h"]
-

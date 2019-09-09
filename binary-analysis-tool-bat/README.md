@@ -5,7 +5,23 @@
 * `latest` 
 ([*binary-analysis-tool-bat/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binary-analysis-tool-bat/Dockerfile))
 
+## Input
+
+```
+binary
+```
+
+## Output
+
+```
+BAT report
+```
+
 ## Usage
+
+***Pull the docker image***
+
+`$ docker pull cincan/binary-analysis-tool-bat`
 
 ***BAT help***
 

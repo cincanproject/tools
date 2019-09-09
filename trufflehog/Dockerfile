@@ -13,10 +13,17 @@
 # --json        Output in JSON
 # --regex       High signal regex checks
 
-FROM alpine:latest
-RUN apk update && apk upgrade && apk --no-cache add \
+FROM alpine:3.10
+
+LABEL MAINTAINER=cincan.io
+
+RUN apk update && apk add --no-cache \
         python3 \
-        git
-RUN pip3 install trufflehog
+        git \
+    && pip3 install trufflehog \
+    && adduser -s /sbin/login -D appuser
+
+USER appuser
+
 ENTRYPOINT ["trufflehog"]
 CMD ["-h"]

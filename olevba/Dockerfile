@@ -25,5 +25,7 @@ RUN apk del openssl-dev \
 
 ADD Oletools-license .
 
+#USER appuser
+
 ENTRYPOINT ["olevba"]
 # CMD ["--help"]

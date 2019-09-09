@@ -1,0 +1,86 @@
+FROM python:3.7.4-slim-stretch
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+#        software-properties-common \
+        fakeroot \
+        unrar-free=1:0.0.1+cvs20140707-1+b2 \
+        devscripts=2.17.6+deb9u2 \
+        lintian=2.5.50.4 \
+        dpkg-dev=1.18.25 \
+        debhelper=10.2.5 \
+        build-essential \
+#        python-software-properties \
+        dh-python=2.20170125 \
+#        python-all \
+#        python-setuptools \
+        wget \
+        git \
+#        python \
+#        python-pip \
+        python-magic \
+        zlib1g-dev \
+        liblzo2-dev \
+        liblzma-dev \
+        e2tools \
+        squashfs-tools \
+#        zip \
+        cabextract \
+        unshield \
+        p7zip \
+        p7zip-full \
+        cpio \
+        mtd-utils \
+        lzip \
+        lzop \
+        arj \
+        icoutils \
+        rpm \
+        python-rpm \
+        poppler-utils \
+        upx-ucl \
+        libxml2-utils \
+        netpbm \
+        lrzip \
+        ncompress \
+        python-imaging \
+        vorbis-tools \
+        ctags \
+        python-matplotlib \
+        python-pydot \
+        bsdiff \
+        python-reportlab \
+        fonts-liberation \
+        clamav \
+        john \
+        python-psycopg2 \
+        unzip &&\
+        rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /tmp/bat/packages/ && \
+    wget -O bat.zip https://github.com/armijnhemel/binaryanalysis/archive/master.zip && \
+    wget -O bat-extratools.zip https://github.com/armijnhemel/bat-extratools/archive/master.zip && \
+    wget -O /tmp/bat/packages/1-python-support.deb https://launchpad.net/ubuntu/+archive/primary/+files/python-support_1.0.15_all.deb && \
+    unzip bat.zip && \
+    unzip bat-extratools.zip
+
+WORKDIR  /bat-extratools-master
+
+RUN debuild -uc -us
+
+WORKDIR /
+RUN mv *bat-extratools_27*.deb 2-bat-extratools.deb && \
+    cp *.deb /tmp/bat/packages
+
+WORKDIR /binaryanalysis-master/src
+
+RUN debuild -uc -us
+
+WORKDIR /binaryanalysis-master
+
+RUN mv *.deb 3-bat.deb
+RUN cp *.deb /tmp/bat/packages
+WORKDIR /tmp/bat/packages
+RUN for f in /tmp/bat/packages/*; do echo "Installing $f package" && dpkg -i $f; done
+
+ENTRYPOINT ["/usr/bin/bat-scan", "-c", "/etc/bat/bat-scan.config"]
+

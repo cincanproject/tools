@@ -1,5 +1,6 @@
-# Suricata is a free and open source, mature, fast and robust network threat 
-detection engine
+## Suricata 
+
+### A free and open source, mature, fast and robust network threat detection engine
 
 The Suricata engine is capable of real time intrusion detection (IDS), inline 
 intrusion prevention (IPS), network security monitoring (NSM) and offline pcap 

@@ -77,12 +77,18 @@ function sleep(ms) {
     return new Promise(resolve => {setTimeout(resolve, ms);});
 }
 
-function processTimeout(pid, ms) {
+function processTimeout(pid, ms, stdout) {
     ms = (ms) ? ms : 0;
-    return setTimeout(() => {
+    const err_logging = (stdout) => {
+        try {
             process.kill(pid, 'SIGTERM');
-            console.log('Browser process terminated')
-    }, ms);
+        } catch (e) {
+            stdout['logs'] = String(e);
+        }
+        console.log(JSON.stringify(stdout));
+    }
+
+    return setTimeout(err_logging, ms, stdout);
 }
 
 process.on('uncaughtException', (error) => {
@@ -127,7 +133,7 @@ async function scrape(scrape_url, args) {
     });
 
     const pid = browser.process().pid;
-    const browserTimeout = processTimeout(pid, args.process_timeout);
+    const browserTimeout = processTimeout(pid, args.process_timeout, stdout);
 
     const page = await browser.newPage();
     const harsession = new PuppeteerHar(page);
@@ -151,8 +157,16 @@ async function scrape(scrape_url, args) {
         await harsession.start({ path: `${args.output_dir}/${har}` });
     }
 
-    await page.goto(scrape_url, {waitUntil: 'networkidle0'});
-    await sleep(delay);
+    try {
+        await page.goto(scrape_url, {waitUntil: 'networkidle0'});
+        await sleep(delay);
+    } catch (e) {
+        clearTimeout(browserTimeout);
+        stdout['logs'] = String(e);
+        browser.close();
+        console.log(JSON.stringify(stdout));
+        return
+    }
 
     if (args.output_png) {
         let png = `${hostname}_${width}_${height}_${dateStr}.png`;

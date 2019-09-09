@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {
+      "command": ["-r", "<file>", "-Tjson"],
+      "input": "application/pcap",
+      "output": "application/json"
+    }, {
+      "command": ["-r", "<file>", "-Tpdml"],
+      "input": "application/pcap",
+      "output": "text/xml"
+    }
+  ]
+}

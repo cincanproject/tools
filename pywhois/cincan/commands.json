@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {
+      "command": ["<ip>"],
+      "input": "ip",
+      "help": "Just give me the ip, please"
+    }, {
+      "command": ["-f", "<file>"],
+      "input": "ip",
+      "help": "One or more addresses from file"
+    }
+  ]
+}
