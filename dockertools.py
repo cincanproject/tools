@@ -207,6 +207,9 @@ def main():
     hint_parser = subparsers.add_parser('hint')
     image_default_args(hint_parser)
 
+    mani_parser = subparsers.add_parser('manifest')
+    image_default_args(mani_parser)
+
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
     do_parser.add_argument('-r', '--read-file', help='Input file to read')
@@ -250,6 +253,14 @@ def main():
             else:
                 print("No hint available")
                 sys.exit(1)
+    elif args.sub_command == 'manifest':
+        # sub command 'manifest'
+        if len(args.tool) == 0:
+            raise Exception('Missing tool name argument')
+        name = args.tool[0]
+        reg = registry.ToolRegistry()
+        info = reg.fetch_manifest(name)
+        print(json.dumps(info, indent=2))
     else:
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools()

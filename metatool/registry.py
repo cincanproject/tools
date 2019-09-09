@@ -87,31 +87,38 @@ class ToolRegistry:
         # Local cache file in
         # ~/.cincan/commands/<name>.json
 
-    def fetch_remote_labels(self, tool: ToolInfo):
+    def fetch_remote_labels(self, tool: ToolInfo) -> Dict[str,Any]:
         self.logger.info("updating %s...", tool.name)
-        token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
-                                    + tool.name + ':pull')
-        if token_req.status_code != 200:
-            self.logger.error("Error getting token for tool {}, code: {}".format(tool.name, token_req.status_code))
-            return
-        token_json = json.loads(token_req.content)
-        token = token_json['token']
-        # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
-        manifest_req = requests.get(self.registry_url + "/" + tool.name + "/manifests/latest",
-                                    headers={'Authorization': ('Bearer ' + token),
-                                             # 'Accept': 'application/vnd.docker.distribution.manifest.v2+json',
-                                             })
-        if manifest_req.status_code != 200:
-            self.logger.error("Error getting token for tool {}, code: {}".format(tool.name, manifest_req.status_code))
-            return
-        manifest = json.loads(manifest_req.content)
-        v1_comp_string = manifest['history'][0]['v1Compatibility']
+        manifest = self.fetch_manifest(tool.name)
+        v1_comp_string = manifest.get('history', [{}])[0].get('v1Compatibility')
+        if v1_comp_string is None:
+            return {}
         v1_comp = json.loads(v1_comp_string)
         labels = v1_comp['container_config']['Labels']
         if labels:
             tool.input = parse_data_types(labels.get('io.cincan.input', ''))
             tool.output = parse_data_types(labels.get('io.cincan.output', ''))
-        return
+        return manifest
+
+    def fetch_manifest(self, tool_name: str) -> Dict[str, Any]:
+        token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
+                                 + tool_name + ':pull')
+        if token_req.status_code != 200:
+            self.logger.error("Error getting token for tool {}, code: {}".format(tool_name, token_req.status_code))
+            return {}
+        token_json = json.loads(token_req.content)
+        token = token_json['token']
+        # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
+        manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/latest",
+                                    headers={'Authorization': ('Bearer ' + token),
+                                             # 'Accept': 'application/vnd.docker.distribution.manifest.v2+json',
+                                             })
+        if manifest_req.status_code != 200:
+            self.logger.error(
+                "Error getting token for tool {}, code: {}".format(tool_name, manifest_req.status_code))
+            return {}
+        manifest = json.loads(manifest_req.content)
+        return manifest
 
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
         # curl - sSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:raulik/test-test-tool:pull" | jq - r.token > bearer - token
@@ -158,6 +165,7 @@ class ToolRegistry:
                 r[name] = ToolInfo(name, updated=parse_json_time(j['updated']),
                                    input=j.get('input', []), output=j.get('output'))
         return r
+
 
         # TheHive accepts the following datatypes:
         # domain
