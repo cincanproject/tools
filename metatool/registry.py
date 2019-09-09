@@ -96,12 +96,20 @@ class ToolRegistry:
             return
         token_json = json.loads(token_req.content)
         token = token_json['token']
+        # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
         manifest_req = requests.get(self.registry_url + "/" + tool.name + "/manifests/latest",
-                                    headers={'Authorization': ('Bearer ' + token)})
+                                    headers={'Authorization': ('Bearer ' + token),
+                                             # 'Accept': 'application/vnd.docker.distribution.manifest.v2+json',
+                                             })
         if manifest_req.status_code != 200:
             self.logger.error("Error getting token for tool {}, code: {}".format(tool.name, manifest_req.status_code))
             return
         manifest = json.loads(manifest_req.content)
+        v1_comp_string = manifest['history'][0]['v1Compatibility']
+        v1_comp = json.loads(v1_comp_string)
+        labels = v1_comp['container_config']['Labels']
+        input = parse_data_types(labels.get('io.cincan.input', ''))
+        output = parse_data_types(labels.get('io.cincan.output', ''))
         return
 
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
