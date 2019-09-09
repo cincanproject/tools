@@ -5,6 +5,7 @@
 FROM alpine:3.9
 
 LABEL MAINTAINER=cincan.io
+LABEL io.cincan.input="application/pdf,application/zip"
 
 RUN apk update && apk add --no-cache \
 	    python2=2.7.16-r1 \
