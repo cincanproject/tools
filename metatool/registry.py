@@ -37,6 +37,13 @@ def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str,Any]:
     return r
 
 
+def parse_data_types(string: str) -> List[str]:
+    s = string.strip()
+    if len(s) == 0:
+        return []
+    return list(map(lambda x: x.strip(), s.split(',')))
+
+
 class ToolRegistry:
     """A tool registy"""
     def __init__(self):
@@ -71,8 +78,8 @@ class ToolRegistry:
                 continue  # not sure what these are...
             name = i.tags[0].replace(':latest', '')
             updated = parse_json_time(i.attrs['Created'])
-            input = map(lambda s: s.strip(), i.labels.get('io.cincan.input', 'application/octet-stream').split(','))
-            output = map(lambda s: s.strip(), i.labels.get('io.cincan.output', 'text/plain').split(','))
+            input = parse_data_types(i.labels.get('io.cincan.input', ''))
+            output = parse_data_types(i.labels.get('io.cincan.output', ''))
             self.logger.debug("%s input: %s output: %s", name, input, output)
             ret[name] = ToolInfo(name, updated, list(input), list(output))
         return ret
