@@ -12,12 +12,12 @@ from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 class ToolInfo:
     """A tool in registry"""
     def __init__(self, name: str, updated: datetime.datetime, input: List[str] = None, output: List[str] = None,
-                 tags: List[str] = None, description: str = ''):
+                 tags: List[str] = '', description: str = ''):
         self.name = name
         self.updated = updated
         self.input = input if input is not None else []
         self.output = output if output is not None else []
-        self.tags = tags if tags is not None else []
+        self.tags = tags
         self.description = description
 
     def __str__(self):
@@ -40,7 +40,7 @@ def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str, Any]:
         if len(t.output) > 0:
             td['output'] = t.output
         if len(t.tags) > 0:
-            td['tags'] = t.tags
+            td['tags'] = ','.join(t.tags)  # keep order
         r[t.name] = td
     return r
 
@@ -81,12 +81,18 @@ class ToolRegistry:
                 local = local_tools[i]
                 remote = remote_tools[i]
                 use_tools[i] = local if local.updated >= remote.updated else remote
-                use_tools[i].description = remote_tools[i].description  # description only in registry, not locally
+                # assume all unique local tags are newer than remote ones
+                use_tags = [i for i in local.tags if i not in remote.tags] + remote.tags
+                use_tools[i].tags = use_tags
+                # description only in registry, not locally
+                use_tools[i].description = remote_tools[i].description
         return use_tools
 
     def list_tools_local_images(self) -> Dict[str, ToolInfo]:
         """List tools from the locally available docker images"""
         images = self.client.images.list(filters={'label': 'io.cincan.input'})
+        # images oldest first (tags are listed in proper order)
+        images.sort(key=lambda x: parse_json_time(x.attrs['Created']), reverse=True)
         ret = {}
         for i in images:
             if len(i.tags) == 0:
@@ -98,7 +104,6 @@ class ToolRegistry:
             if name in ret:
                 ret[name].tags.append(tag)
             else:
-                # FIXME: We just take these from first encoutered local image -- should get the latest?!?
                 ret[name] = ToolInfo(name, updated, list(input), list(output), tags=[tag])
                 self.logger.debug("%s input: %s output: %s", name, input, output)
         return ret
@@ -114,9 +119,7 @@ class ToolRegistry:
         if labels:
             tool.input = parse_data_types(labels.get('io.cincan.input', ''))
             tool.output = parse_data_types(labels.get('io.cincan.output', ''))
-        all_tags = manifest.get('all-tags', None)  # Note: not part of manifest in Docker API
-        if all_tags:
-            tool.tags = list(map(lambda x: x['name'], all_tags.get('results', [])))
+        tool.tags = manifest.get('sorted_tags', None)  # Note: not part of manifest in Docker API
         return manifest
 
     def fetch_manifest(self, tool_tag: str) -> Dict[str, Any]:
@@ -129,10 +132,11 @@ class ToolRegistry:
             self.logger.error(
                 "Error getting tags for tool {}, code: {}".format(tool_name, tags_req.status_code))
             return {}
-        tag_names = list(map(lambda x: x['name'], tags.get('results', [])))
+        # sort tags by update time
+        tags_sorted = sorted(tags.get('results', []), key=lambda x: parse_json_time(x['last_updated']), reverse=True)
+        tag_names = list(map(lambda x: x['name'], tags_sorted))
         if tool_tag.count(':') == 0 and tag_names:
-            # FIXME: We should get the newest image... or what?
-            tool_version = sorted(tag_names)[0]  # tool version not given, pick first from tag list
+            tool_version = tag_names[0]  # tool version not given, pick newest
 
         # Get bearer token for the image
         token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
@@ -155,7 +159,8 @@ class ToolRegistry:
             return {}
         manifest = json.loads(manifest_req.content)
 
-        manifest['all-tags'] = tags  # adding tags to manifest data
+        manifest['all_tags'] = tags  # adding tags to manifest data
+        manifest['sorted_tags'] = tag_names
         return manifest
 
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
@@ -205,7 +210,7 @@ class ToolRegistry:
             for name, j in root_json.items():
                 r[name] = ToolInfo(name, updated=parse_json_time(j['updated']),
                                    input=j.get('input', []), output=j.get('output'),
-                                   tags=j.get('tags', []), description=j.get('description', ''))
+                                   tags=j.get('tags', '').split(','), description=j.get('description', ''))
         return r
 
 
