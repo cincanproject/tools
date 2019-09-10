@@ -42,7 +42,7 @@ class ToolImage:
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
 
-    def __get_image(self, image, pull: bool = False):
+    def __get_image(self, image: str, pull: bool = False):
         """Get Docker image, possibly pulling it first"""
         if pull:
             self.client.images.pull(image)
