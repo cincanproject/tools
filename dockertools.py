@@ -251,7 +251,7 @@ def main():
             # sub command 'hint'
             prefix = "run {} ".format(name)
             hints = tool.list_command_line()
-            if len(hints) >0:
+            if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
             else:
                 print("No hint available")
