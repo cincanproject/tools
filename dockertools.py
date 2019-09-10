@@ -205,6 +205,7 @@ def main():
     list_parser = subparsers.add_parser('list')
     list_parser.add_argument('-i', '--input', action='store_true', help='Show input formats')
     list_parser.add_argument('-o', '--output', action='store_true', help='Show output formats')
+    list_parser.add_argument('-t', '--tags', action='store_true', help='Show tags')
 
     hint_parser = subparsers.add_parser('hint')
     image_default_args(hint_parser)
@@ -269,12 +270,15 @@ def main():
             format_str += " {2:<30}"
         if args.output:
             format_str += " {3:<30}"
+        if args.tags:
+            format_str += " {4:<20}"
         format_str += " {1}"
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools()
         for tool in sorted(tool_list):
             lst = tool_list[tool]
-            print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output)))
+            print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output),
+                                    ",".join(lst.tags)))
 
 
 if __name__ == '__main__':

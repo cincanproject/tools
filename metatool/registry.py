@@ -12,11 +12,12 @@ from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 class ToolInfo:
     """A tool in registry"""
     def __init__(self, name: str, updated: datetime.datetime, input: List[str] = None, output: List[str] = None,
-                 description: str = ''):
+                 tags: List[str] = None, description: str = ''):
         self.name = name
         self.updated = updated
         self.input = input if input is not None else []
         self.output = output if output is not None else []
+        self.tags = tags if tags is not None else []
         self.description = description
 
     def __str__(self):
@@ -38,6 +39,8 @@ def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str, Any]:
             td['input'] = t.input
         if len(t.output) > 0:
             td['output'] = t.output
+        if len(t.tags) > 0:
+            td['tags'] = t.tags
         r[t.name] = td
     return r
 
@@ -60,6 +63,7 @@ class ToolRegistry:
         self.logger = logging.getLogger('registry')
         self.client = docker.from_env()
         self.tool_cache = pathlib.Path.home() / '.cincan' / 'tools.json'
+        self.hub_url = "https://hub.docker.com/v2"
         self.auth_url = "https://auth.docker.io/token"
         self.registry_url = "https://registry.hub.docker.com/v2"
 
@@ -87,12 +91,16 @@ class ToolRegistry:
         for i in images:
             if len(i.tags) == 0:
                 continue  # not sure what these are...
-            name = i.tags[0].replace(':latest', '')
+            name, tag = split_tool_tag(i.tags[0])
             updated = parse_json_time(i.attrs['Created'])
             input = parse_data_types(i.labels.get('io.cincan.input', ''))
             output = parse_data_types(i.labels.get('io.cincan.output', ''))
-            self.logger.debug("%s input: %s output: %s", name, input, output)
-            ret[name] = ToolInfo(name, updated, list(input), list(output))
+            if name in ret:
+                ret[name].tags.append(tag)
+            else:
+                # FIXME: We just take these from first encoutered local image
+                ret[name] = ToolInfo(name, updated, list(input), list(output), tags=[tag])
+                self.logger.debug("%s input: %s output: %s", name, input, output)
         return ret
 
     def fetch_remote_labels(self, tool: ToolInfo) -> Dict[str,Any]:
@@ -106,6 +114,9 @@ class ToolRegistry:
         if labels:
             tool.input = parse_data_types(labels.get('io.cincan.input', ''))
             tool.output = parse_data_types(labels.get('io.cincan.output', ''))
+        all_tags = manifest.get('all-tags', None)  # Note: not part of manifest in Docker API
+        if all_tags:
+            tool.tags = list(map(lambda x: x['name'], all_tags.get('results', [])))
         return manifest
 
     def fetch_manifest(self, tool_tag: str) -> Dict[str, Any]:
@@ -117,6 +128,14 @@ class ToolRegistry:
             return {}
         token_json = json.loads(token_req.content)
         token = token_json['token']
+
+        tags_req = requests.get(self.hub_url + "/repositories/" + tool_name + "/tags?page_size=1000")
+        tags = json.loads(tags_req.content)
+        if tags_req.status_code != 200:
+            self.logger.error(
+                "Error getting tags for tool {}, code: {}".format(tool_name, tags_req.status_code))
+            return {}
+
         # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
         manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/" + tool_version,
                                     headers={'Authorization': ('Bearer ' + token),
@@ -124,12 +143,14 @@ class ToolRegistry:
                                              })
         if manifest_req.status_code != 200:
             self.logger.error(
-                "Error getting token for tool {}, code: {}".format(tool_name, manifest_req.status_code))
+                "Error getting manifest for tool {}, code: {}".format(tool_name, manifest_req.status_code))
             return {}
         manifest = json.loads(manifest_req.content)
+        manifest['all-tags'] = tags  # adding tags to manifest data
         return manifest
 
         # curl -s "https://registry.hub.docker.com/v2/repositories/cincan/"
+        # curl https://hub.docker.com/v2/repositories/cincan/tshark/tags
         # curl - sSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:raulik/test-test-tool:pull" | jq - r.token > bearer - token
         # curl - s H "Authorization: Bearer `cat bearer-token`" "https://registry.hub.docker.com/v2/raulik/test-test-tool/manifests/latest" | python - m json.tool
 
@@ -175,7 +196,7 @@ class ToolRegistry:
             for name, j in root_json.items():
                 r[name] = ToolInfo(name, updated=parse_json_time(j['updated']),
                                    input=j.get('input', []), output=j.get('output'),
-                                   description=j.get('description', ''))
+                                   tags=j.get('tags', []), description=j.get('description', ''))
         return r
 
 
