@@ -53,6 +53,7 @@ def split_tool_tag(tag: str) -> (str, str):
     tag_split = tag.split(':', maxsplit=2)
     return tag_split[0], tag_split[1] if len(tag_split) > 1 else 'latest'
 
+
 class ToolRegistry:
     """A tool registy"""
     def __init__(self):
