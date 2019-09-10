@@ -5,7 +5,6 @@ import pathlib
 import requests
 import json
 import datetime
-import re
 from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 
@@ -25,15 +24,18 @@ class ToolInfo:
 
 
 def parse_json_time(string: str) -> datetime.datetime:
+    """Parse time from JSON as stored by Docker"""
     s = string[0: 19]
     return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
 
 
 def format_time(time: datetime.datetime) -> str:
+    """Format time as we would like to see it"""
     return time.strftime('%Y-%m-%dT%H:%M:%S')
 
 
 def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str, Any]:
+    """Write tool info into JSON format"""
     r = {}
     for t in tools:
         td = {'updated': format_time(t.updated)}
@@ -50,6 +52,7 @@ def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str, Any]:
 
 
 def parse_data_types(string: str) -> List[str]:
+    """Parse list of data types into a list"""
     s = string.strip()
     if len(s) == 0:
         return []
@@ -57,12 +60,13 @@ def parse_data_types(string: str) -> List[str]:
 
 
 def split_tool_tag(tag: str) -> (str, str):
+    """Split tool tag into tool name and tool version"""
     tag_split = tag.split(':', maxsplit=2)
     return tag_split[0], tag_split[1] if len(tag_split) > 1 else 'latest'
 
 
 class ToolRegistry:
-    """A tool registy"""
+    """A tool registry"""
     def __init__(self):
         self.logger = logging.getLogger('registry')
         self.client = docker.from_env()
@@ -112,7 +116,8 @@ class ToolRegistry:
                 self.logger.debug("%s input: %s output: %s", name, input, output)
         return ret
 
-    def fetch_remote_labels(self, tool: ToolInfo) -> Dict[str,Any]:
+    def fetch_remote_data(self, tool: ToolInfo) -> Dict[str, Any]:
+        """Fetch remote data to update a tool info"""
         self.logger.info("updating %s...", tool.name)
         manifest = self.fetch_manifest(tool.name)
         v1_comp_string = manifest.get('history', [{}])[0].get('v1Compatibility')
@@ -127,6 +132,7 @@ class ToolRegistry:
         return manifest
 
     def fetch_manifest(self, tool_tag: str) -> Dict[str, Any]:
+        """Fetch docker image tag and manifest information"""
         tool_name, tool_version = split_tool_tag(tool_tag)
 
         # Get tags for the tool
@@ -191,7 +197,7 @@ class ToolRegistry:
             updated = 0
             for t in tool_list.values():
                 if t.name not in old_tools or t.updated > old_tools[t.name].updated:
-                    self.fetch_remote_labels(t)
+                    self.fetch_remote_data(t)
                     updated += 1
                 else:
                     tool_list[t.name] = old_tools[t.name]
@@ -206,6 +212,7 @@ class ToolRegistry:
         return self.read_tool_cache()
 
     def read_tool_cache(self) -> Dict[str, ToolInfo]:
+        """Read the local tool cache file"""
         if not self.tool_cache.exists():
             return {}
         r = {}
