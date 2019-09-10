@@ -5,6 +5,7 @@ import pathlib
 import requests
 import json
 import datetime
+import re
 from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 
@@ -43,6 +44,10 @@ def parse_data_types(string: str) -> List[str]:
         return []
     return list(map(lambda x: x.strip(), s.split(',')))
 
+
+def split_tool_tag(tag: str) -> (str, str):
+    tag_split = tag.split(':', maxsplit=2)
+    return tag_split[0], tag_split[1] if len(tag_split) > 1 else 'latest'
 
 class ToolRegistry:
     """A tool registy"""
@@ -100,7 +105,8 @@ class ToolRegistry:
             tool.output = parse_data_types(labels.get('io.cincan.output', ''))
         return manifest
 
-    def fetch_manifest(self, tool_name: str) -> Dict[str, Any]:
+    def fetch_manifest(self, tool_tag: str) -> Dict[str, Any]:
+        tool_name, tool_version = split_tool_tag(tool_tag)
         token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
                                  + tool_name + ':pull')
         if token_req.status_code != 200:
@@ -109,7 +115,7 @@ class ToolRegistry:
         token_json = json.loads(token_req.content)
         token = token_json['token']
         # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
-        manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/latest",
+        manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/" + tool_version,
                                     headers={'Authorization': ('Bearer ' + token),
                                              # 'Accept': 'application/vnd.docker.distribution.manifest.v2+json',
                                              })
