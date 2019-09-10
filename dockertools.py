@@ -202,7 +202,9 @@ def main():
     run_parser = subparsers.add_parser('run')
     image_default_args(run_parser)
 
-    subparsers.add_parser('list')
+    list_parser = subparsers.add_parser('list')
+    list_parser.add_argument('-i', '--input', action='store_true', help='Show input formats')
+    list_parser.add_argument('-o', '--output', action='store_true', help='Show output formats')
 
     hint_parser = subparsers.add_parser('hint')
     image_default_args(hint_parser)
@@ -262,12 +264,17 @@ def main():
         info = reg.fetch_manifest(name)
         print(json.dumps(info, indent=2))
     else:
+        format_str = "{0:<25}"
+        if args.input:
+            format_str += " {2:<30}"
+        if args.output:
+            format_str += " {3:<30}"
+        format_str += " {1}"
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools()
         for tool in sorted(tool_list):
             lst = tool_list[tool]
-            print('{0:<25}{1:<25}{2:<25}{3}'.format(lst.name, ','.join(lst.input), ','.join(lst.output),
-                                                    lst.description))
+            print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output)))
 
 
 if __name__ == '__main__':
