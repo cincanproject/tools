@@ -210,8 +210,8 @@ def main():
     image_default_args(run_parser)
 
     list_parser = subparsers.add_parser('list')
-    list_parser.add_argument('-i', '--input', action='store_true', help='Show input formats')
-    list_parser.add_argument('-o', '--output', action='store_true', help='Show output formats')
+    list_parser.add_argument('-i', '--in', action='store_true', help='Show input formats')
+    list_parser.add_argument('-o', '--out', action='store_true', help='Show output formats')
     list_parser.add_argument('-t', '--tags', action='store_true', help='Show tags')
 
     hint_parser = subparsers.add_parser('hint')
