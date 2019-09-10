@@ -95,9 +95,6 @@ class ToolRegistry:
             ret[name] = ToolInfo(name, updated, list(input), list(output))
         return ret
 
-        # Local cache file in
-        # ~/.cincan/commands/<name>.json
-
     def fetch_remote_labels(self, tool: ToolInfo) -> Dict[str,Any]:
         self.logger.info("updating %s...", tool.name)
         manifest = self.fetch_manifest(tool.name)
