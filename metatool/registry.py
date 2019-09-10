@@ -145,6 +145,7 @@ class ToolRegistry:
                     self.fetch_remote_labels(t)
                     updated += 1
                 else:
+                    tool_list[t.name] = old_tools[t.name]
                     self.logger.info("no updates for %s", t.name)
             # save the tool list
             if updated > 0:
