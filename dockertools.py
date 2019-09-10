@@ -8,6 +8,7 @@ import sys
 import re
 import pathlib
 import json
+import datetime
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
@@ -41,6 +42,12 @@ class ToolImage:
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
+
+    def get_tags(self) -> List[str]:
+        return self.image.tags
+
+    def get_creation_time(self) -> datetime.datetime:
+        return registry.parse_json_time(self.image.attrs['Created'])
 
     def __get_image(self, image: str, pull: bool = False):
         """Get Docker image, possibly pulling it first"""
@@ -251,10 +258,11 @@ def main():
             # sub command 'hint'
             prefix = "run {} ".format(name)
             hints = tool.list_command_line()
+            print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
             if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
             else:
-                print("No hint available")
+                print("No command hints")
                 sys.exit(1)
     elif args.sub_command == 'manifest':
         # sub command 'manifest'
