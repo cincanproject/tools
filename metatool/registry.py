@@ -20,7 +20,7 @@ class ToolInfo:
         self.description = description
 
     def __str__(self):
-        return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
+        return "{} {}".format(self.name, self.description)
 
 
 def parse_json_time(string: str) -> datetime.datetime:
