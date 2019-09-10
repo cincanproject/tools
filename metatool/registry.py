@@ -121,14 +121,8 @@ class ToolRegistry:
 
     def fetch_manifest(self, tool_tag: str) -> Dict[str, Any]:
         tool_name, tool_version = split_tool_tag(tool_tag)
-        token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
-                                 + tool_name + ':pull')
-        if token_req.status_code != 200:
-            self.logger.error("Error getting token for tool {}, code: {}".format(tool_name, token_req.status_code))
-            return {}
-        token_json = json.loads(token_req.content)
-        token = token_json['token']
 
+        # Get tags for the tool
         tags_req = requests.get(self.hub_url + "/repositories/" + tool_name + "/tags?page_size=1000")
         tags = json.loads(tags_req.content)
         if tags_req.status_code != 200:
@@ -139,6 +133,16 @@ class ToolRegistry:
         if tool_tag.count(':') == 0 and tag_names:
             tool_version = sorted(tag_names)[0]  # tool version not given, pick first from tag list
 
+        # Get bearer token for the image
+        token_req = requests.get(self.auth_url + "?service=registry.docker.io&scope=repository:"
+                                 + tool_name + ':pull')
+        if token_req.status_code != 200:
+            self.logger.error("Error getting token for tool {}, code: {}".format(tool_name, token_req.status_code))
+            return {}
+        token_json = json.loads(token_req.content)
+        token = token_json['token']
+
+        # Get manifest of the image
         # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
         manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/" + tool_version,
                                     headers={'Authorization': ('Bearer ' + token),
@@ -149,6 +153,7 @@ class ToolRegistry:
                 "Error getting manifest for tool {}, code: {}".format(tool_name, manifest_req.status_code))
             return {}
         manifest = json.loads(manifest_req.content)
+
         manifest['all-tags'] = tags  # adding tags to manifest data
         return manifest
 
