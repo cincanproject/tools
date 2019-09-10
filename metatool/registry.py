@@ -98,7 +98,7 @@ class ToolRegistry:
             if name in ret:
                 ret[name].tags.append(tag)
             else:
-                # FIXME: We just take these from first encoutered local image
+                # FIXME: We just take these from first encoutered local image -- should get the latest?!?
                 ret[name] = ToolInfo(name, updated, list(input), list(output), tags=[tag])
                 self.logger.debug("%s input: %s output: %s", name, input, output)
         return ret
@@ -131,6 +131,7 @@ class ToolRegistry:
             return {}
         tag_names = list(map(lambda x: x['name'], tags.get('results', [])))
         if tool_tag.count(':') == 0 and tag_names:
+            # FIXME: We should get the newest image... or what?
             tool_version = sorted(tag_names)[0]  # tool version not given, pick first from tag list
 
         # Get bearer token for the image
