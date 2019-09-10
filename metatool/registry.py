@@ -11,11 +11,13 @@ from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 class ToolInfo:
     """A tool in registry"""
-    def __init__(self, name: str, updated: datetime.datetime, input: List[str] = None, output: List[str] = None):
+    def __init__(self, name: str, updated: datetime.datetime, input: List[str] = None, output: List[str] = None,
+                 description: str = ''):
         self.name = name
         self.updated = updated
         self.input = input if input is not None else []
         self.output = output if output is not None else []
+        self.description = description
 
     def __str__(self):
         return "{}\t{} =>\t {}".format(self.name, self.input, self.output)
@@ -26,10 +28,12 @@ def parse_json_time(string: str) -> datetime.datetime:
     return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
 
 
-def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str,Any]:
+def tools_to_json(tools: Iterable[ToolInfo]) -> Dict[str, Any]:
     r = {}
     for t in tools:
         td = {'updated': t.updated.strftime('%Y-%m-%dT%H:%M:%S') }
+        if t.description != '':
+            td['description'] = t.description
         if len(t.input) > 0:
             td['input'] = t.input
         if len(t.output) > 0:
@@ -72,6 +76,7 @@ class ToolRegistry:
                 local = local_tools[i]
                 remote = remote_tools[i]
                 use_tools[i] = local if local.updated >= remote.updated else remote
+                use_tools[i].description = remote_tools[i].description  # description only in registry, not locally
         return use_tools
 
     def list_tools_local_images(self) -> Dict[str, ToolInfo]:
@@ -142,7 +147,8 @@ class ToolRegistry:
             tool_list = {}
             for t in fresh_json['results']:
                 name = "{}/{}".format(t['user'], t['name'])
-                tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']))
+                tool_list[name] = ToolInfo(name, updated=parse_json_time(t['last_updated']),
+                                           description=t.get('description', ''))
             # update tool info, when required
             old_tools = self.read_tool_cache()
             updated = 0
@@ -170,7 +176,8 @@ class ToolRegistry:
             root_json = json.load(f)
             for name, j in root_json.items():
                 r[name] = ToolInfo(name, updated=parse_json_time(j['updated']),
-                                   input=j.get('input', []), output=j.get('output'))
+                                   input=j.get('input', []), output=j.get('output'),
+                                   description=j.get('description', ''))
         return r
 
 

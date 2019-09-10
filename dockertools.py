@@ -266,7 +266,8 @@ def main():
         tool_list = reg.list_tools()
         for tool in sorted(tool_list):
             lst = tool_list[tool]
-            print('{0:<30}{1:<40}{2}'.format(lst.name, ','.join(lst.input), ','.join(lst.output)))
+            print('{0:<25}{1:<25}{2:<25}{3}'.format(lst.name, ','.join(lst.input), ','.join(lst.output),
+                                                    lst.description))
 
 
 if __name__ == '__main__':
