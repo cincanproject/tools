@@ -210,7 +210,7 @@ def main():
     image_default_args(run_parser)
 
     list_parser = subparsers.add_parser('list')
-    list_parser.add_argument('-i', '--in', action='store_true', help='Show input formats')
+    list_parser.add_argument('-i', '--in', dest='input', action='store_true', help='Show input formats')
     list_parser.add_argument('-o', '--out', action='store_true', help='Show output formats')
     list_parser.add_argument('-t', '--tags', action='store_true', help='Show tags')
 
@@ -276,7 +276,7 @@ def main():
         format_str = "{0:<25}"
         if args.input:
             format_str += " {2:<30}"
-        if args.output:
+        if args.out:
             format_str += " {3:<30}"
         if args.tags:
             format_str += " {4:<20}"
