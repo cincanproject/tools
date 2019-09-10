@@ -135,6 +135,9 @@ class ToolRegistry:
             self.logger.error(
                 "Error getting tags for tool {}, code: {}".format(tool_name, tags_req.status_code))
             return {}
+        tag_names = list(map(lambda x: x['name'], tags.get('results', [])))
+        if tool_tag.count(':') == 0 and tag_names:
+            tool_version = sorted(tag_names)[0]  # tool version not given, pick first from tag list
 
         # Note, must not request 'v2' metadata as that does not contain what is now in 'v1Compatibility' :O
         manifest_req = requests.get(self.registry_url + "/" + tool_name + "/manifests/" + tool_version,
