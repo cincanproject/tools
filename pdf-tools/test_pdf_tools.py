@@ -5,13 +5,13 @@ pattern = re.compile("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*$")
 
 
 def test_help():
-    tool = dockertools.ToolImage(path="pdf-tools")
+    tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
     assert out.startswith("See all commands:")
 
 
 def test_base64dump():
-    tool = dockertools.ToolImage(path="pdf-tools")
+    tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")])
     values = []
     for line in out.splitlines():

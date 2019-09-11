@@ -191,6 +191,11 @@ class ToolImage:
         return self.do_run(in_file, args, in_type, out_type).decode('ascii')
 
 
+def tool_with_file(file: str) -> ToolImage:
+    path = pathlib.Path(file).parent.name
+    return ToolImage(path=path)
+
+
 def image_default_args(sub_parser):
     """Default arguments for sub commands which load docker image"""
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
