@@ -108,7 +108,7 @@ class ToolImage:
 
     def run_get_string(self, args: List[str]) -> str:
         """Run native tool in container, return output as a string"""
-        return self.run(args).decode('ascii')
+        return self.run(args).decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
