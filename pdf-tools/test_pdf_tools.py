@@ -4,7 +4,13 @@ import re
 pattern = re.compile("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*$")
 
 
-def test_image():
+def test_help():
+    tool = dockertools.ToolImage(path="pdf-tools")
+    out = tool.run([]).decode('utf8')
+    assert out.startswith("See all commands:")
+
+
+def test_base64dump():
     tool = dockertools.ToolImage(path="pdf-tools")
     out = tool.run(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")]).decode('utf8')
     values = []

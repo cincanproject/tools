@@ -3,7 +3,13 @@ import json
 import pytest
 
 
-def test_image():
+def test_help():
+    tool = dockertools.ToolImage(path="tshark")
+    out = tool.run_get_string([])
+    assert out.startswith('TShark (Wireshark)')
+
+
+def test_pcap_to_json():
     tool = dockertools.ToolImage(path="tshark")
     out = tool.run_get_string(["-r", tool.file_to_copy_from_context("samples/ping_localhost.pcap"), "-c", "2", "-T", "json"])
     js = json.loads(out)
@@ -34,5 +40,3 @@ def test_do_run():
     with pytest.raises(Exception):
         tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
                            out_type='text/nosuch', args=["-c", "2"])
-
-
