@@ -137,11 +137,11 @@ class ToolRegistry:
 
         # Get tags for the tool
         tags_req = requests.get(self.hub_url + "/repositories/" + tool_name + "/tags?page_size=1000")
-        tags = json.loads(tags_req.content)
         if tags_req.status_code != 200:
             self.logger.error(
                 "Error getting tags for tool {}, code: {}".format(tool_name, tags_req.status_code))
             return {}
+        tags = json.loads(tags_req.content)
         # sort tags by update time
         tags_sorted = sorted(tags.get('results', []), key=lambda x: parse_json_time(x['last_updated']), reverse=True)
         tag_names = list(map(lambda x: x['name'], tags_sorted))

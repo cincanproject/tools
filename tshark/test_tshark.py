@@ -3,8 +3,14 @@ import json
 import pytest
 
 
-def test_image():
-    tool = dockertools.ToolImage(path="tshark")
+def test_help():
+    tool = dockertools.tool_with_file(__file__)
+    out = tool.run_get_string([])
+    assert out.startswith('TShark (Wireshark)')
+
+
+def test_pcap_to_json():
+    tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["-r", tool.file_to_copy_from_context("samples/ping_localhost.pcap"), "-c", "2", "-T", "json"])
     js = json.loads(out)
     assert js[0]['_source']['layers']['ip']['ip.src'] == '127.0.0.1'
@@ -12,13 +18,13 @@ def test_image():
 
 
 def test_hints():
-    tool = dockertools.ToolImage(path="tshark")
+    tool = dockertools.tool_with_file(__file__)
     hints = tool.list_command_line()
     assert "|".join(hints) == "-r ^<file> -Tjson|-r ^<file> -Tpdml"
 
 
 def test_do_run():
-    tool = dockertools.ToolImage(path="tshark")
+    tool = dockertools.tool_with_file(__file__)
 
     out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
                              out_type='application/json', args=["-c", "2"])
@@ -34,5 +40,3 @@ def test_do_run():
     with pytest.raises(Exception):
         tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
                            out_type='text/nosuch', args=["-c", "2"])
-
-

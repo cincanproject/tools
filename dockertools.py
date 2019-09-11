@@ -108,7 +108,7 @@ class ToolImage:
 
     def run_get_string(self, args: List[str]) -> str:
         """Run native tool in container, return output as a string"""
-        return self.run(args).decode('ascii')
+        return self.run(args).decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
@@ -189,6 +189,11 @@ class ToolImage:
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
         """Do -sub command to run the native tool, get output as string"""
         return self.do_run(in_file, args, in_type, out_type).decode('ascii')
+
+
+def tool_with_file(file: str) -> ToolImage:
+    path = pathlib.Path(file).parent.name
+    return ToolImage(path=path)
 
 
 def image_default_args(sub_parser):
