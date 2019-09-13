@@ -11,7 +11,8 @@ import json
 import datetime
 from typing import List, Set, Dict, Tuple, Optional, Any
 
-import registry
+from metatool import registry
+
 
 class ToolImage:
     """A tool wrapped to docker image"""
