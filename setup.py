@@ -1,11 +1,13 @@
 from setuptools import setup
 
 setup(
-    name='CinCanCommandProgram',
-    version='0.1beta',
-    packages=['metatool', ],
+    name='CinCan-Command-Program',
+    version='0.1b',
+    packages=['metatool'],
     install_requires=['docker'],
     entry_points = {
         'console_scripts': ['metatool=metatool.dockertools:main'],
-    }
+    },
+    description='CinCan Command Program',
+    python_requires='>=3.6',
 )
