@@ -1,51 +1,57 @@
-## Tool 'cincan'
+## CinCan Command Program
 
-The 'cincan' frontend command provide a way for easier use of the tools dockerized in the 
-Cincan project.
+The CinCan Command Program, `cccp`, frontend command provide a way
+for easier use of the tools dockerized in the Cincan project.
 Currently the frontend is a proof-of-concept with some aspects under construction.
-Especially it is undecided how the this should be deployed to the users. 
-Part of the frontend should also be itself containerized?
-
-The python file dockertools.py (and some other files) provide the current implementation.
 
 > ## WARNING
 > Currently only a few or none of the repositories in DockerHub contain the required
 > metadata for any of the following to work!
 
+### Installation
 
-### Using it now
+As prerequisite you must have installed `Docker` for running the tools,
+and `Python 3` and `pip` Python package management program for the command program.
+Consult your system documentation how to install them.
 
-The steps required currently to set 'cincan' for Linux:
+The command program is then installed using pip for Python 3:
 
- 1. Install `docker`, `python`, and `pipenv`
- 2. Clone the repository, and start new virtualenv
- 
-        % git clone git@gitlab.com:CinCan/tools.git
-        % cd tools
-        % pipenv shell
-         
- 3. Install required python modules 
+    % pip3 install CinCan_Command_Program-0.1b0
 
-        % pipenv install docker
-         
- 4. Create alias 'cincan'
- 
-        % alias cincan="python3 dockertools.py"
+The python library for command program is now installed, but like to want to insert
+the command `cccp` to your path.
+For this use the following command to resolve the location of the script `cccp`.
+
+    % python3 -m site --user-base
+    /home/username/.local
+
+The actual script should be located as `/bin` under the directory listed above
+(with `username` being your user file),
+so full path would be `/home/username/.local/bin/`.
+
+Make sure this location is in your Path or create an alias for the command.
+
+NOTE: You may want to install the tool into `virtualenv` to avoid conflicts with
+other Python applications you may have. Please consult appropriate documentation.
 
 You can check that all works as follows:
 
-    % cincan list
+    % cccp list
 
 If all goes well you get a list of the supported tools.
+First time running this will take a while as it must fetch information of the tools
+and cache it locally.
+
+### Using it now
 
 ### Tool inputs and outputs
 
 The supported tools have the allowed input and output data types listed, 
 so that you can easily figure out which tools are suitable for your data.
-The tools and input and output data types are listed by the subcommand 'list'
+The tools and input and output data types are listed by the sub command 'list'
 like this:
 
-    % cincan list -i -o
+    % cccp list -i -o
 
 The output is made from columns of tool name, input types, output types. 
 The list of supported arguments are:
@@ -66,11 +72,11 @@ as seen in this clip from `Dockerfile` for the tool 'tshark':
 
 For some tools you can get command line hints by sub command 'hint':
 
-    % cincan hint <tool>
+    % cccp hint <tool>
 
 for example
 
-    % cincan hint cincan/tshark
+    % cccp hint cincan/tshark
     run cincan/tshark -r ^<file> -Tjson
     run cincan/tshark -r ^<file> -Tpdml
 
@@ -78,7 +84,7 @@ You can then invoke the actual too using sub command 'run',
 For example, if you have file `myfile.pcap`, 
 the following command should give you JSON-formatted output from 'tshark':
 
-    % cincan run cincan/tshark -r ^myfile.pcap -Tjson
+    % cccp run cincan/tshark -r ^myfile.pcap -Tjson
 
 Please note that the __`^`-character is a required prefix__ for a file given in command line, 
 as it marks which parameters are actually files. This information is required
@@ -87,7 +93,7 @@ to upload the required files into Docker container before running the actual too
 You can still access the native help of a tool with tool-specific way, 
 usually providing parameter `-h` or `--help`. For example:
 
-    % cincan run cincan/tshark --help
+    % cccp run cincan/tshark --help
 
 Finally note that you are free to invoke the native tool in any supported way
 irrelevant of which hints, if any, are available. Just remember to prefix
@@ -99,7 +105,7 @@ all filenames with `^` so that they get uploaded to docker image.
 Instead of looking at tool hints, you can use the harmonized way to invoking a tool
 with sub command 'do', e.g.:
 
-    % cincan do --read-file myfile.pcap --out application/json cincan/tshark
+    % cccp do --read-file myfile.pcap --out application/json cincan/tshark
 
 Note that we did not use the `^`-prefix. 
 
