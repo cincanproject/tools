@@ -2,3 +2,4 @@
 dist/
 build/
 **_pycache__
+*.egg-info/
