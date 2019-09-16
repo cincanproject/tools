@@ -208,7 +208,7 @@ def image_default_args(sub_parser):
 def main():
     m_parser = argparse.ArgumentParser()
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-                          help="Set the logging level")
+                          help="Set the logging level", default='INFO')
     subparsers = m_parser.add_subparsers(dest='sub_command')
 
     run_parser = subparsers.add_parser('run')
@@ -233,8 +233,8 @@ def main():
     do_parser.add_argument('-o', '--out-format', help='Output format')
 
     args = m_parser.parse_args()
-    if args.logLevel:
-        logging.basicConfig(level=getattr(logging, args.logLevel))
+
+    logging.basicConfig(format='%(message)s', level=getattr(logging, args.logLevel))
     if args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
