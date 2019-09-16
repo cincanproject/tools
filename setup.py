@@ -6,7 +6,7 @@ setup(
     packages=['metatool'],
     install_requires=['docker'],
     entry_points = {
-        'console_scripts': ['metatool=metatool.dockertools:main'],
+        'console_scripts': ['cccp=metatool.dockertools:main'],
     },
     description='CinCan Command Program',
     python_requires='>=3.6',
