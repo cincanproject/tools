@@ -292,7 +292,3 @@ def main():
             lst = tool_list[tool]
             print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output),
                                     ",".join(lst.tags)))
-
-
-if __name__ == '__main__':
-    main()
