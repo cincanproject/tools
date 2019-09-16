@@ -63,7 +63,7 @@ class ToolImage:
             b_name = m.group(1)
             f_name = "/tmp/work_files" + (b_name if b_name.startswith('/') else '/' + b_name).replace(':', '_')
             self.mapped_files[b_name] = f_name
-            self.logger.info("copy: %s -> %s", b_name, f_name)
+            self.logger.debug("copy: %s -> %s", b_name, f_name)
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
@@ -91,7 +91,7 @@ class ToolImage:
     def run(self, args: List[str]) -> bytes:
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(args)
-        self.logger.info("args: %s", ' '.join(cmd_args))
+        self.logger.debug("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
         tarball = self.__copy_uploaded_files()
         if self.mapped_files:
@@ -182,7 +182,7 @@ class ToolImage:
                 true_args.append(arg)
         for arg in args if args is not None else []:
             true_args.append(arg)
-        self.logger.info(" ".join(true_args))
+        self.logger.debug(" ".join(true_args))
         return self.run(true_args)
 
     def do_get_string(self, in_file: str, args: List[str] = None,
