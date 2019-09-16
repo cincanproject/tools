@@ -83,12 +83,19 @@ class ToolRegistry:
         for i in set().union(local_tools.keys(), remote_tools.keys()):
             if i not in local_tools:
                 use_tools[i] = remote_tools[i]
+                self.logger.debug("using remote image for %s", use_tools[i].name)
             elif i not in remote_tools:
                 use_tools[i] = local_tools[i]
+                self.logger.debug("using local image for %s", use_tools[i].name)
             else:
                 local = local_tools[i]
                 remote = remote_tools[i]
-                use_tools[i] = local if local.updated >= remote.updated else remote
+                if local.updated >= remote.updated:
+                    use_tools[i] = local
+                    self.logger.debug("using local image for %s", use_tools[i].name)
+                else:
+                    use_tools[i] = remote
+                    self.logger.debug("using remote image for %s", use_tools[i].name)
                 # assume all unique local tags are newer than remote ones
                 use_tags = [i for i in local.tags if i not in remote.tags] + remote.tags
                 use_tools[i].tags = use_tags
@@ -118,7 +125,7 @@ class ToolRegistry:
 
     def fetch_remote_data(self, tool: ToolInfo) -> Dict[str, Any]:
         """Fetch remote data to update a tool info"""
-        self.logger.info("updating %s...", tool.name)
+        self.logger.info("fetch %s...", tool.name)
         manifest = self.fetch_manifest(tool.name)
         v1_comp_string = manifest.get('history', [{}])[0].get('v1Compatibility')
         if v1_comp_string is None:
@@ -201,7 +208,7 @@ class ToolRegistry:
                     updated += 1
                 else:
                     tool_list[t.name] = old_tools[t.name]
-                    self.logger.info("no updates for %s", t.name)
+                    self.logger.debug("no updates for %s", t.name)
             # save the tool list
             if updated > 0:
                 self.tool_cache.parent.mkdir(parents=True, exist_ok=True)
