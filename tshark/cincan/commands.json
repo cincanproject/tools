@@ -2,11 +2,11 @@
   "commands": [
     {
       "command": ["-r", "<file>", "-Tjson"],
-      "input": "application/pcap",
+      "input": "application/vnd.tcpdump.pcap",
       "output": "application/json"
     }, {
       "command": ["-r", "<file>", "-Tpdml"],
-      "input": "application/pcap",
+      "input": "application/vnd.tcpdump.pcap",
       "output": "text/xml"
     }
   ]
