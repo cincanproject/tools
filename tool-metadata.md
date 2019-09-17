@@ -72,3 +72,7 @@ The commands file is JSON formatted with following kind of structure (from *tsha
       ]
     }
 
+Inside `command` field, each whitespace-separated part of the hinted command is
+given as a list. Special value `<file>` marks the name of the file containing input data.
+It is assumed that the output data goes to standard output.
+The input and output format is given in fields `input` and `output`, respectively.
