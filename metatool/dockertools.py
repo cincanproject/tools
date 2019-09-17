@@ -101,7 +101,7 @@ class ToolImage:
                     f.write(tarball)
             container.put_archive(path='/', data=tarball)
         container.start()
-        container.wait()
+        resp = container.wait()
         logs = container.attach(logs=True)
         container.remove()
         return logs

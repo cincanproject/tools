@@ -1,4 +1,4 @@
-from .dockertools import main
+from metatool import dockertools
 
 if __name__ == '__main__':
-    main()
+    dockertools.main()
