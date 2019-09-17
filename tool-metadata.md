@@ -42,6 +42,7 @@ in the Cincan project
 | Type                               | Description                             |
 |------------------------------------|-----------------------------------------|
 | application/json                   | JSON formatted data                     |
+| application/octet-stream           | Raw data                                |
 | application/pdf                    | PDF document                            |
 | application/vnd.tcpdump.pcap       | PCAP traffic capture                    |
 | application/zip                    | ZIP compressed file                     |
