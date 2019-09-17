@@ -45,9 +45,16 @@ so that you can easily figure out which tools are suitable for your data.
 The tools and input and output data types are listed by the subcommand 'list'
 like this:
 
-    % cincan list
+    % cincan list -i -o
 
-The output is made from columns of tool name, input types, output types
+The output is made from columns of tool name, input types, output types. 
+The list of supported arguments are:
+
+| Argument                | Description                                        |
+|-------------------------|----------------------------------------------------|
+| --in, -i                |  List possible input formats                       |
+| --out, -o               |  List possible output formats                      |
+| --tags, -t              |  List all docker tags (tool versions)              |
 
 The list is compiled from metadata LABELs inside dokertized tools, 
 as seen in this clip from `Dockerfile` for the tool 'tshark':
@@ -57,7 +64,7 @@ as seen in this clip from `Dockerfile` for the tool 'tshark':
 
 ### Command line hints
 
-For some tools you can get command line hints by subcommand 'hint':
+For some tools you can get command line hints by sub command 'hint':
 
     % cincan hint <tool>
 

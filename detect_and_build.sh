@@ -6,10 +6,23 @@ docker info
 
 for image in $(git diff --name-only "$CI_COMMIT_BEFORE_SHA"..HEAD|grep -Po "^[^/]+(?=/)"|uniq)
 do
+<<<<<<< HEAD
    if test -f "$image/Dockerfile"; then
    echo -e "\e[45mRunning: docker build -t cincan/$image:$TAG $image/.\e[49m"
    docker build -t cincan/"$image":"$TAG" "$image"/.
    
+=======
+
+   if [ ! -f "$image/Dockerfile" ]
+   then
+       echo -e "\e[33mNo Dockerfile for: $image.\e[39m"
+       continue
+   fi
+
+   echo -e "\e[45mRunning: docker build -t cincan/$image:$TAG $image/.\e[49m"
+   docker build -t cincan/$image:$TAG $image/.
+
+>>>>>>> master
    echo -e "\e[45mRunning: docker push cincan/$image:$TAG\e[49m"
    docker push cincan/"$image":"$TAG"
    fi

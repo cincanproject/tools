@@ -8,6 +8,7 @@ import sys
 import re
 import pathlib
 import json
+import datetime
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
@@ -42,7 +43,13 @@ class ToolImage:
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
 
-    def __get_image(self, image, pull: bool = False):
+    def get_tags(self) -> List[str]:
+        return self.image.tags
+
+    def get_creation_time(self) -> datetime.datetime:
+        return registry.parse_json_time(self.image.attrs['Created'])
+
+    def __get_image(self, image: str, pull: bool = False):
         """Get Docker image, possibly pulling it first"""
         if pull:
             self.client.images.pull(image)
@@ -101,7 +108,7 @@ class ToolImage:
 
     def run_get_string(self, args: List[str]) -> str:
         """Run native tool in container, return output as a string"""
-        return self.run(args).decode('ascii')
+        return self.run(args).decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
@@ -184,6 +191,11 @@ class ToolImage:
         return self.do_run(in_file, args, in_type, out_type).decode('ascii')
 
 
+def tool_with_file(file: str) -> ToolImage:
+    path = pathlib.Path(file).parent.name
+    return ToolImage(path=path)
+
+
 def image_default_args(sub_parser):
     """Default arguments for sub commands which load docker image"""
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
@@ -202,10 +214,16 @@ def main():
     run_parser = subparsers.add_parser('run')
     image_default_args(run_parser)
 
-    subparsers.add_parser('list')
+    list_parser = subparsers.add_parser('list')
+    list_parser.add_argument('-i', '--in', dest='input', action='store_true', help='Show input formats')
+    list_parser.add_argument('-o', '--out', action='store_true', help='Show output formats')
+    list_parser.add_argument('-t', '--tags', action='store_true', help='Show tags')
 
     hint_parser = subparsers.add_parser('hint')
     image_default_args(hint_parser)
+
+    mani_parser = subparsers.add_parser('manifest')
+    image_default_args(mani_parser)
 
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
@@ -245,17 +263,35 @@ def main():
             # sub command 'hint'
             prefix = "run {} ".format(name)
             hints = tool.list_command_line()
-            if len(hints) >0:
+            print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
+            if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
             else:
-                print("No hint available")
+                print("No command hints")
                 sys.exit(1)
+    elif args.sub_command == 'manifest':
+        # sub command 'manifest'
+        if len(args.tool) == 0:
+            raise Exception('Missing tool name argument')
+        name = args.tool[0]
+        reg = registry.ToolRegistry()
+        info = reg.fetch_manifest(name)
+        print(json.dumps(info, indent=2))
     else:
+        format_str = "{0:<25}"
+        if args.input:
+            format_str += " {2:<30}"
+        if args.out:
+            format_str += " {3:<30}"
+        if args.tags:
+            format_str += " {4:<20}"
+        format_str += " {1}"
         reg = registry.ToolRegistry()
         tool_list = reg.list_tools()
         for tool in sorted(tool_list):
             lst = tool_list[tool]
-            print('{0:<30}{1:<40}{2}'.format(lst.name, lst.input, lst.output))
+            print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output),
+                                    ",".join(lst.tags)))
 
 
 if __name__ == '__main__':

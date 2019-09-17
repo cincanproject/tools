@@ -4,9 +4,15 @@ import re
 pattern = re.compile("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*$")
 
 
-def test_image():
-    tool = dockertools.ToolImage(path="pdf-tools")
-    out = tool.run(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")]).decode('utf8')
+def test_help():
+    tool = dockertools.tool_with_file(__file__)
+    out = tool.run_get_string([])
+    assert out.startswith("See all commands:")
+
+
+def test_base64dump():
+    tool = dockertools.tool_with_file(__file__)
+    out = tool.run_get_string(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")])
     values = []
     for line in out.splitlines():
         m = re.match(pattern, line)
