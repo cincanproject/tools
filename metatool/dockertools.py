@@ -15,6 +15,7 @@ import tempfile
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
+from metatool.commands import ToolCommands
 
 
 class ToolImage:
@@ -164,7 +165,7 @@ class ToolImage:
         """Create path for sample file inside docker context (for unit testing) """
         return ('^' if prefix else '') + str(pathlib.Path(self.context) / file)
 
-    def get_commands(self) -> List[Dict[str, Any]]:
+    def get_commands(self) -> ToolCommands:
         """Read commands from commands.json from docker image, empty list if none"""
         container = self.client.containers.create(self.image)
         try:
@@ -181,18 +182,9 @@ class ToolImage:
             c = tarball.extractfile(f).read()
             js = json.loads(c)
             self.logger.debug(json.dumps(js))
-            commands = js['commands']
+            commands = ToolCommands(js['commands'])
         container.remove()
         return commands
-
-    def list_command_line(self) -> List[str]:
-        """List command line hints"""
-        commands = self.get_commands()
-        lines = []
-        for c in commands:
-            c_str = " ".join(c['command'])
-            lines.append(c_str.replace("<file>", "^<file>"))
-        return lines
 
     def set_file_content(self, content: str) -> str:
         """Set input file content directly"""
@@ -204,7 +196,7 @@ class ToolImage:
         """Do -sub command to run the native tool"""
         all_commands = self.get_commands()
         match_commands = []
-        for c in all_commands:
+        for c in all_commands.json:
             if '<file>' not in c['command']:
                 continue
             if in_type is not None and in_type not in c.get('input'):
@@ -309,7 +301,7 @@ def main():
         else:
             # sub command 'hint'
             prefix = "run {} ".format(name)
-            hints = tool.list_command_line()
+            hints = tool.get_commands().command_hints()
             print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
             if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
