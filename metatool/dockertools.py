@@ -66,15 +66,18 @@ class ToolImage:
         if m is not None:
             b_name = m.group(1)
             download = b_name.startswith('^')
-            b_name = b_name[1:] if download else b_name
-            path = pathlib.Path(b_name).resolve()
-            f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
             if not download:
                 # upload the file
+                path = pathlib.Path(b_name).resolve()
+                f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
                 self.upload_files[b_name] = f_name
                 self.logger.debug("up file: %s -> %s", b_name, f_name)
             else:
                 # download the file
+                b_name = b_name[1:]
+                if ".." in b_name or pathlib.Path(b_name).is_absolute():
+                    raise Exception("Output paths must be relative to current directory")
+                f_name = "/tmp/work_files/" + b_name
                 self.download_files[b_name] = f_name
                 self.logger.debug("down file: %s -> %s", f_name, b_name)
         return f_name
@@ -88,7 +91,7 @@ class ToolImage:
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, t in self.upload_files.items():
-            self.logger.debug("in-file %s", name)
+            self.logger.debug("upload file %s", name)
             if name in self.file_content:
                 # file contents in memory
                 data = self.file_content[name].encode('ascii')
@@ -104,13 +107,14 @@ class ToolImage:
     def __copy_downloaded_files(self, container):
         """Copy downloaded files into tar archive"""
         for name, t in self.download_files.items():
-            chunks, stat = container.get_archive(t)
+            self.logger.debug("download file %s", t)
+            chunks, stat = container.get_archive(t)  # pathlib.Path(t).parent)
             f = tempfile.NamedTemporaryFile(delete=False)
-            self.logger.debug("down-file %s", name)
             for c in chunks:
                 f.write(c)
             f.close()
             tar = tarfile.open(f.name)
+            self.logger.debug("extract downloaded files...")
             tar.extractall()
             tar.close()
             os.unlink(f.name)
@@ -130,8 +134,10 @@ class ToolImage:
             container.put_archive(path='/', data=tarball)
         container.start()
         resp = container.wait()
+        exit_code = resp.get('StatusCode', 0)
         logs = container.attach(logs=True)
-        self.__copy_downloaded_files(container)
+        if exit_code == 0:
+            self.__copy_downloaded_files(container)
         container.remove()
         return logs
 
