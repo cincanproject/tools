@@ -46,6 +46,7 @@ class ToolImage:
         self.download_files = {}  # files to download, key = name in host, value = name in image
         self.download_path = "/tmp/download_files"
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
+        self.unpack_download_files = False
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
 
@@ -110,16 +111,22 @@ class ToolImage:
         """Copy downloaded files into tar archive"""
         for name, t in self.download_files.items():
             self.logger.debug("download file %s", t)
-            chunks, stat = container.get_archive(t)  # pathlib.Path(t).parent)
-            f = tempfile.NamedTemporaryFile(delete=False)
+            chunks, stat = container.get_archive(t)
+            if self.unpack_download_files:
+                tar_f = tempfile.NamedTemporaryFile(delete=False)
+            else:
+                tar_name = pathlib.Path(name).as_posix().replace('/', '_') + ".tar"
+                self.logger.info("Output " + tar_name)
+                tar_f = open(tar_name, "wb")
             for c in chunks:
-                f.write(c)
-            f.close()
-            tar = tarfile.open(f.name)
-            self.logger.debug("extract downloaded files...")
-            tar.extractall()
-            tar.close()
-            os.unlink(f.name)
+                tar_f.write(c)
+            tar_f.close()
+            if self.unpack_download_files:
+                self.logger.debug("extract downloaded files...")
+                tar = tarfile.open(tar_f.name)
+                tar.extractall()
+                tar.close()
+                os.unlink(tar_f.name)
         return
 
     def run(self, args: List[str]) -> bytes:
@@ -238,6 +245,8 @@ def image_default_args(sub_parser):
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
+    sub_parser.add_argument('--no-unpack', action='store_true',
+                            help="Do not unpack downloaded result files, but leave in tar file")
     sub_parser.add_argument('--dump-upload-files', action='store_true',
                             help="Dump the uploaded tar file into 'upload_files.tar'")
 
@@ -282,6 +291,7 @@ def main():
             tool = ToolImage(path=args.path)
         else:
             tool = ToolImage()  # should raise exception
+        tool.unpack_download_files = not args.no_unpack
         tool.dump_upload_tar = args.dump_upload_files
         all_args = args.tool[1:]
         if args.sub_command == 'run':
