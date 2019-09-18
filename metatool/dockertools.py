@@ -42,7 +42,9 @@ class ToolImage:
         else:
             raise Exception("No file nor image specified")
         self.upload_files = {}    # files to upload, key = name in host, value = name in image
+        self.upload_path = "/tmp/upload_files"
         self.download_files = {}  # files to download, key = name in host, value = name in image
+        self.download_path = "/tmp/download_files"
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
@@ -69,7 +71,7 @@ class ToolImage:
             if not download:
                 # upload the file
                 path = pathlib.Path(b_name).resolve()
-                f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
+                f_name = self.upload_path + path.as_posix().replace(':', '_')
                 self.upload_files[b_name] = f_name
                 self.logger.debug("up file: %s -> %s", b_name, f_name)
             else:
@@ -77,7 +79,7 @@ class ToolImage:
                 b_name = b_name[1:]
                 if ".." in b_name or pathlib.Path(b_name).is_absolute():
                     raise Exception("Output paths must be relative to current directory")
-                f_name = "/tmp/work_files/" + b_name
+                f_name = self.download_path + '/' + b_name
                 self.download_files[b_name] = f_name
                 self.logger.debug("down file: %s -> %s", f_name, b_name)
         return f_name
