@@ -1,4 +1,6 @@
 import argparse
+import os
+
 import docker
 import docker.errors
 import logging
@@ -9,6 +11,7 @@ import re
 import pathlib
 import json
 import datetime
+import tempfile
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
@@ -98,6 +101,21 @@ class ToolImage:
         tar.close()
         return file_out.getvalue()
 
+    def __copy_downloaded_files(self, container):
+        """Copy downloaded files into tar archive"""
+        for name, t in self.download_files.items():
+            chunks, stat = container.get_archive(t)
+            f = tempfile.NamedTemporaryFile(delete=False)
+            self.logger.debug("down-file %s", name)
+            for c in chunks:
+                f.write(c)
+            f.close()
+            tar = tarfile.open(f.name)
+            tar.extractall()
+            tar.close()
+            os.unlink(f.name)
+        return
+
     def run(self, args: List[str]) -> bytes:
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(args)
@@ -113,6 +131,7 @@ class ToolImage:
         container.start()
         resp = container.wait()
         logs = container.attach(logs=True)
+        self.__copy_downloaded_files(container)
         container.remove()
         return logs
 
