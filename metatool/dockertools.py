@@ -61,7 +61,8 @@ class ToolImage:
         f_name = name
         if m is not None:
             b_name = m.group(1)
-            f_name = "/tmp/work_files" + (b_name if b_name.startswith('/') else '/' + b_name).replace(':', '_')
+            path = pathlib.Path(b_name).resolve()
+            f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
             self.mapped_files[b_name] = f_name
             self.logger.debug("copy: %s -> %s", b_name, f_name)
         return f_name
