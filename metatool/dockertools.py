@@ -163,9 +163,9 @@ class ToolImage:
         for c in all_commands:
             if '<file>' not in c['command']:
                 continue
-            if in_type is not None and in_type != c.get('input'):
+            if in_type is not None and in_type not in c.get('input'):
                 continue
-            if out_type is not None and out_type != c.get('output'):
+            if out_type is not None and out_type not in c.get('output'):
                 continue
             match_commands.append(c)
         if len(match_commands) != 1:
