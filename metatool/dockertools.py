@@ -38,7 +38,8 @@ class ToolImage:
             self.context = '.'  # not really correct, but will do
         else:
             raise Exception("No file nor image specified")
-        self.mapped_files = {}  # files to upload, key = name in host, value = name in image
+        self.upload_files = {}    # files to upload, key = name in host, value = name in image
+        self.download_files = {}  # files to download, key = name in host, value = name in image
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.dump_upload_tar = False
         self.file_pattern = re.compile("\\^(.+)")
@@ -61,10 +62,18 @@ class ToolImage:
         f_name = name
         if m is not None:
             b_name = m.group(1)
+            download = b_name.startswith('^')
+            b_name = b_name[1:] if download else b_name
             path = pathlib.Path(b_name).resolve()
             f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
-            self.mapped_files[b_name] = f_name
-            self.logger.debug("copy: %s -> %s", b_name, f_name)
+            if not download:
+                # upload the file
+                self.upload_files[b_name] = f_name
+                self.logger.debug("up file: %s -> %s", b_name, f_name)
+            else:
+                # download the file
+                self.download_files[b_name] = f_name
+                self.logger.debug("down file: %s -> %s", f_name, b_name)
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
@@ -75,7 +84,7 @@ class ToolImage:
         """Copy uploaded files into tar archive"""
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
-        for name, t in self.mapped_files.items():
+        for name, t in self.upload_files.items():
             self.logger.debug("in-file %s", name)
             if name in self.file_content:
                 # file contents in memory
@@ -95,7 +104,7 @@ class ToolImage:
         self.logger.debug("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
         tarball = self.__copy_uploaded_files()
-        if self.mapped_files:
+        if self.upload_files:
             self.logger.debug("Tarball to upload, size %d", len(tarball))
             if self.dump_upload_tar:
                 with open("upload_files.tar", "wb") as f:
