@@ -62,11 +62,12 @@ The list of supported arguments are:
 | --out, -o               |  List possible output formats                      |
 | --tags, -t              |  List all docker tags (tool versions)              |
 
-The list is compiled from metadata LABELs inside dokertized tools, 
-as seen in this clip from `Dockerfile` for the tool 'tshark':
+Note only a subset of all tools have the required metadata to give hints.
+If the data is not available, you get the following output:
 
-    LABEL io.cincan.input="application/pcap"
-    LABEL io.cincan.output="application/json,text/xml"
+    % cccp hint <tool-without-metadata>
+    ...
+    No command hints
 
 ### Command line hints
 
