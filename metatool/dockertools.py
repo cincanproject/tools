@@ -182,7 +182,7 @@ class ToolImage:
             c = tarball.extractfile(f).read()
             js = json.loads(c)
             self.logger.debug(json.dumps(js))
-            commands = ToolCommands(js['commands'])
+            commands = ToolCommands(js)
         container.remove()
         return commands
 
