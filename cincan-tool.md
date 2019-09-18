@@ -99,6 +99,20 @@ Finally note that you are free to invoke the native tool in any supported way
 irrelevant of which hints, if any, are available. Just remember to prefix
 all filenames with `^` so that they get uploaded to docker image.
 
+#### Access output files
+
+Some tools put their output into files. Normally, these files remain only in the
+docker container and are destroyed with the container.
+However, you can fetch output files by marking the files in command line with
+prefix `^^`-prefix.
+
+For example the tool _jsunpack-n_ writes the result in directory, which
+you can explicitly name with option `-d <dir>`.
+The following command line provides an input file for the tool _jsunpack-n_
+and also explicitly gives output directory which is then fetched from the
+docker container:
+
+    %  cccp run cincan/jsunpack-n ^sample.pdf -d ^^result-dir
 
 ### Harmonized tool input
 
