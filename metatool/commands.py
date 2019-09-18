@@ -3,15 +3,29 @@ from typing import List, Set, Dict, Tuple, Optional, Any
 
 class ToolCommands:
     """Tool commands and options"""
-    def __init__(self, json: List[Dict[str,Any]]):
-        self.json = json
+    def __init__(self, json: Dict[str,Any]):
+        self.commands_json = json['commands']
+        self.outputs_json = json.get('output-options', [])
+
+    def is_stdout_output_option(self) -> bool:
+        for t in self.outputs_json:
+            if t.get('stdout', False):
+                return True
+        return False
+
+    def get_output_to_file_option(self) -> Optional[List[str]]:
+        for t in self.outputs_json:
+            args = t.get('args', None)
+            if args:
+                return args
+        return None
 
     def command_line(self, in_file: str, args: List[str] = None,
                      in_type: Optional[str] = None, out_type: Optional[str] = None) -> List[str]:
         """Create actual command line"""
-        all_commands = self.json
+        all_commands = self.commands_json
         match_commands = []
-        for c in self.json:
+        for c in self.commands_json:
             if '<file>' not in c['command']:
                 continue
             if in_type is not None and in_type not in c.get('input'):
@@ -37,7 +51,15 @@ class ToolCommands:
 
     def command_hints(self) -> List[str]:
         lines = []
-        for c in self.json:
-            c_str = " ".join(c['command'])
-            lines.append(c_str.replace("<file>", "^<file>"))
+        stdout_opt = self.is_stdout_output_option()
+        output_opt = self.get_output_to_file_option()
+        for c in self.commands_json:
+            cmds = c['command']
+            str = " ".join(cmds).replace("<file>", "^<file>")
+            if output_opt:
+                opt_str = " ".join(output_opt).replace("<file>", "^^<file>")
+                if stdout_opt:
+                    opt_str = "[" + opt_str + "]"
+                str = opt_str + " " + str
+            lines.append(str)
         return lines
