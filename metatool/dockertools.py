@@ -49,6 +49,7 @@ class ToolImage:
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.unpack_download_files = False
         self.dump_upload_tar = False
+        self.write_summary = None
         self.file_pattern = re.compile("\\^(.+)")
 
     def get_tags(self) -> List[str]:
@@ -130,6 +131,22 @@ class ToolImage:
                 os.unlink(tar_f.name)
         return
 
+    def __write_summary(self, cmd_args: List[str]) -> Dict[str, Any]:
+        in_files = []
+        for f in self.upload_files.keys():
+            if f not in self.file_content:
+                in_files.append(f)
+        input_v = {
+            'files': in_files
+        }
+        cmd_v = {
+            'args': cmd_args
+        }
+        return {
+            'input': input_v,
+            'command': cmd_v,
+        }
+
     def run(self, args: List[str]) -> bytes:
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(args)
@@ -147,6 +164,10 @@ class ToolImage:
         exit_code = resp.get('StatusCode', 0)
         logs = container.attach(logs=True)
         if exit_code == 0:
+            if self.write_summary:
+                self.logger.info("Summary in %s", self.write_summary)
+                with open(self.write_summary, "w") as f:
+                    json.dump(self.__write_summary(cmd_args), f, indent=4)
             self.__copy_downloaded_files(container)
         container.remove()
         return logs
@@ -218,6 +239,7 @@ def image_default_args(sub_parser):
                             help="Do not unpack downloaded result files, but leave in tar file")
     sub_parser.add_argument('--dump-upload-files', action='store_true',
                             help="Dump the uploaded tar file into 'upload_files.tar'")
+    sub_parser.add_argument('--summary', help="Write a summary file with given name")
 
 
 def main():
@@ -262,6 +284,7 @@ def main():
             tool = ToolImage()  # should raise exception
         tool.unpack_download_files = not args.no_unpack
         tool.dump_upload_tar = args.dump_upload_files
+        tool.write_summary = args.summary
         all_args = args.tool[1:]
         if args.sub_command == 'run':
             # sub command 'run'
