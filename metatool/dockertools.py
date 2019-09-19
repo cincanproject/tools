@@ -140,12 +140,16 @@ class ToolImage:
         input_v = {
             'files': in_files
         }
+        output_v = {
+            'files': [str(k) for k in self.download_files.keys()]
+        }
         cmd_v = {
             'tool': self.name,
             'args': cmd_args,
         }
         return {
             'input': input_v,
+            'output': output_v,
             'command': cmd_v,
         }
 
