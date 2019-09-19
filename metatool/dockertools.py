@@ -132,7 +132,7 @@ class ToolImage:
                 os.unlink(tar_f.name)
         return
 
-    def __write_summary(self, cmd_args: List[str]) -> Dict[str, Any]:
+    def __write_summary(self, command: ToolCommand, args: List[str]) -> Dict[str, Any]:
         in_files = []
         for f in self.upload_files.keys():
             if f not in self.file_content:
@@ -140,12 +140,16 @@ class ToolImage:
         input_v = {
             'files': in_files
         }
+        if command.in_type:
+            input_v['type'] = command.in_type
         output_v = {
             'files': [str(k) for k in self.download_files.keys()]
         }
+        if command.out_type:
+            output_v['type'] = command.out_type
         cmd_v = {
             'tool': self.name,
-            'args': cmd_args,
+            'args': args,
         }
         return {
             'input': input_v,
@@ -173,7 +177,7 @@ class ToolImage:
             if self.write_summary:
                 self.logger.info("Summary in %s", self.write_summary)
                 with open(self.write_summary, "w") as f:
-                    json.dump(self.__write_summary(cmd_args), f, indent=4)
+                    json.dump(self.__write_summary(command, cmd_args), f, indent=4)
             self.__copy_downloaded_files(container)
         container.remove()
         return logs
