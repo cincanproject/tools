@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {
+      "command": ["<file>"],
+      "input": "application/pdf"
+    }
+  ],
+  "output-options": [
+    {
+      "args": ["-d", "<out-dir>"]
+    }
+  ]
+}
