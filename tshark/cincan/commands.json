@@ -9,5 +9,13 @@
       "input": "application/vnd.tcpdump.pcap",
       "output": "text/xml"
     }
+  ],
+ "output-options": [
+    {
+      "stdout": true
+    },
+    {
+      "args": ["-w", "<out-file>"]
+    }
   ]
 }
