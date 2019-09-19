@@ -15,7 +15,7 @@ import tempfile
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
-from metatool.commands import ToolCommands
+from metatool.commands import ToolCommand, ToolCommands
 
 
 class ToolImage:
@@ -153,9 +153,9 @@ class ToolImage:
             'command': cmd_v,
         }
 
-    def run(self, args: List[str]) -> bytes:
+    def __run(self, command: ToolCommand) -> bytes:
         """Run native tool in container with given arguments"""
-        cmd_args = self.__process_args(args)
+        cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
         tarball = self.__copy_uploaded_files()
@@ -178,9 +178,13 @@ class ToolImage:
         container.remove()
         return logs
 
+    def run(self, args: List[str]) -> bytes:
+        """Run native tool in container, return output"""
+        return self.__run(ToolCommand(args))
+
     def run_get_string(self, args: List[str]) -> str:
         """Run native tool in container, return output as a string"""
-        return self.run(args).decode('utf8')
+        return self.__run(ToolCommand(args)).decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
@@ -222,8 +226,8 @@ class ToolImage:
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
         """Do -sub command to run the native tool"""
         cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type)
-        self.logger.debug(" ".join(cmd_line))
-        return self.run(cmd_line)
+        self.logger.debug(cmd_line)
+        return self.__run(cmd_line)
 
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
