@@ -21,9 +21,10 @@ from metatool.commands import ToolCommands
 class ToolImage:
     """A tool wrapped to docker image"""
 
-    def __init__(self, path: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
+    def __init__(self, name: str, path: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
         self.logger = logging.getLogger(path)
         self.client = docker.from_env()
+        self.name = name
         if path is not None:
             self.image, log = self.client.images.build(path=path)
             self.context = path
@@ -140,7 +141,8 @@ class ToolImage:
             'files': in_files
         }
         cmd_v = {
-            'args': cmd_args
+            'tool': self.name,
+            'args': cmd_args,
         }
         return {
             'input': input_v,
@@ -227,7 +229,7 @@ class ToolImage:
 
 def tool_with_file(file: str) -> ToolImage:
     path = pathlib.Path(file).parent.name
-    return ToolImage(path=path)
+    return ToolImage(path, path=path)
 
 
 def image_default_args(sub_parser):
@@ -277,11 +279,11 @@ def main():
             raise Exception('Missing tool name argument')
         name = args.tool[0]
         if args.path is None:
-            tool = ToolImage(image=name, pull=args.pull)
+            tool = ToolImage(name, image=name, pull=args.pull)
         elif args.path is not None:
-            tool = ToolImage(path=args.path)
+            tool = ToolImage(name, path=args.path)
         else:
-            tool = ToolImage()  # should raise exception
+            tool = ToolImage(name)  # should raise exception
         tool.unpack_download_files = not args.no_unpack
         tool.dump_upload_tar = args.dump_upload_files
         tool.write_summary = args.summary
@@ -300,7 +302,7 @@ def main():
                                                 in_type=args.in_format, out_type=args.out_format))
         else:
             # sub command 'hint'
-            prefix = "run {} ".format(name)
+            prefix = "run ".format(name)
             hints = tool.get_commands().command_hints()
             print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
             if len(hints) > 0:
