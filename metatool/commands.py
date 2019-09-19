@@ -11,10 +11,7 @@ class ToolCommands:
         self.file_pattern = re.compile("(<[^>]*(file|dir)>)")
 
     def is_stdout_output_option(self) -> bool:
-        for t in self.outputs_json:
-            if t.get('stdout', False):
-                return True
-        return False
+        return any(map(lambda t: t.get('stdout', False), self.outputs_json))
 
     def get_output_to_file_option(self) -> Optional[List[str]]:
         for t in self.outputs_json:
