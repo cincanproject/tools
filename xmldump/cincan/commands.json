@@ -4,5 +4,13 @@
       "command": ["text", "<file>"],
       "input": "text/xml",
       "help": "Extract text from XML file" }
+  ],
+  "output-options": [
+    {
+      "stdout": true
+    },
+    {
+      "args": ["-o", "<out-file>"]
+    }
   ]
 }
