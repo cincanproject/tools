@@ -3,6 +3,16 @@ import re
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 
+class ToolCommand:
+    def __init__(self, args: List[str], in_type: Optional[str] = None, out_type: Optional[str] = None):
+        self.args = args
+        self.in_type = in_type
+        self.out_type = out_type
+
+    def __str__(self) -> str:
+        return " ".join(self.args)
+
+
 class ToolCommands:
     """Tool commands and options"""
     def __init__(self, json: Dict[str,Any]):
@@ -21,10 +31,12 @@ class ToolCommands:
         return None
 
     def command_line(self, in_file: str, args: List[str] = None,
-                     in_type: Optional[str] = None, out_type: Optional[str] = None) -> List[str]:
+                     in_type: Optional[str] = None, out_type: Optional[str] = None) -> ToolCommand:
         """Create actual command line"""
         all_commands = self.commands_json
         match_commands = []
+        match_in_type = None
+        match_out_type = None
         for c in self.commands_json:
             if not any(map(lambda s: self.file_pattern.match(s), c['command'])):
                 continue
@@ -33,6 +45,8 @@ class ToolCommands:
             if out_type is not None and out_type not in c.get('output'):
                 continue
             match_commands.append(c)
+            match_in_type = c.get('input')
+            match_out_type = c.get('output')
         if len(match_commands) != 1:
             raise Exception("Single command should match given input/output filter, now:\n{}".format(
                 "\n".join(map(lambda x: "{}{}".format(" -i {}".format(x['input']) if 'input' in x else "",
@@ -44,7 +58,7 @@ class ToolCommands:
             true_args.append(self.file_pattern.sub("^" + in_file, arg))
         for arg in args if args is not None else []:
             true_args.append(arg)
-        return true_args
+        return ToolCommand(true_args, match_in_type, match_out_type)
 
     def command_hints(self) -> List[str]:
         lines = []
