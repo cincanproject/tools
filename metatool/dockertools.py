@@ -263,8 +263,9 @@ class ToolImage:
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
         """Do -sub command to run the native tool"""
-        #  use explicit output file, otherwise stdout
-        exp_out_file = "output" if self.get_commands().get_output_to_file_option() else None
+        exp_out_file = None
+        if self.output_tar and self.get_commands().get_output_to_file_option():
+            exp_out_file = "output"  # use explicit output file supported by the tool
         cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
                                                     write_output=exp_out_file)
         self.logger.debug(cmd_line)
