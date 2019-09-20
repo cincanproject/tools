@@ -206,8 +206,6 @@ class ToolImage:
                                          None if self.download_files else stdout,  # use stdout if no other output
                                          out_sum)
         container.remove()
-        # sys.stdout.write(stdout)
-        # sys.stderr.write(stderr)
         return stdout, stderr, exit_code
 
     def run(self, args: List[str]) -> (str, str, int):
