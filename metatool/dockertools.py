@@ -174,7 +174,7 @@ class ToolImage:
             'command': cmd_v,
         }
 
-    def __run(self, command: ToolCommand) -> bytes:
+    def __run(self, command: ToolCommand) -> (str, str, int):
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
@@ -188,21 +188,28 @@ class ToolImage:
             container.put_archive(path='/', data=tarball)
         container.start()
         resp = container.wait()
+
+        # Note, could not get attac(stream=True) to actually stop once all data is read.
+        # Using the ugly get string variant. Very large outputs should be written to disk by the tool :(
         exit_code = resp.get('StatusCode', 0)
-        logs = container.attach(logs=True)
+        stderr = container.attach(logs=True, stdout=False, stderr=True)
+        stdout = container.attach(logs=True, stdout=True, stderr=False)
         if exit_code == 0:
             out_sum = self.__write_summary(command, cmd_args)
             self.__copy_downloaded_files(container, out_sum)
         container.remove()
-        return logs
+        # sys.stdout.write(stdout)
+        # sys.stderr.write(stderr)
+        return stdout, stderr, exit_code
 
-    def run(self, args: List[str]) -> bytes:
+    def run(self, args: List[str]) -> (str, str, int):
         """Run native tool in container, return output"""
         return self.__run(ToolCommand(args))
 
     def run_get_string(self, args: List[str]) -> str:
         """Run native tool in container, return output as a string"""
-        return self.__run(ToolCommand(args)).decode('utf8')
+        r = self.__run(ToolCommand(args))
+        return r[0].decode('utf8') + r[1].decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
@@ -241,7 +248,7 @@ class ToolImage:
         return 'in-str'
 
     def do_run(self, in_file: str, args: List[str] = None,
-               in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
+               in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
         """Do -sub command to run the native tool"""
         cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
                                                     write_output="output")
@@ -251,7 +258,8 @@ class ToolImage:
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
         """Do -sub command to run the native tool, get output as string"""
-        return self.do_run(in_file, args, in_type, out_type).decode('ascii')
+        r = self.do_run(in_file, args, in_type, out_type)
+        return r[0].decode('utf8') + r[1].decode('utf8')
 
 
 def tool_with_file(file: str) -> ToolImage:
@@ -315,7 +323,10 @@ def main():
         all_args = args.tool[1:]
         if args.sub_command == 'run':
             # sub command 'run'
-            sys.stdout.buffer.write(tool.run(all_args))
+            ret = tool.run(all_args)
+            sys.stdout.buffer.write(ret[0])
+            sys.stderr.buffer.write(ret[1])
+            sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
             tool.output_tar = 'output.tar' if not tool.unpack_download_files else None  # Default is tar-format output!
@@ -324,8 +335,10 @@ def main():
                 read_file = tool.set_file_content(args.in_str)
             elif read_file is None:
                 raise Exception('Must specify either --read-file or --in-str')
-            sys.stdout.buffer.write(tool.do_run(in_file=read_file, args=all_args,
-                                                in_type=args.in_format, out_type=args.out_format))
+            ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_format, out_type=args.out_format)
+            sys.stdout.buffer.write(ret[0])
+            sys.stderr.buffer.write(ret[1])
+            sys.exit(ret[2])  # exit code
         else:
             # sub command 'hint'
             prefix = "run ".format(name)
