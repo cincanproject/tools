@@ -3,6 +3,7 @@
     {
       "command": ["text", "<file>"],
       "input": "text/xml",
+      "output": "text/plain",
       "help": "Extract text from XML file" }
   ],
   "output-options": [
