@@ -112,6 +112,8 @@ class ToolImage:
 
     def __copy_downloaded_files(self, container, stdout: bytes, summary: Optional[Dict]):
         """Copy downloaded files into tar archive"""
+        if not self.download_files and not stdout:
+            return
         chunks, stat = container.get_archive(self.download_path)
 
         # FIXME: We read into temporary file, as do not know how to read chunks as tar-file
@@ -201,10 +203,15 @@ class ToolImage:
         stderr = container.attach(logs=True, stdout=False, stderr=True)
         stdout = container.attach(logs=True, stdout=True, stderr=False)
         if exit_code == 0:
-            out_sum = self.__write_summary(command, cmd_args)
-            self.__copy_downloaded_files(container,
-                                         None if self.download_files else stdout,  # use stdout if no other output
-                                         out_sum)
+            if self.output_tar:
+                # write all output into tar file
+                out_sum = self.__write_summary(command, cmd_args)
+                self.__copy_downloaded_files(container,
+                                             None if self.download_files else stdout,  # use stdout if no other output
+                                             out_sum)
+            else:
+                # write stdout, copy files to filesystem if any
+                self.__copy_downloaded_files(container, b'', None)
         container.remove()
         return stdout, stderr, exit_code
 
