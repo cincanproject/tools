@@ -50,7 +50,7 @@ class ToolImage:
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.unpack_download_files = False
         self.dump_upload_tar = False
-        self.write_summary = None
+        self.output_tar = None
         self.file_pattern = re.compile("\\^(.+)")
 
     def get_tags(self) -> List[str]:
@@ -110,26 +110,43 @@ class ToolImage:
         tar.close()
         return file_out.getvalue()
 
-    def __copy_downloaded_files(self, container):
+    def __copy_downloaded_files(self, container, summary: Optional[Dict]):
         """Copy downloaded files into tar archive"""
-        for name, t in self.download_files.items():
-            self.logger.debug("download file %s", t)
-            chunks, stat = container.get_archive(t)
-            if self.unpack_download_files:
-                tar_f = tempfile.NamedTemporaryFile(delete=False)
+        chunks, stat = container.get_archive(self.download_path)
+
+        # FIXME: We read into temporary file, as do not know how to read chunks as tar-file
+        tmp_tar = tempfile.NamedTemporaryFile(delete=False)
+        for c in chunks:
+            tmp_tar.write(c)
+        tmp_tar.close()
+        read_tar = tarfile.open(tmp_tar.name)
+
+        write_tar = None
+        if self.output_tar:
+            # Put all output into tar-file
+            write_tar = tarfile.open(self.output_tar, "w")
+            self.logger.info("Output to %s", self.output_tar)
+            out_sum = io.BytesIO(json.dumps(summary, indent=4).encode('ascii'))
+            out_file = tarfile.TarInfo('.METADATA/command.json')
+            out_file.size = len(out_sum.getvalue())
+            self.logger.debug(" %s", out_file.name)
+            write_tar.addfile(out_file, fileobj=out_sum)
+
+        name_re = re.compile("^" + pathlib.Path(self.download_path).name + "/?")
+        for m in read_tar.getmembers():
+            n_name = name_re.sub('', m.name)
+            if n_name == "":
+                continue
+            self.logger.debug(" %s", n_name)
+            if write_tar:
+                content = read_tar.extractfile(m)
+                m.name = n_name
+                write_tar.addfile(m, fileobj=content)
             else:
-                tar_name = pathlib.Path(name).as_posix().replace('/', '_') + ".tar"
-                self.logger.info("Output " + tar_name)
-                tar_f = open(tar_name, "wb")
-            for c in chunks:
-                tar_f.write(c)
-            tar_f.close()
-            if self.unpack_download_files:
-                self.logger.debug("extract downloaded files...")
-                tar = tarfile.open(tar_f.name)
-                tar.extractall()
-                tar.close()
-                os.unlink(tar_f.name)
+                read_tar.extract(m)
+        read_tar.close()
+        write_tar.close() if write_tar else None
+        os.unlink(tmp_tar.name)
         return
 
     def __write_summary(self, command: ToolCommand, args: List[str]) -> Dict[str, Any]:
@@ -174,11 +191,8 @@ class ToolImage:
         exit_code = resp.get('StatusCode', 0)
         logs = container.attach(logs=True)
         if exit_code == 0:
-            if self.write_summary:
-                self.logger.info("Summary in %s", self.write_summary)
-                with open(self.write_summary, "w") as f:
-                    json.dump(self.__write_summary(command, cmd_args), f, indent=4)
-            self.__copy_downloaded_files(container)
+            out_sum = self.__write_summary(command, cmd_args)
+            self.__copy_downloaded_files(container, out_sum)
         container.remove()
         return logs
 
@@ -229,7 +243,8 @@ class ToolImage:
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> bytes:
         """Do -sub command to run the native tool"""
-        cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type)
+        cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
+                                                    write_output="output")
         self.logger.debug(cmd_line)
         return self.__run(cmd_line)
 
@@ -249,11 +264,10 @@ def image_default_args(sub_parser):
     sub_parser.add_argument('tool', help="the tool and possible arguments", nargs=argparse.REMAINDER)
     sub_parser.add_argument('-p', '--path', help='path to Docker context')
     sub_parser.add_argument('-u', '--pull', action='store_true', help='Pull image from registry')
-    sub_parser.add_argument('--no-unpack', action='store_true',
-                            help="Do not unpack downloaded result files, but leave in tar file")
+    sub_parser.add_argument('--unpack', action='store_true',
+                            help="Unpack output file(s) from tar")
     sub_parser.add_argument('--dump-upload-files', action='store_true',
                             help="Dump the uploaded tar file into 'upload_files.tar'")
-    sub_parser.add_argument('--summary', help="Write a summary file with given name")
 
 
 def main():
@@ -296,15 +310,15 @@ def main():
             tool = ToolImage(name, path=args.path)
         else:
             tool = ToolImage(name)  # should raise exception
-        tool.unpack_download_files = not args.no_unpack
+        tool.unpack_download_files = args.unpack
         tool.dump_upload_tar = args.dump_upload_files
-        tool.write_summary = args.summary
         all_args = args.tool[1:]
         if args.sub_command == 'run':
             # sub command 'run'
             sys.stdout.buffer.write(tool.run(all_args))
         elif args.sub_command == 'do':
             # sub command 'do'
+            tool.output_tar = 'output.tar' if not tool.unpack_download_files else None  # Default is tar-format output!
             read_file = args.read_file
             if args.in_str is not None:
                 read_file = tool.set_file_content(args.in_str)
