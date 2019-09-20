@@ -13,9 +13,6 @@
  "output-options": [
     {
       "stdout": true
-    },
-    {
-      "args": ["-w", "<out-file>"]
     }
   ]
 }
