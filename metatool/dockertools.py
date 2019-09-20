@@ -110,7 +110,7 @@ class ToolImage:
         tar.close()
         return file_out.getvalue()
 
-    def __copy_downloaded_files(self, container, summary: Optional[Dict]):
+    def __copy_downloaded_files(self, container, stdout: bytes, summary: Optional[Dict]):
         """Copy downloaded files into tar archive"""
         chunks, stat = container.get_archive(self.download_path)
 
@@ -131,6 +131,12 @@ class ToolImage:
             out_file.size = len(out_sum.getvalue())
             self.logger.debug(" %s", out_file.name)
             write_tar.addfile(out_file, fileobj=out_sum)
+
+        if write_tar and stdout:
+            out_file = tarfile.TarInfo('stdout')
+            out_file.size = len(stdout)
+            self.logger.debug(" %s", out_file.name)
+            write_tar.addfile(out_file, fileobj=io.BytesIO(stdout))
 
         name_re = re.compile("^" + pathlib.Path(self.download_path).name + "/?")
         for m in read_tar.getmembers():
@@ -196,7 +202,9 @@ class ToolImage:
         stdout = container.attach(logs=True, stdout=True, stderr=False)
         if exit_code == 0:
             out_sum = self.__write_summary(command, cmd_args)
-            self.__copy_downloaded_files(container, out_sum)
+            self.__copy_downloaded_files(container,
+                                         None if self.download_files else stdout,  # use stdout if no other output
+                                         out_sum)
         container.remove()
         # sys.stdout.write(stdout)
         # sys.stderr.write(stderr)
@@ -250,8 +258,10 @@ class ToolImage:
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
         """Do -sub command to run the native tool"""
+        #  use explicit output file, otherwise stdout
+        exp_out_file = "output" if self.get_commands().get_output_to_file_option() else None
         cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
-                                                    write_output="output")
+                                                    write_output=exp_out_file)
         self.logger.debug(cmd_line)
         return self.__run(cmd_line)
 
@@ -336,7 +346,7 @@ def main():
             elif read_file is None:
                 raise Exception('Must specify either --read-file or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_format, out_type=args.out_format)
-            sys.stdout.buffer.write(ret[0])
+            # sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
             sys.exit(ret[2])  # exit code
         else:
