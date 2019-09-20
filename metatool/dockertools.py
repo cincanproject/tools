@@ -233,7 +233,7 @@ class ToolImage:
         try:
             raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         except docker.errors.APIError:
-            return []
+            return ToolCommands({})
         buffer = io.BytesIO()
         for r in raw_tar:
             buffer.write(r)
