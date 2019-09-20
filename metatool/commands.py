@@ -31,7 +31,8 @@ class ToolCommands:
         return None
 
     def command_line(self, in_file: str, args: List[str] = None,
-                     in_type: Optional[str] = None, out_type: Optional[str] = None) -> ToolCommand:
+                     in_type: Optional[str] = None, out_type: Optional[str] = None,
+                     write_output: Optional[str] = None) -> ToolCommand:
         """Create actual command line"""
         all_commands = self.commands_json
         match_commands = []
@@ -54,6 +55,12 @@ class ToolCommands:
                               match_commands))))
         command = match_commands[0]['command']
         true_args = []
+        if write_output:
+            write_opt = self.get_output_to_file_option()
+            if not write_opt:
+                raise Exception("Cannot use the tool, do not know how to make it to write to a file/directory")
+            for arg in write_opt:
+                true_args.append(self.file_pattern.sub("^^" + write_output, arg))
         for arg in command:
             true_args.append(self.file_pattern.sub("^" + in_file, arg))
         for arg in args if args is not None else []:
