@@ -43,6 +43,7 @@ class ToolImage:
             self.context = '.'  # not really correct, but will do
         else:
             raise Exception("No file nor image specified")
+        self.metadata_file = '.METADATA/files.json'
         self.upload_files = {}  # files to upload, key = name in host, value = name in image
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.upload_tar = None  # tar file to upload
@@ -136,7 +137,7 @@ class ToolImage:
             write_tar = tarfile.open(self.output_tar, "w")
             self.logger.info("Output to %s", self.output_tar)
             out_sum = io.BytesIO(json.dumps(summary, indent=4).encode('ascii'))
-            out_file = tarfile.TarInfo('.METADATA/files.json')
+            out_file = tarfile.TarInfo(self.metadata_file)
             out_file.size = len(out_sum.getvalue())
             self.logger.debug(" %s", out_file.name)
             write_tar.addfile(out_file, fileobj=out_sum)
@@ -277,7 +278,7 @@ class ToolImage:
             # Input file and type in tar
             self.logger.info("Read input from %s", self.upload_tar)
             with tarfile.open(self.upload_tar, "r") as f:
-                js = json.load(f.extractfile(".METADATA/files.json"))
+                js = json.load(f.extractfile(self.metadata_file))
             cmd_line = self.get_commands().parse_command(js, write_output=exp_out_file)
         else:
             # Using command line
