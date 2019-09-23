@@ -165,29 +165,31 @@ class ToolImage:
         os.unlink(tmp_tar.name)
         return
 
-    def __write_summary(self, command: ToolCommand, args: List[str]) -> Dict[str, Any]:
+    def __write_file_metadata(self, command: ToolCommand, args: List[str]) -> Dict[str, Any]:
+        files_v = []
+        for name in [str(k) for k in self.download_files.keys()] if self.download_files else ['stdout']:
+            f = {'name': name}
+            if command.out_type:
+                f['type'] = command.out_type
+            files_v.append(f)
+        cmd_v = {
+            'tool': self.name,
+            'args': ' '.join(args),
+        }
         in_files = []
         for f in self.upload_files.keys():
             if f not in self.file_content:
+                f = {'name': f}
+                if command.in_type:
+                    f['type'] = command.in_type
                 in_files.append(f)
-        input_v = {
-            'files': in_files
-        }
-        if command.in_type:
-            input_v['type'] = command.in_type
-        output_v = {
-            'files': [str(k) for k in self.download_files.keys()] if self.download_files else ['stdout']
-        }
-        if command.out_type:
-            output_v['type'] = command.out_type
-        cmd_v = {
-            'tool': self.name,
-            'args': args,
+        history_v = {
+            'input': in_files,
+            'command': cmd_v,
         }
         return {
-            'input': input_v,
-            'output': output_v,
-            'command': cmd_v,
+            'files': files_v,
+            'history': history_v,
         }
 
     def __run(self, command: ToolCommand) -> (str, str, int):
@@ -213,7 +215,7 @@ class ToolImage:
         if exit_code == 0:
             if self.output_tar:
                 # write all output into tar file
-                out_sum = self.__write_summary(command, cmd_args)
+                out_sum = self.__write_file_metadata(command, cmd_args)
                 self.__copy_downloaded_files(container,
                                              None if self.download_files else stdout,  # use stdout if no other output
                                              out_sum)
