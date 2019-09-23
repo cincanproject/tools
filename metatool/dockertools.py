@@ -168,7 +168,7 @@ class ToolImage:
         if command.in_type:
             input_v['type'] = command.in_type
         output_v = {
-            'files': [str(k) for k in self.download_files.keys()]
+            'files': [str(k) for k in self.download_files.keys()] if self.download_files else ['stdout']
         }
         if command.out_type:
             output_v['type'] = command.out_type
