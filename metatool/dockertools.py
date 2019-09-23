@@ -373,7 +373,9 @@ def main():
             elif read_file is None:
                 raise Exception('Must specify either --in-tar, --read-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_format, out_type=args.out_format)
-            # sys.stdout.buffer.write(ret[0])
+            if tool.get_commands().get_output_to_file_option():
+                # content is handled through output file, dump stdout visible as it should not contain the data
+                sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
             sys.exit(ret[2])  # exit code
         else:
