@@ -43,11 +43,12 @@ class ToolImage:
             self.context = '.'  # not really correct, but will do
         else:
             raise Exception("No file nor image specified")
-        self.upload_files = {}    # files to upload, key = name in host, value = name in image
+        self.upload_files = {}  # files to upload, key = name in host, value = name in image
+        self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
+        self.upload_tar = None  # tar file to upload
         self.upload_path = "/tmp/upload_files"
         self.download_files = {}  # files to download, key = name in host, value = name in image
         self.download_path = "/tmp/download_files"
-        self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
         self.unpack_download_files = False
         self.dump_upload_tar = False
         self.output_tar = None
@@ -92,8 +93,14 @@ class ToolImage:
         """Process list of arguments"""
         return list(map(lambda a: self.__process_arg(a), args))
 
-    def __copy_uploaded_files(self) -> bytes:
+    def __create_upload_tar(self) -> Optional[bytes]:
         """Copy uploaded files into tar archive"""
+        if self.upload_tar:
+            # upload tar just given, return it
+            with open(self.upload_tar, "rb") as f:
+                return f.read()
+        if not self.upload_files:
+            return None
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, t in self.upload_files.items():
@@ -129,7 +136,7 @@ class ToolImage:
             write_tar = tarfile.open(self.output_tar, "w")
             self.logger.info("Output to %s", self.output_tar)
             out_sum = io.BytesIO(json.dumps(summary, indent=4).encode('ascii'))
-            out_file = tarfile.TarInfo('.METADATA/command.json')
+            out_file = tarfile.TarInfo('.METADATA/files.json')
             out_file.size = len(out_sum.getvalue())
             self.logger.debug(" %s", out_file.name)
             write_tar.addfile(out_file, fileobj=out_sum)
@@ -187,8 +194,8 @@ class ToolImage:
         cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
-        tarball = self.__copy_uploaded_files()
-        if self.upload_files:
+        tarball = self.__create_upload_tar()
+        if tarball:
             self.logger.debug("Tarball to upload, size %d", len(tarball))
             if self.dump_upload_tar:
                 with open("upload_files.tar", "wb") as f:
@@ -266,8 +273,16 @@ class ToolImage:
         exp_out_file = None
         if self.output_tar and self.get_commands().get_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
-        cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
-                                                    write_output=exp_out_file)
+        if self.upload_tar:
+            # Input file and type in tar
+            self.logger.info("Read input from %s", self.upload_tar)
+            with tarfile.open(self.upload_tar, "r") as f:
+                js = json.load(f.extractfile(".METADATA/files.json"))
+            cmd_line = self.get_commands().parse_command(js, write_output=exp_out_file)
+        else:
+            # Using command line
+            cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
+                                                        write_output=exp_out_file)
         self.logger.debug(cmd_line)
         return self.__run(cmd_line)
 
@@ -316,6 +331,7 @@ def main():
 
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
+    do_parser.add_argument('-t', '--in-tar', help='Input as tar-file')
     do_parser.add_argument('-r', '--read-file', help='Input file to read')
     do_parser.add_argument('-s', '--in-str', help='Input string')
     do_parser.add_argument('-i', '--in-format', help='Input format')
@@ -347,10 +363,12 @@ def main():
             # sub command 'do'
             tool.output_tar = 'output.tar' if not tool.unpack_download_files else None  # Default is tar-format output!
             read_file = args.read_file
-            if args.in_str is not None:
+            if args.in_tar:
+                tool.upload_tar = args.in_tar
+            elif args.in_str is not None:
                 read_file = tool.set_file_content(args.in_str)
             elif read_file is None:
-                raise Exception('Must specify either --read-file or --in-str')
+                raise Exception('Must specify either --in-tar, --read-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_format, out_type=args.out_format)
             # sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
