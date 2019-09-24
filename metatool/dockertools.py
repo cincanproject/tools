@@ -213,15 +213,8 @@ class ToolImage:
         stderr = container.attach(logs=True, stdout=False, stderr=True)
         stdout = container.attach(logs=True, stdout=True, stderr=False)
         if exit_code == 0:
-            if self.output_tar:
-                # write all output into tar file
-                out_sum = self.__write_file_metadata(command, cmd_args)
-                self.__copy_downloaded_files(container,
-                                             None if self.download_files else stdout,  # use stdout if no other output
-                                             out_sum)
-            else:
-                # write stdout, copy files to filesystem if any
-                self.__copy_downloaded_files(container, b'', None)
+            # write stdout, copy files to filesystem if any
+            self.__copy_downloaded_files(container, b'', None)
         container.remove()
         return stdout, stderr, exit_code
 
@@ -270,6 +263,39 @@ class ToolImage:
         self.file_content['in-str'] = content
         return 'in-str'
 
+    def __do_run(self, command: ToolCommand) -> (str, str, int):
+        """Do-run native tool in container with input from tar-file"""
+        cmd_args = self.__process_args(command.args)
+        self.logger.debug("args: %s", ' '.join(cmd_args))
+
+        # override entry point to just keep the container running
+        container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
+
+        tarball = self.__create_upload_tar()
+        if tarball:
+            self.logger.debug("Tarball to upload, size %d", len(tarball))
+            if self.dump_upload_tar:
+                with open("upload_files.tar", "wb") as f:
+                    f.write(tarball)
+            container.put_archive(path='/tmp/upload_files/', data=tarball)
+
+        container.start()
+
+        # create the full command line and run with exec
+        entry_point = self.image.attrs['Config']['Entrypoint']
+        full_cmd = entry_point + cmd_args
+        exit_code, (stderr, stdout) = container.exec_run(full_cmd, demux=True)
+
+        container.kill()
+        if exit_code == 0:
+            # write all output into tar file
+            out_sum = self.__write_file_metadata(command, cmd_args)
+            self.__copy_downloaded_files(container,
+                                         None if self.download_files else stdout,  # use stdout if no other output
+                                         out_sum)
+        container.remove()
+        return stdout, stderr, exit_code
+
     def do_run(self, in_file: str, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
         """Do -sub command to run the native tool"""
@@ -287,7 +313,7 @@ class ToolImage:
             cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
                                                         write_output=exp_out_file)
         self.logger.debug(cmd_line)
-        return self.__run(cmd_line)
+        return self.__do_run(cmd_line)
 
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
