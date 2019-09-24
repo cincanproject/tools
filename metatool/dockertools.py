@@ -310,7 +310,7 @@ class ToolImage:
         container.remove()
         return stdout, stderr, exit_code
 
-    def do_run(self, in_file: str, args: List[str] = None,
+    def do_run(self, in_file: str = None, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
         """Do -sub command to run the native tool"""
         exp_out_file = None
