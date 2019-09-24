@@ -91,7 +91,7 @@ class ToolImage:
                     raise Exception("Output paths must be relative to current directory")
                 f_name = self.download_path + '/' + b_name
                 self.download_files[b_name] = f_name
-                self.logger.debug("arg ^^%s -> %s", f_name, b_name)
+                self.logger.debug("arg ^^%s -> %s", b_name, f_name)
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
