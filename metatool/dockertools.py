@@ -284,7 +284,9 @@ class ToolImage:
         # create the full command line and run with exec
         entry_point = self.image.attrs['Config']['Entrypoint']
         full_cmd = entry_point + cmd_args
-        exit_code, (stderr, stdout) = container.exec_run(full_cmd, demux=True)
+        exit_code, cmd_output = container.exec_run(full_cmd, demux=True)
+        stdout = cmd_output[0] if cmd_output[0] else b''
+        stderr = cmd_output[1] if cmd_output[1] else b''
 
         container.kill()
         if exit_code == 0:
