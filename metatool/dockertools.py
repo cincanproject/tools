@@ -270,6 +270,11 @@ class ToolImage:
 
         # override entry point to just keep the container running
         container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
+        container.start()
+
+        # make sure up/download directories exist
+        container.exec_run(["mkdir", "-p", self.upload_path])
+        container.exec_run(["mkdir", "-p", self.download_path])
 
         tarball = self.__create_upload_tar()
         if tarball:
@@ -278,8 +283,6 @@ class ToolImage:
                 with open("upload_files.tar", "wb") as f:
                     f.write(tarball)
             container.put_archive(path='/tmp/upload_files/', data=tarball)
-
-        container.start()
 
         # create the full command line and run with exec
         entry_point = self.image.attrs['Config']['Entrypoint']
