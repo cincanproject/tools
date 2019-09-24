@@ -1,8 +1,7 @@
 import argparse
 import os
 
-import docker
-import docker.errors
+import docker, docker.errors
 import logging
 import tarfile
 import io
@@ -123,6 +122,33 @@ class ToolImage:
                 tar.add(name, arcname=t)
         tar.close()
         return file_out.getvalue()
+
+    def __create_container(self):
+        # override entry point to just keep the container running
+        container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
+        container.start()
+
+        # make sure up/download directories exist
+        container.exec_run(["mkdir", "-p", self.upload_path])
+        container.exec_run(["mkdir", "-p", self.download_path])
+
+        tarball = self.__create_upload_tar()
+        if tarball:
+            self.logger.debug("Tarball to upload, size %d", len(tarball))
+            if self.dump_upload_tar:
+                with open("upload_files.tar", "wb") as f:
+                    f.write(tarball)
+            container.put_archive(path='/tmp/upload_files/', data=tarball)
+        return container
+
+    def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
+        # create the full command line and run with exec
+        entry_point = self.image.attrs['Config']['Entrypoint']
+        full_cmd = entry_point + cmd_args
+        exit_code, cmd_output = container.exec_run(full_cmd, demux=True)
+        stdout = cmd_output[0] if cmd_output[0] else b''
+        stderr = cmd_output[1] if cmd_output[1] else b''
+        return stdout, stderr, exit_code
 
     def __copy_downloaded_files(self, container, stdout: bytes, summary: Optional[Dict]):
         """Copy downloaded files into tar archive"""
@@ -275,30 +301,10 @@ class ToolImage:
         cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
 
-        # override entry point to just keep the container running
-        container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
-        container.start()
-
-        # make sure up/download directories exist
-        container.exec_run(["mkdir", "-p", self.upload_path])
-        container.exec_run(["mkdir", "-p", self.download_path])
-
-        tarball = self.__create_upload_tar()
-        if tarball:
-            self.logger.debug("Tarball to upload, size %d", len(tarball))
-            if self.dump_upload_tar:
-                with open("upload_files.tar", "wb") as f:
-                    f.write(tarball)
-            container.put_archive(path='/tmp/upload_files/', data=tarball)
-
-        # create the full command line and run with exec
-        entry_point = self.image.attrs['Config']['Entrypoint']
-        full_cmd = entry_point + cmd_args
-        exit_code, cmd_output = container.exec_run(full_cmd, demux=True)
-        stdout = cmd_output[0] if cmd_output[0] else b''
-        stderr = cmd_output[1] if cmd_output[1] else b''
-
+        container = self.__create_container()
+        stdout, stderr, exit_code = self.__container_exec(container, cmd_args)
         container.kill()
+
         if exit_code == 0:
             # write all output into tar file
             out_sum = self.__write_file_metadata(command, cmd_args)
