@@ -12,7 +12,8 @@ def test_help():
 
 def test_base64dump():
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")])
+    std, err, ec = tool.run(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")])
+    out = std.decode("'ascii", errors="ignore")
     values = []
     for line in out.splitlines():
         m = re.match(pattern, line)
