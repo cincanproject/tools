@@ -229,26 +229,14 @@ class ToolImage:
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
-        container = self.client.containers.create(self.image, command=cmd_args)
-        tarball = self.__create_upload_tar()
-        if tarball:
-            self.logger.debug("Tarball to upload, size %d", len(tarball))
-            if self.dump_upload_tar:
-                with open("upload_files.tar", "wb") as f:
-                    f.write(tarball)
-            container.put_archive(path=self.upload_path, data=tarball)
-        container.start()
-        resp = container.wait()
 
-        # Note, could not get attac(stream=True) to actually stop once all data is read.
-        # Using the ugly get string variant. Very large outputs should be written to disk by the tool :(
-        exit_code = resp.get('StatusCode', 0)
-        stderr = container.attach(logs=True, stdout=False, stderr=True)
-        stdout = container.attach(logs=True, stdout=True, stderr=False)
+        container = self.__create_container()
+        stdout, stderr, exit_code = self.__container_exec(container, cmd_args)
+        container.kill()
+
         if exit_code == 0:
             # write stdout, copy files to filesystem if any
             self.__copy_downloaded_files(container, b'', None)
-        container.remove()
         return stdout, stderr, exit_code
 
     def run(self, args: List[str]) -> (str, str, int):
