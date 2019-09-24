@@ -78,7 +78,7 @@ class ToolImage:
                 use_absolute = ".." in b_name  # use absolute paths, if /../ used (ok, quite weak)
                 path = pathlib.Path(b_name)
                 if use_absolute:
-                    f_name = (pathlib.Path(self.upload_path) / path.resolve()).as_posix()
+                    f_name = pathlib.Path(self.upload_path).as_posix() + path.resolve().as_posix()
                 else:
                     f_name = (pathlib.Path(self.upload_path) / path).as_posix()
                 f_name = f_name.replace(':', '_')
