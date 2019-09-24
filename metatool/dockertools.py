@@ -76,10 +76,15 @@ class ToolImage:
             download = b_name.startswith('^')
             if not download:
                 # upload the file
-                path = pathlib.Path(b_name).resolve()
-                f_name = self.upload_path + path.as_posix().replace(':', '_')
+                use_absolute = ".." in b_name  # use absolute paths, if /../ used (ok, quite weak)
+                path = pathlib.Path(b_name)
+                if use_absolute:
+                    f_name = (pathlib.Path(self.upload_path) / path.resolve()).as_posix()
+                else:
+                    f_name = (pathlib.Path(self.upload_path) / path).as_posix()
+                f_name = f_name.replace(':', '_')
                 self.upload_files[b_name] = f_name
-                self.logger.debug("up file: %s -> %s", b_name, f_name)
+                self.logger.debug("arg ^%s -> %s", b_name, f_name)
             else:
                 # download the file
                 b_name = b_name[1:]
@@ -87,7 +92,7 @@ class ToolImage:
                     raise Exception("Output paths must be relative to current directory")
                 f_name = self.download_path + '/' + b_name
                 self.download_files[b_name] = f_name
-                self.logger.debug("down file: %s -> %s", f_name, b_name)
+                self.logger.debug("arg ^^%s -> %s", f_name, b_name)
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
@@ -104,17 +109,18 @@ class ToolImage:
             return None
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
-        for name, t in self.upload_files.items():
-            self.logger.debug("upload file %s", name)
+        for name, full_t in self.upload_files.items():
+            t = pathlib.Path(full_t).relative_to(self.upload_path)
+            self.logger.debug("upload file %s -> %s", name, t)
             if name in self.file_content:
                 # file contents in memory
                 data = self.file_content[name].encode('ascii')
-                tarinfo = tarfile.TarInfo(name=t[1:])  # strip first '/'
+                tarinfo = tarfile.TarInfo(name=t)
                 tarinfo.size = len(data)
                 tar.addfile(tarinfo=tarinfo, fileobj=io.BytesIO(data))
             else:
                 # go and pick file from file system
-                tar.add(name, arcname=t[1:])  # strip first '/'
+                tar.add(name, arcname=t)
         tar.close()
         return file_out.getvalue()
 
@@ -154,12 +160,13 @@ class ToolImage:
             if n_name == "":
                 continue
             self.logger.debug(" %s", n_name)
+            content = read_tar.extractfile(m)
             if write_tar:
-                content = read_tar.extractfile(m)
                 m.name = n_name
                 write_tar.addfile(m, fileobj=content)
             else:
-                read_tar.extract(m)
+                with open(n_name, "wb") as f:
+                    f.write(content)
         read_tar.close()
         write_tar.close() if write_tar else None
         os.unlink(tmp_tar.name)
@@ -203,7 +210,7 @@ class ToolImage:
             if self.dump_upload_tar:
                 with open("upload_files.tar", "wb") as f:
                     f.write(tarball)
-            container.put_archive(path='/', data=tarball)
+            container.put_archive(path=self.upload_path, data=tarball)
         container.start()
         resp = container.wait()
 
