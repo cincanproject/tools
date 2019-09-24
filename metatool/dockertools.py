@@ -109,7 +109,7 @@ class ToolImage:
         file_out = io.BytesIO()
         tar = tarfile.open(mode="w", fileobj=file_out)
         for name, full_t in self.upload_files.items():
-            t = pathlib.Path(full_t).relative_to(self.upload_path)
+            t = pathlib.Path(full_t).relative_to(self.upload_path).as_posix()
             self.logger.debug("upload file %s -> %s", name, t)
             if name in self.file_content:
                 # file contents in memory
