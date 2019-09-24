@@ -143,8 +143,12 @@ class ToolImage:
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
         # create the full command line and run with exec
-        entry_point = self.image.attrs['Config'].get('Entrypoint', "")
-        cmd = self.image.attrs['Config'].get('Cmd', "")
+        entry_point = self.image.attrs['Config'].get('Entrypoint')
+        if not entry_point:
+            entry_point = []
+        cmd = self.image.attrs['Config'].get('Cmd')
+        if not cmd:
+            cmd = []  # 'None' value observed
         full_cmd = entry_point + (cmd_args if cmd_args else cmd)
         exit_code, cmd_output = container.exec_run(full_cmd, demux=True)
         stdout = cmd_output[0] if cmd_output[0] else b''
