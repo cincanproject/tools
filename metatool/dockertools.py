@@ -171,6 +171,9 @@ class ToolImage:
         write_tar = None
         if self.output_tar:
             # Put all output into tar-file
+            tar_dir = pathlib.Path(self.output_tar).parent
+            if tar_dir:
+                tar_dir.mkdir(parents=True, exist_ok=True)
             write_tar = tarfile.open(self.output_tar, "w")
             self.logger.info("Output to %s", self.output_tar)
             out_sum = io.BytesIO(json.dumps(summary, indent=4).encode('ascii'))
