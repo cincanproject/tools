@@ -5,11 +5,13 @@ from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 
 class ToolCommand:
-    def __init__(self, args: List[str], in_file: Optional[str] = None,
-                 in_type: Optional[str] = None, out_type: Optional[str] = None):
+    def __init__(self, args: List[str],
+                 in_file: Optional[str] = None, in_type: Optional[str] = None,
+                 out_file: Optional[str] = None, out_type: Optional[str] = None):
         self.args = args
         self.in_file = in_file
         self.in_type = in_type
+        self.out_file = out_file
         self.out_type = out_type
 
     def __str__(self) -> str:
@@ -68,7 +70,8 @@ class ToolCommands:
             true_args.append(self.file_pattern.sub("^" + in_file, arg))
         for arg in args if args is not None else []:
             true_args.append(arg)
-        return ToolCommand(true_args, in_file=in_file, in_type=match_in_type, out_type=match_out_type)
+        return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
+                           out_file=write_output, out_type=match_out_type)
 
     def parse_command(self, json: Dict[str, Any], all_files: Iterable[str],
                       write_output: Optional[str] = None) -> List[ToolCommand]:
