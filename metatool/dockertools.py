@@ -132,10 +132,8 @@ class ToolImage:
         container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
         container.start()
 
-        # make sure up/download directories exist
+        # create upload directory with the files
         self.__container_mkdir(container, self.upload_path)
-        self.__container_mkdir(container, self.download_path)
-
         tarball = self.__create_upload_tar()
         if tarball:
             self.logger.debug("Tarball to upload, size %d", len(tarball))
@@ -143,6 +141,14 @@ class ToolImage:
                 with open("upload_files.tar", "wb") as f:
                     f.write(tarball)
             container.put_archive(path='/tmp/upload_files/', data=tarball)
+
+        # create download directory
+        self.__container_mkdir(container, self.download_path)
+        for d in self.download_files.values():
+            d_path = pathlib.Path(d)
+            rel_to_root = d_path.relative_to(self.download_path)
+            if '/' in rel_to_root.as_posix():
+                self.__container_mkdir(container, d_path.parent.as_posix())
         return container
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
