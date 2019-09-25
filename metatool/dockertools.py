@@ -1,6 +1,6 @@
 import argparse
 import os
-
+import shutil
 import docker, docker.errors
 import logging
 import tarfile
@@ -45,7 +45,9 @@ class ToolImage:
         self.metadata_file = '.METADATA/files.json'
         self.upload_files = {}  # files to upload, key = name in host, value = name in image
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
-        self.upload_tar = None  # tar file or directory to upload
+        self.input_tar = None  # optional input tar name, directory name, or '-' for stdin
+        self.upload_tar = None  # tar file pathlib.Path to upload
+        self.upload_tar_temp = False  # is the input tar file temporary?
         self.upload_path = "/tmp/upload_files"
         self.download_files = {}  # files to download, key = name in host, value = name in image
         self.download_path = "/tmp/download_files"
@@ -100,10 +102,11 @@ class ToolImage:
 
     def __create_upload_tar(self) -> Optional[bytes]:
         """Copy uploaded files into tar archive"""
-        if self.upload_tar and pathlib.Path(self.upload_tar).is_file():
+        if self.upload_tar:
             # upload tar just given, return it
             with open(self.upload_tar, "rb") as f:
                 return f.read()
+        # FIXME: We should always just return a tar -- pack it earlier!
         if not self.upload_files:
             return None
         file_out = io.BytesIO()
@@ -344,30 +347,44 @@ class ToolImage:
         exp_out_file = None
         if self.output_tar and self.get_commands().get_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
-        if self.upload_tar:
+        if self.input_tar:
             # Input file and type in tar
-            self.logger.info("Read input from %s", self.upload_tar)
-            tar_file = pathlib.Path(self.upload_tar)
-            if tar_file.is_dir():
-                # input as a directory
-                with open(tar_file / self.metadata_file, "r") as f:
-                    js = json.load(f)
-                root_dir = tar_file.as_posix()
-                all_files = list(map(lambda e: e.as_posix(),
-                                     filter(lambda e: e.is_file(), tar_file.glob("**/*"))))
+            self.logger.info("Read input from %s", self.input_tar)
+            tar_file = pathlib.Path(self.input_tar)
+            if self.input_tar == '-':
+                # read input tar from stdin
+                tmp_file = tempfile.NamedTemporaryFile()
+                self.upload_tar = pathlib.Path(tmp_file.name)
+                self.upload_tar_temp = True  # delete after use
+                shutil.copyfileobj(sys.stdin.buffer, tmp_file)
+                tmp_file.close()
+            elif tar_file.is_dir():
+                # input is directory, put to temp tar
+                tmp_file = tempfile.NamedTemporaryFile(delete=False)
+                self.upload_tar = pathlib.Path(tmp_file.name)
+                self.upload_tar_temp = True  # delete after use
+                with tarfile.open(fileobj=tmp_file, mode="w|") as f:
+                    f.add(tar_file, arcname='/')
+                tmp_file.close()
             else:
-                # input as a tar file
-                with tarfile.open(tar_file, "r") as f:
-                    js = json.load(f.extractfile(self.metadata_file))
-                    all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
-                root_dir = ''
+                # input is a tar file
+                self.upload_tar = tar_file
+            with tarfile.open(self.upload_tar, "r") as f:
+                js = json.load(f.extractfile(self.metadata_file))
+                all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
+            root_dir = ''
             cmd_lines = self.get_commands().parse_command(js, root_dir, all_files, write_output=exp_out_file)
         else:
             # Using command line
             cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
                                                         write_output=exp_out_file)
             cmd_lines = [cmd_line]
-        return self.__do_run(cmd_lines)
+        try:
+            ret = self.__do_run(cmd_lines)
+        finally:
+            if self.upload_tar_temp:
+                os.unlink(self.upload_tar)
+        return ret
 
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
@@ -448,7 +465,7 @@ def main():
             tool.output_tar = args.out_tar if not tool.unpack_download_files else None  # Default is tar-format output!
             read_file = args.read_file
             if args.in_tar:
-                tool.upload_tar = args.in_tar
+                tool.input_tar = args.in_tar
             elif args.in_str is not None:
                 read_file = tool.set_file_content(args.in_str)
             elif read_file is None:
