@@ -348,6 +348,7 @@ class ToolImage:
                 # input as a directory
                 with open(tar_file / self.metadata_file, "r") as f:
                     js = json.load(f)
+                root_dir = tar_file.as_posix()
                 all_files = list(map(lambda e: e.as_posix(),
                                      filter(lambda e: e.is_file(), tar_file.glob("**/*"))))
             else:
@@ -355,7 +356,8 @@ class ToolImage:
                 with tarfile.open(tar_file, "r") as f:
                     js = json.load(f.extractfile(self.metadata_file))
                     all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
-            cmd_lines = self.get_commands().parse_command(js, all_files, write_output=exp_out_file)
+                root_dir = ''
+            cmd_lines = self.get_commands().parse_command(js, root_dir, all_files, write_output=exp_out_file)
         else:
             # Using command line
             cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,

@@ -73,18 +73,14 @@ class ToolCommands:
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
                            out_file=write_output, out_type=match_out_type)
 
-    def parse_command(self, json: Dict[str, Any], all_files: Iterable[str],
+    def parse_command(self, json: Dict[str, Any], root_dir: str, all_files: Iterable[str],
                       write_output: Optional[str] = None) -> List[ToolCommand]:
         files = []
         for f in json.get('files', []):
             f_name = f.get('name', 'stdout')
-            f_prefix = f_name + '/'
+            dir_prefix = (root_dir + '/' if root_dir != '' else '') + f_name + '/'
             f_type = f.get('type')
-
-            # FIXME... a hack
-            # f_files = list(filter(lambda s: s == f_name or s.startswith(f_prefix), all_files))
-            f_files = list(filter(lambda s: s == f_name or f_prefix in s, all_files))
-
+            f_files = list(filter(lambda s: s == f_name or s.startswith(dir_prefix), all_files))
             files += map(lambda s: (s, f_type), f_files)
         if not files:
             raise Exception("No matching files for processing")
