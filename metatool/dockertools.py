@@ -123,14 +123,18 @@ class ToolImage:
         tar.close()
         return file_out.getvalue()
 
+    def __container_mkdir(self, container, path: str):
+        exit_code, _ = container.exec_run(["mkdir", "-p", path])
+        self.logger.debug("mkdir -p {} => {}".format(path, exit_code))
+
     def __create_container(self):
         # override entry point to just keep the container running
         container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
         container.start()
 
         # make sure up/download directories exist
-        container.exec_run(["mkdir", "-p", self.upload_path])
-        container.exec_run(["mkdir", "-p", self.download_path])
+        self.__container_mkdir(container, self.upload_path)
+        self.__container_mkdir(container, self.download_path)
 
         tarball = self.__create_upload_tar()
         if tarball:
