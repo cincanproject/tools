@@ -309,21 +309,24 @@ class ToolImage:
         stdout = io.BytesIO()
         stderr = io.BytesIO()
         exit_code = 0
+        out_sum = None
         for c, cmd_args in command_args:
             self.logger.debug(c)
             cmd_args = self.__process_args(c.args)
             self.logger.debug("args: %s", ' '.join(cmd_args))
             c_stdout, c_stderr, c_exit_code = self.__container_exec(container, cmd_args)
             if c_exit_code == 0:
-                # write all output into tar file
                 out_sum = self.__write_file_metadata(c, cmd_args)
-                self.__copy_downloaded_files(container,
-                                             None if self.download_files else c_stdout,  # use stdout if no other output
-                                             out_sum)
             stdout.write(c_stdout)
             stderr.write(c_stderr)
             exit_code = exit_code if c_exit_code == 0 else c_exit_code
         container.kill()
+
+        # create the final output file
+        self.__copy_downloaded_files(container,
+                                     None if self.download_files else stdout.getvalue(),  # use stdout if no other output
+                                     out_sum)
+
         container.remove()
         return stdout.getvalue(), stderr.getvalue(), exit_code
 
@@ -338,7 +341,7 @@ class ToolImage:
             self.logger.info("Read input from %s", self.upload_tar)
             with tarfile.open(self.upload_tar, "r") as f:
                 js = json.load(f.extractfile(self.metadata_file))
-                files = map(lambda e: e.name, f.getmembers())
+                files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             cmd_lines = self.get_commands().parse_command(js, files, write_output=exp_out_file)
         else:
             # Using command line

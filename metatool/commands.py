@@ -1,3 +1,4 @@
+import pathlib
 import re
 
 from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
@@ -69,13 +70,24 @@ class ToolCommands:
             true_args.append(arg)
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type, out_type=match_out_type)
 
-    def parse_command(self, json: Dict[str, Any], files: Iterable[str],
+    def parse_command(self, json: Dict[str, Any], all_files: Iterable[str],
                       write_output: Optional[str] = None) -> List[ToolCommand]:
-        files = json.get('files', [])
-        if len(files) != 1:
-            raise Exception("Exactly one 'files' field expected, now got {}".format(len(files)))
-        f = files[0]
-        return [self.command_line(in_file=f.get('name', 'stdout'), in_type=f.get('type'), write_output=write_output)]
+        files = []
+        for f in json.get('files', []):
+            f_name = f.get('name', 'stdout')
+            f_prefix = f_name +'/'
+            f_type = f.get('type')
+            f_files = list(filter(lambda s: s == f_name or s.startswith(f_prefix), all_files))
+            files += map(lambda s: (s, f_type), f_files)
+        if not files:
+            raise Exception("No matching files for processing")
+        commands = []
+        many_files = len(files) > 1
+        for n, t in files:
+            w_out = (pathlib.Path(write_output) / n).as_posix() if many_files else write_output
+            cmd = self.command_line(in_file=n, in_type=t, write_output=w_out)
+            commands.append(cmd)
+        return commands
 
     def command_hints(self) -> List[str]:
         lines = []
