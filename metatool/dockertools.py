@@ -51,7 +51,7 @@ class ToolImage:
         self.download_path = "/tmp/download_files"
         self.unpack_download_files = False
         self.dump_upload_tar = False
-        self.output_tar = None
+        self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.file_pattern = re.compile("\\^(.+)")
 
     def get_tags(self) -> List[str]:
@@ -180,11 +180,15 @@ class ToolImage:
 
         write_tar = None
         if self.output_tar:
-            # Put all output into tar-file
-            tar_dir = pathlib.Path(self.output_tar).parent
-            if tar_dir:
-                tar_dir.mkdir(parents=True, exist_ok=True)
-            write_tar = tarfile.open(self.output_tar, "w")
+            if self.output_tar == '-':
+                # Put all output into tar and push to stdout
+                write_tar = tarfile.open(fileobj=sys.stdout.buffer, mode="w|")
+            else:
+                # Put all output into tar-file
+                tar_dir = pathlib.Path(self.output_tar).parent
+                if tar_dir:
+                    tar_dir.mkdir(parents=True, exist_ok=True)
+                write_tar = tarfile.open(self.output_tar, "w")
             self.logger.info("Output to %s", self.output_tar)
             out_sum = io.BytesIO(json.dumps(summary, indent=4).encode('ascii'))
             out_file = tarfile.TarInfo(self.metadata_file)
@@ -415,6 +419,7 @@ def main():
     do_parser.add_argument('-s', '--in-str', help='Input string')
     do_parser.add_argument('-i', '--in-format', help='Input format')
     do_parser.add_argument('-o', '--out-format', help='Output format')
+    do_parser.add_argument('-O', '--out-tar', default='output.tar', help="Output tar file name or '-'")
 
     args = m_parser.parse_args()
 
@@ -440,7 +445,7 @@ def main():
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
-            tool.output_tar = 'output.tar' if not tool.unpack_download_files else None  # Default is tar-format output!
+            tool.output_tar = args.out_tar if not tool.unpack_download_files else None  # Default is tar-format output!
             read_file = args.read_file
             if args.in_tar:
                 tool.upload_tar = args.in_tar
