@@ -233,7 +233,7 @@ class ToolImage:
             'history': history_v,
         }
 
-    def __run(self, command: ToolCommand) -> (str, str, int):
+    def __run(self, command: ToolCommand) -> (bytes, bytes, int):
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(command.args)
         self.logger.debug("args: %s", ' '.join(cmd_args))
@@ -247,7 +247,7 @@ class ToolImage:
             self.__copy_downloaded_files(container, b'', None)
         return stdout, stderr, exit_code
 
-    def run(self, args: List[str]) -> (str, str, int):
+    def run(self, args: List[str]) -> (bytes, bytes, int):
         """Run native tool in container, return output"""
         return self.__run(ToolCommand(args))
 
@@ -292,7 +292,7 @@ class ToolImage:
         self.file_content['in-str'] = content
         return 'in-str'
 
-    def __do_run(self, command: ToolCommand) -> (str, str, int):
+    def __do_run(self, commands: List[ToolCommand]) -> (bytes, bytes, int):
         """Do-run native tool in container with input from tar-file"""
         # process input first so that all required files are uploaded
         command_args = []
@@ -324,7 +324,7 @@ class ToolImage:
         return stdout.getvalue(), stderr.getvalue(), exit_code
 
     def do_run(self, in_file: str = None, args: List[str] = None,
-               in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
+               in_type: Optional[str] = None, out_type: Optional[str] = None) -> (bytes, bytes, int):
         """Do -sub command to run the native tool"""
         exp_out_file = None
         if self.output_tar and self.get_commands().get_output_to_file_option():
