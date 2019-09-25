@@ -45,7 +45,7 @@ class ToolImage:
         self.metadata_file = '.METADATA/files.json'
         self.upload_files = {}  # files to upload, key = name in host, value = name in image
         self.file_content = {}  # in-memory content for some flies, key = name in host (but no file there)
-        self.upload_tar = None  # tar file to upload
+        self.upload_tar = None  # tar file or directory to upload
         self.upload_path = "/tmp/upload_files"
         self.download_files = {}  # files to download, key = name in host, value = name in image
         self.download_path = "/tmp/download_files"
@@ -100,7 +100,7 @@ class ToolImage:
 
     def __create_upload_tar(self) -> Optional[bytes]:
         """Copy uploaded files into tar archive"""
-        if self.upload_tar:
+        if self.upload_tar and pathlib.Path(self.upload_tar).is_file():
             # upload tar just given, return it
             with open(self.upload_tar, "rb") as f:
                 return f.read()
@@ -343,10 +343,26 @@ class ToolImage:
         if self.upload_tar:
             # Input file and type in tar
             self.logger.info("Read input from %s", self.upload_tar)
-            with tarfile.open(self.upload_tar, "r") as f:
-                js = json.load(f.extractfile(self.metadata_file))
-                files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
-            cmd_lines = self.get_commands().parse_command(js, files, write_output=exp_out_file)
+            tar_file = pathlib.Path(self.upload_tar)
+            if tar_file.is_dir():
+                # input as a directory
+                with open(tar_file / self.metadata_file, "r") as f:
+                    js = json.load(f)
+                all_files = list(map(lambda e: e.as_posix(),
+                                     filter(lambda e: e.is_file(), tar_file.glob("**/*"))))
+                # ...must upload to image
+                # for f in js.get('files', []):
+                #     f_name = f.get('name', 'stdout')
+                #     f_prefix = f_name + '/'
+                #     f_files = filter(lambda s: s == f_name or s.startswith(f_prefix), all_files)
+                #     for i in f_files:
+                #         self.upload_files[(tar_file / i).as_posix()] = self.upload_path + '/' + i
+            else:
+                # input as a tar file
+                with tarfile.open(tar_file, "r") as f:
+                    js = json.load(f.extractfile(self.metadata_file))
+                    all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
+            cmd_lines = self.get_commands().parse_command(js, all_files, write_output=exp_out_file)
         else:
             # Using command line
             cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,

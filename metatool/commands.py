@@ -78,9 +78,13 @@ class ToolCommands:
         files = []
         for f in json.get('files', []):
             f_name = f.get('name', 'stdout')
-            f_prefix = f_name +'/'
+            f_prefix = f_name + '/'
             f_type = f.get('type')
-            f_files = list(filter(lambda s: s == f_name or s.startswith(f_prefix), all_files))
+
+            # FIXME... a hack
+            # f_files = list(filter(lambda s: s == f_name or s.startswith(f_prefix), all_files))
+            f_files = list(filter(lambda s: s == f_name or f_prefix in s, all_files))
+
             files += map(lambda s: (s, f_type), f_files)
         if not files:
             raise Exception("No matching files for processing")
