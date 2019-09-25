@@ -216,31 +216,28 @@ class ToolImage:
         os.unlink(tmp_tar.name)
         return
 
-    def __write_file_metadata(self, command: ToolCommand, args: List[str]) -> Dict[str, Any]:
+    def __write_file_metadata(self, history: List[Tuple[ToolCommand, str, int]]) -> Dict[str, Any]:
         files_v = []
-        for name in [str(k) for k in self.download_files.keys()] if self.download_files else ['stdout']:
-            f = {'name': name}
-            if command.out_type:
-                f['type'] = command.out_type
-            files_v.append(f)
-        cmd_v = {
-            'tool': self.name,
-            'args': ' '.join(args),
-        }
-        in_files = []
-        for f in self.upload_files.keys():
-            if f not in self.file_content:
-                f = {'name': f}
-                if command.in_type:
-                    f['type'] = command.in_type
-                in_files.append(f)
-        history_v = {
-            'input': in_files,
-            'command': cmd_v,
-        }
+        cmd_v = []
+        for c, cmd, exit_code in history:
+            file_e = {'name': c.out_file if c.out_file else "stdout"}
+            if c.out_type:
+                file_e['type'] = c.out_type
+            files_v.append(file_e)
+
+            cmd_e = {
+                'tool': self.name,
+                'args': cmd,
+                'exit_code': exit_code,
+            }
+            if c.in_file:
+                cmd_e['input'] = c.in_file
+            if c.in_type:
+                cmd_e['type'] = c.in_type
+            cmd_v.append(cmd_e)
         return {
             'files': files_v,
-            'history': history_v,
+            'history': { 'commands': cmd_v },
         }
 
     def __run(self, command: ToolCommand) -> (bytes, bytes, int):
@@ -315,20 +312,21 @@ class ToolImage:
         stdout = io.BytesIO()
         stderr = io.BytesIO()
         exit_code = 0
-        out_sum = None
+        history = []
         for c, cmd_args in command_args:
             self.logger.debug(c)
             cmd_args = self.__process_args(c.args)
             self.logger.debug("args: %s", ' '.join(cmd_args))
             c_stdout, c_stderr, c_exit_code = self.__container_exec(container, cmd_args)
-            if c_exit_code == 0:
-                out_sum = self.__write_file_metadata(c, cmd_args)
             stdout.write(c_stdout)
             stderr.write(c_stderr)
             exit_code = exit_code if c_exit_code == 0 else c_exit_code
+            # Those who cannot learn from history are doomed to repeat it
+            history.append((c, " ".join(cmd_args), c_exit_code))
         container.kill()
 
         # create the final output file
+        out_sum = self.__write_file_metadata(history)
         self.__copy_downloaded_files(container,
                                      None if self.download_files else stdout.getvalue(),  # use stdout if no other output
                                      out_sum)
