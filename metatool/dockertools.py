@@ -468,10 +468,10 @@ def main():
             read_file = args.in_file
             if getattr(args, 'in'):
                 tool.input_tar = getattr(args, 'in')
-            elif args.in_str is not None:
+            elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
-            elif read_file is None:
-                raise Exception('Must specify either --in-tar, --read-file, or --in-str')
+            elif not read_file:
+                raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
             if tool.get_commands().get_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
