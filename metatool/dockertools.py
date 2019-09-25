@@ -439,6 +439,8 @@ def main():
     do_parser.add_argument('-I', '--in-type', help='Input type')
     do_parser.add_argument('-o', '--out', default='output.tar', help="Output tar file name or '-'")
     do_parser.add_argument('-O', '--out-type', help='Output type')
+    do_parser.add_argument('--pipe', action='store_true',
+                           help="Act as pipe from stdin to stdout (same as --in - --out -)")
 
     args = m_parser.parse_args()
 
@@ -466,7 +468,10 @@ def main():
             # sub command 'do'
             tool.output_tar = args.out if not tool.unpack_download_files else None  # Default is tar-format output!
             read_file = args.in_file
-            if getattr(args, 'in'):
+            if args.pipe:
+                tool.input_tar = '-'
+                tool.output_tar = '-'
+            elif getattr(args, 'in'):
                 tool.input_tar = getattr(args, 'in')
             elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
