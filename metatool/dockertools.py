@@ -350,13 +350,6 @@ class ToolImage:
                     js = json.load(f)
                 all_files = list(map(lambda e: e.as_posix(),
                                      filter(lambda e: e.is_file(), tar_file.glob("**/*"))))
-                # ...must upload to image
-                # for f in js.get('files', []):
-                #     f_name = f.get('name', 'stdout')
-                #     f_prefix = f_name + '/'
-                #     f_files = filter(lambda s: s == f_name or s.startswith(f_prefix), all_files)
-                #     for i in f_files:
-                #         self.upload_files[(tar_file / i).as_posix()] = self.upload_path + '/' + i
             else:
                 # input as a tar file
                 with tarfile.open(tar_file, "r") as f:
