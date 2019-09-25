@@ -353,7 +353,8 @@ class ToolImage:
             tar_file = pathlib.Path(self.input_tar)
             if self.input_tar == '-':
                 # read input tar from stdin
-                tmp_file = tempfile.NamedTemporaryFile()
+                tmp_file = tempfile.NamedTemporaryFile(delete=False)
+                self.logger.debug("Read stdin into temp %s", tmp_file.name)
                 self.upload_tar = pathlib.Path(tmp_file.name)
                 self.upload_tar_temp = True  # delete after use
                 shutil.copyfileobj(sys.stdin.buffer, tmp_file)
@@ -361,6 +362,7 @@ class ToolImage:
             elif tar_file.is_dir():
                 # input is directory, put to temp tar
                 tmp_file = tempfile.NamedTemporaryFile(delete=False)
+                self.logger.debug("Tar input into temp %s", tmp_file.name)
                 self.upload_tar = pathlib.Path(tmp_file.name)
                 self.upload_tar_temp = True  # delete after use
                 with tarfile.open(fileobj=tmp_file, mode="w|") as f:
