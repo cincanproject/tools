@@ -433,12 +433,12 @@ def main():
 
     do_parser = subparsers.add_parser('do')
     image_default_args(do_parser)
-    do_parser.add_argument('-t', '--in-tar', help='Input as tar-file')
-    do_parser.add_argument('-r', '--read-file', help='Input file to read')
+    do_parser.add_argument('-i', '--in', help='Input as tar-file')
+    do_parser.add_argument('-f', '--in-file', help='Input file to read')
     do_parser.add_argument('-s', '--in-str', help='Input string')
-    do_parser.add_argument('-i', '--in-format', help='Input format')
-    do_parser.add_argument('-o', '--out-format', help='Output format')
-    do_parser.add_argument('-O', '--out-tar', default='output.tar', help="Output tar file name or '-'")
+    do_parser.add_argument('-I', '--in-type', help='Input type')
+    do_parser.add_argument('-o', '--out', default='output.tar', help="Output tar file name or '-'")
+    do_parser.add_argument('-O', '--out-type', help='Output type')
 
     args = m_parser.parse_args()
 
@@ -464,15 +464,15 @@ def main():
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
-            tool.output_tar = args.out_tar if not tool.unpack_download_files else None  # Default is tar-format output!
-            read_file = args.read_file
-            if args.in_tar:
-                tool.input_tar = args.in_tar
+            tool.output_tar = args.out if not tool.unpack_download_files else None  # Default is tar-format output!
+            read_file = args.in_file
+            if getattr(args, 'in'):
+                tool.input_tar = getattr(args, 'in')
             elif args.in_str is not None:
                 read_file = tool.set_file_content(args.in_str)
             elif read_file is None:
                 raise Exception('Must specify either --in-tar, --read-file, or --in-str')
-            ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_format, out_type=args.out_format)
+            ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
             if tool.get_commands().get_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
                 sys.stdout.buffer.write(ret[0])
