@@ -294,21 +294,34 @@ class ToolImage:
 
     def __do_run(self, command: ToolCommand) -> (str, str, int):
         """Do-run native tool in container with input from tar-file"""
-        cmd_args = self.__process_args(command.args)
-        self.logger.debug("args: %s", ' '.join(cmd_args))
+        # process input first so that all required files are uploaded
+        command_args = []
+        for c in commands:
+            self.logger.debug(c)
+            command_args.append((c, self.__process_args(c.args)))
 
+        # create container, ready to loop all commands
         container = self.__create_container()
-        stdout, stderr, exit_code = self.__container_exec(container, cmd_args)
+        stdout = io.BytesIO()
+        stderr = io.BytesIO()
+        exit_code = 0
+        for c, cmd_args in command_args:
+            self.logger.debug(c)
+            cmd_args = self.__process_args(c.args)
+            self.logger.debug("args: %s", ' '.join(cmd_args))
+            c_stdout, c_stderr, c_exit_code = self.__container_exec(container, cmd_args)
+            if c_exit_code == 0:
+                # write all output into tar file
+                out_sum = self.__write_file_metadata(c, cmd_args)
+                self.__copy_downloaded_files(container,
+                                             None if self.download_files else c_stdout,  # use stdout if no other output
+                                             out_sum)
+            stdout.write(c_stdout)
+            stderr.write(c_stderr)
+            exit_code = exit_code if c_exit_code == 0 else c_exit_code
         container.kill()
-
-        if exit_code == 0:
-            # write all output into tar file
-            out_sum = self.__write_file_metadata(command, cmd_args)
-            self.__copy_downloaded_files(container,
-                                         None if self.download_files else stdout,  # use stdout if no other output
-                                         out_sum)
         container.remove()
-        return stdout, stderr, exit_code
+        return stdout.getvalue(), stderr.getvalue(), exit_code
 
     def do_run(self, in_file: str = None, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (str, str, int):
@@ -321,13 +334,14 @@ class ToolImage:
             self.logger.info("Read input from %s", self.upload_tar)
             with tarfile.open(self.upload_tar, "r") as f:
                 js = json.load(f.extractfile(self.metadata_file))
-            cmd_line = self.get_commands().parse_command(js, write_output=exp_out_file)
+                files = map(lambda e: e.name, f.getmembers())
+            cmd_lines = self.get_commands().parse_command(js, files, write_output=exp_out_file)
         else:
             # Using command line
             cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
                                                         write_output=exp_out_file)
-        self.logger.debug(cmd_line)
-        return self.__do_run(cmd_line)
+            cmd_lines = [cmd_line]
+        return self.__do_run(cmd_lines)
 
     def do_get_string(self, in_file: str, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:

@@ -1,6 +1,6 @@
 import re
 
-from typing import List, Set, Dict, Tuple, Optional, Any
+from typing import List, Set, Dict, Tuple, Optional, Any, Iterable
 
 
 class ToolCommand:
@@ -69,12 +69,13 @@ class ToolCommands:
             true_args.append(arg)
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type, out_type=match_out_type)
 
-    def parse_command(self, json: Dict[str, Any], write_output: Optional[str] = None) -> ToolCommand:
+    def parse_command(self, json: Dict[str, Any], files: Iterable[str],
+                      write_output: Optional[str] = None) -> List[ToolCommand]:
         files = json.get('files', [])
         if len(files) != 1:
             raise Exception("Exactly one 'files' field expected, now got {}".format(len(files)))
         f = files[0]
-        return self.command_line(in_file=f.get('name', 'stdout'), in_type=f.get('type'), write_output=write_output)
+        return [self.command_line(in_file=f.get('name', 'stdout'), in_type=f.get('type'), write_output=write_output)]
 
     def command_hints(self) -> List[str]:
         lines = []
