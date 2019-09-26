@@ -21,7 +21,7 @@ class ToolCommand:
 class ToolCommands:
     """Tool commands and options"""
     def __init__(self, json: Dict[str,Any]):
-        self.commands_json = json['commands']
+        self.commands_json = json.get('commands', [])
         self.outputs_json = json.get('output-options', [])
         self.file_pattern = re.compile("(<[^>]*(file|dir)>)")
 
