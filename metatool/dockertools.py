@@ -281,7 +281,7 @@ class ToolImage:
         """Create path for sample file inside docker context (for unit testing) """
         return ('^' if prefix else '') + str(pathlib.Path(self.context) / file)
 
-    def __resolve_commands(self, args: List[str] = None) -> ToolCommands:
+    def resolve_commands(self, args: List[str] = None) -> ToolCommands:
         """Read commands from commands.json from docker image, empty list if none"""
         container = self.client.containers.create(self.image)
         try:
@@ -300,6 +300,7 @@ class ToolImage:
             self.logger.debug(json.dumps(js))
             commands = ToolCommands(js, args)
         container.remove()
+        self.commands = commands
         return commands
 
     def set_file_content(self, content: str) -> str:
@@ -345,10 +346,11 @@ class ToolImage:
     def do_run(self, in_file: str = None, args: List[str] = None,
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (bytes, bytes, int):
         """Do -sub command to run the native tool"""
+        self.resolve_commands(args)
         exp_out_file = None
-        self.commands = self.__resolve_commands(args)
         if self.output_tar and self.commands.get_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
+
         if self.input_tar:
             # Input file and type in tar
             self.logger.info("Read input from %s", self.input_tar)
@@ -477,10 +479,13 @@ def main():
                 tool.input_tar = getattr(args, 'in')
             elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
+            elif any(map(lambda a: tool.file_pattern.match(a), all_args)):
+                #  FIXME: Ugly to do this like this!
+                read_file = next(a[1:] for a in all_args if tool.file_pattern.match(a))
             elif not read_file:
                 raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
-            if tool.output_tar != '-' and tool.__resolve_commands().get_output_to_file_option():
+            if tool.output_tar != '-' and tool.commands.get_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
                 sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
@@ -488,7 +493,8 @@ def main():
         else:
             # sub command 'hint'
             prefix = "run ".format(name)
-            hints = tool.__resolve_commands().command_hints()
+            tool.resolve_commands()
+            hints = tool.commands.command_hints()
             print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
             if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
