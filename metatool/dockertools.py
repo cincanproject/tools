@@ -287,7 +287,8 @@ class ToolImage:
         try:
             raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         except docker.errors.APIError:
-            return ToolCommands({}, args)
+            self.commands = ToolCommands({}, args)
+            return self.commands
         buffer = io.BytesIO()
         for r in raw_tar:
             buffer.write(r)
@@ -301,7 +302,7 @@ class ToolImage:
             commands = ToolCommands(js, args)
         container.remove()
         self.commands = commands
-        return commands
+        return self.commands
 
     def set_file_content(self, content: str) -> str:
         """Set input file content directly"""
