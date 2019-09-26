@@ -219,7 +219,7 @@ class ToolImage:
                 write_tar.addfile(m, fileobj=content)
             else:
                 with open(n_name, "wb") as f:
-                    f.write(content)
+                    shutil.copyfileobj(content, f)
         read_tar.close()
         write_tar.close() if write_tar else None
         os.unlink(tmp_tar.name)
