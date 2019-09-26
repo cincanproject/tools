@@ -55,8 +55,8 @@ class ToolCommands:
             match_out_type = c.get('output')
         if len(match_commands) != 1:
             raise Exception("Single command should match given input/output filter, now:\n{}".format(
-                "\n".join(map(lambda x: "{}{}".format(" -i {}".format(x['input']) if 'input' in x else "",
-                                                      " -o {}".format(x['output']) if 'output' in x else ""),
+                "\n".join(map(lambda x: "{}{}".format(" -I {}".format(x['input']) if 'input' in x else "",
+                                                      " -O {}".format(x['output']) if 'output' in x else ""),
                               match_commands))))
         command = match_commands[0]['command']
         true_args = []
