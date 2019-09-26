@@ -19,8 +19,8 @@ def test_pcap_to_json():
 
 def test_hints():
     tool = dockertools.tool_with_file(__file__)
-    hints = tool.__resolve_commands().command_hints()
-    assert "|".join(hints) == "-r ^<file> -Tjson|-r ^<file> -Tpdml"
+    hints = tool.resolve_commands().command_hints()
+    assert "|".join(hints) == "-r ^file -Tjson|-r ^file -Tpdml"
 
 
 def test_do_run():
