@@ -479,7 +479,7 @@ def main():
                 tool.input_tar = getattr(args, 'in')
             elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
-            elif any(map(lambda a: tool.file_pattern.match(a), all_args)):
+            elif not read_file and any(map(lambda a: tool.file_pattern.match(a), all_args)):
                 #  FIXME: Ugly to do this like this!
                 read_file = next(a[1:] for a in all_args if tool.file_pattern.match(a))
             elif not read_file:
