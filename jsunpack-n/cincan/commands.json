@@ -1,13 +1,8 @@
 {
   "commands": [
     {
-      "command": ["<file>"],
+      "command": ["-d", "^^outdir" ,"^file"],
       "input": "application/pdf"
-    }
-  ],
-  "output-options": [
-    {
-      "args": ["-d", "<out-dir>"]
     }
   ]
 }

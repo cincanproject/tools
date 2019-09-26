@@ -22,18 +22,18 @@ class ToolCommands:
     """Tool commands and options"""
     def __init__(self, json: Dict[str,Any], command_args: List[str] = None):
         self.commands_json = json.get('commands', [])
-        self.outputs_json = json.get('output-options', [])
-        self.file_pattern = re.compile("(<[^>]*(file|dir)>)")
+        self.file_pattern = re.compile("\\^(.+)")
 
-    def is_stdout_output_option(self) -> bool:
-        return any(map(lambda t: t.get('stdout', False), self.outputs_json))
+        # create ad-hoc command if ^ given in tool arguments
+        if command_args:
+            self.commands_json.insert(0, {'command': command_args})
 
-    def get_output_to_file_option(self) -> Optional[List[str]]:
-        for t in self.outputs_json:
-            args = t.get('args', None)
-            if args:
-                return args
-        return None
+    def get_output_to_file_option(self) -> bool:
+        for c in self.commands_json:
+            m = [a for a in c.get('command', []) if self.file_pattern.match(a)]
+            if any(map(lambda s: s.startswith('^^'), m)):
+                return True
+        return False
 
     def command_line(self, in_file: str, args: List[str] = None,
                      in_type: Optional[str] = None, out_type: Optional[str] = None,
@@ -60,16 +60,17 @@ class ToolCommands:
                               match_commands))))
         command = match_commands[0]['command']
         true_args = []
-        if write_output:
-            write_opt = self.get_output_to_file_option()
-            if not write_opt:
-                raise Exception("Cannot use the tool, do not know how to make it to write to a file/directory")
-            for arg in write_opt:
-                true_args.append(self.file_pattern.sub("^^" + write_output, arg))
-        for arg in command:
-            true_args.append(self.file_pattern.sub("^" + in_file, arg))
-        for arg in args if args is not None else []:
-            true_args.append(arg)
+        for arg in (command + args if args else command):
+            m = self.file_pattern.search(arg)
+            n_arg = arg
+            if m is not None:
+                b_name = m.group(1)
+                download = b_name.startswith('^')
+                if not download:
+                    n_arg = "^" + in_file
+                elif write_output:
+                    n_arg = "^^" + write_output
+            true_args.append(n_arg)
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
                            out_file=write_output, out_type=match_out_type)
 
@@ -94,15 +95,8 @@ class ToolCommands:
 
     def command_hints(self) -> List[str]:
         lines = []
-        stdout_opt = self.is_stdout_output_option()
-        output_opt = self.get_output_to_file_option()
         for c in self.commands_json:
             cmds = c['command']
-            str = self.file_pattern.sub("^\\1", " ".join(cmds))
-            if output_opt:
-                opt_str = self.file_pattern.sub("^^\\1", " ".join(output_opt))
-                if stdout_opt:
-                    opt_str = "[" + opt_str + "]"
-                str = opt_str + " " + str
+            str = " ".join(cmds)
             lines.append(str)
         return lines

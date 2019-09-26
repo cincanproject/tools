@@ -382,8 +382,7 @@ class ToolImage:
             cmd_lines = self.commands.parse_command(js, root_dir, all_files, write_output=exp_out_file)
         else:
             # Using command line
-            cmd_line = self.commands.command_line(in_file, args, in_type, out_type,
-                                                  write_output=exp_out_file)
+            cmd_line = self.commands.command_line(in_file, [], in_type, out_type, write_output=exp_out_file)
             cmd_lines = [cmd_line]
         try:
             ret = self.__do_run(cmd_lines)
