@@ -24,9 +24,9 @@ class ToolCommands:
         self.commands_json = json.get('commands', [])
         self.file_pattern = re.compile("\\^(.+)")
 
-        # create ad-hoc command if ^ given in tool arguments
-        if command_args:
-            self.commands_json.insert(0, {'command': command_args})
+        # create ad-hoc command if ^ given in tool arguments (forget the ones in commands.json)
+        if command_args and len(command_args) > 0:
+            self.commands_json = [{'command': command_args}]
 
     def get_output_to_file_option(self) -> bool:
         for c in self.commands_json:
@@ -46,9 +46,9 @@ class ToolCommands:
         for c in self.commands_json:
             if not any(map(lambda s: self.file_pattern.match(s), c['command'])):
                 continue
-            if in_type is not None and in_type not in c.get('input'):
+            if in_type is not None and in_type not in c.get('input', [in_type]):
                 continue
-            if out_type is not None and out_type not in c.get('output'):
+            if out_type is not None and out_type not in c.get('output', [out_type]):
                 continue
             match_commands.append(c)
             match_in_type = c.get('input')
