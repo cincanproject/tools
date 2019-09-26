@@ -54,6 +54,7 @@ class ToolImage:
         self.unpack_download_files = False
         self.dump_upload_tar = False
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
+        self.commands = None  # available commands for 'do'
         self.file_pattern = re.compile("\\^(.+)")
 
     def get_tags(self) -> List[str]:
@@ -280,13 +281,13 @@ class ToolImage:
         """Create path for sample file inside docker context (for unit testing) """
         return ('^' if prefix else '') + str(pathlib.Path(self.context) / file)
 
-    def get_commands(self) -> ToolCommands:
+    def __resolve_commands(self, args: List[str] = None) -> ToolCommands:
         """Read commands from commands.json from docker image, empty list if none"""
         container = self.client.containers.create(self.image)
         try:
             raw_tar, stat = container.get_archive(path='/cincan/commands.json')
         except docker.errors.APIError:
-            return ToolCommands({})
+            return ToolCommands({}, args)
         buffer = io.BytesIO()
         for r in raw_tar:
             buffer.write(r)
@@ -297,7 +298,7 @@ class ToolImage:
             c = tarball.extractfile(f).read()
             js = json.loads(c)
             self.logger.debug(json.dumps(js))
-            commands = ToolCommands(js)
+            commands = ToolCommands(js, args)
         container.remove()
         return commands
 
@@ -345,7 +346,8 @@ class ToolImage:
                in_type: Optional[str] = None, out_type: Optional[str] = None) -> (bytes, bytes, int):
         """Do -sub command to run the native tool"""
         exp_out_file = None
-        if self.output_tar and self.get_commands().get_output_to_file_option():
+        self.commands = self.__resolve_commands(args)
+        if self.output_tar and self.commands.get_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
         if self.input_tar:
             # Input file and type in tar
@@ -375,11 +377,11 @@ class ToolImage:
                 js = json.load(f.extractfile(self.metadata_file))
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.get_commands().parse_command(js, root_dir, all_files, write_output=exp_out_file)
+            cmd_lines = self.commands.parse_command(js, root_dir, all_files, write_output=exp_out_file)
         else:
             # Using command line
-            cmd_line = self.get_commands().command_line(in_file, args, in_type, out_type,
-                                                        write_output=exp_out_file)
+            cmd_line = self.commands.command_line(in_file, args, in_type, out_type,
+                                                  write_output=exp_out_file)
             cmd_lines = [cmd_line]
         try:
             ret = self.__do_run(cmd_lines)
@@ -478,7 +480,7 @@ def main():
             elif not read_file:
                 raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
-            if tool.output_tar != '-' and tool.get_commands().get_output_to_file_option():
+            if tool.output_tar != '-' and tool.__resolve_commands().get_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
                 sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
@@ -486,7 +488,7 @@ def main():
         else:
             # sub command 'hint'
             prefix = "run ".format(name)
-            hints = tool.get_commands().command_hints()
+            hints = tool.__resolve_commands().command_hints()
             print("# {} {}".format(','.join(tool.get_tags()), registry.format_time(tool.get_creation_time())))
             if len(hints) > 0:
                 print(prefix + ("\n" + prefix).format(name).join(hints))
