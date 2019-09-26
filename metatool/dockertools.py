@@ -21,7 +21,7 @@ class ToolImage:
     """A tool wrapped to docker image"""
 
     def __init__(self, name: str, path: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
-        self.logger = logging.getLogger(path)
+        self.logger = logging.getLogger(name)
         self.client = docker.from_env()
         self.name = name
         if path is not None:
@@ -448,7 +448,7 @@ def main():
 
     args = m_parser.parse_args()
 
-    logging.basicConfig(format='%(message)s', level=getattr(logging, args.logLevel))
+    logging.basicConfig(format='%(name)s: %(message)s', level=getattr(logging, args.logLevel))
     if args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
