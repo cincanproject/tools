@@ -1,14 +1,10 @@
-## CinCan command
+# CinCan command
 
 The tool `cincan` command provide a frontend
 for easier use of the native tools dockerized in the Cincan project.
 Currently the frontend is a proof-of-concept with some aspects under construction.
 
-> ## WARNING
-> Currently only a few or none of the repositories in DockerHub contain the required
-> metadata for any of the following to work!
-
-### Installation
+## Installation
 
 As prerequisite you must have installed `Docker` for running the tools,
 and `Python 3` and `pip` Python package management program for the command program.
@@ -17,6 +13,10 @@ Consult your system documentation how to install them.
 The command program is then installed using pip for Python 3:
 
     % pip3 install CinCan_Command_Program-0.1b0
+
+> ## WARNING
+> The image is perhaps not in pip repository,
+> FIXME: What to do then!
 
 The python library for command program is now installed, but like to want to insert
 the command `cincan` to your path.
@@ -42,72 +42,39 @@ If all goes well you get a list of the supported tools.
 First time running this will take a while as it must fetch information of the tools
 and cache it locally.
 
-### Using it now
+## Running tools with cincan
 
-### Tool inputs and outputs
+### Invoking tools
 
-The supported tools have the allowed input and output data types listed, 
-so that you can easily figure out which tools are suitable for your data.
-The tools and input and output data types are listed by the sub command 'list'
-like this:
+A tool can be invoked with cincan using 'run' sub-command like this:
 
-    % cincan list -i -o
+    % cincan run <tool> <parameters..>
 
-The output is made from columns of tool name, input types, output types. 
-The list of supported arguments are:
+As you may remember you get the list of supported tools with `cincan list`.
+For example the tool `cincan/pywhois`:
 
-| Argument                | Description                                        |
-|-------------------------|----------------------------------------------------|
-| --in, -i                |  List possible input formats                       |
-| --out, -o               |  List possible output formats                      |
-| --tags, -t              |  List all docker tags (tool versions)              |
+    % cincan run cincan/pywhois 127.0.0.1
 
-Note only a subset of all tools have the required metadata to give hints.
-If the data is not available, you get the following output:
+Many tools give you help information, if you invoke them without arguments, for example:
 
-    % cincan hint <tool-without-metadata>
-    ...
-    No command hints
+    % cincan run cincan/tshark
 
-### Command line hints
+### Input and output files
 
-For some tools you can get command line hints by sub command 'hint':
-
-    % cincan hint <tool>
-
-for example
-
-    % cincan hint cincan/tshark
-    run cincan/tshark -r ^<file> -Tjson
-    run cincan/tshark -r ^<file> -Tpdml
-
-You can then invoke the actual too using sub command 'run', 
+As the tools are actually ran on docker container, possible input and output files must be
+transferred into and out from the container. For this input files are marked with 
+`^`-prefix and output files with `^^`-prefix.
 For example, if you have file `myfile.pcap`, 
 the following command should give you JSON-formatted output from 'tshark':
 
     % cincan run cincan/tshark -r ^myfile.pcap -Tjson
 
-Please note that the __`^`-character is a required prefix__ for a file given in command line, 
-as it marks which parameters are actually files. This information is required
-to upload the required files into Docker container before running the actual tool.
+Or you can invoke `xmldump` with input file `input.xml` and produce output 
+to `result.txt` with this command line:
 
-You can still access the native help of a tool with tool-specific way, 
-usually providing parameter `-h` or `--help`. For example:
+    % cincan run cincan/xmldump -d ^^result.txt text ^input.xml 
 
-    % cincan run cincan/tshark --help
-
-Finally note that you are free to invoke the native tool in any supported way
-irrelevant of which hints, if any, are available. Just remember to prefix
-all filenames with `^` so that they get uploaded to docker image.
-
-#### Access output files
-
-Some tools put their output into files. Normally, these files remain only in the
-docker container and are destroyed with the container.
-However, you can fetch output files by marking the files in command line with
-prefix `^^`-prefix.
-
-For example the tool _jsunpack-n_ writes the result in directory, which
+An another example is the tool `jsunpack-n` writes the result in directory, which
 you can explicitly name with option `-d <dir>`.
 The following command line provides an input file for the tool _jsunpack-n_
 and also explicitly gives output directory which is then fetched from the
@@ -115,20 +82,23 @@ docker container:
 
     %  cincan run cincan/jsunpack-n ^sample.pdf -d ^^result-dir
 
-### Harmonized tool input
+## Harmonized tool use with 'do'
 
-Instead of looking at tool hints, you can use the harmonized way to invoking a tool
+Instead of running tools with 'run', you can use the harmonized way to invoking a tool
 with sub command 'do', e.g.:
 
-    % cincan do --read-file myfile.pcap --out application/json cincan/tshark
+    % cincan do cincan/tshark -r ^myfile.pcap -Tjson
+    cincan/tshark: Output to output.tar
 
-Note that we did not use the `^`-prefix. 
+This behaves just like 'run' sub-command, but output is put into tar-archive.
+
+FIXME...
 
 The sub command accepts the following arguments
 
 | Argument                | Description                                        |
 |-------------------------|----------------------------------------------------|
-| --read-file, -r         |  Read a file as input (without ^-prefix)           |
+| --in-file, -f           |  Read a file as input (without ^-prefix)           |
 | --in-str, -s            |  Provide input directly as a string                |
 | --in, -i                |  Specify the desired input format                  |
 | --out, -o               |  Specify the desired output format                 |
@@ -139,7 +109,7 @@ Input or output formats are only required if there are multiple alternatives.
 The actual command line for the native tool is created based on the arguments
 give for the 'do' sub command.
 
-### Invoking tool without frontend
+## Invoking tool without frontend
 
 Sometimes you cannot use the services provided by the 'cincan' frontend.
 For example, you wish to provide the files through mounts for their size
@@ -147,7 +117,7 @@ rather using the copy approach.
 
 Good luck with that! (seriously, no pun intended)
 
-### Running unit tests
+## Running unit tests
 
 You can run the unit tests of the front and and some test tools like this:
 
