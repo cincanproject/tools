@@ -27,16 +27,16 @@ def test_do_run():
     tool = dockertools.tool_with_file(__file__)
 
     out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                             out_type='application/json', args=["-c", "2"])
+                             out_type='application/json', args=["-r", "^in", "-c", "2", "-Tjson"])
     assert out.startswith("[")
 
     out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                             out_type='text/xml', args=["-c", "2"])
+                             out_type='text/xml', args=["-r", "^in", "-c", "2", "-Tpdml"])
     assert out.startswith("<?xml")
 
     with pytest.raises(Exception):
         tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                           args=["-c", "2"])
+                           args=[])
     with pytest.raises(Exception):
         tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                           out_type='text/nosuch', args=["-c", "2"])
+                           out_type='text/nosuch', args=[])
