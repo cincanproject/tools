@@ -209,7 +209,7 @@ class ToolImage:
         name_re = re.compile("^" + pathlib.Path(self.download_path).name + "/?")
         for m in read_tar.getmembers():
             n_name = name_re.sub('', m.name)
-            if n_name == "":
+            if n_name == "" or m.isdir():
                 continue
             self.logger.debug(" %s", n_name)
             content = read_tar.extractfile(m)
