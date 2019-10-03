@@ -28,7 +28,8 @@ class ToolCommands:
         if command_args and len(command_args) > 0:
             self.commands_json = [{'command': command_args}]
 
-    def get_output_to_file_option(self) -> bool:
+    def is_output_to_file_option(self) -> bool:
+        """Is there option to capture native tool output into a file or directory?"""
         for c in self.commands_json:
             m = [a for a in c.get('command', []) if self.file_pattern.match(a)]
             if any(map(lambda s: s.startswith('^^'), m)):
