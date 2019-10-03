@@ -115,13 +115,13 @@ The sub command accepts the following arguments
 
 | Argument                | Description                                        |
 |-------------------------|----------------------------------------------------|
-| --in, -i                | Provide input as tar file, '-' for stdin          |
-| --in-file, -f           | Read a file as input (without ^-prefix)           |
-| --in-str, -s            | Provide input directly as a string                |
-| --out, -o               | Output tar file name, '-' for stdout              |
-| --in-type, -I           | Specify input format                              |
-| --out-type, -O          | Specify output format                             |
-| --pipe                  | Shorthand for stdin input and stdout output       |
+| --in, -i                | Input from tar file or directory, '-' for stdin    |
+| --in-file, -f           | Read a file as input (without ^-prefix)            |
+| --in-str, -s            | Provide input directly as a string                 |
+| --out, -o               | Output tar file name, '-' for stdout               |
+| --in-type, -I           | Specify input format                               |
+| --out-type, -O          | Specify output format                              |
+| --pipe                  | Shorthand for stdin input and stdout output        |
 
 Note that input tar file must contain metadata, similar as written for an output tar file.
 
