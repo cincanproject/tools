@@ -40,7 +40,7 @@ RUN mkdir -p /usr/share/man/man1 \
         python-setuptools=33.1.1-1 \
         python=2.7.13-2 \
         python3=3.5.3-1 \
-        unzip=6.0-21+deb9u1 && \
+        unzip=6.0-21+deb9u2 && \
         rm -rf /var/lib/apt/lists/* \
     && wget -O binwalk.zip https://github.com/ReFirmLabs/binwalk/archive/master.zip \
     && unzip binwalk.zip

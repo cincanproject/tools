@@ -61,9 +61,10 @@ class ToolImage:
         f_name = name
         if m is not None:
             b_name = m.group(1)
-            f_name = "/tmp/work_files" + (b_name if b_name.startswith('/') else '/' + b_name).replace(':', '_')
+            path = pathlib.Path(b_name).resolve()
+            f_name = "/tmp/work_files" + path.as_posix().replace(':', '_')
             self.mapped_files[b_name] = f_name
-            self.logger.info("copy: %s -> %s", b_name, f_name)
+            self.logger.debug("copy: %s -> %s", b_name, f_name)
         return f_name
 
     def __process_args(self, args: List[str]) -> List[str]:
@@ -91,7 +92,7 @@ class ToolImage:
     def run(self, args: List[str]) -> bytes:
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(args)
-        self.logger.info("args: %s", ' '.join(cmd_args))
+        self.logger.debug("args: %s", ' '.join(cmd_args))
         container = self.client.containers.create(self.image, command=cmd_args)
         tarball = self.__copy_uploaded_files()
         if self.mapped_files:
@@ -101,7 +102,7 @@ class ToolImage:
                     f.write(tarball)
             container.put_archive(path='/', data=tarball)
         container.start()
-        container.wait()
+        resp = container.wait()
         logs = container.attach(logs=True)
         container.remove()
         return logs
@@ -163,9 +164,9 @@ class ToolImage:
         for c in all_commands:
             if '<file>' not in c['command']:
                 continue
-            if in_type is not None and in_type != c.get('input'):
+            if in_type is not None and in_type not in c.get('input'):
                 continue
-            if out_type is not None and out_type != c.get('output'):
+            if out_type is not None and out_type not in c.get('output'):
                 continue
             match_commands.append(c)
         if len(match_commands) != 1:
@@ -182,7 +183,7 @@ class ToolImage:
                 true_args.append(arg)
         for arg in args if args is not None else []:
             true_args.append(arg)
-        self.logger.info(" ".join(true_args))
+        self.logger.debug(" ".join(true_args))
         return self.run(true_args)
 
     def do_get_string(self, in_file: str, args: List[str] = None,
@@ -208,7 +209,7 @@ def image_default_args(sub_parser):
 def main():
     m_parser = argparse.ArgumentParser()
     m_parser.add_argument("-l", "--log", dest="logLevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-                          help="Set the logging level")
+                          help="Set the logging level", default='INFO')
     subparsers = m_parser.add_subparsers(dest='sub_command')
 
     run_parser = subparsers.add_parser('run')
@@ -233,8 +234,8 @@ def main():
     do_parser.add_argument('-o', '--out-format', help='Output format')
 
     args = m_parser.parse_args()
-    if args.logLevel:
-        logging.basicConfig(level=getattr(logging, args.logLevel))
+
+    logging.basicConfig(format='%(message)s', level=getattr(logging, args.logLevel))
     if args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
@@ -292,7 +293,3 @@ def main():
             lst = tool_list[tool]
             print(format_str.format(lst.name, lst.description, ",".join(lst.input), ",".join(lst.output),
                                     ",".join(lst.tags)))
-
-
-if __name__ == '__main__':
-    main()

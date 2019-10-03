@@ -1,4 +1,4 @@
-import dockertools
+from metatool import dockertools
 
 
 def test_help():
