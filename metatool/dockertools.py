@@ -14,7 +14,7 @@ import tempfile
 from typing import List, Set, Dict, Tuple, Optional, Any
 
 from metatool import registry
-from metatool.commands import ToolCommand, ToolCommands
+from metatool.commands import ToolCommand, ToolCommands, quote_args
 
 
 class ToolImage:
@@ -262,7 +262,7 @@ class ToolImage:
     def __run(self, command: ToolCommand) -> (bytes, bytes, int):
         """Run native tool in container with given arguments"""
         cmd_args = self.__process_args(command.args)
-        self.logger.debug("args: %s", ' '.join(cmd_args))
+        self.logger.debug("args: %s", ' '.join(quote_args(cmd_args)))
 
         container = self.__create_container()
         stdout, stderr, exit_code = self.__container_exec(container, cmd_args)
@@ -337,7 +337,7 @@ class ToolImage:
         for c, cmd_args in command_args:
             self.logger.debug(c)
             cmd_args = self.__process_args(c.args)
-            self.logger.debug("args: %s", ' '.join(cmd_args))
+            self.logger.debug("args: %s", ' '.join(quote_args(cmd_args)))
             c_stdout, c_stderr, c_exit_code = self.__container_exec(container, cmd_args)
             stdout.write(c_stdout)
             stderr.write(c_stderr)
