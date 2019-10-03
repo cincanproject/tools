@@ -39,7 +39,7 @@ class ToolCommands:
     def command_line(self, in_file: str, args: List[str] = None,
                      in_type: Optional[str] = None, out_type: Optional[str] = None,
                      write_output: Optional[str] = None) -> ToolCommand:
-        """Create actual command line"""
+        """Create the native tool command line with input/output markers"""
         all_commands = self.commands_json
         match_commands = []
         match_in_type = None
@@ -96,6 +96,7 @@ class ToolCommands:
         return commands
 
     def command_hints(self) -> List[str]:
+        """List command hints, if any"""
         lines = []
         for c in self.commands_json:
             cmds = c['command']

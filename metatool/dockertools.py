@@ -59,9 +59,11 @@ class ToolImage:
         self.history = None
 
     def get_tags(self) -> List[str]:
+        """List image tags"""
         return self.image.tags
 
     def get_creation_time(self) -> datetime.datetime:
+        """Get image creation time"""
         return registry.parse_json_time(self.image.attrs['Created'])
 
     def __get_image(self, image: str, pull: bool = False):
@@ -129,10 +131,12 @@ class ToolImage:
         return file_out.getvalue()
 
     def __container_mkdir(self, container, path: str):
+        """Make directory to container"""
         exit_code, _ = container.exec_run(["mkdir", "-p", path])
         self.logger.debug("mkdir -p {} => {}".format(path, exit_code))
 
     def __create_container(self):
+        """Create a container from the image here"""
         # override entry point to just keep the container running
         container = self.client.containers.create(self.image, entrypoint="sh", stdin_open=True, tty=True)
         container.start()
@@ -157,6 +161,7 @@ class ToolImage:
         return container
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
+        """Execute a command in the container"""
         # create the full command line and run with exec
         entry_point = self.image.attrs['Config'].get('Entrypoint')
         if not entry_point:
