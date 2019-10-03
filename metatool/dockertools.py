@@ -386,7 +386,7 @@ class ToolImage:
                 js = json.load(f.extractfile(self.metadata_file))
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.commands.parse_command(js, root_dir, all_files, write_output=exp_out_file)
+            cmd_lines = self.commands.commands_from_metadata(js, root_dir, all_files, write_output=exp_out_file)
             self.history = js.get('history', None)
         else:
             # Using command line
