@@ -4,12 +4,11 @@ CinCan project aims to ease up using various incident investigation tools.
 One way for this is to *Dockerize* the tools.
 
 CinCan project is also adding metadata
-about the input and output formats a tool supports.
+about the input and output formats a tool supports .
 This allows to seek the tools which are relevant to a particular data processing use case.
 
-Further, the metadata can contain "hints" how the tool may be invoked to process
-data of particular format. The hints can be used as basis of invoking the tool, 
-but allow also creation of harmonized command line which is the same for all tools.
+Further, the metadata can contain *command patterns* how the tool is invoked to process
+data of particular format.
 
 ### Supported input and output formats
 
@@ -50,23 +49,24 @@ in the Cincan project
 | text/plain                         | Plain text data                         |
 | text/xml                           | XML formatted data                      |
 
-### Tool hints
+### Tool command patterns
 
-Test tool hints are in `cincan` directory in file `commands.json`.
+Test tool command patterns are in `cincan` directory in file `commands.json`.
 The directory and the file must be copied into the Docker image in following manner:
 
     COPY cincan /cincan
 
-The commands file is JSON formatted with following kind of structure (from *tshark* tool):
+The commands patterns are in a JSON formatted file
+with following kind of structure (from `tshark` tool):
 
     {
       "commands": [
         {
-          "command": ["-r", "<file>", "-Tjson"],
+          "command": ["-r", "^file", "-Tjson"],
           "input": "application/vnd.tcpdump.pcap",
           "output": "application/json"
         }, {
-          "command": ["-r", "<file>", "-Tpdml"],
+          "command": ["-r", "^file", "-Tpdml"],
           "input": "application/vnd.tcpdump.pcap",
           "output": "text/xml"
         }
@@ -74,6 +74,7 @@ The commands file is JSON formatted with following kind of structure (from *tsha
     }
 
 Inside `command` field, each whitespace-separated part of the hinted command is
-given as a list. Special value `<file>` marks the name of the file containing input data.
-It is assumed that the output data goes to standard output.
+given as a list. Values marked with prefix `^` are placeholders for input files.
+Values marked with prefix `^^` are placeholders for output files.
+When no output file is marked, it is assumed that the output data goes to standard output.
 The input and output format is given in fields `input` and `output`, respectively.
