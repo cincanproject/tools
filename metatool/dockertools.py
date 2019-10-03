@@ -354,7 +354,7 @@ class ToolImage:
         """Do -sub command to run the native tool"""
         self.resolve_commands(args)
         exp_out_file = None
-        if self.output_tar and self.commands.get_output_to_file_option():
+        if self.output_tar and self.commands.is_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
 
         if self.input_tar:
@@ -491,7 +491,7 @@ def main():
             elif not read_file:
                 raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
-            if tool.output_tar != '-' and tool.commands.get_output_to_file_option():
+            if tool.output_tar != '-' and tool.commands.is_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
                 sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
