@@ -56,6 +56,7 @@ class ToolImage:
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.commands = None  # available commands for 'do'
         self.file_pattern = re.compile("\\^(.+)")
+        self.history = None
 
     def get_tags(self) -> List[str]:
         """List image tags"""
@@ -249,9 +250,13 @@ class ToolImage:
             if c.in_type:
                 cmd_e['type'] = c.in_type
             cmd_v.append(cmd_e)
+        now = datetime.datetime.now()
+        history_v = {'commands': cmd_v, 'time': now.isoformat()}
+        if self.history:
+            history_v['history'] = self.history
         return {
             'files': files_v,
-            'history': { 'commands': cmd_v },
+            'history': history_v,
         }
 
     def __run(self, command: ToolCommand) -> (bytes, bytes, int):
@@ -386,7 +391,8 @@ class ToolImage:
                 js = json.load(f.extractfile(self.metadata_file))
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.commands.parse_command(js, root_dir, all_files, write_output=exp_out_file)
+            cmd_lines = self.commands.commands_from_metadata(js, root_dir, all_files, write_output=exp_out_file)
+            self.history = js.get('history', None)
         else:
             # Using command line
             cmd_line = self.commands.command_line(in_file, [], in_type, out_type, write_output=exp_out_file)

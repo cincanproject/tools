@@ -75,8 +75,9 @@ class ToolCommands:
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
                            out_file=write_output, out_type=match_out_type)
 
-    def parse_command(self, json: Dict[str, Any], root_dir: str, all_files: Iterable[str],
-                      write_output: Optional[str] = None) -> List[ToolCommand]:
+    def commands_from_metadata(self, json: Dict[str, Any], root_dir: str, all_files: Iterable[str],
+                               write_output: Optional[str] = None) -> List[ToolCommand]:
+        """Create possible native tool command lines based on input metadata"""
         files = []
         for f in json.get('files', []):
             f_name = f.get('name', 'stdout')
