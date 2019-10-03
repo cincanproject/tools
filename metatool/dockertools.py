@@ -225,7 +225,8 @@ class ToolImage:
         os.unlink(tmp_tar.name)
         return
 
-    def __write_file_metadata(self, history: List[Tuple[ToolCommand, str, int]]) -> Dict[str, Any]:
+    def __create_output_metadata(self, history: List[Tuple[ToolCommand, str, int]]) -> Dict[str, Any]:
+        """Create the output metadata JSON file"""
         files_v = []
         cmd_v = []
         for c, cmd, exit_code in history:
@@ -341,7 +342,7 @@ class ToolImage:
         container.kill()
 
         # create the final output file
-        out_sum = self.__write_file_metadata(history)
+        out_sum = self.__create_output_metadata(history)
         self.__copy_downloaded_files(container,
                                      None if self.download_files else stdout.getvalue(),  # use stdout if no other output
                                      out_sum)
