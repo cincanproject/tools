@@ -55,7 +55,7 @@ class ToolImage:
         self.dump_upload_tar = False
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.commands = None  # available commands for 'do'
-        self.file_pattern = re.compile("\\^(.+)")
+        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(\\.*)$")
         self.history = None
 
     def get_tags(self) -> List[str]:
@@ -72,12 +72,12 @@ class ToolImage:
             self.client.images.pull(image)
         self.image = self.client.images.get(image)
 
-    def __process_arg(self, name: str) -> str:
+    def __process_arg(self, in_arg: str) -> str:
         """Process an argument, detect if a to upload and change to point to the file inside the container"""
-        m = self.file_pattern.search(name)
-        f_name = name
+        m = self.file_pattern.match(in_arg)
+        out_arg = in_arg
         if m is not None:
-            b_name = m.group(1)
+            b_name = m.group(2)
             download = b_name.startswith('^')
             if not download:
                 # upload the file
@@ -98,7 +98,8 @@ class ToolImage:
                 f_name = self.download_path + '/' + b_name
                 self.download_files[b_name] = f_name
                 self.logger.debug("arg ^^%s -> %s", b_name, f_name)
-        return f_name
+            out_arg = m.group(1) + f_name + m.group(3)
+        return out_arg
 
     def __process_args(self, args: List[str]) -> List[str]:
         """Process list of arguments"""
