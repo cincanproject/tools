@@ -174,7 +174,7 @@ Also when input tar file contains multiple files, the command pattern is applied
 This allows using the tools as a pipe this way, e.g. see the following rather artifical
 example:
 
-    % cincan do -f myfile.pcap -O xml cincan/tshark \
+    % cincan do -f myfile.pcap -o- -O xml cincan/tshark \
       | cincan do --pipe cincan/xmldump attributes ^IN | tar xO stdout
 
 ## Invoking tool without frontend
