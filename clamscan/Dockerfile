@@ -1,8 +1,9 @@
+# NOTE: Package cannot be automatically build in GitLab currntly: problem when running docker in docker and using setattr command
+
 FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
-# ARG package
-# ADD $package ./
+
 ADD buildconf.tar.gz ./
 
 
@@ -27,11 +28,11 @@ COPY --from=0 /root/packages /root/packages
 COPY --from=0 /etc/apk/keys /etc/apk/keys
 COPY --from=0 /root/.abuild/ /root/.abuild/
 
-VOLUME [ “/sys/fs/cgroup” ]
+# VOLUME [ “/sys/fs/cgroup” ]
 
 RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk update && \
-    apk --no-cache add --repository /root/packages/ clamav && \
+    apk --no-cache add --repository /root/packages clamav && \
     apk --no-cache add --repository /root/packages clamav-daemon && \
     apk --no-cache add --repository /root/packages clamav-libunrar && \
     apk --no-cache add file && \
