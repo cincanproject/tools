@@ -18,10 +18,6 @@ RUN cd buildconf && \
     abuild-keygen -a -i && \
     abuild -R -F && \
     echo "Build finished"
-    #  && \
-    # echo "/root/packages" | tee -a /etc/apk/repositories && \
-    # apk update && \
-    # apk add --repository /root/packages/ clamav
 
 # Copy binaries to actual image
 FROM alpine:latest
@@ -31,16 +27,23 @@ COPY --from=0 /root/packages /root/packages
 COPY --from=0 /etc/apk/keys /etc/apk/keys
 COPY --from=0 /root/.abuild/ /root/.abuild/
 
+VOLUME [ “/sys/fs/cgroup” ]
+
 RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk update && \
     apk --no-cache add --repository /root/packages/ clamav && \
+    apk --no-cache add --repository /root/packages clamav-daemon && \
+    apk --no-cache add --repository /root/packages clamav-libunrar && \
     apk --no-cache add file && \
     apk add openrc --no-cache && \
     apk add --no-cache jq
 
+RUN touch /var/lib/clamav/clamd.sock && \
+    chown clamav:clamav /var/lib/clamav/clamd.sock && \
+    sed -i '/LocalSocket\b/c\LocalSocket /var/lib/clamav/clamd.sock' /etc/clamav/clamd.conf
+RUN rc-update add clamd
 RUN freshclam
-RUN rc-update add clamd && \
-    rc-service clamd start
+
 
 ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]

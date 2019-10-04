@@ -28,4 +28,4 @@ ADD Oletools-license .
 #USER appuser
 
 ENTRYPOINT ["olevba"]
-# CMD ["--help"]
+CMD ["--help"]
