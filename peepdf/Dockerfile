@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
 	    autoconf \
 	    python-libemu \
 	    python-pil \
+		jq \
     && apt-get autoclean \ 
     && git clone https://github.com/buffer/pyv8.git \
     && git clone --recursive https://github.com/buffer/pylibemu.git \
