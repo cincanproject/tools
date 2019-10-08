@@ -9,6 +9,7 @@
 FROM debian:9-slim
 
 LABEL MAINTAINER=cincan.io
+LABEL io.cincan.input="application/pdf"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	    python \
@@ -75,6 +76,8 @@ WORKDIR /jsunpack-n/depends/yapgvb-1.2.3-source
 RUN sed -i 's/use_boost = True/use_boost = False/g' config_linux2.py \
     && python setup.py build \
     && python setup.py install
+
+COPY cincan /cincan
 
 #USER appuser
 

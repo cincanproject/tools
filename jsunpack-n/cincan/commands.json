@@ -1,0 +1,8 @@
+{
+  "commands": [
+    {
+      "command": ["-d", "^^outdir" ,"^file"],
+      "input": "application/pdf"
+    }
+  ]
+}
