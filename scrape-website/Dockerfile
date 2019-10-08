@@ -11,7 +11,7 @@ RUN apk add --no-cache \
     nss \
     && yarn add puppeteer@1.18.0 \
     && yarn add argparse@1.0.10 \
-    && yarn add puppeteer-har@1.0.6 \
+    && yarn add puppeteer-har@1.1.0 \
     && yarn cache clean \
     && rm -rf /var/cache/* \
     && mkdir /var/cache/apk
