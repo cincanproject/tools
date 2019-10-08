@@ -17,11 +17,18 @@ from metatool import registry
 class ToolImage:
     """A tool wrapped to docker image"""
 
-    def __init__(self, path: Optional[str] = None, image: Optional[str] = None, pull: bool = False):
+    def __init__(self, path: Optional[str] = None,
+                 image: Optional[str] = None,
+                 pull: bool = False,
+                 tag: Optional[str] = None,
+                 rm: bool = True):
         self.logger = logging.getLogger(path)
         self.client = docker.from_env()
         if path is not None:
-            self.image, log = self.client.images.build(path=path)
+            if tag is not None:
+                self.image, log = self.client.images.build(path=path, tag=tag, rm=rm)
+            else:
+                self.image, log = self.client.images.build(path=path, rm=rm)
             self.context = path
             self.__log_dict_values(log)
         elif image is not None:
@@ -45,6 +52,9 @@ class ToolImage:
 
     def get_tags(self) -> List[str]:
         return self.image.tags
+
+    def get_id(self) -> str:
+        return self.image.id
 
     def get_creation_time(self) -> datetime.datetime:
         return registry.parse_json_time(self.image.attrs['Created'])
@@ -107,9 +117,12 @@ class ToolImage:
         container.remove()
         return logs
 
-    def run_get_string(self, args: List[str]) -> str:
+    def run_get_string(self, args: List[str], preserve_image: Optional[bool] = False) -> str:
         """Run native tool in container, return output as a string"""
-        return self.run(args).decode('utf8')
+        result = self.run(args).decode('utf8')
+        if not preserve_image:
+            self.remove_image()
+        return result
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
         """Log values from a dict as debug"""
@@ -191,10 +204,17 @@ class ToolImage:
         """Do -sub command to run the native tool, get output as string"""
         return self.do_run(in_file, args, in_type, out_type).decode('ascii')
 
+    def remove_image(self):
+        """Remove this image"""
+        self.client.images.remove(self.get_id())
 
-def tool_with_file(file: str) -> ToolImage:
+
+def tool_with_file(file: str, use_tag: Optional[bool] = True) -> ToolImage:
     path = pathlib.Path(file).parent.name
-    return ToolImage(path=path)
+    tag = None
+    if use_tag:
+        tag = 'test_{}'.format(path)
+    return ToolImage(path=path, tag=tag)
 
 
 def image_default_args(sub_parser):
