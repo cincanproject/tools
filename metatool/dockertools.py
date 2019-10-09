@@ -168,7 +168,12 @@ class ToolImage:
             d_path = pathlib.Path(d)
             rel_to_root = d_path.relative_to(self.download_path)
             if '/' in rel_to_root.as_posix():
+                # make paths leading to the output file
                 self.__container_mkdir(container, d_path.parent.as_posix())
+            if d.endswith("/"):
+                # output file ending '/', assuming it is a directory to make
+                self.__container_mkdir(container, d_path.as_posix())
+
         return container
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
