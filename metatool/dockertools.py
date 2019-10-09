@@ -239,6 +239,9 @@ class ToolImage:
                 m.name = n_name
                 write_tar.addfile(m, fileobj=content)
             else:
+                n_file = pathlib.Path(n_name)
+                if n_file.parent:
+                    n_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(n_name, "wb") as f:
                     shutil.copyfileobj(content, f)
         read_tar.close()
