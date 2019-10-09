@@ -34,7 +34,8 @@ class ToolCommands:
     """Tool commands and options"""
     def __init__(self, json: Dict[str,Any], command_args: List[str] = None):
         self.commands_json = json.get('commands', [])
-        self.file_pattern = re.compile("\\^(.+)")
+        # NOTE: The same regexp as in dockertools.py :/
+        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(.*)$")
 
         # create ad-hoc command if ^ given in tool arguments (forget the ones in commands.json)
         if command_args and len(command_args) > 0:
@@ -74,15 +75,15 @@ class ToolCommands:
         command = match_commands[0]['command']
         true_args = []
         for arg in (command + args if args else command):
-            m = self.file_pattern.search(arg)
+            m = self.file_pattern.match(arg)
             n_arg = arg
             if m is not None:
-                b_name = m.group(1)
+                b_name = m.group(2)
                 download = b_name.startswith('^')
                 if not download:
-                    n_arg = "^" + in_file
+                    n_arg = m.group(1) + "^" + in_file + m.group(3)
                 elif write_output:
-                    n_arg = "^^" + write_output
+                    n_arg = m.group(1) + "^^" + write_output + m.group(3)
             true_args.append(n_arg)
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
                            out_file=write_output, out_type=match_out_type)
