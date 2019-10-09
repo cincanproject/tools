@@ -101,9 +101,8 @@ class ToolCommands:
                 f_files = list(filter(lambda s: s == f_name or s.startswith(dir_prefix), all_files))
                 files += map(lambda s: (s, f_type), f_files)
         else:
-            # no metadata, just read all files and no idea about their type
-            for f in all_files:
-                files += (f, None)
+            # no metadata, just give root directory
+            files.append((".", None))
         if not files:
             raise Exception("No matching files for processing")
         commands = []
