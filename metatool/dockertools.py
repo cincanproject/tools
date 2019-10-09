@@ -292,7 +292,10 @@ class ToolImage:
         """Run native tool in container, return output as a string"""
         r = self.__run(ToolCommand(args))
         if not preserve_image:
-            self.remove_image()
+            try:
+                self.remove_image()
+            except docker.errors.APIError as e:
+                self.logger.warning(e)
         return r[0].decode('utf8') + r[1].decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
