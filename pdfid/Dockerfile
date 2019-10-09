@@ -30,5 +30,5 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 
 RUN adduser -s /sbin/login -D appuser
 
-ENTRYPOINT ["/usr/bin/python", "pdfid/pdfid.py"]
+ENTRYPOINT ["/usr/bin/python", "/pdfid/pdfid.py"]
 CMD ["--help"]
