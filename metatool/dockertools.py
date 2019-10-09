@@ -421,9 +421,15 @@ class ToolImage:
         return ret
 
     def do_get_string(self, in_file: str, args: List[str] = None,
-                      in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
+                      in_type: Optional[str] = None, out_type: Optional[str] = None,
+                      preserve_image: Optional[bool] = False) -> str:
         """Do -sub command to run the native tool, get output as string"""
         r = self.do_run(in_file, args, in_type, out_type)
+        if not preserve_image:
+            try:
+                self.remove_image()
+            except docker.errors.APIError as e:
+                self.logger.warning(e)
         return r[0].decode('utf8') + r[1].decode('utf8')
 
     def remove_image(self):
