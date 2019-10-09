@@ -426,7 +426,7 @@ class ToolImage:
                 try:
                     tar_meta = json.load(f.extractfile(self.metadata_file))
                 except KeyError:
-                    self.logger.warning(f"No {self.metadata_file}")
+                    self.logger.debug(f"No {self.metadata_file}")
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
             cmd_lines = self.commands.commands_from_metadata(tar_meta, root_dir, all_files, write_output=exp_out_file)
