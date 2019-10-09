@@ -62,7 +62,7 @@ class ToolImage:
         self.dump_upload_tar = False
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.commands = None  # available commands for 'do'
-        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(\\.*)$")
+        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(.*)$")
         self.history = None
 
     def get_tags(self) -> List[str]:
@@ -168,7 +168,12 @@ class ToolImage:
             d_path = pathlib.Path(d)
             rel_to_root = d_path.relative_to(self.download_path)
             if '/' in rel_to_root.as_posix():
+                # make paths leading to the output file
                 self.__container_mkdir(container, d_path.parent.as_posix())
+            if d.endswith("/"):
+                # output file ending '/', assuming it is a directory to make
+                self.__container_mkdir(container, d_path.as_posix())
+
         return container
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
@@ -234,6 +239,9 @@ class ToolImage:
                 m.name = n_name
                 write_tar.addfile(m, fileobj=content)
             else:
+                n_file = pathlib.Path(n_name)
+                if n_file.parent:
+                    n_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(n_name, "wb") as f:
                     shutil.copyfileobj(content, f)
         read_tar.close()
@@ -379,6 +387,16 @@ class ToolImage:
         if self.output_tar and self.commands.is_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
 
+        if not in_file and not self.input_tar:
+            # Resolve in file from args
+            for a in args if args else []:
+                m = self.file_pattern.match(a)
+                if m and not m.group(2).startswith("^"):
+                    in_file = m.group(2)
+                    break
+            if not in_file:
+                raise Exception('Input file not specified explicitly nor in the command pattern')
+
         if self.input_tar:
             # Input file and type in tar
             self.logger.info("Read input from %s", self.input_tar)
@@ -404,11 +422,15 @@ class ToolImage:
                 # input is a tar file
                 self.upload_tar = tar_file
             with tarfile.open(self.upload_tar, "r") as f:
-                js = json.load(f.extractfile(self.metadata_file))
+                tar_meta = None
+                try:
+                    tar_meta = json.load(f.extractfile(self.metadata_file))
+                except KeyError:
+                    self.logger.debug(f"No {self.metadata_file}")
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.commands.commands_from_metadata(js, root_dir, all_files, write_output=exp_out_file)
-            self.history = js.get('history', None)
+            cmd_lines = self.commands.commands_from_metadata(tar_meta, root_dir, all_files, write_output=exp_out_file)
+            self.history = tar_meta.get('history', None) if tar_meta else None
         else:
             # Using command line
             cmd_line = self.commands.command_line(in_file, [], in_type, out_type, write_output=exp_out_file)
@@ -420,7 +442,7 @@ class ToolImage:
                 os.unlink(self.upload_tar)
         return ret
 
-    def do_get_string(self, in_file: str, args: List[str] = None,
+    def do_get_string(self, in_file: str = None, args: List[str] = None,
                       in_type: Optional[str] = None, out_type: Optional[str] = None,
                       preserve_image: Optional[bool] = False) -> str:
         """Do -sub command to run the native tool, get output as string"""
@@ -520,11 +542,6 @@ def main():
                 tool.input_tar = getattr(args, 'in')
             elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
-            elif not read_file and any(map(lambda a: tool.file_pattern.match(a), all_args)):
-                #  FIXME: Ugly to do this like this!
-                read_file = next(a[1:] for a in all_args if tool.file_pattern.match(a))
-            elif not read_file:
-                raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
             if tool.output_tar != '-' and tool.commands.is_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
