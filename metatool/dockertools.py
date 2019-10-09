@@ -62,7 +62,7 @@ class ToolImage:
         self.dump_upload_tar = False
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.commands = None  # available commands for 'do'
-        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(\\.*)$")
+        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(.*)$")
         self.history = None
 
     def get_tags(self) -> List[str]:
