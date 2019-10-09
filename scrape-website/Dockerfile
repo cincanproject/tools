@@ -1,4 +1,4 @@
-FROM node:11.12.0-alpine
+FROM node:12.11.1-alpine
 
 ENV CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/ \
@@ -6,7 +6,7 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
     NODE_PATH="/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}"
 
 RUN apk add --no-cache \
-    chromium>73.0.3683.103-r0 \
+    chromium>77.0.3865.90-r0 \
     harfbuzz \
     nss \
     && yarn add puppeteer@1.18.0 \
