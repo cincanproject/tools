@@ -88,22 +88,28 @@ class ToolCommands:
         return ToolCommand(true_args, in_file=in_file, in_type=match_in_type,
                            out_file=write_output, out_type=match_out_type)
 
-    def commands_from_metadata(self, json: Dict[str, Any], root_dir: str, all_files: Iterable[str],
+    def commands_from_metadata(self, metadata: Optional[Dict[str, Any]], root_dir: str, all_files: Iterable[str],
                                write_output: Optional[str] = None) -> List[ToolCommand]:
         """Create possible native tool command lines based on input metadata"""
         files = []
-        for f in json.get('files', []):
-            f_name = f.get('name', 'stdout')
-            dir_prefix = (root_dir + '/' if root_dir != '' else '') + f_name + '/'
-            f_type = f.get('type')
-            f_files = list(filter(lambda s: s == f_name or s.startswith(dir_prefix), all_files))
-            files += map(lambda s: (s, f_type), f_files)
+        if metadata:
+            # metadata json lists which files to process, and perhaps types for them
+            for f in metadata.get('files', []):
+                f_name = f.get('name', 'stdout')
+                dir_prefix = (root_dir + '/' if root_dir != '' else '') + f_name + '/'
+                f_type = f.get('type')
+                f_files = list(filter(lambda s: s == f_name or s.startswith(dir_prefix), all_files))
+                files += map(lambda s: (s, f_type), f_files)
+        else:
+            # no metadata, just read all files and no idea about their type
+            for f in all_files:
+                files += (f, None)
         if not files:
             raise Exception("No matching files for processing")
         commands = []
         many_files = len(files) > 1
         for n, t in files:
-            w_out = (pathlib.Path(write_output) / n).as_posix() if many_files else write_output
+            w_out = (pathlib.Path(write_output) / n).as_posix() if write_output and many_files else write_output
             cmd = self.command_line(in_file=n, in_type=t, write_output=w_out)
             commands.append(cmd)
         return commands

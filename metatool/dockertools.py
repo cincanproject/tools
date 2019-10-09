@@ -422,11 +422,15 @@ class ToolImage:
                 # input is a tar file
                 self.upload_tar = tar_file
             with tarfile.open(self.upload_tar, "r") as f:
-                js = json.load(f.extractfile(self.metadata_file))
+                tar_meta = None
+                try:
+                    tar_meta = json.load(f.extractfile(self.metadata_file))
+                except KeyError:
+                    self.logger.warning(f"No {self.metadata_file}")
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.commands.commands_from_metadata(js, root_dir, all_files, write_output=exp_out_file)
-            self.history = js.get('history', None)
+            cmd_lines = self.commands.commands_from_metadata(tar_meta, root_dir, all_files, write_output=exp_out_file)
+            self.history = tar_meta.get('history', None) if tar_meta else None
         else:
             # Using command line
             cmd_line = self.commands.command_line(in_file, [], in_type, out_type, write_output=exp_out_file)
