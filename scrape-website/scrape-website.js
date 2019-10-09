@@ -154,7 +154,7 @@ async function scrape(scrape_url, args) {
     if (args.output_har) {
         let har = `${hostname}_${dateStr}.har`;
         stdout['har_output'] = har
-        await harsession.start({ path: `${args.output_dir}/${har}` });
+        await harsession.start({ path: `${args.output_dir}/${har}`, saveResponse: true });
     }
 
     try {
