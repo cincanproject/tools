@@ -91,7 +91,8 @@ class ToolImage:
             download = b_name.startswith('^')
             if not download:
                 # upload the file
-                use_absolute = ".." in b_name  # use absolute paths, if /../ used (ok, quite weak)
+                # - use absolute paths, if /../ used (ok, quite weak)
+                use_absolute = ".." in b_name or pathlib.Path(b_name).is_absolute()
                 path = pathlib.Path(b_name)
                 if use_absolute:
                     f_name = pathlib.Path(self.upload_path).as_posix() + path.resolve().as_posix()
