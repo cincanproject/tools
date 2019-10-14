@@ -553,7 +553,7 @@ def main():
             ret = tool.run(all_args)
             sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
-            tool.analyze_command_line_problems(all_args, ret[2])
+            tool.analyze_command_line_problems(sys.argv[1:], ret[2])
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
