@@ -305,7 +305,7 @@ class ToolImage:
             else:
                 fixed.append(arg)
         if suggest_cmd_line:
-            self.logger.error(f"Try: cincan " + " ".join(fixed))
+            self.logger.error(f"Try:\ncincan " + " ".join(fixed))
 
     def run(self, args: List[str]) -> (bytes, bytes, int):
         """Run native tool in container, return output"""
