@@ -293,6 +293,20 @@ class ToolImage:
             self.__copy_downloaded_files(container, b'', None)
         return stdout, stderr, exit_code
 
+    def analyze_command_line_problems(self, args: List[str], exit_code: int):
+        """Analyze command line and give suggestions for user"""
+        fixed: List[str] = []
+        suggest_cmd_line = False
+        for arg in args:
+            if exit_code != 0 and pathlib.Path(arg).exists():
+                self.logger.error(f"'{arg}' is an input file? They should be prefixed with ^")
+                fixed.append('^' + arg)
+                suggest_cmd_line = True
+            else:
+                fixed.append(arg)
+        if suggest_cmd_line:
+            self.logger.error(f"Try: cincan " + " ".join(fixed))
+
     def run(self, args: List[str]) -> (bytes, bytes, int):
         """Run native tool in container, return output"""
         return self.__run(ToolCommand(args))
@@ -512,8 +526,8 @@ def main():
 
     help_parser = subparsers.add_parser('help')
 
-    if len(sys.argv) == 0:
-        args = m_parser.parse_args(args=sys.argv)
+    if len(sys.argv) > 1:
+        args = m_parser.parse_args(args=sys.argv[1:])
     else:
         args = m_parser.parse_args(args=['help'])
 
@@ -539,6 +553,7 @@ def main():
             ret = tool.run(all_args)
             sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
+            tool.analyze_command_line_problems(all_args, ret[2])
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
