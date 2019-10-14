@@ -510,10 +510,18 @@ def main():
     do_parser.add_argument('--pipe', action='store_true',
                            help="Act as pipe from stdin to stdout (same as --in - --out -)")
 
-    args = m_parser.parse_args()
+    help_parser = subparsers.add_parser('help')
+
+    if len(sys.argv) == 0:
+        args = m_parser.parse_args(args=sys.argv)
+    else:
+        args = m_parser.parse_args(args=['help'])
 
     logging.basicConfig(format='%(name)s: %(message)s', level=getattr(logging, args.logLevel))
-    if args.sub_command in {'run', 'hint', 'do'}:
+    if args.sub_command == 'help':
+        m_parser.print_help()
+        sys.exit(1)
+    elif args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
         name = args.tool[0]
