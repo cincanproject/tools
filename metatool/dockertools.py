@@ -91,7 +91,8 @@ class ToolImage:
             download = b_name.startswith('^')
             if not download:
                 # upload the file
-                use_absolute = ".." in b_name  # use absolute paths, if /../ used (ok, quite weak)
+                # - use absolute paths, if /../ used (ok, quite weak)
+                use_absolute = ".." in b_name or pathlib.Path(b_name).is_absolute()
                 path = pathlib.Path(b_name)
                 if use_absolute:
                     f_name = pathlib.Path(self.upload_path).as_posix() + path.resolve().as_posix()
@@ -291,6 +292,20 @@ class ToolImage:
             # write stdout, copy files to filesystem if any
             self.__copy_downloaded_files(container, b'', None)
         return stdout, stderr, exit_code
+
+    def analyze_command_line_problems(self, args: List[str], exit_code: int):
+        """Analyze command line and give suggestions for user"""
+        fixed: List[str] = []
+        suggest_cmd_line = False
+        for arg in args:
+            if exit_code != 0 and pathlib.Path(arg).exists():
+                self.logger.error(f"'{arg}' is an input file? They should be prefixed with ^")
+                fixed.append('^' + arg)
+                suggest_cmd_line = True
+            else:
+                fixed.append(arg)
+        if suggest_cmd_line:
+            self.logger.error(f"Try:\ncincan " + " ".join(fixed))
 
     def run(self, args: List[str]) -> (bytes, bytes, int):
         """Run native tool in container, return output"""
@@ -509,10 +524,18 @@ def main():
     do_parser.add_argument('--pipe', action='store_true',
                            help="Act as pipe from stdin to stdout (same as --in - --out -)")
 
-    args = m_parser.parse_args()
+    help_parser = subparsers.add_parser('help')
+
+    if len(sys.argv) > 1:
+        args = m_parser.parse_args(args=sys.argv[1:])
+    else:
+        args = m_parser.parse_args(args=['help'])
 
     logging.basicConfig(format='%(name)s: %(message)s', level=getattr(logging, args.logLevel))
-    if args.sub_command in {'run', 'hint', 'do'}:
+    if args.sub_command == 'help':
+        m_parser.print_help()
+        sys.exit(1)
+    elif args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
         name = args.tool[0]
@@ -530,6 +553,7 @@ def main():
             ret = tool.run(all_args)
             sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
+            tool.analyze_command_line_problems(sys.argv[1:], ret[2])
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'

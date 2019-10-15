@@ -20,6 +20,16 @@ def test_do_cat():
     assert out == b"Just a file\n"
 
 
+def test_absolute_file():
+    tool = dockertools.tool_with_file(__file__)
+    tool.output_tar = "test_output.tar"
+    tool.do_get_string(args=[f"cat ^{os.getcwd()}/test2tool/samples/file.txt"])
+    with tarfile.open(tool.output_tar) as tar:
+        out = tar.extractfile("stdout").read()
+    os.unlink(tool.output_tar)
+    assert out == b"Just a file\n"
+
+
 def test_tar_do_cat():
     tool = dockertools.tool_with_file(__file__)
     tool.input_tar = "test2tool/samples/many-files/manyfiles.tar"
