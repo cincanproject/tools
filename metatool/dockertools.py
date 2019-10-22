@@ -62,7 +62,7 @@ class ToolImage:
         self.dump_upload_tar = False
         self.output_tar = None  # optional output tar file name or '-' to push tar to stdout
         self.commands = None  # available commands for 'do'
-        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(\\.*)$")
+        self.file_pattern = re.compile("^([^\\^]*)\\^([^, :\"\']+)(.*)$")
         self.history = None
 
     def get_tags(self) -> List[str]:
@@ -91,7 +91,8 @@ class ToolImage:
             download = b_name.startswith('^')
             if not download:
                 # upload the file
-                use_absolute = ".." in b_name  # use absolute paths, if /../ used (ok, quite weak)
+                # - use absolute paths, if /../ used (ok, quite weak)
+                use_absolute = ".." in b_name or pathlib.Path(b_name).is_absolute()
                 path = pathlib.Path(b_name)
                 if use_absolute:
                     f_name = pathlib.Path(self.upload_path).as_posix() + path.resolve().as_posix()
@@ -168,7 +169,12 @@ class ToolImage:
             d_path = pathlib.Path(d)
             rel_to_root = d_path.relative_to(self.download_path)
             if '/' in rel_to_root.as_posix():
+                # make paths leading to the output file
                 self.__container_mkdir(container, d_path.parent.as_posix())
+            if d.endswith("/"):
+                # output file ending '/', assuming it is a directory to make
+                self.__container_mkdir(container, d_path.as_posix())
+
         return container
 
     def __container_exec(self, container, cmd_args: List[str]) -> (str, str, int):
@@ -234,6 +240,9 @@ class ToolImage:
                 m.name = n_name
                 write_tar.addfile(m, fileobj=content)
             else:
+                n_file = pathlib.Path(n_name)
+                if n_file.parent:
+                    n_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(n_name, "wb") as f:
                     shutil.copyfileobj(content, f)
         read_tar.close()
@@ -284,6 +293,20 @@ class ToolImage:
             self.__copy_downloaded_files(container, b'', None)
         return stdout, stderr, exit_code
 
+    def analyze_command_line_problems(self, args: List[str], exit_code: int):
+        """Analyze command line and give suggestions for user"""
+        fixed: List[str] = []
+        suggest_cmd_line = False
+        for arg in args:
+            if exit_code != 0 and pathlib.Path(arg).exists():
+                self.logger.error(f"'{arg}' is an input file? They should be prefixed with ^")
+                fixed.append('^' + arg)
+                suggest_cmd_line = True
+            else:
+                fixed.append(arg)
+        if suggest_cmd_line:
+            self.logger.error(f"Try:\ncincan " + " ".join(fixed))
+
     def run(self, args: List[str]) -> (bytes, bytes, int):
         """Run native tool in container, return output"""
         return self.__run(ToolCommand(args))
@@ -292,7 +315,10 @@ class ToolImage:
         """Run native tool in container, return output as a string"""
         r = self.__run(ToolCommand(args))
         if not preserve_image:
-            self.remove_image()
+            try:
+                self.remove_image()
+            except docker.errors.APIError as e:
+                self.logger.warning(e)
         return r[0].decode('utf8') + r[1].decode('utf8')
 
     def __log_dict_values(self, log: Set[Dict[str, str]]) -> None:
@@ -376,6 +402,16 @@ class ToolImage:
         if self.output_tar and self.commands.is_output_to_file_option():
             exp_out_file = "output"  # use explicit output file supported by the tool
 
+        if not in_file and not self.input_tar:
+            # Resolve in file from args
+            for a in args if args else []:
+                m = self.file_pattern.match(a)
+                if m and not m.group(2).startswith("^"):
+                    in_file = m.group(2)
+                    break
+            if not in_file:
+                raise Exception('Input file not specified explicitly nor in the command pattern')
+
         if self.input_tar:
             # Input file and type in tar
             self.logger.info("Read input from %s", self.input_tar)
@@ -401,11 +437,15 @@ class ToolImage:
                 # input is a tar file
                 self.upload_tar = tar_file
             with tarfile.open(self.upload_tar, "r") as f:
-                js = json.load(f.extractfile(self.metadata_file))
+                tar_meta = None
+                try:
+                    tar_meta = json.load(f.extractfile(self.metadata_file))
+                except KeyError:
+                    self.logger.debug(f"No {self.metadata_file}")
                 all_files = map(lambda e: e.name, filter(lambda e: e.isfile(), f.getmembers()))
             root_dir = ''
-            cmd_lines = self.commands.commands_from_metadata(js, root_dir, all_files, write_output=exp_out_file)
-            self.history = js.get('history', None)
+            cmd_lines = self.commands.commands_from_metadata(tar_meta, root_dir, all_files, write_output=exp_out_file)
+            self.history = tar_meta.get('history', None) if tar_meta else None
         else:
             # Using command line
             cmd_line = self.commands.command_line(in_file, [], in_type, out_type, write_output=exp_out_file)
@@ -417,10 +457,16 @@ class ToolImage:
                 os.unlink(self.upload_tar)
         return ret
 
-    def do_get_string(self, in_file: str, args: List[str] = None,
-                      in_type: Optional[str] = None, out_type: Optional[str] = None) -> str:
+    def do_get_string(self, in_file: str = None, args: List[str] = None,
+                      in_type: Optional[str] = None, out_type: Optional[str] = None,
+                      preserve_image: Optional[bool] = False) -> str:
         """Do -sub command to run the native tool, get output as string"""
         r = self.do_run(in_file, args, in_type, out_type)
+        if not preserve_image:
+            try:
+                self.remove_image()
+            except docker.errors.APIError as e:
+                self.logger.warning(e)
         return r[0].decode('utf8') + r[1].decode('utf8')
 
     def remove_image(self):
@@ -478,10 +524,18 @@ def main():
     do_parser.add_argument('--pipe', action='store_true',
                            help="Act as pipe from stdin to stdout (same as --in - --out -)")
 
-    args = m_parser.parse_args()
+    help_parser = subparsers.add_parser('help')
+
+    if len(sys.argv) > 1:
+        args = m_parser.parse_args(args=sys.argv[1:])
+    else:
+        args = m_parser.parse_args(args=['help'])
 
     logging.basicConfig(format='%(name)s: %(message)s', level=getattr(logging, args.logLevel))
-    if args.sub_command in {'run', 'hint', 'do'}:
+    if args.sub_command == 'help':
+        m_parser.print_help()
+        sys.exit(1)
+    elif args.sub_command in {'run', 'hint', 'do'}:
         if len(args.tool) == 0:
             raise Exception('Missing tool name argument')
         name = args.tool[0]
@@ -499,6 +553,7 @@ def main():
             ret = tool.run(all_args)
             sys.stdout.buffer.write(ret[0])
             sys.stderr.buffer.write(ret[1])
+            tool.analyze_command_line_problems(sys.argv[1:], ret[2])
             sys.exit(ret[2])  # exit code
         elif args.sub_command == 'do':
             # sub command 'do'
@@ -511,11 +566,6 @@ def main():
                 tool.input_tar = getattr(args, 'in')
             elif args.in_str:
                 read_file = tool.set_file_content(args.in_str)
-            elif not read_file and any(map(lambda a: tool.file_pattern.match(a), all_args)):
-                #  FIXME: Ugly to do this like this!
-                read_file = next(a[1:] for a in all_args if tool.file_pattern.match(a))
-            elif not read_file:
-                raise Exception('Must specify either --in, --in-file, or --in-str')
             ret = tool.do_run(in_file=read_file, args=all_args, in_type=args.in_type, out_type=args.out_type)
             if tool.output_tar != '-' and tool.commands.is_output_to_file_option():
                 # content is handled through output file, dump stdout visible as it should not contain the data
