@@ -3,7 +3,7 @@
 ## Input
 
 ```
-APK
+APK file
 ```
 
 ## Output
@@ -33,7 +33,7 @@ docker pull cincan/dex2jar
 ***2. Run the docker container***
 
 ```
-docker run --rm -v `pwd`:/appB dex-tools path/to/your/.apk
+docker run --rm -v `pwd`:/data dex-tools path/to/your/.apk
 
 ```
 

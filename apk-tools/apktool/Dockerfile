@@ -1,7 +1,7 @@
 #Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
 
 #Example command to use apktool
-#docker run --rm -v `pwd`:/app apktool d apk_file.apk
+#docker run --rm -v `pwd`:/data apktool d apk_file.apk
 
 #Java 1.8 is needed
 FROM openjdk:8-alpine
@@ -23,12 +23,8 @@ RUN curl -sLO https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scrip
 #Download apktool and give it right permissions
 RUN curl -sL -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${APKTOOL_VERSION}.jar && chmod +x apktool.jar
 
-# Create alias command
-#RUN echo 'alias apktool="docker run --rm -v `pwd`:/app apktool"' >> ~/.bashrc
+VOLUME ["/data"]
 
-VOLUME ["/app"]
-
-WORKDIR /app 
+WORKDIR /data
 
 ENTRYPOINT ["apktool"]
-CMD ["--help"]

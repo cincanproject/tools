@@ -1,15 +1,12 @@
 #Dex files to jar
 
 #Example command to use dex2jar tool
-#docker run --rm -v `pwd`:/appB dex-tools path/to/your/.apk
+#docker run --rm -v `pwd`:/data dex-tools path/to/your/.apk
 
 #Base image
 FROM openjdk:8-alpine
 
 LABEL MAINTAINER=cincan.io
-#LABEL io.cincan.input= "application/apk"
-#LABEL io.cincan.output="application/jar"
-#COPY cincan /cincan
 
 #Define apktool version
 ENV DEX2JAR_VERSION=2.1
@@ -19,15 +16,13 @@ RUN apk add --no-cache wget unzip
 WORKDIR /usr/local/bin
 #RUN mkdir /tools
 
-#Download dex2jar tool  and give it right permissions
+#Download dex2jar tool, unzip it and give it right permissions
 RUN wget -q -O "dex-tools.zip" "https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-$DEX2JAR_VERSION-SNAPSHOT.zip"
 RUN unzip -q "dex-tools.zip" -d .
-#RUN mv "/tools/dex-tools-$DEX2JAR_VERSION-SNAPSHOT/" "/usr/local/bin/tools"
-#RUN find "." -type f -name \*.sh -print -exec chmod +x {} \;
 RUN chmod +x ./dex-tools-2.1-SNAPSHOT/d2j-dex2jar.sh
 
-VOLUME ["/appB"]
+VOLUME ["/data"]
 
-WORKDIR /appB
+WORKDIR /data
 
 ENTRYPOINT ["/usr/local/bin/dex-tools-2.1-SNAPSHOT/d2j-dex2jar.sh"]

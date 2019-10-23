@@ -1,7 +1,4 @@
 from metatool import dockertools
-import json
-import pytest
-
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)
