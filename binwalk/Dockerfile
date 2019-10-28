@@ -50,6 +50,8 @@ RUN sed -i 's/"${2:-$(lsb_release -r|cut -f 2|cut -c1-2)}"/18/g' deps.sh \
     && python setup.py install \
     && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
+RUN chown appuser /binwalk-master
+
 USER appuser
 
 ENTRYPOINT ["/usr/local/bin/binwalk"]
