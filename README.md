@@ -46,6 +46,12 @@ Actual images can be found from:
 | [peepdf](https://gitlab.com/CinCan/tools/tree/master/peepdf)                   | A Powerful python tool to analyze PDFs             | PDF, shellcode      | Linux    |
 | [rtfobj](https://gitlab.com/CinCan/tools/tree/master/rtfobj)                   | Detect and extract (OLE) objects in RTF files      | RTF                 | Linux    |
 | [vba2graph](https://gitlab.com/CinCan/tools/tree/master/vba2graph)                | Generate call graphs from VBA code                 | DOC,XLS,BAS         | Linux    |
+| **APK analysis tools**                    |                                                    |                     |          |
+| [apktool](https://gitlab.com/CinCan/tools/tree/master/apktool) | A tool for reverse engineering 3rd party, closed, binary Android app     | .apk | Linux    |
+| [dex2jar](https://gitlab.com/CinCan/tools/tree/master/dex2jar) | Tool to decompile dex files to jar         | .dex, .apk | Linux    |
+| [jd-cmd](https://gitlab.com/CinCan/tools/tree/master/jd-cmd) | Decompiles .dex and .jar -files to java.            | .dex, .jar | Linux    |
+| [jadx](https://gitlab.com/CinCan/tools/tree/master/jadx) | Dex to Java decompiler            | .dex, .jar | Linux    |
+
 | **Other**                    |                                                    |                     |          |
 | [access-log-visualization](https://gitlab.com/CinCan/tools/tree/master/access-log-visualization) | Visualizing webserver's access log data            | access.log (Apache) | Linux    |
 | [c-ci](https://gitlab.com/CinCan/tools/tree/master/c-ci)                     | The Concourse CI                                   |                     | Linux    |
