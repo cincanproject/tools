@@ -11,14 +11,10 @@
 ```
 Folder with java files
 ```
-
-## Supported tags and respective `Dockerfile` links
-* `latest` ([*apk-tools/jadx/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/apk-tools/jadx/Dockerfile))
-
 ## Usage
 
 ```
-docker run --rm -v `pwd`:/data jadx -d <Output Folder> <JAR/DEX/APK/CLASS/SMALI/ZIP/AAR/ARSC-FILE>
+docker run --rm -v `pwd`:/data cincan/jadx -d <Output Folder> <JAR/DEX/APK/CLASS/SMALI/ZIP/AAR/ARSC-FILE>
 
 options:
   -d, --output-dir                    - output directory
