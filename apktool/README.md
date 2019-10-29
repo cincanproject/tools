@@ -10,13 +10,13 @@
 ## Output
 
 ```
-Apk tool report
+Folder with decompiled application files
 ```
 
 ## Usage
 
 ```
-docker run --rm -v `pwd`:/data apktool d apk_file.apk
+docker run --rm -v `pwd`:/data cincan/apktool:dev d apk_file.apk
 
 ```
 
