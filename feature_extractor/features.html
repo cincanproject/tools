@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Feature-extractor</title>
+		<script type="text/javascript">
+			/**
+			 * JSONViewer - by Roman Makudera 2016 (c) MIT licence. https://github.com/LorDOniX/json-viewer
+			 */
+			var JSONViewer=(function(){var JSONViewer=function(){this._dom={};this._dom.container=document.createElement("pre");this._dom.container.classList.add("json-viewer");};JSONViewer.prototype.showJSON=function(json,maxLvl,colAt){maxLvl=typeof maxLvl==="number"?maxLvl:-1;colAt=typeof colAt==="number"?colAt:-1;var jsonData=this._processInput(json);var walkEl=this._walk(jsonData,maxLvl,colAt,0);this._dom.container.innerHTML="";this._dom.container.appendChild(walkEl);};JSONViewer.prototype.getContainer=function(){return this._dom.container;};JSONViewer.prototype._processInput=function(json){if(json&&typeof json==="object"){return json;}else{throw"Input value is not object or array!";}};JSONViewer.prototype._walk=function(value,maxLvl,colAt,lvl){var frag=document.createDocumentFragment();var isMaxLvl=maxLvl>=0&&lvl>=maxLvl;var isCollapse=colAt>=0&&lvl>=colAt;switch(typeof value){case"object":if(value){var isArray=Array.isArray(value);var items=isArray?value:Object.keys(value);if(lvl===0){var rootCount=this._createItemsCount(items.length);var rootLink=this._createLink(isArray?"[":"{");if(items.length){rootLink.addEventListener("click",function(){if(isMaxLvl)return;rootLink.classList.toggle("collapsed");rootCount.classList.toggle("hide");this._dom.container.querySelector("ul").classList.toggle("hide");}.bind(this));if(isCollapse){rootLink.classList.add("collapsed");rootCount.classList.remove("hide");}}else{rootLink.classList.add("empty");};rootLink.appendChild(rootCount);frag.appendChild(rootLink);};if(items.length&&!isMaxLvl){var len=items.length-1;var ulList=document.createElement("ul");ulList.setAttribute("data-level",lvl);ulList.classList.add("type-"+(isArray?"array":"object"));items.forEach(function(key,ind){var item=isArray?key:value[key];var li=document.createElement("li");if(typeof item==="object"){var isEmpty=false;if(!item||item instanceof Date){li.appendChild(document.createTextNode(isArray?"":key+": "));li.appendChild(this._createSimple(item?item:null));}else{var itemIsArray=Array.isArray(item);var itemLen=itemIsArray?item.length:Object.keys(item).length;if(!itemLen){li.appendChild(document.createTextNode(key+": "+(itemIsArray?"[]":"{}")));}else{var itemTitle=(typeof key==="string"?key+": ":"")+(itemIsArray?"[":"{");var itemLink=this._createLink(itemTitle);var itemsCount=this._createItemsCount(itemLen);if(maxLvl>=0&&lvl+1>=maxLvl){li.appendChild(document.createTextNode(itemTitle));}else{itemLink.appendChild(itemsCount);li.appendChild(itemLink);};li.appendChild(this._walk(item,maxLvl,colAt,lvl+1));li.appendChild(document.createTextNode(itemIsArray?"]":"}"));var list=li.querySelector("ul");var itemLinkCb=function(){itemLink.classList.toggle("collapsed");itemsCount.classList.toggle("hide");list.classList.toggle("hide");};itemLink.addEventListener("click",itemLinkCb);if(colAt>=0&&lvl+1>=colAt){itemLinkCb();}}}}else{if(!isArray){li.appendChild(document.createTextNode(key+": "));};li.appendChild(this._walk(item,maxLvl,colAt,lvl+1));};if(ind<len){li.appendChild(document.createTextNode(","));};ulList.appendChild(li);},this);frag.appendChild(ulList);}else if(items.length&&isMaxLvl){var itemsCount=this._createItemsCount(items.length);itemsCount.classList.remove("hide");frag.appendChild(itemsCount);};if(lvl===0){if(!items.length){var itemsCount=this._createItemsCount(0);itemsCount.classList.remove("hide");frag.appendChild(itemsCount);};frag.appendChild(document.createTextNode(isArray?"]":"}"));if(isCollapse){frag.querySelector("ul").classList.add("hide");}};break;};default:frag.appendChild(this._createSimple(value));break;};return frag;};JSONViewer.prototype._createSimple=function(value){var spanEl=document.createElement("span");var type=typeof value;var txt=value;if(type==="string"){txt='"'+value.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")+'"';}else if(value===null){type="null";txt="null";}else if(value===undefined){txt="undefined";}else if(value instanceof Date){type="date";txt=value.toString();};spanEl.classList.add("type-"+type);spanEl.innerHTML=txt;return spanEl;};JSONViewer.prototype._createItemsCount=function(count){var itemsCount=document.createElement("span");itemsCount.classList.add("items-ph");itemsCount.classList.add("hide");itemsCount.innerHTML=this._getItemsTitle(count);return itemsCount;};JSONViewer.prototype._createLink=function(title){var linkEl=document.createElement("a");linkEl.classList.add("list-link");linkEl.href="javascript:void(0)";linkEl.innerHTML=title||"";return linkEl;};JSONViewer.prototype._getItemsTitle=function(count){var itemsTxt=count>1||count===0?"items":"item";return(count+" "+itemsTxt);};return JSONViewer;})();
+		</script>
+		<style type="text/css">
+			/* JSONViewer CSS */
+			@charset "utf-8";.json-viewer{color:#000;padding-left:20px;font-size:120%}.json-viewer ul{list-style-type:none;margin:0;margin:0 0 0 1px;border-left:1px dotted #ccc;padding-left:2em}.json-viewer .hide{display:none}.json-viewer ul li .type-string,.json-viewer ul li .type-date{color:#0B7500}.json-viewer ul li .type-boolean{color:#1A01CC;font-weight:bold}.json-viewer ul li .type-number{color:#1A01CC}.json-viewer ul li .type-null{color:red}.json-viewer a.list-link{color:#000;text-decoration:none;position:relative}.json-viewer a.list-link:before{color:#aaa;content:"\25BC";position:absolute;display:inline-block;width:1em;left:-1em}.json-viewer a.list-link.collapsed:before{content:"\25B6"}.json-viewer a.list-link.empty:before{content:""}.json-viewer .items-ph{color:#aaa;padding:0 1em}.json-viewer .items-ph:hover{text-decoration:underline}
+		</style>
+		<style type="text/css">
+			@charset "utf-8"; .feature_div{margin-left:40px}.sample_div{margin-top:15px}.sample_title{display:inline-block;margin-top:10px}.analyzer_success_msg{color:green}.analyzer_fail_msg{color:red}p.JSON_control_p{display:inline-block}/*!Typebase.less v0.1.0 | MIT License */ html{font-family:Arial,Helvetica,sans-serif;font-size:80%;-webkit-font-smoothing:antialiased}p{line-height:1.5rem;margin-top:.2rem;margin-bottom:.2rem}ul,ol{margin-top:0;margin-bottom:0}ul li,ol li{line-height:1.5rem}ul ul,ol ul,ul ol,ol ol{margin-top:0;margin-bottom:0}blockquote{line-height:1.5rem;margin-top:1.5rem;margin-bottom:1.5rem}h1,h2,h3,h4,h5,h6{font-family:sans-serif;margin-top:1.5rem;margin-bottom:0;line-height:1.5rem}h1{font-size:4.242rem;line-height:4.5rem;margin-top:3rem}h2{font-size:2.828rem;line-height:3rem;margin-top:3rem}h3{margin-top:.5rem;font-size:1.414rem;margin-bottom:0}h4{font-size:.707rem}h5{font-size:.4713333333333333rem}h6{font-size:.3535rem}table{margin-top:0;border-spacing:0;border-collapse:collapse;margin-left:1rem}table td,table th{padding:0;text-align:left;padding-right:10px}code{vertical-align:bottom}button{border:0;border-radius:0;-webkit-border-radius:1px}.lead{font-size:1.414rem}.hug{margin-top:0}
+		</style>
+	</head>	
+<body>
+
+<div style="display:none">
+	<div id="feature_template" class="feature_div">
+		<div>
+		<h3 id="name"></h3>
+			<div id="success_div">
+				<p id="success"> </p>
+
+			</div>
+            <div id="parsed_data">
+            </div>
+          <div class="JSON_control_div">
+              <p class="JSON_control_p"> Full JSON: </p>
+			        <button type="button" class="load-json">Expand</button>
+			        <button type="button" class="collapse">Collapse</button>
+          </div>
+      </div>
+		<div id="json"></div>
+	</div>
+</div>
+
+
+
+<div style="display:none">
+	<div id="sample_template" class="sample_div">
+		<div>
+			<h3 id="sample" class="sample_title"></h3>
+			<button type="button" class="expand-sample">Hide</button>
+		</div>
+		
+		<div id="content_box">
+		</div>
+	</div>
+</div>
+
+
+<div id="content">
+	<button type="button" class="expand-all">Expand all</button>
+	<button type="button" class="collapse-all">Collapse all</button>
+</div>	
+
+	<script>
+		var data = {"https://secure.comodo.net/CPS0F": {"data": [{"success": false, "input": {"data": "https://secure.comodo.net/CPS0F", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false"}}, "errorMessage": "No Google API key provided."}, {"success": false, "input": {"data": "https://secure.comodo.net/CPS0F", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false"}}, "errorMessage": "No Google API key provided."}, {"success": false, "input": {"data": "https://secure.comodo.net/CPS0F", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false", "path": ""}}, "errorMessage": "Path to misp-warninglists does not exist."}, {"success": false, "input": {"data": "https://secure.comodo.net/CPS0F", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false", "path": ""}}, "errorMessage": "Path to misp-warninglists does not exist."}], "titles": ["GoogleSafebrowsing", "GoogleSafebrowsing", "MISPWarningLists2", "MISPWarningLists2"], "html": ["", "", "", ""]}, "3cd10509a51edf5a21cdc80aabf7e6a934522d47": {"data": [{"success": false, "input": {"data": "3cd10509a51edf5a21cdc80aabf7e6a934522d47", "dataType": "hash", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false", "path": ""}}, "errorMessage": "Path to misp-warninglists does not exist."}], "titles": ["MISPWarningLists2"], "html": [""]}, "https://www.chiark.greenend.org.uk/~sgtatham/putty/": {"data": [{"success": false, "input": {"data": "https://www.chiark.greenend.org.uk/~sgtatham/putty/", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false"}}, "errorMessage": "No Google API key provided."}, {"success": false, "input": {"data": "https://www.chiark.greenend.org.uk/~sgtatham/putty/", "dataType": "url", "tlp": 0, "config": {"max_tlp": 3, "check_tlp": "false", "path": ""}}, "errorMessage": "Path to misp-warninglists does not exist."}], "titles": ["GoogleSafebrowsing", "MISPWarningLists2"], "html": ["", ""]}}
+		
+		// loop through json object
+		function forIn(obj, fn, thisObj){
+			var key,i=0;
+			for(key in obj){
+				if (exec(fn, obj, key, thisObj)=== false) {
+					break;
+				}
+			}
+		
+			function exec(fn, obj, key, thisObj) {
+				return fn.call(thisObj, obj[key], key, obj);
+			}
+			return forIn;
+		}
+
+
+
+		var expandall = document.querySelector('button.expand-all');
+		expandall.addEventListener("click", function() {
+			var buttons = document.getElementsByClassName('load-json');
+			for(var i = 0; i < buttons.length; i++)  
+ 				buttons[i].click();			
+		});
+		var collapseall = document.querySelector('button.collapse-all');
+		collapseall.addEventListener("click", function() {
+			var buttons = document.getElementsByClassName('collapse');
+			for(var i = 0; i < buttons.length; i++)  
+ 				buttons[i].click();			
+		});
+
+
+		//clone sample html template
+		var titles;
+		var sample_index = 0;
+		forIn(data, function(val,key, o) {
+			titles = val.titles;
+			html = val.html;
+
+			let clone = document.querySelector('#sample_template').cloneNode(true);
+			
+			clone.querySelector('#sample').innerHTML = key;
+			let expandSample = clone.querySelector("button.expand-sample");
+		    expandSample.addEventListener("click", function() {
+		 		var x = clone.querySelector('#content_box');
+		 		if (x.style.display === "none") {
+		 			x.style.display = "block";
+		 			this.innerHTML = "Hide";
+		 		}
+		 		else {
+		 			x.style.display = "none";
+		 			this.innerHTML = "Show";
+		 		}
+	 			
+			});
+
+			clone.setAttribute('id', 'sample'+sample_index);
+			document.querySelector('#content').appendChild(clone);
+
+			val.data.forEach(populate);
+			sample_index+=1;
+		});
+
+		//data.forEach(populate);
+
+        function populate(value,index,array) {
+            let clone = document.querySelector('#feature_template').cloneNode(true);
+            let jsonViewer = new JSONViewer();  
+            clone.setAttribute('id', 'box'+index);
+            clone.querySelector('#json').appendChild(jsonViewer.getContainer());
+            var x = clone.querySelector('#json');
+            x.style.display = "none";          
+            clone.querySelector('#name').innerHTML = titles[index];
+            let jsonObj = value; // JSON.parse(value);
+            //console.log(jsonObj)
+            //jsonViewer.showJSON(jsonObj);
+            //jsonViewer.showJSON(jsonObj, null, 0);
+            let loadJsonBtn = clone.querySelector("button.load-json");
+            let collapseBtn = clone.querySelector("button.collapse");
+            //let maxlvlBtn = clone.querySelector("button.maxlvl");
+            loadJsonBtn.addEventListener("click", function() {
+                //setJSON();
+                var x = clone.querySelector('#json');
+                x.style.display = "block";
+                jsonViewer.showJSON(jsonObj);
+            });
+
+            collapseBtn.addEventListener("click", function() {
+                var x = clone.querySelector('#json');
+                x.style.display = "none";                
+                //jsonViewer.showJSON(jsonObj, null, 0);
+            });
+
+            //maxlvlBtn.addEventListener("click", function() {
+                //jsonViewer.showJSON(jsonObj, null, 3);
+            //});
+            
+            clone.querySelector('#success').innerHTML = "Success: " + jsonObj.success
+            if (jsonObj.success == true)
+            	clone.querySelector('#success').classList.add("analyzer_success_msg")
+            if (jsonObj.success == false) {
+            	clone.querySelector('#success').classList.add("analyzer_fail_msg")
+                let error = document.createElement("P");  
+                error.innerHTML = jsonObj.errorMessage
+                clone.querySelector('#success_div').appendChild(error)
+            }
+            if (html[index].length>0){
+                var wrapper = document.createElement('div');
+            
+                wrapper.innerHTML= html[index];
+                clone.querySelector('#parsed_data').appendChild(wrapper);
+            }
+
+            
+            document.querySelector('#sample' + sample_index).querySelector('#content_box').appendChild(clone);
+        }
+		//var jsonObj = {};
+		//var jsonViewer = new JSONViewer();
+		//document.querySelector("#json").appendChild(jsonViewer.getContainer());
+
+		
+		// textarea value to JSON object
+		var setJSON = function() {
+			try {
+				var value = data;
+				jsonObj = JSON.parse(value);
+			}
+			catch (err) {
+				alert(err);
+			}
+		};
+
+		// load default value
+		//setJSON();
+		//jsonViewer.showJSON(jsonObj, null, 1);
+		// var loadJsonBtn = document.querySelector("button.load-json");
+		// var collapseBtn = document.querySelector("button.collapse");
+		// var maxlvlBtn = document.querySelector("button.maxlvl");
+
+		// loadJsonBtn.addEventListener("click", function() {
+		// 	setJSON();
+		// 	jsonViewer.showJSON(jsonObj);
+		// });
+
+		// collapseBtn.addEventListener("click", function() {
+		// 	jsonViewer.showJSON(jsonObj, null, 1);
+		// });
+
+		// maxlvlBtn.addEventListener("click", function() {
+		// 	jsonViewer.showJSON(jsonObj, 1);
+		// });
+	</script>
+	</body>
+</html>
