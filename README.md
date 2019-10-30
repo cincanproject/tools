@@ -61,6 +61,7 @@ Actual images can be found from:
 | [hyperscan](https://gitlab.com/CinCan/tools/tree/master/hyperscan)                | Regular expression matching library                |                     | Linux    |
 | [identify-file](https://gitlab.com/CinCan/tools/tree/master/identify-file)            | Identifies file type using several techniques      |                     | Linux    |
 | [iocextract](https://gitlab.com/CinCan/tools/tree/master/iocextract)               | Extracts urls, hashes, emails and ips from a file  | any                 | Linux    |
+| [ioc_strings](https://gitlab.com/CinCan/tools/tree/master/ioc_strings)               | Extracts urls, hashes, emails, ips, domains and base64 (other) from a file.  | any                 | Linux    |
 | [keyfinder](https://gitlab.com/CinCan/tools/tree/master/keyfinder)                | Find and analyze key files on a filesystem or APK  | filesystems, APK    | Linux    |
 | [s3-resource-simple](https://gitlab.com/CinCan/tools/tree/master/s3-resource)       | A Resource to upload files to S3                   |                     | Linux    |
 | [sleuthkit](https://gitlab.com/CinCan/tools/tree/master/sleuthkit)                | Open source digital forensics                      |                     | Linux    |
