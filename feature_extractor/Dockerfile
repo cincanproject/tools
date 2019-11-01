@@ -1,4 +1,5 @@
-#docker run -v /samples:/samples  cincan/feature-extractor /samples/input
+#docker run -v /samples:/samples cincan/feature-extractor /samples/input
+# --injsonl = takes jsonl as input
 
 FROM ubuntu:18.04
 
@@ -20,4 +21,3 @@ WORKDIR /wp1/feature_extractor/
 
 ENTRYPOINT ["/usr/bin/python3","analyze_parallel.py"]
 CMD ["--injsonl"]
-
