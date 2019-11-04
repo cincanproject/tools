@@ -20,8 +20,9 @@ Tools and other information related directly to digital forensics.
 * [regripper](https://tools.kali.org/forensics/regripper)
     * Contains scripts for detecting evil patterns in registry
 
-* [plaso](https://github.com/log2timeline/plaso)
+* [plaso](https://github.com/log2timeline/plaso)  
     * Timeline all the things!
+  
 * [autotimeliner](https://github.com/andreafortuna/autotimeliner)
 
 
@@ -63,7 +64,7 @@ SIFT Workstation (This was really wanted "tool" to get to work with docker?)
 * [ExeScan](https://securityxploded.com/exe-scan.php)
 * [Q-UNPACK](https://authorne.info/dkpWMXUXKCVFSgM4OgwdAj4mQlBFC3MDM1N4EFUTHyYzQlsTP3MDMxAjOlQGU3gQBgJAeGNLDxcu)
 
-######## Online tools and malware analysis
+## Online tools and malware analysis
 
 * [AlienVault](https://www.alienvault.com/)
 * [Domaintools](https://www.domaintools.com/)
