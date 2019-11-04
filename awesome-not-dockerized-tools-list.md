@@ -1,13 +1,17 @@
 # Awesome to-be-dockerized list!
 
+
+This file contains list of potential tools to be added as docker containers into CinCan repository.
+
 ## Digital forensics (14.10.2019 from M)
+
+Tools and other information related directly to digital forensics.
 
 ### Cheatsheets and other:
 
 * [SANS](https://digital-forensics.sans.org/community/cheat-sheets)
 * [Evidence dump format](https://countuponsecurity.com/2015/11/09/digital-forensics-evidence-acquisition-and-ewf-mounting/)
 * [Autopsy - gui for many digital forensics tools (such as The Sleuth Kit)](https://www.sleuthkit.org/autopsy/)
-* 
 
 ### Tools
 * [libvshadow](https://github.com/libyal/libvshadow)
@@ -25,7 +29,7 @@ Need for tool to run ARM linux binaries?
 e.g 
   * https://stackoverflow.com/a/37918885
 
-SIFT Workstation (This was really wanted tool to get to work with docker?)
+SIFT Workstation (This was really wanted "tool" to get to work with docker?)
 * [SIFT Workstation](https://digital-forensics.sans.org/community/downloads)
 
 
@@ -82,6 +86,11 @@ SIFT Workstation (This was really wanted tool to get to work with docker?)
 * [PDF X-RAY](https://github.com/9b/pdfxray_public)
 * [origami-pdf](https://code.google.com/archive/p/origami-pdf/)
 
+## Jupyter Notebooks
+
+* [azure-sentinel-notebooks](https://github.com/Azure/Azure-Sentinel-Notebooks) Added 4.11.2019
+* [papermill](https://github.com/nteract/papermill) Added 4.11.2019
+
 ## Browser malware analysis
 
 
@@ -117,6 +126,9 @@ SIFT Workstation (This was really wanted tool to get to work with docker?)
 
 ## Memory forensics
 
+HOX!
+* [Volatility3](https://github.com/volatilityfoundation/volatility3) Added 4.11.2019
+
 * [Volatilitux](https://code.google.com/archive/p/volatilitux/)
 * [LiME](https://github.com/504ensicsLabs/LiME)
 * [Memoryze](https://www.fireeye.com/services/freeware/memoryze.html)
@@ -129,11 +141,17 @@ SIFT Workstation (This was really wanted tool to get to work with docker?)
 * [hslatman github](https://github.com/hslatman/awesome-threat-intelligence)
 * [malware-analyzer.com](http://www.malware-analyzer.com/analysis-tools)
 * [malwoverview](https://github.com/alexandreborges/malwoverview) Added (4.11.2019)
+* [preframe](https://github.com/guelfoweb/peframe) Added 4.11.2019
+    * Static analysis on Portable Executable and generic suspicious file
 
 ## Pcap
  * [Zeek / Bro](https://zeek.org/)
- * [molo.ch](https://molo.ch/)
+ * [molo.ch](https://molo.ch/) Added 4.11.2019
 
+## Log analysis
+
+* [sigma](https://github.com/Neo23x0/sigma)
+    * Generic Signature Format for SIEM systems
 
 ## Other software
 
@@ -141,6 +159,8 @@ SIFT Workstation (This was really wanted tool to get to work with docker?)
 * [osquery](https://osquery.io/)
 * [GTFOBins](https://gtfobins.github.io/#)
 * [cuckoo](https://hub.docker.com/r/blacktop/cuckoo/)
+* [CAPE](https://github.com/ctxis/CAPE) Added 4.11.2019
+    * Sandbox derived from Cuckoo, designed to extract payloads
 * [Cortex Analyzer](https://github.com/TheHive-Project/Cortex-Analyzers)
 * [DEPENDENCY-TRACK](https://dependencytrack.org/)
 * [yara](https://github.com/virustotal/yara)
@@ -155,4 +175,5 @@ SIFT Workstation (This was really wanted tool to get to work with docker?)
 * [Hashcat](https://www.hashcat.net/)
     * [*dizcza/docker-hashcat By dizcza (Linux)*](https://hub.docker.com/r/dizcza/docker-hashcat)
 
-
+* [photon](https://github.com/s0md3v/Photon) Added 4.11.2019
+    * Crawler for subdomains, URLS, files etc.
