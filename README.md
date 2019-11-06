@@ -23,6 +23,7 @@ Actual images can be found from:
 | [r2-callgraph](https://gitlab.com/CinCan/tools/tree/master/r2-callgraph)             | Modificated Radare2 image to analyze binaries      | ELF / PE binary     | Linux    |
 | [snowman-decompile](https://gitlab.com/CinCan/tools/tree/master/snowman-decompile)        | A Native code to C/C++ decompiler                  | ELF Mach-O PE LE    | Linux    |
 | [twiggy](https://gitlab.com/CinCan/tools/tree/master/twiggy)                   | Analyze a binary's call graph                      | .wasm (ELF/Mach-O)  | Linux    |
+| [peframe](https://gitlab.com/CinCan/tools/tree/master/peframe)               | Static analysis on PE and MS Office documents     | binary                    | Linux    |
 | [pe-scanner](https://gitlab.com/CinCan/tools/tree/master/pe-scanner)               |                                                    |                     | Linux    |
 | **Memory analysis**          |                                                    |                     |          |
 | [r2-bin-carver](https://gitlab.com/CinCan/tools/tree/master/r2-bin-carver)            | A Script to carve files from memory dumps          | memory dumps        | Linux    |
