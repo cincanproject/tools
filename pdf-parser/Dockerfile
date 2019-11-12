@@ -1,17 +1,32 @@
-FROM microsoft/windowsservercore:latest
-SHELL ["powershell"]
-ENV PYTHON_URL https://www.python.org/ftp/python/2.7.15/python-2.7.15.amd64.msi
-RUN Write-Host ('Downloading {0} ...' -f $env:PYTHON_URL); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri $env:PYTHON_URL -OutFile 'python.msi';
-RUN Start-Process msiexec.exe -Wait -Argumentlist '/I C:\python.msi /quiet'
-RUN setx /M PATH $($env:PATH + ';C:\Python27;C:\Python27\Scripts')
-RUN setx /M PYTHONIOENCODING "UTF-8"
-ENV PDFPARSER_URL https://didierstevens.com/files/software/pdf-parser_V0_6_9.zip
-RUN Write-Host ('Downloading {0} ...' -f $env:PDFPARSER_URL); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri $env:PDFPARSER_URL -OutFile 'pdfparser.zip'; \
-	Write-Host 'Expanding ...'; \
-	New-Item -ItemType Directory -Path C:\pdfparser | Out-Null; \
-	Expand-Archive pdfparser.zip -DestinationPath C:\pdfparser; \
-	Write-Host 'Complete.'
+# "PDF-parser tool will parse a PDF document to identify the fundamental
+#  elements used in the analyzed file"
+
+FROM alpine:3.9
+
+LABEL MAINTAINER=cincan.io
+LABEL io.cincan.input="application/pdf"
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN apk update && apk add --no-cache \
+	python2=2.7.16-r1 \
+	wget=1.20.3-r0 \
+	unzip=6.0-r4 \
+	git=2.20.1-r0
+
+RUN wget https://didierstevens.com/files/software/pdf-parser_V0_7_3.zip \
+	&& if [ ! "$(sha256sum pdf-parser_V0_7_3.zip |awk '{print toupper($1)}')" = \
+	"D4D5AC9C26A9D8FEF65CE58A769D3F64A737860DC26606068CCDD3F04FDEA0D7" ]; then \
+	echo "Integrity check failed"; exit 1; fi \
+	&& unzip pdf-parser_V0_7_3.zip -d /pdf-parser \
+	&& wget https://github.com/DidierStevens/DidierStevensSuite/archive/master.zip \
+	&& unzip master.zip \
+	&& cp DidierStevensSuite-master/decoder*py /pdf-parser/ \
+	&& rm -rf /DidierStevensSuite-master /pdf-parser_V0_7_3.zip /master.zip 
+
+RUN adduser -s /sbin/login -D appuser && ls -la /pdf-parser
+USER appuser
+
+WORKDIR /pdf-parser
+
+ENTRYPOINT ["/usr/bin/python", "pdf-parser.py"]
+CMD ["--help"]
