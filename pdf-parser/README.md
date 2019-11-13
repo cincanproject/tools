@@ -47,6 +47,10 @@ Example 2. Analyze a file through filters, and display content for objects witho
 `$ docker run --rm -v /samples:/samples cincan/pdf-parser /samples/sample.pdf -c --filter`   
 
 
+Example 3. Run with the cincan command line tool, using &Hex decoder:  
+
+`cincan run pdf-parser ^/samples/sample.pdf -c --filter --decoders=decoder_ah.py`
+
 
 ***Options***
 ```  
