@@ -1,0 +1,119 @@
+============================= test session starts ==============================
+platform linux -- Python 3.6.7, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
+rootdir: /root/tools
+collected 1 item
+
+flawfinder/test_flawfinder.py F                                          [100%]
+
+=================================== FAILURES ===================================
+__________________________________ test_help ___________________________________
+
+    def test_help():
+>       tool = dockertools.tool_with_file(__file__)
+
+flawfinder/test_flawfinder.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+metatool/dockertools.py:217: in tool_with_file
+    return ToolImage(path=path, tag=tag)
+metatool/dockertools.py:29: in __init__
+    self.image, log = self.client.images.build(path=path, tag=tag, rm=rm)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <docker.models.images.ImageCollection object at 0x7f82f73fc5c0>
+kwargs = {'path': 'flawfinder', 'rm': True, 'tag': 'test_flawfinder'}
+resp = <generator object APIClient._stream_helper at 0x7f82f73932b0>
+last_event = {'stream': '  python3-3.7.4-r0:\n    breaks: world[python3=3.7.3-r0]\n'}
+image_id = None, result_stream = <itertools._tee object at 0x7f82f7398308>
+internal_stream = <itertools._tee object at 0x7f82f7398788>
+chunk = {'error': "The command '/bin/sh -c apk update && apk add --no-cache python3=3.7.3-r0     && pip3 install flawfinder==2....3-r0     && pip3 install flawfinder==2.0.10     && adduser -s /sbin/nologin -D appuser' returned a non-zero code: 1"}}
+match = None
+
+    def build(self, **kwargs):
+        """
+        Build an image and return it. Similar to the ``docker build``
+        command. Either ``path`` or ``fileobj`` must be set.
+    
+        If you have a tar file for the Docker build context (including a
+        Dockerfile) already, pass a readable file-like object to ``fileobj``
+        and also pass ``custom_context=True``. If the stream is compressed
+        also, set ``encoding`` to the correct value (e.g ``gzip``).
+    
+        If you want to get the raw output of the build, use the
+        :py:meth:`~docker.api.build.BuildApiMixin.build` method in the
+        low-level API.
+    
+        Args:
+            path (str): Path to the directory containing the Dockerfile
+            fileobj: A file object to use as the Dockerfile. (Or a file-like
+                object)
+            tag (str): A tag to add to the final image
+            quiet (bool): Whether to return the status
+            nocache (bool): Don't use the cache when set to ``True``
+            rm (bool): Remove intermediate containers. The ``docker build``
+                command now defaults to ``--rm=true``, but we have kept the old
+                default of `False` to preserve backward compatibility
+            timeout (int): HTTP timeout
+            custom_context (bool): Optional if using ``fileobj``
+            encoding (str): The encoding for a stream. Set to ``gzip`` for
+                compressing
+            pull (bool): Downloads any updates to the FROM image in Dockerfiles
+            forcerm (bool): Always remove intermediate containers, even after
+                unsuccessful builds
+            dockerfile (str): path within the build context to the Dockerfile
+            buildargs (dict): A dictionary of build arguments
+            container_limits (dict): A dictionary of limits applied to each
+                container created by the build process. Valid keys:
+    
+                - memory (int): set memory limit for build
+                - memswap (int): Total memory (memory + swap), -1 to disable
+                    swap
+                - cpushares (int): CPU shares (relative weight)
+                - cpusetcpus (str): CPUs in which to allow execution, e.g.,
+                    ``"0-3"``, ``"0,1"``
+            shmsize (int): Size of `/dev/shm` in bytes. The size must be
+                greater than 0. If omitted the system uses 64MB
+            labels (dict): A dictionary of labels to set on the image
+            cache_from (list): A list of images used for build cache
+                resolution
+            target (str): Name of the build-stage to build in a multi-stage
+                Dockerfile
+            network_mode (str): networking mode for the run commands during
+                build
+            squash (bool): Squash the resulting images layers into a
+                single layer.
+            extra_hosts (dict): Extra hosts to add to /etc/hosts in building
+                containers, as a mapping of hostname to IP address.
+            platform (str): Platform in the format ``os[/arch[/variant]]``.
+            isolation (str): Isolation technology used during build.
+                Default: `None`.
+            use_config_proxy (bool): If ``True``, and if the docker client
+                configuration file (``~/.docker/config.json`` by default)
+                contains a proxy configuration, the corresponding environment
+                variables will be set in the container being built.
+    
+        Returns:
+            (tuple): The first item is the :py:class:`Image` object for the
+                image that was build. The second item is a generator of the
+                build logs as JSON-decoded objects.
+    
+        Raises:
+            :py:class:`docker.errors.BuildError`
+                If there is an error during the build.
+            :py:class:`docker.errors.APIError`
+                If the server returns any other error.
+            ``TypeError``
+                If neither ``path`` nor ``fileobj`` is specified.
+        """
+        resp = self.client.api.build(**kwargs)
+        if isinstance(resp, six.string_types):
+            return self.get(resp)
+        last_event = None
+        image_id = None
+        result_stream, internal_stream = itertools.tee(json_stream(resp))
+        for chunk in internal_stream:
+            if 'error' in chunk:
+>               raise BuildError(chunk['error'], result_stream)
+E               docker.errors.BuildError: The command '/bin/sh -c apk update && apk add --no-cache python3=3.7.3-r0     && pip3 install flawfinder==2.0.10     && adduser -s /sbin/nologin -D appuser' returned a non-zero code: 1
+
+venv/lib/python3.6/site-packages/docker/models/images.py:287: BuildError
+============================== 1 failed in 2.15s ===============================

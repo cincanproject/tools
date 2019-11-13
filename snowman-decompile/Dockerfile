@@ -6,7 +6,7 @@ FROM debian:9-slim
 LABEL MAINTAINER=cincan.io
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    unzip=6.0-21+deb9u1 \
+    unzip=6.0-21+deb9u2 \
     wget=1.18-5+deb9u3 \
     ca-certificates=20161130+nmu1+deb9u1 \
     build-essential=12.3 \
