@@ -1,17 +1,16 @@
-# "PDF-parser tool will parse a PDF document to identify the fundamental
-#  elements used in the analyzed file"
+# PDF-parser tool will parse a PDF document to identify it's fundamental elements
 
-FROM alpine:3.9
+FROM alpine:3.5
 
 LABEL MAINTAINER=cincan.io
 LABEL io.cincan.input="application/pdf"
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
-	python2=2.7.16-r1 \
-	wget=1.20.3-r0 \
-	unzip=6.0-r4 \
-	git=2.20.1-r0
+	python3=3.5.6-r0 \
+	wget=1.18-r4 \
+	unzip=6.0-r3 \
+	git=2.11.3-r2
 
 RUN wget https://didierstevens.com/files/software/pdf-parser_V0_7_3.zip \
 	&& if [ ! "$(sha256sum pdf-parser_V0_7_3.zip |awk '{print toupper($1)}')" = \
@@ -28,5 +27,5 @@ USER appuser
 
 WORKDIR /pdf-parser
 
-ENTRYPOINT ["/usr/bin/python", "pdf-parser.py"]
+ENTRYPOINT ["/usr/bin/python3", "pdf-parser.py"]
 CMD ["--help"]
