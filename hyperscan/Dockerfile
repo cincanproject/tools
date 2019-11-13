@@ -1,8 +1,8 @@
-FROM centos:latest
+FROM centos:7
 
 RUN yum install -y epel-release 
-RUN yum install -y git gcc clang cmake make gcc-c++  python2  libpcap yara python-pip jq
-RUN pip install plyara
+RUN yum install -y git gcc clang cmake make gcc-c++ sqlite python36  libpcap yara jq
+RUN python3 -m pip install plyara
 RUN mkdir -p /usr/local/include/ && \
 cd /usr/local/include/ && \
         curl -O http://www.colm.net/files/ragel/ragel-6.9.tar.gz && \
