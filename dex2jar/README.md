@@ -15,6 +15,12 @@ APK file
 
 ## Usage
 
+***Using with cincan-tool***
+
+```
+cincan run cincan/dex2jar dex2jar /path/to/apk/file
+```
+
 
 ***1. Option A - Clone the repository and build the image***
 
@@ -36,6 +42,7 @@ docker pull cincan/dex2jar
 docker run --rm -v `pwd`:/data cincan/dex-tools path/to/your/.apk
 
 ```
+
 
 ## Project homepage
 

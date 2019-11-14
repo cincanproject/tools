@@ -7,9 +7,6 @@
 FROM openjdk:8-alpine
 
 LABEL MAINTAINER=cincan.io
-#LABEL io.cincan.input= "application/apk, application/jar"
-#LABEL io.cincan.output=""
-#COPY cincan /cincan
 
 #Define apktool version
 ENV APKTOOL_VERSION=2.4.0
