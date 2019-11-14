@@ -2,6 +2,8 @@
 
 A Dotnet assembly decompiler and portable PDB generator. 
 
+[Reference to PDB.](https://github.com/dotnet/core/blob/master/Documentation/diagnostics/portable_pdb.md)
+
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
