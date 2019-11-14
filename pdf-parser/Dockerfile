@@ -5,6 +5,8 @@ FROM alpine:3.5
 LABEL MAINTAINER=cincan.io
 LABEL io.cincan.input="application/pdf"
 
+ENV VERSION=0_7_3
+
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
 	python3=3.5.6-r0 \
@@ -12,15 +14,15 @@ RUN apk update && apk add --no-cache \
 	unzip=6.0-r3 \
 	git=2.11.3-r2
 
-RUN wget https://didierstevens.com/files/software/pdf-parser_V0_7_3.zip \
-	&& if [ ! "$(sha256sum pdf-parser_V0_7_3.zip |awk '{print toupper($1)}')" = \
+RUN wget https://didierstevens.com/files/software/pdf-parser_V$VERSION.zip \
+	&& if [ ! "$(sha256sum pdf-parser_V$VERSION.zip |awk '{print toupper($1)}')" = \
 	"D4D5AC9C26A9D8FEF65CE58A769D3F64A737860DC26606068CCDD3F04FDEA0D7" ]; then \
 	echo "Integrity check failed"; exit 1; fi \
-	&& unzip pdf-parser_V0_7_3.zip -d /pdf-parser \
+	&& unzip pdf-parser_V$VERSION.zip -d /pdf-parser \
 	&& wget https://github.com/DidierStevens/DidierStevensSuite/archive/master.zip \
 	&& unzip master.zip \
 	&& cp DidierStevensSuite-master/decoder*py /pdf-parser/ \
-	&& rm -rf /DidierStevensSuite-master /pdf-parser_V0_7_3.zip /master.zip 
+	&& rm -rf /DidierStevensSuite-master /pdf-parser_V$VERSION.zip /master.zip 
 
 RUN adduser -s /sbin/login -D appuser && ls -la /pdf-parser
 USER appuser
