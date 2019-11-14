@@ -1,23 +1,23 @@
-# DotNetDecompile
+# ILSpy
 
-A Dotnet decompiler  
+A Dotnet assembly decompiler and portable PDB generator. 
 
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*dotnetdecompile/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile))
+([*ilspy/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile))
 
 
 ## Input
 
 ```
-.NET 
+.NET Assembly
 ```
 
 ## Output
 
 ```
-DotNetDecompile report
+Decompiled source code in C# or PDB
 ```
 
 ## Usage
@@ -40,9 +40,17 @@ docker pull cincan/dotnetdecompile
 
 Analyse a sample in directory "/samples":  
 
-`$ docker run -v /samples:/samples cincan/dotnetdecompile /samples/dotnetsample.exe`
+`$ docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe`
 
 
 ## Project homepage
 
+https://github.com/icsharpcode/ILSpy
+
+### Nuget repository for cmd-only:
+
 https://www.nuget.org/packages/ilspycmd/
+
+## Licence
+
+Distributed under same terms (MIT) than ILSpy itself.
