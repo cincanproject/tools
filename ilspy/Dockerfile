@@ -1,7 +1,7 @@
 # Ilspycmd, decompiler of .net code https://www.nuget.org/packages/ilspycmd/
 # Source: https://github.com/icsharpcode/ILSpy
 
-# Currently uses  .NET Core SDK 2.2 with Debian Streatch
+# Currently uses  .NET Core SDK 2.2 with Debian Stretch
 # Note: problems with Alpine base: help not printed correctly due to paging
 
 # Example:
