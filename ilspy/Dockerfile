@@ -22,6 +22,7 @@ RUN dotnet tool  install --no-cache  ilspycmd --tool-path /usr/local/bin/ --vers
     && chmod +x /usr/local/bin/ilspycmd
 
 USER appuser
+WORKDIR "/home/appuser"
 
 ENTRYPOINT ["/usr/local/bin/ilspycmd"]
 CMD ["--help"]

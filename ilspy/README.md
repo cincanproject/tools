@@ -1,4 +1,4 @@
-# ILSpy
+# ILSpy (console only) - version 5.0.2
 
 A Dotnet assembly decompiler and portable PDB generator. 
 
@@ -7,7 +7,7 @@ A Dotnet assembly decompiler and portable PDB generator.
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*ilspy/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile))
+([*ilspy/Dockerfile*](Dockerfile))
 
 
 ## Input
@@ -19,7 +19,7 @@ A Dotnet assembly decompiler and portable PDB generator.
 ## Output
 
 ```
-Decompiled source code in C# or PDB
+Decompiled source code in C#, PDB or Visual Studio Project
 ```
 
 ## Usage
@@ -28,28 +28,39 @@ Decompiled source code in C# or PDB
 
 ```
 git clone https://gitlab.com/CinCan/tools
-cd tools/dotnetdecompile
+cd tools/ilspy
 ```
 
 ***2. Build OR pull the docker image*** 
 
 ```
-docker build . -t cincan/dotnetdecompile
-docker pull cincan/dotnetdecompile
+docker build . -t cincan/ilspy
+docker pull cincan/ilspy
 ```
 
 ***3. Run the docker container***
 
 Analyse a sample in directory "/samples":  
 
-`$ docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe`
+`$ docker run -v /samples:/samples cincan/ilspy /samples/ilspy_sample.exe`
 
+
+## Testing
+
+Few tests are included for testing the functionality of container. These contains at least:
+
+  * Decompile without options
+  * Decompile only PDB file
+
+### Sample file
+
+Sample file was created for CriM-2019 workshop (Compiled binary C# .NET Assembly). It contains simple dropper for malicous binary from remote URL.
 
 ## Project homepage
 
 https://github.com/icsharpcode/ILSpy
 
-### Nuget repository for cmd-only:
+### NuGet repository of console-only:
 
 https://www.nuget.org/packages/ilspycmd/
 
