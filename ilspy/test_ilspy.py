@@ -37,7 +37,7 @@ def test_do_run_get_PDB(tmp_path):
 
 def test_do_run_create_project(tmp_path):
     """Test creating of decompiled Visual Studio Project from binary"""
-    d = tmp_path / "pdb"
+    d = tmp_path / "vsp"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(args=["-o", f"^^{d.relative_to(os.getcwd())}/", "-p", f"^{SAMPLE_FILE}"])
