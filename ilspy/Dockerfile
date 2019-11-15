@@ -7,19 +7,19 @@
 # Example:
 # docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 
 ENV VERSION=5.0.2
 
 LABEL MAINTAINER=cincan.io
 
-RUN dotnet tool  install --no-cache  ilspycmd --tool-path /usr/local/bin/ --version $VERSION \
-    && groupadd -g 1000 app \
-    && useradd -u 1000 -G app -s /sbin/nologin appuser \
-    # Alpine base alterinatives
-    #&& addgroup -S app \
-    #&& adduser -s /sbin/nologin --disabled-password -g "" appuser app \
-    && chmod +x /usr/local/bin/ilspycmd
+RUN dotnet tool  install --no-cache  ilspycmd --tool-path /usr/local/bin/ --version $VERSION
+
+FROM mcr.microsoft.com/dotnet/core/runtime:2.1
+COPY --from=build /usr/local/bin /usr/local/bin
+RUN   groupadd -g 1000 app \
+   && useradd -u 1000 -G app -s /sbin/nologin appuser \
+   && chmod +x /usr/local/bin/ilspycmd
 
 USER appuser
 WORKDIR "/home/appuser"
