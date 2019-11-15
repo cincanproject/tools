@@ -54,9 +54,7 @@ Analyse a sample in directory "/samples":
 
 Or get possible arguments for the program:  
 
-``$ docker run -v /samples:/samples cincan/ilspy --help`
-
-`$ cincan run cincan/ilspy --help `
+`$ docker run -v /samples:/samples cincan/ilspy --help`
 
 ***Method 2. Run with 'cincan' tool:***
 
