@@ -74,6 +74,12 @@ Few tests are included for testing the functionality of container. These contain
   * Decompile only PDB file
   * Decompile as Visual Studio Project
 
+Tox can be used for testing this tool (run from root of this repository):
+```
+pip install tox
+tox ilspy
+```
+
 ### Sample file
 
 Sample file was created for CriM-2019 workshop (Compiled binary C# .NET Assembly). It contains simple dropper for malicous binary from remote URL.
