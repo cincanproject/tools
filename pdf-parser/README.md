@@ -37,19 +37,19 @@ docker pull cincan/pdf-parser
 
 ***3. Run the docker container***
 
-Example 1. Analyze a file in directory "/samples":
+Example 1. Analyze a file:
 
-`$ docker run --rm -v /samples:/samples cincan/pdf-parser /samples/sample.pdf -a`  
+`$ docker run --rm -v $(pwd):/input cincan/pdf-parser /input/samples/testfile.pdf -a`  
 
 
-Example 2. Analyze a file through filters, and display content for objects withouth streams:  
+Example 2. Analyze a file through filters, and display content for objects without streams:  
 
-`$ docker run --rm -v /samples:/samples cincan/pdf-parser /samples/sample.pdf -c --filter`   
+`$ docker run --rm -v $(pwd):/input cincan/pdf-parser /input/samples/testfile.pdf -c --filter`   
 
 
 Example 3. Run with the cincan command line tool, using &Hex decoder:  
 
-`cincan run pdf-parser ^/samples/sample.pdf -c --filter --decoders=decoder_ah.py`
+`cincan run pdf-parser ^samples/testfile.pdf -c --filter --decoders=decoder_ah.py`
 
 
 ```
