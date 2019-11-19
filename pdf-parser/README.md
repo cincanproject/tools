@@ -49,7 +49,7 @@ Example 2. Analyze a file through filters, and display content for objects witho
 
 Example 3. Run with the cincan command line tool, using &Hex decoder:  
 
-`cincan run pdf-parser ^samples/testfile.pdf -c --filter --decoders=decoder_ah.py`
+`cincan run cincan/pdf-parser ^samples/testfile.pdf -c --filter --decoders=decoder_ah.py`
 
 
 
