@@ -18,10 +18,12 @@ Actual images can be found from:
 | [binary-analysis-tool-bat](https://gitlab.com/CinCan/tools/tree/master/binary-analysis-tool-bat) | Binary Analysis Tool BAT with extra tools          | binary              | Linux    |
 | [binwalk](https://gitlab.com/CinCan/tools/tree/master/binwalk)                  | Firmware analysis tool                             | binary              | Linux    |
 | [dotnetdecompile](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile)          | Decompiler using th ILSpy engine                   | .NET                | Linux    |
+| [ghidra-decompiler](https://gitlab.com/CinCan/tools/tree/master/ghidra-decompiler)        |                                                    |                     | Linux    |
 | [manalyze](https://gitlab.com/CinCan/tools/tree/master/manalyze)                 | A Static analyzer for executables                  | binary              | Linux    |
 | [r2-callgraph](https://gitlab.com/CinCan/tools/tree/master/r2-callgraph)             | Modificated Radare2 image to analyze binaries      | ELF / PE binary     | Linux    |
 | [snowman-decompile](https://gitlab.com/CinCan/tools/tree/master/snowman-decompile)        | A Native code to C/C++ decompiler                  | ELF Mach-O PE LE    | Linux    |
 | [twiggy](https://gitlab.com/CinCan/tools/tree/master/twiggy)                   | Analyze a binary's call graph                      | .wasm (ELF/Mach-O)  | Linux    |
+| [peframe](https://gitlab.com/CinCan/tools/tree/master/peframe)               | Static analysis on PE and MS Office documents     | binary                    | Linux    |
 | [pe-scanner](https://gitlab.com/CinCan/tools/tree/master/pe-scanner)               |                                                    |                     | Linux    |
 | **Memory analysis**          |                                                    |                     |          |
 | [r2-bin-carver](https://gitlab.com/CinCan/tools/tree/master/r2-bin-carver)            | A Script to carve files from memory dumps          | memory dumps        | Linux    |
@@ -57,10 +59,10 @@ Actual images can be found from:
 | [c-worker](https://gitlab.com/CinCan/tools/tree/master/c-worker)                 | The Concourse Worker                               |                     | Linux    |
 | [clamscan](https://gitlab.com/CinCan/tools/tree/master/clamscan)                 | ClamAV virus scanner                               | any                 | Linux    |
 | [flawfinder](https://gitlab.com/CinCan/tools/tree/master/flawfinder)               | Scan C/C++ code for security flaws                 | C/C++               | Linux    |
-| [ghidra-decompiler](https://gitlab.com/CinCan/tools/tree/master/ghidra-decompiler)        |                                                    |                     | Linux    |
 | [hyperscan](https://gitlab.com/CinCan/tools/tree/master/hyperscan)                | Regular expression matching library                |                     | Linux    |
 | [identify-file](https://gitlab.com/CinCan/tools/tree/master/identify-file)            | Identifies file type using several techniques      |                     | Linux    |
 | [iocextract](https://gitlab.com/CinCan/tools/tree/master/iocextract)               | Extracts urls, hashes, emails and ips from a file  | any                 | Linux    |
+| [ioc_strings](https://gitlab.com/CinCan/tools/tree/master/ioc_strings)               | Extracts urls, hashes, emails, ips, domains and base64 (other) from a file.  | any                 | Linux    |
 | [keyfinder](https://gitlab.com/CinCan/tools/tree/master/keyfinder)                | Find and analyze key files on a filesystem or APK  | filesystems, APK    | Linux    |
 | [s3-resource-simple](https://gitlab.com/CinCan/tools/tree/master/s3-resource)       | A Resource to upload files to S3                   |                     | Linux    |
 | [sleuthkit](https://gitlab.com/CinCan/tools/tree/master/sleuthkit)                | Open source digital forensics                      |                     | Linux    |

@@ -1,0 +1,6 @@
+pefile
+unpy2exe
+uncompyle6
+xdis
+pycrypto
+configparser
