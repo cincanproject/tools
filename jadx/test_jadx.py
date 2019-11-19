@@ -19,6 +19,9 @@ def test_decompile_jar():
 def test_remove_file():
     #check that file exists
     if(str(path.exists('selendroid-test-app.zip'))):
-        #remove file    
+        #remove file
         shutil.rmtree("selendroid-test-app.zip")
     #check that file doesn't exist any more
+    if not (str(path.exists('selendroid-test-app.zip'))):
+        print("Test file was removed")
+        assert True
