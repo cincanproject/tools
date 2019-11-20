@@ -172,7 +172,6 @@ def main(argv):
                 content_list.append(ext.load_file(complete_path))
     elif os.path.isfile(argv.path):
         content_list.append(ext.load_file(argv.path))
-    print(content_list)
     if argv.url:
         extracted_urls = ext.extract_urls(content_list)
         extracted_urls = Extractor.remove_duplicates(extracted_urls)
