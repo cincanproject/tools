@@ -1,3 +1,6 @@
+# Default alpine package has no JSON support
+# Self-builded image to enable it
+
 # NOTE: Package cannot be automatically build in GitLab currntly: problem when running docker in docker and using setattr command
 
 FROM alpine:latest
@@ -6,6 +9,7 @@ LABEL MAINTAINER=cincan.io
 
 ADD buildconf.tar.gz ./
 
+ENV VERSION=0.102.0
 
 RUN apk update && apk add --no-cache\
 	alpine-sdk
@@ -28,23 +32,39 @@ COPY --from=0 /root/packages /root/packages
 COPY --from=0 /etc/apk/keys /etc/apk/keys
 COPY --from=0 /root/.abuild/ /root/.abuild/
 
-# VOLUME [ “/sys/fs/cgroup” ]
-
 RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk update && \
     apk --no-cache add --repository /root/packages clamav && \
     apk --no-cache add --repository /root/packages clamav-daemon && \
     apk --no-cache add --repository /root/packages clamav-libunrar && \
     apk --no-cache add file && \
-    apk add openrc --no-cache && \
-    apk add --no-cache jq
+    apk add --no-cache jq  && \
+    rm -rf /root/*
+
+# Change permissions suitable for future user creation
+RUN chown -R clamav:clamav /var/lib/clamav/ && \
+    chown -R clamav:clamav /var/log/clamav/ && \
+    chmod -R 775 /var/lib/clamav/ && \
+    chmod -R 775 /var/log/clamav/
+    
+# Create user and add to clamav group
+RUN addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
+    addgroup appuser clamav
 
 RUN touch /var/lib/clamav/clamd.sock && \
     chown clamav:clamav /var/lib/clamav/clamd.sock && \
+    chmod 775 /var/lib/clamav/clamd.sock && \
     sed -i '/LocalSocket\b/c\LocalSocket /var/lib/clamav/clamd.sock' /etc/clamav/clamd.conf
-RUN rc-update add clamd
-RUN freshclam
 
+USER appuser
+
+RUN freshclam
+# Database should be run once before starting the daemon, however daemon might have much
+# use case here...
+RUN clamd
+
+WORKDIR /home/appuser/
 
 ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]
