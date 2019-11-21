@@ -19,6 +19,12 @@ RUN apk update && apk add --no-cache\
 
 RUN addgroup root abuild 
 
+# Fix CI building by creating dummy getfattr
+RUN echo "echo \"\"" > /usr/bin/getfattr && \
+    chmod +x /usr/bin/getfattr && \
+    echo "echo \"\"" > /bin/getfattr && \
+    chmod +x /bin/getfattr
+
 RUN cd buildconf && \ 
     abuild-keygen -a -i && \
     abuild -R -F && \
