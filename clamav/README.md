@@ -2,6 +2,7 @@
 
 This container is focused on using 'clamscan' client of the ClamAV to make general purpose scans available.
 
+It should be noted, that virus database is not updated when running the scan. Database can be updated by rebuilding image or by manually updating from the container.
 
 ## Input
 
@@ -16,7 +17,7 @@ ClamAV report
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*clamscan/Dockerfile*](Dockerfile))
+* `latest` ([*clamav/Dockerfile*](Dockerfile))
 
 ## Usage
 
@@ -30,7 +31,7 @@ cd tools/clamav
 docker build . -t cincan/clamav
 ```
 
-***Method 2. Pull the docker image*** 
+***Method 2. Pull the docker image from Docker Hub*** 
 
 ```
 docker pull cincan/clamav
@@ -86,7 +87,20 @@ pip install tox
 tox clamav
 ```
 
+## Maintaining
 
+Image is based on Alpine Linux.
+
+ClamAV is built from the source, and it is using aports configuration as [upstream.](https://github.com/alpinelinux/aports/tree/master/main/clamav)
+
+Upstream hasn't `json-c-dev` dependency and `--enable-libjson` is not used in building phase: reason for self-building. Maybe should make an attempt for pull request.
+
+Configuration files can be packed with:
+```
+tar -c buildconf -f buildconf.tar.gz
+```
+
+Which are passed into the building phase.
 
 ## Project homepage
 

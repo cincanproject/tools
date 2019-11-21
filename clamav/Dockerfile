@@ -20,6 +20,8 @@ RUN apk update && apk add --no-cache\
 RUN addgroup root abuild 
 
 # Fix CI building by creating dummy getfattr
+# Alpine is using this to maintain extended attributes but they are not working in CI
+# Does not affect functionality
 RUN echo "echo \"\"" > /usr/bin/getfattr && \
     chmod +x /usr/bin/getfattr && \
     echo "echo \"\"" > /bin/getfattr && \
@@ -45,20 +47,18 @@ RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk --no-cache add --repository /root/packages clamav-libunrar && \
     apk --no-cache add file && \
     apk add --no-cache jq  && \
-    rm -rf /root/*
-
+    rm -rf /root/* && \
 # Change permissions suitable for future user creation
-RUN chown -R clamav:clamav /var/lib/clamav/ && \
+    chown -R clamav:clamav /var/lib/clamav/ && \
     chown -R clamav:clamav /var/log/clamav/ && \
     chmod -R 775 /var/lib/clamav/ && \
-    chmod -R 775 /var/log/clamav/
-    
+    chmod -R 775 /var/log/clamav/ && \
 # Create user and add to clamav group
-RUN addgroup -S appuser && \
+    addgroup -S appuser && \
     adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
-    addgroup appuser clamav
-
-RUN touch /var/lib/clamav/clamd.sock && \
+    addgroup appuser clamav && \
+# Make daemon to work
+    touch /var/lib/clamav/clamd.sock && \
     chown clamav:clamav /var/lib/clamav/clamd.sock && \
     chmod 775 /var/lib/clamav/clamd.sock && \
     sed -i '/LocalSocket\b/c\LocalSocket /var/lib/clamav/clamd.sock' /etc/clamav/clamd.conf
