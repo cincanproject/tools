@@ -42,15 +42,15 @@ RUN mkdir -p /usr/share/man/man1 \
         python3=3.5.3-1 \
         unzip=6.0-21+deb9u2 && \
         rm -rf /var/lib/apt/lists/* \
-    && wget -O binwalk.zip https://github.com/ReFirmLabs/binwalk/archive/master.zip \
-    && unzip binwalk.zip
-WORKDIR binwalk-master
+    && wget -O binwalk.zip https://github.com/ReFirmLabs/binwalk/archive/v2.2.0.zip \
+    && unzip v2.2.0.zip
+WORKDIR binwalk-2.2.0
 RUN sed -i 's/"${2:-$(lsb_release -r|cut -f 2|cut -c1-2)}"/18/g' deps.sh \
     && ./deps.sh --yes \
     && python setup.py install \
     && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
-RUN chown appuser /binwalk-master
+RUN chown appuser /binwalk-2.2.0
 
 USER appuser
 
