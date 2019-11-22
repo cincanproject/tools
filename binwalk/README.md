@@ -1,6 +1,6 @@
 # "Firmware Analysis Tool"
 
-Binwalk with all optional run-time dependencies.
+Binwalk with some optional run-time dependencies.
 
 ## Supported tags and respective `Dockerfile` links
 
@@ -32,3 +32,8 @@ Binwalk report
 ## Project homepage
 
 https://github.com/ReFirmLabs/binwalk
+
+## License
+
+MIT License
+
