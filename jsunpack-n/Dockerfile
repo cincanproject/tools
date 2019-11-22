@@ -1,64 +1,58 @@
-# docker build -t cincan/jsunpack-n .
+# Emulates browser functionality when visiting an URL. Detects browser exploits, scans PDF.
 #
-# File scan:
-# docker run -v /samples:/samples cincan/jsunpack-n /samples/input/sample.pdf -d /samples/output
-#
-# Url scan:
-# docker run -v /samples:/samples cincan/jsunpack-n -u https://<TARGET.URL> -d /samples/output -V
+# docker run -v $(pwd):/input cincan/jsunpack-n /input/samples/testfile.pdf -V -d /input/samples/output/
 
-FROM debian:9-slim
+FROM debian:8-slim AS builder
 
 LABEL MAINTAINER=cincan.io
-LABEL io.cincan.input="application/pdf"
+
+ENV VERSION="0.3.2c (beta)"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	    python \
-        gcc \
-        g++ \
-        make \
-        python-dev \
-        git \
-	    libpcap-dev \
-	    pkg-config \
-	    python-dev \
-	    libgtk2.0-dev \
-	    libnet1-dev \
-	    libpcre3 \
-	    libpcre3-dev \
-	    python-magic \
-	    python-pygraphviz \
-        libboost-all-dev \
-	    wget \
-        ca-certificates \ 
+    gcc=4:4.9.2-2 \
+    g++=4:4.9.2-2 \
+    make=4.0-8.1 \
+    git=1:2.1.4-2.1+deb8u7 \
+    ca-certificates=20141019+deb8u4 \
+    python=2.7.9-1 \
+    python-dev=2.7.9-1 \
+    libpcap-dev=1.6.2-2+deb8u1 \
+    pkg-config=0.28-1 \
+    libgtk2.0-dev=2.24.25-3+deb8u2 \
+    libnet1-dev=1.1.6+dfsg-3 \
+    libpcre3=2:8.35-3.3+deb8u4 \
+    python-pygraphviz=1.3~rc2-1 \
+    libboost-dev=1.55.0.2 \
+    wget=1.16-1+deb8u6 \
     && rm -rf /var/lib/apt/lists/* \
     && git clone https://github.com/urule99/jsunpack-n.git
 
 WORKDIR /jsunpack-n/depends
-RUN tar xvfz pynids-0.6.1.tar.gz \
+RUN git checkout c01f406fd1ac113838f5e9ede8c04a63ef0acd5d \
+    && tar xvfz pynids-0.6.1.tar.gz \
     && tar xvfz js-1.8.0-rc1-src.tar.gz \
     && tar xvfz yara-1.6.tar.gz \
     && tar xvfz yara-python-1.6.tar.gz \
     && tar xvzf BeautifulSoup-3.2.0.tar.gz \
     && tar xvzf pycrypto-2.4.1.tar.gz \
     && wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/yapgvb/yapgvb-1.2.3-source.tar.gz \
-	&& tar zxvf yapgvb-1.2.3-source.tar.gz \
-    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
+    && tar zxvf yapgvb-1.2.3-source.tar.gz
 
-WORKDIR /jsunpack-n/depends/pynids-0.6.1 
+WORKDIR /jsunpack-n/depends/yara-1.6
+RUN ./configure \
+    && make \
+    && make install \
+    && echo "/usr/local/lib" >> /etc/ld.so.conf \
+    && ldconfig
+
+WORKDIR /jsunpack-n/depends/pynids-0.6.1
 RUN python setup.py build \
     && python setup.py install
 
 WORKDIR /jsunpack-n/depends/js-1.8.0-rc1-src
 RUN make BUILD_OPT=1 -f Makefile.ref \
     && echo "export $PATH=" \
-    && make BUILD_OPT=1 JS_DIST=/usr/local -f Makefile.ref export 
-
-WORKDIR /jsunpack-n/depends/yara-1.6
-RUN  ./configure \
-    && make \
-    && make install \
-    && echo "/usr/local/lib" >> /etc/ld.so.conf \
-    && ldconfig
+    && make BUILD_OPT=1 JS_DIST=/usr/local -f Makefile.ref export
 
 WORKDIR /jsunpack-n/depends/yara-python-1.6
 RUN python setup.py build \
@@ -69,7 +63,7 @@ RUN python setup.py build \
     && python setup.py install
 
 WORKDIR /jsunpack-n/depends/pycrypto-2.4.1
-RUN python setup.py build \    
+RUN python setup.py build \
     && python setup.py install
 
 WORKDIR /jsunpack-n/depends/yapgvb-1.2.3-source
@@ -77,10 +71,28 @@ RUN sed -i 's/use_boost = True/use_boost = False/g' config_linux2.py \
     && python setup.py build \
     && python setup.py install
 
-COPY cincan /cincan
+FROM debian:8-slim AS production
 
-#USER appuser
+COPY --from=builder /jsunpack-n /jsunpack-n
+COPY --from=builder /etc/ld.* /etc/
+COPY --from=builder /usr/local /usr/local
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python-magic=1:5.22+15-2+deb8u6 \
+        python=2.7.9-1 \
+        libpcap-dev=1.6.2-2+deb8u1 \
+        libgtk2.0-dev=2.24.25-3+deb8u2 \
+        libnet1-dev=1.1.6+dfsg-3 \
+        && rm -rf /var/lib/apt/lists/* \
+        && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
+        && chown -R appuser:appuser /jsunpack-n
+
+WORKDIR /jsunpack-n/depends/pynids-0.6.1
+RUN python setup.py install \
+    && echo "/usr/local/lib" >> /etc/ld.so.conf \
+    && ldconfig
 
 WORKDIR /jsunpack-n
-ENTRYPOINT ["/usr/bin/python","jsunpackn.py"]
 
+USER appuser
+ENTRYPOINT ["/usr/bin/python","jsunpackn.py"]
