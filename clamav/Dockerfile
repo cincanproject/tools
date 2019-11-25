@@ -1,9 +1,9 @@
 # Default alpine package has no JSON support
 # Self-builded image to enable it
 
-# NOTE: Package cannot be automatically build in GitLab currntly: problem when running docker in docker and using setattr command
+# Package cannot be build in CI without dummy getfattr
 
-FROM alpine:latest
+FROM alpine:3.10
 
 LABEL MAINTAINER=cincan.io
 
@@ -12,8 +12,7 @@ ADD buildconf.tar.gz ./
 ENV VERSION=0.102.0
 
 RUN apk update && apk add --no-cache\
-	alpine-sdk
-	# git=2.20.1-r0
+	alpine-sdk=1.0-r0
 
 # Build ClamAv from source
 
@@ -33,7 +32,7 @@ RUN cd buildconf && \
     echo "Build finished"
 
 # Copy binaries to actual image
-FROM alpine:latest
+FROM alpine:3.10
 COPY --from=0 /root/packages /root/packages
 
 # Copy build keys to make new binaries trusted
@@ -45,8 +44,8 @@ RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
     apk --no-cache add --repository /root/packages clamav && \
     apk --no-cache add --repository /root/packages clamav-daemon && \
     apk --no-cache add --repository /root/packages clamav-libunrar && \
-    apk --no-cache add file && \
-    apk add --no-cache jq  && \
+    apk --no-cache add file=5.37-r1 && \
+    apk add --no-cache jq=1.6-r0  && \
     rm -rf /root/* && \
 # Change permissions suitable for future user creation
     chown -R clamav:clamav /var/lib/clamav/ && \
