@@ -9,14 +9,14 @@ FROM openjdk:8-alpine
 LABEL MAINTAINER=cincan.io
 
 #Define apktool version
-ENV DEX2JAR_VERSION=2.1
+ENV VERSION=2.1
 RUN apk add --no-cache wget unzip
 
 #Change workdir
 WORKDIR /usr/local/bin
 
 #Download dex2jar tool, unzip it and give it right permissions
-RUN wget -q -O "dex-tools.zip" "https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-$DEX2JAR_VERSION-SNAPSHOT.zip"
+RUN wget -q -O "dex-tools.zip" "https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-$VERSION-SNAPSHOT.zip"
 RUN unzip -q "dex-tools.zip" -d .
 RUN chmod +x ./dex-tools-2.1-SNAPSHOT/d2j-dex2jar.sh
 

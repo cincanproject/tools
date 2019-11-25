@@ -9,7 +9,7 @@ FROM openjdk:8-alpine
 LABEL MAINTAINER=cincan.io
 
 #Define apktool version
-ENV APKTOOL_VERSION=2.4.0
+ENV VERSION=2.4.0
 RUN apk add --no-cache curl bash
 
 #Change workdir
@@ -18,7 +18,7 @@ WORKDIR /usr/local/bin
 #Download Linux wrapper script and give it right permissions
 RUN curl -sLO https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool && chmod +x apktool
 #Download apktool and give it right permissions
-RUN curl -sL -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${APKTOOL_VERSION}.jar && chmod +x apktool.jar
+RUN curl -sL -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${VERSION}.jar && chmod +x apktool.jar
 
 VOLUME ["/data"]
 
