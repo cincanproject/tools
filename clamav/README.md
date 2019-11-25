@@ -1,5 +1,7 @@
 # ClamAV virus scanner:  Release 0.102.0
 
+ClamAV is an open source antivirus engine for detecting trojans, viruses, malware & other malicious threats.
+
 This container is focused on using 'clamscan' client of the ClamAV to make general purpose scans available.
 
 It should be noted, that virus database is not updated when running the scan. Database can be updated by rebuilding image or by manually updating from the container.
@@ -111,3 +113,4 @@ https://www.clamav.net/
 Licence
 
 ClamAV itself is distributed under GPLv2. All of the extra code here is distributed under MIT licence.
+
