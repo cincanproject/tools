@@ -17,8 +17,8 @@ RUN dotnet tool  install --no-cache  ilspycmd --tool-path /usr/local/bin/ --vers
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.1
 COPY --from=build /usr/local/bin /usr/local/bin
-RUN   groupadd -g 1000 app \
-   && useradd -u 1000 -G app -s /sbin/nologin appuser \
+RUN   groupadd -g 1000 appuser \
+   && useradd -u 1000 -g appuser -s /sbin/nologin appuser \
    && chmod +x /usr/local/bin/ilspycmd
 
 USER appuser
