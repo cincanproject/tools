@@ -64,7 +64,7 @@ Or get all possible arguments for the clamscan client:
 
 ***Method 2. Run with 'cincan' tool:***
 
-Analyse a provided some sample. Expecting than samples directory is in current directory:
+Analyse a provided some sample. Expecting that samples directory is in the current directory:
 
 `$ cincan run cincan/clamav samples/clamav_sample.exe`
 
@@ -74,12 +74,12 @@ Get help for specifically this tool:
 
 ## Testing
 
-Few tests are included for testing the functionality of container. These contains at least:
+Few tests are included for testing the functionality of the container. These contains at least:
 
   * Test entrypoint and help command
   * Test scanning for sample file, and partially check produced JSON
 
-Sample file is same than tool [ILSpy](../islpy) is using.
+Sample file is the same one than tool [ILSpy](../islpy) is using.
 
 Tox can be used for testing this tool (run from root of this repository):
 ```
@@ -89,7 +89,7 @@ tox clamav
 
 ## Maintaining
 
-Image is based on Alpine Linux.
+Image is based on Alpine Linux in attempt to minimize its size.
 
 ClamAV is built from the source, and it is using aports configuration as [upstream.](https://github.com/alpinelinux/aports/tree/master/main/clamav)
 
