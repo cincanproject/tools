@@ -75,4 +75,4 @@ ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]
 
 # Example command to run and generate JSON metadata
-# docker run -v /home/cincan/Documents/CinCan/document-pipeline/test:/opt/test clamscan-dev:latest --gen-json --leave-temps --tempdir=/opt/test/tmp /opt/test/sample.pdf
+# docker run -v /home/cincan/Documents/CinCan/tools/clamav/test:/opt/test clamav:latest --gen-json --leave-temps --tempdir=/opt/test/tmp /opt/test/sample.pdf
