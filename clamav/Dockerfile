@@ -64,7 +64,7 @@ RUN echo "/root/packages" | tee -a /etc/apk/repositories && \
 
 USER appuser
 
-RUN freshclam
+RUN freshclam --no-dns 
 # Database should be run once before starting the daemon, however daemon might have much
 # use case here...
 RUN clamd
