@@ -23,7 +23,9 @@ e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
 
 Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
-It is preferable to specify dependency package versions as well, but not mandatory.
+It is preferable to specify dependency package versions as well to maintain repeatability of the builds.
+
+Base image *should* use specific version instead of latest tag.
 
 #### Image should run as non-root
 
