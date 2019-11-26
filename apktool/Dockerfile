@@ -1,8 +1,5 @@
 #Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
 
-#Example command to use apktool
-#docker run --rm -v `pwd`:/data apktool d apk_file.apk
-
 #Java 1.8 is needed
 FROM openjdk:8-alpine
 
@@ -10,18 +7,21 @@ LABEL MAINTAINER=cincan.io
 
 #Define apktool version
 ENV VERSION=2.4.0
+
 RUN apk add --no-cache curl bash
 
-#Change workdir
-WORKDIR /usr/local/bin
+# Add an user
+RUN mkdir -p /home/appuser \
+    && adduser -D appuser \
+    && chown -R appuser:appuser /home/appuser
+
+#change user and workdir
+USER appuser
+WORKDIR /home/appuser
 
 #Download Linux wrapper script and give it right permissions
 RUN curl -sLO https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool && chmod +x apktool
 #Download apktool and give it right permissions
-RUN curl -sL -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${VERSION}.jar && chmod +x apktool.jar
+RUN curl -sL -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_$VERSION.jar && chmod +x apktool.jar
 
-VOLUME ["/data"]
-
-WORKDIR /data
-
-ENTRYPOINT ["apktool"]
+ENTRYPOINT ["/home/appuser/apktool"]
