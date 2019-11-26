@@ -80,11 +80,11 @@ If there are no limitations with the licence of the tool, set it as MIT licence.
 ### Previous leads to following README formatting:
 
 README should describe shortly:
-  * the purpose of the tool
-  * format of input files
-  * format of output files
-  * how to run the tool with 'cincan' wrapper tool
-  * how to run the tool with docker
+  * The purpose of the tool
+  * Format of input files
+  * Format of output files
+  * How to run the tool with 'cincan' wrapper tool
+  * How to run the tool with docker
   * How to run test for this tool, and description of possible sample file
   * Credits for the original creator of the tool
     * Project link
