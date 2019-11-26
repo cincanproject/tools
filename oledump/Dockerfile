@@ -1,18 +1,31 @@
-FROM microsoft/windowsservercore:latest
-SHELL ["powershell"]
-ENV PYTHON_URL https://www.python.org/ftp/python/2.7.15/python-2.7.15.amd64.msi
-RUN Write-Host ('Downloading {0} ...' -f $env:PYTHON_URL); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri $env:PYTHON_URL -OutFile 'python.msi';
-RUN Start-Process msiexec.exe -Wait -Argumentlist '/I C:\python.msi /quiet'
-RUN setx /M PATH $($env:PATH + ';C:\Python27;C:\Python27\Scripts')
-RUN setx /M PYTHONIOENCODING "UTF-8"
-RUN pip install OleFileIO_PL
-ENV OLEDUMP_URL https://didierstevens.com/files/software/oledump_V0_0_3.zip
-RUN Write-Host ('Downloading {0} ...' -f $env:OLEDUMP_URL); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri $env:OLEDUMP_URL -OutFile 'oledump.zip'; \
-	Write-Host 'Expanding ...'; \
-	New-Item -ItemType Directory -Path C:\oledump | Out-Null; \
-	Expand-Archive oledump.zip -DestinationPath C:\oledump; \
-	Write-Host 'Complete.'
+# A Program to analyse OLE files.
+
+FROM alpine:3.9
+
+LABEL MAINTAINER=cincan.io
+
+ENV VERSION=0_0_42
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN apk update && apk add --no-cache \
+	py-setuptools=40.6.3-r0 \
+	py2-pip=18.1-r0 \
+	jq=1.6-r0 \
+	git=2.20.1-r0 \
+	unzip=6.0-r4 \
+	&& wget https://didierstevens.com/files/software/oledump_V$VERSION.zip \
+	&& if [ ! "$(sha256sum oledump_V$VERSION.zip |awk '{print toupper($1)}')" = \
+		"14A1FDA4AB57B09729AEB2697818782FAE498369A760FEC8AEE5CFB0A0E9D126" ]; then \
+		echo "Integrity check failed"; exit 1; fi \
+	&& unzip oledump_V$VERSION.zip -d /oledump \
+	&& rm oledump_V$VERSION.zip \
+	&& pip install olefile==0.46 \
+	&& adduser -s /sbin/login -D appuser \
+	&& chown -R appuser:appuser /oledump
+ 
+USER appuser
+
+WORKDIR /home/appuser
+
+ENTRYPOINT ["/usr/bin/python","/oledump/oledump.py"]
+CMD ["--help"]

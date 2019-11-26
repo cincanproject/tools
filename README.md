@@ -38,7 +38,7 @@ Actual images can be found from:
 | [shellcode2exe](https://gitlab.com/CinCan/tools/tree/master/shellcode2exe)            | Converts shellcode into executables                | shellcode           | Linux    |
 | **Document analysis**        |                                                    |                     |          |
 | [jsunpack-n](https://gitlab.com/CinCan/tools/tree/master/jsunpack-n)               | Scans URLs and PDFs.                               | PDF,URL,PCAP,JS,SWF | Linux    |
-| [oledump-linux](https://gitlab.com/CinCan/tools/tree/master/oledump-linux)            | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Linux    |
+| [oledump](https://gitlab.com/CinCan/tools/tree/master/oledump)            | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Linux    |
 | [olevba](https://gitlab.com/CinCan/tools/tree/master/olevba)                   | Extract and analyze VBA macros from Office files   | DOC,DOT,XML,PPTM,VBA| Linux    |
 | [pdf-tools](https://gitlab.com/CinCan/tools/tree/master/pdf-tools)                | The DidierStevensSuite                             | PDF                 | Linux    |
 | [pdf2john](https://gitlab.com/CinCan/tools/tree/master/pdf2john)                 | John The Ripper for extracting hash from PDF       | Encrypted PDF       | Linux    |
@@ -88,7 +88,7 @@ Actual images can be found from:
 | [convertshellcode](https://gitlab.com/CinCan/tools/tree/master/convertshellcode)         | Shellcode disassembler                             | shellcode           | Windows  |
 | **Document analysis**        |                                                    |                     |          |
 | [officemalscanner](https://gitlab.com/CinCan/tools/tree/master/officemalscanner)         | Scan MS Office files for malicious traces          | DOC, XLS, PPT       | Windows  |
-| [oledump](https://gitlab.com/CinCan/tools/tree/master/oledump)                  | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Windows  | 
+| [oledump-win](https://gitlab.com/CinCan/tools/tree/master/oledump-win)                  | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Windows  | 
 | [pdf-parser](https://gitlab.com/CinCan/tools/tree/master/pdf-parser)               | Parse PDF to identify the fundamental elements     | PDF                 | Windows  |
 | [pdf-stream-dumper](https://gitlab.com/CinCan/tools/tree/master/pdf-stream-dumper)        | Analyze PDF documents                              | PDF                 | Windows  |
 

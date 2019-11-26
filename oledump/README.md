@@ -14,7 +14,7 @@ JSON
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*oledump-linux/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/oledump-linux/Dockerfile))
+* `latest` ([*oledump/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/oledump/Dockerfile))
 
 ## Usage
 
@@ -22,29 +22,29 @@ JSON
 
 ```
 git clone https://gitlab.com/CinCan/tools.git
-cd tools/oledump-linux
+cd tools/oledump
 ```
 
 ***2. Build OR pull the docker image***
 
 ```
-docker build . -t cincan/oledump-linux
-docker pull cincan/oledump-linux
+docker build . -t cincan/oledump
+docker pull cincan/oledump
 ```
 
 ***3. Run the docker container***  
 
 Example 1. List streams  
 
-`$ docker run --rm -v $(pwd):/input cincan/oledump-linux /input/samples/testfile.docm`  
+`$ docker run --rm -v $(pwd):/input cincan/oledump /input/samples/testfile.docm`  
 
 Example 2. Identify encryption version  
 
-`$ docker run --rm -v $(pwd):/input cincan/oledump-linux -p plugin_office_crypto /input/samples/testfile.docm`  
+`$ docker run --rm -v $(pwd):/input cincan/oledump -p plugin_office_crypto /input/samples/testfile.docm`  
 
 Example 3. Dump a stream's content using the CinCan command line tool:    
 
-`$ cincan run cincan/oledump-linux -s <STREAM NUMBER> samples/testfile.docm`  
+`$ cincan run cincan/oledump -s <STREAM NUMBER> samples/testfile.docm`  
 
 
 ## Project homepage
