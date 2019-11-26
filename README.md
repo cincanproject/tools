@@ -31,13 +31,13 @@ Create user named as `appuser` and give required permissions for it to run the t
 
 Example for Alpine based image:
 ```shell
-    addgroup -S appuser && \
-    adduser -s /sbin/nologin --disabled-password -G appuser appuser
+addgroup -S appuser && \
+adduser -s /sbin/nologin --disabled-password -G appuser appuser
 ```
 Example for Debian based image:
 ```shell
-    groupadd -g 1000 appuser \
-    && useradd -u 1000 -g appuser -s /sbin/nologin appuser
+groupadd -g 1000 appuser && \
+useradd -u 1000 -g appuser -s /sbin/nologin appuser
 ```
 
 Use the user by adding line close to end: `USER appuser`   
