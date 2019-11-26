@@ -53,6 +53,14 @@ This requires sample file, and it should be:
   * non-malicious
   * free-to-use, preferably created for this purpose
 
+Tests have been implemented by using [*pytest*](https://docs.pytest.org/en/latest/), and the execution is automated with tool named [tox.](https://tox.readthedocs.io/en/latest/)
+
+See reference for [tox.ini](tox.ini)
+
+The tests are dependant of the some methods of the cincan tool. Currently, at least following methods are available:
+  * tool_with_file(__file__) - make instance of the tool
+  * run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
+
 ### Licence should be added
 
 If there are no limitations with the licence of the tool, set it as MIT licence. Otherwise, try to be as permissive as possible with tool's licence.
