@@ -46,7 +46,7 @@ Set working directory for home of this user: `WORKDIR "/home/appuser"` and this 
 
 ### Testing
 
-At least entrypoint and `--help` command should be tested for image.
+At least `entrypoint` and `--help` command should be tested for image.
 Possible test(s) could be added for real sample, and preferably at least one will be implemented.
 
 This requires sample file, and it should be:
