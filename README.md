@@ -21,7 +21,7 @@ Each tool should use `ENV` for describing version number of the tool, and use it
 
 e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
 
-Tool itself should be latest stable version of the it, and installed with previously mentioned VERSION environment variable.
+Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
 It is preferable to specify dependency package versions as well, but not mandatory.
 
