@@ -25,4 +25,7 @@ RUN pip3 install -r requirements.txt \
 
 USER appuser
 
-ENTRYPOINT ["python3", "virustotal.py"]
+WORKDIR "/home/appuser"
+RUN cp /config.json /home/appuser/
+
+ENTRYPOINT ["python3", "/virustotal.py"]
