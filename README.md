@@ -74,7 +74,7 @@ Tests are dependant of some the methods of the [cincan tool](https://gitlab.com/
 
 ### Licence should be added
 
-If there are no limitations with the licence of the tool, set it as MIT licence. Otherwise, try to be as permissive as possible with tool's licence.
+If there are no limitations with the licence of the tool, set it as MIT licence. Otherwise, try to be as permissive as possible with tool's own licence.
 
 
 ### Previous leads to following README formatting:
