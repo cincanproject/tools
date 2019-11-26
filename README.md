@@ -64,7 +64,9 @@ tox
 ```
 Or single test by running:
 
-`tox <tool-directory-name>`
+```
+tox <tool-directory-name>
+```
 
 The tests are dependant of the some methods of the [cincan tool](https://gitlab.com/CinCan/cincan-command) which is implemented with Python. Currently, at least following methods are available:
   * tool_with_file(\__file__) - make instance of the tool
