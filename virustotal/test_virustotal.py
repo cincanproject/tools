@@ -14,5 +14,5 @@ def test_help():
 def test_input_url_no_APIkey():
     """Test sending url_example.txt without API key to virustotal"""
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["--url_file", f"^{SAMPLE_FILE1}", "-o", f"^^{OUTPUT_FOLDER}/"])
+    out = tool.run_get_string(args=["--url_file", f"{SAMPLE_FILE1}", "-o", f"{OUTPUT_FOLDER}/"])
     assert out.startswith("Empty api key file")
