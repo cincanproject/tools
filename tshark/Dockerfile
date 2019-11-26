@@ -9,9 +9,15 @@ ENTRYPOINT ["tshark"]
 CMD ["--help"]
 
 # Add an user
-RUN mkdir -p /home/appuser \
-    && adduser -D appuser \
-    && chown -R appuser:appuser /home/appuser
+RUN addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
+    addgroup tshark && \
+    addgroup appuser tshark  && \
+    chgrp tshark /usr/bin/dumpcap && \
+    chmod o-rx /usr/bin/dumpcap && \
+    setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap && \
+    getcap /usr/bin/dumpcap
+
 
 USER appuser
 WORKDIR /home/appuser
