@@ -52,9 +52,7 @@ Scans all files in the folder:
 
 Query virustotal with the provided example sample from this directory:
 
-`$ cincan run cincan/virustotal --api_key <api_key_here> --files_hash samples/hash_example.txt --output samples/
-
-`
+`$ cincan run cincan/virustotal --api_key <api_key_here> --files_hash samples/hash_example.txt --output samples/`
 
 Get help for specifically this tool:
 
