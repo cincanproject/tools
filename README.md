@@ -25,7 +25,7 @@ Tool itself should be latest *stable* version, and it is hopefully installed wit
 
 It is preferable to specify dependency package versions as well, but not mandatory.
 
-### Image should run as non-root
+#### Image should run as non-root
 
 Create user named as `appuser` and give required permissions for it to run the tool.
 
