@@ -7,8 +7,72 @@ The pipeline will try to build a new image for each directory that **_has change
 Actual images can be found from:
 [https://hub.docker.com/r/cincan/](https://hub.docker.com/r/cincan/)  
 
+## Practices for creating the tools
 
-## Description of tools
+### Dockerfile
+
+Label for maintainer should be added:
+
+`LABEL MAINTAINER=cincan.io`
+
+Each tool should use `ENV` for describing version number of the tool, and use it for installation, if possible. Variable name must be `VERSION`
+ * This gives a way for reading version information of the tool from every container, just by checking VERSION environment variable.
+ * Dockerfiles can be automatically parsed for documentation, and VERSION information can be acquired in this way.
+
+e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
+
+Tool itself should be latest stable version of the it, and installed with previously mentioned VERSION environment variable.
+
+It is preferable to specify dependency package versions as well, but not mandatory.
+
+### Image should run as non-root
+
+Create user named as `appuser` and give required permissions for it to run the tool.
+
+Example for Alpine based image:
+```shell
+    addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser
+```
+Example for Debian based image:
+```shell
+    groupadd -g 1000 appuser \
+    && useradd -u 1000 -g appuser -s /sbin/nologin appuser
+```
+
+Use the user by adding line close to end: `USER appuser`   
+
+Set working directory for home of this user: `WORKDIR "/home/appuser"` and this is preferably empty.
+
+### Testing
+
+At least entrypoint and `--help` command should be tested for image.
+Possible test(s) could be added for real sample, and preferably at least one will be implemented.
+
+This requires sample file, and it should be:
+  * non-malicious
+  * free-to-use, preferably created for this purpose
+
+### Licence should be added
+
+If there are no limitations with the licence of the tool, set it as MIT licence. Otherwise, try to be as permissive as possible with tool's licence.
+
+
+### Previous leads to following README formatting:
+
+README should describe shortly:
+  * the purpose of the tool
+  * format of input files
+  * format of output files
+  * how to run the tool with 'cincan' wrapper tool
+  * how to run the tool with docker
+  * How to run test for this tool, and description of possible sample file
+  * Credits for the original creator of the tool
+    * Project link
+    * Maintainer link, twitter handle?
+  * Licence
+
+## Description of the current tools
 
 ### Linux tools
 
