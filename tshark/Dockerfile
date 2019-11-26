@@ -1,13 +1,17 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 LABEL MAINTAINER=cincan.io
-LABEL io.cincan.input="application/vnd.tcpdump.pcap"
-LABEL io.cincan.output="application/json,text/xml"
+ENV VERSION=3.0.4-r0
 
-COPY cincan /cincan
-
-RUN apk update && apk add --no-cache \
-	tshark=2.6.9-r0
+RUN apk update && apk add --no-cache tshark=${VERSION}
 
 ENTRYPOINT ["tshark"]
 CMD ["--help"]
+
+# Add an user
+RUN mkdir -p /home/appuser \
+    && adduser -D appuser \
+    && chown -R appuser:appuser /home/appuser
+
+USER appuser
+WORKDIR /home/appuser

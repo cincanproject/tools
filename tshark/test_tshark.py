@@ -17,12 +17,6 @@ def test_pcap_to_json():
     assert len(js) == 2
 
 
-def test_hints():
-    tool = dockertools.tool_with_file(__file__)
-    hints = tool.resolve_commands().command_hints()
-    assert "|".join(hints) == "-r ^file -Tjson|-r ^file -Tpdml"
-
-
 def test_do_run():
     tool = dockertools.tool_with_file(__file__)
 
