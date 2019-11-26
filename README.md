@@ -7,7 +7,7 @@ The pipeline will try to build a new image for each directory that **_has change
 Actual images can be found from:
 [https://hub.docker.com/r/cincan/](https://hub.docker.com/r/cincan/)  
 
-## Practices for creating the tools
+## Practices for creating the tool images
 
 ### Dockerfile
 
