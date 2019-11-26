@@ -58,7 +58,7 @@ Tests have been implemented by using [*pytest*](https://docs.pytest.org/en/lates
 See reference for [tox.ini](tox.ini)
 
 The tests are dependant of the some methods of the cincan tool. Currently, at least following methods are available:
-  * tool_with_file(__file__) - make instance of the tool
+  * tool_with_file(\__file__) - make instance of the tool
   * run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
 
 ### Licence should be added
