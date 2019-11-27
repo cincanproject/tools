@@ -23,9 +23,23 @@ e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
 
 Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
+#### Specify dependency versions and base image version
+
 It is preferable to specify dependency package versions as well to maintain repeatability of the builds.
 
-Base image *should* use specific version instead of latest tag.
+Base image *should* use specific version instead of *latest* tag. Recommended base image type is [**Alpine**](https://hub.docker.com/_/alpine) to minimize the size.
+
+#### Use checksums
+
+If something is downloaded in dockerfile from external source(s) as zip etc., use checksums e.g. SHA256 verification to verify that content is, what it is supposed to be.
+
+Example from Ghidra:
+```
+ENV GHIDRA_SHA256 3d61de711b7ea18bdee3ed94c31429e4946603b3e7d082cca5e949bbd651f051
+
+RUN wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip && \
+    echo "$GHIDRA_SHA256 /tmp/ghidra.zip" | sha256sum -c - 
+```
 
 #### Image should run as non-root
 
