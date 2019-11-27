@@ -31,7 +31,7 @@ Base image *should* use specific version instead of *latest* tag. Recommended ba
 
 #### Use checksums
 
-If something is downloaded in dockerfile from external source(s) as zip etc., use checksums e.g. SHA256 verification to verify that content is, what it is supposed to be.
+If something is downloaded in build phase from external source(s) as zip etc., use checksums e.g. SHA256 verification to verify that content is, what it is supposed to be.
 
 Example from Ghidra:
 ```
