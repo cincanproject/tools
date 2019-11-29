@@ -10,6 +10,7 @@ ENV VERSION=2.4.0
 
 RUN apk add --no-cache curl bash
 
+
 # Add an user
 RUN mkdir -p /home/appuser \
     && adduser -D appuser \
@@ -17,6 +18,9 @@ RUN mkdir -p /home/appuser \
 
 #change user and workdir
 USER appuser
+
+RUN mkdir -p ~/.local/share/apktool/framework
+
 WORKDIR /home/appuser
 
 #Download Linux wrapper script and give it right permissions
