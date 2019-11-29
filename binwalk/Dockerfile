@@ -15,5 +15,7 @@ RUN apt-get -y install wget && \
 
 WORKDIR /home/appuser
 USER appuser
+# dummy run because it creates some files on first run in home dir
+RUN  /usr/bin/binwalk -h > /dev/null
 
 ENTRYPOINT ["/usr/bin/binwalk"]
