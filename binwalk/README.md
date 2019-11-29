@@ -1,6 +1,6 @@
 # "Firmware Analysis Tool"
 
-Binwalk with all optional run-time dependencies.
+Binwalk with some optional run-time dependencies.
 
 ## Supported tags and respective `Dockerfile` links
 
@@ -25,10 +25,18 @@ Binwalk report
 
 `$ docker run cincan/binwalk --help`
 
-***Binwalk basic usage***
+***Binwalk basic usage for identifying embedded data***
 
-`$ docker run -v /samples:/samples cincan/binwalk /samples/firmware.bin`
+`$ docker run -v $PWD/samples:/samples cincan/binwalk /samples/firmware.bin`
+
+***Usage with cincan cli tool to extract embedded compressed data blocks***
+`$ cincan run cincan/binwalk -v -Me ^samples/sample.bin -C ^^sample-output/`
 
 ## Project homepage
 
 https://github.com/ReFirmLabs/binwalk
+
+## License
+
+MIT License
+

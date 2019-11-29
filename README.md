@@ -57,7 +57,7 @@ Actual images can be found from:
 | [access-log-visualization](https://gitlab.com/CinCan/tools/tree/master/access-log-visualization) | Visualizing webserver's access log data            | access.log (Apache) | Linux    |
 | [c-ci](https://gitlab.com/CinCan/tools/tree/master/c-ci)                     | The Concourse CI                                   |                     | Linux    |
 | [c-worker](https://gitlab.com/CinCan/tools/tree/master/c-worker)                 | The Concourse Worker                               |                     | Linux    |
-| [clamscan](https://gitlab.com/CinCan/tools/tree/master/clamscan)                 | ClamAV virus scanner                               | any                 | Linux    |
+| [clamav](https://gitlab.com/CinCan/tools/tree/master/clamav)                 | ClamAV virus scanner                               | any                 | Linux    |
 | [flawfinder](https://gitlab.com/CinCan/tools/tree/master/flawfinder)               | Scan C/C++ code for security flaws                 | C/C++               | Linux    |
 | [hyperscan](https://gitlab.com/CinCan/tools/tree/master/hyperscan)                | Regular expression matching library                |                     | Linux    |
 | [identify-file](https://gitlab.com/CinCan/tools/tree/master/identify-file)            | Identifies file type using several techniques      |                     | Linux    |
