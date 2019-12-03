@@ -20,68 +20,41 @@ Peepdf report (XML, JSON)
 ## Usage
 
 
-***1. Option A - Clone the repository and build the image***
 
-```
-git clone https://gitlab.com/CinCan/dockerfiles
-cd dockerfiles/peepdf/
-docker build . -t cincan/peepdf
-```
-
-***1.Option B - Pull the docker image*** 
+***1.a) Pull the docker image*** 
 
 ```
 docker pull cincan/peepdf
 ```
 
-***2. Run the docker container***
+***1.b) Or clone the repository and build***
 
 ```
-docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f
+git clone https://gitlab.com/cincan/tools.git
+cd tools/peepdf/
+docker build . -t cincan/peepdf
 ```
 
-***Interactive mode***
-```
-docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f -i
-```
+***2. Run the docker container***  
 
+Example 1. Analyze a PDF file:
 
-***Options***
-```  
+`$ docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f`
 
--h, --help            : show this help message and exit
+Example 2. Interactive mode
 
--i, --interactive     : Sets console mode.
+`$ docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf -f -i`
 
--s SCRIPTFILE, --load-script=SCRIPTFILE
-                      : Loads the commands stored in the specified file and
-                        execute them.
-                        
--c, --check-vt        : Checks the hash of the PDF file on VirusTotal.
+Example 3. Use the cincan command line tool, check hash from VirusTotal
 
--f, --force-mode      : Sets force parsing mode to ignore errors.
+`$ cincan run cincan/peepdf samples/testfile.pdf -f -c`  
 
--l, --loose-mode      : Sets loose parsing mode to catch malformed objects.
-
--m, --manual-analysis : Avoids automatic Javascript analysis. Useful with
-                        eternal loops like heap spraying.
-                        
--u, --update          : Updates peepdf with the latest files from the
-                        repository.
-                        
--g, --grinch-mode     : Avoids colorized output in the interactive console.
-
--v, --version         : Shows program's version number.
-
--x, --xml             : Shows the document information in XML format.
-
--j, --json            : Shows the document information in JSON format.
-
--C COMMANDS, --command=COMMANDS
-                      : Specifies a command from the interactive console to be
-                        executed.
-```
 
 ## Project homepage
 
 [https://github.com/jesparza/peepdf](https://github.com/jesparza/peepdf)
+
+
+### License
+
+[GNU General Public License v3.0](https://github.com/jesparza/peepdf/blob/master/COPYING)
