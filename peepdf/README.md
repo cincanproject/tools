@@ -30,8 +30,8 @@ docker pull cincan/peepdf
 ***1.b) Or clone the repository and build***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
-cd dockerfiles/peepdf/
+git clone https://gitlab.com/cincan/tools.git
+cd tools/peepdf/
 docker build . -t cincan/peepdf
 ```
 
