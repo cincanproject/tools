@@ -22,7 +22,7 @@ def test_help():
 def test_do_run_no_options_only_input_file():
     """Test decompiling without options, produces source code to STDOUT"""
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=[f"^{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=[f"{SAMPLE_FILE}"])
     assert out.startswith("using Microsoft.Win32;")
     assert out.endswith("ProcessWindowStyle.Hidden\n\t\t\t});\n\t\t}\n\t}\n}\n")
 
@@ -31,7 +31,7 @@ def test_do_run_get_PDB(tmp_path):
     d = tmp_path / "pdb"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["-o", f"^^{d.relative_to(os.getcwd())}/", "-d", f"^{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=["-o", f"{d.relative_to(os.getcwd())}/", "-d", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 1
     assert Path(d / "ilspy_sample.pdb").is_file()
 
@@ -40,7 +40,7 @@ def test_do_run_create_project(tmp_path):
     d = tmp_path / "vsp"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["-o", f"^^{d.relative_to(os.getcwd())}/", "-p", f"^{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=["-o", f"{d.relative_to(os.getcwd())}/", "-p", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 3
     assert Path(d / "Innocent.csproj").is_file()
 
