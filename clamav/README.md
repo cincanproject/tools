@@ -62,17 +62,40 @@ docker run --rm -v /samples:/samples cincan/clamav -r -i /samples/
 
 Or get all possible arguments for the clamscan client:  
 
-`$ docker run -v /samples:/samples cincan/clamav --help`
+``` 
+docker run -v /samples:/samples cincan/clamav --help
+```
 
 ***Method 2. Run with 'cincan' tool:***
 
 Analyse a provided some sample. Expecting that samples directory is in the current directory:
 
-`$ cincan run cincan/clamav samples/clamav_sample.exe`
+```
+cincan run cincan/clamav samples/clamav_sample.exe
+```
 
 Get help for specifically this tool:
 
-`$ cincan run cincan/clamav --help `
+```
+cincan run cincan/clamav --help
+```
+
+## Database updating
+
+Database can be updated with `docker commit`.
+
+Just connect to shell of the container:
+```
+docker run -it --entrypoint "/bin/sh" cincan/clamav 
+```
+
+Run `freshclam` and commit the changes into base image!
+
+```
+docker commit --change='ENTRYPOINT ["clamscan"]' <CONTAINER_ID> cincan/clamav 
+```
+
+*Note, that entrypoint should be speficied, it was overwritten previously with RUN command.*
 
 ## Testing
 
@@ -108,9 +131,7 @@ Which are passed into the building phase.
 
 https://www.clamav.net/
 
-## 
-
-Licence
+## Licence
 
 ClamAV itself is distributed under GPLv2. All of the extra code here is distributed under MIT licence.
 
