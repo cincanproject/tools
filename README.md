@@ -7,8 +7,109 @@ The pipeline will try to build a new image for each directory that **_has change
 Actual images can be found from:
 [https://hub.docker.com/r/cincan/](https://hub.docker.com/r/cincan/)  
 
+## Practices for creating the tool images
 
-## Description of tools
+### Dockerfile
+
+Label for maintainer should be added:
+
+`LABEL MAINTAINER=cincan.io`
+
+Each tool should use `ENV` for describing version number of the tool, and use it for installation, if possible. Variable name must be `VERSION`
+ * This gives a way for reading version information of the tool from every container, just by checking VERSION environment variable.
+ * Dockerfiles can be automatically parsed for documentation, and VERSION information can be acquired in this way.
+
+e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
+
+Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
+
+#### Specify dependency versions and base image version
+
+It is preferable to specify dependency package versions as well to maintain repeatability of the builds.
+
+In general, the version tag for base image should be *latest* to ensure upgrades of important security updates. However, if someone feels for being able to follow up of all important security updates, usage of precise version is allowed. 
+
+Recommended base image type is [**Alpine**](https://hub.docker.com/_/alpine) to minimize the size.
+
+#### Use checksums
+
+If something is downloaded in build phase from external source(s) as zip etc., use checksums e.g. SHA256 verification to verify that content is, what it is supposed to be.
+
+Example from Ghidra:
+```
+ENV GHIDRA_SHA256 3d61de711b7ea18bdee3ed94c31429e4946603b3e7d082cca5e949bbd651f051
+
+RUN wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip && \
+    echo "$GHIDRA_SHA256 /tmp/ghidra.zip" | sha256sum -c - 
+```
+
+#### Image should run as non-root
+
+Create user named as `appuser` and give required permissions for it to run the tool.
+
+Example for Alpine based image:
+```shell
+addgroup -S appuser && \
+adduser -s /sbin/nologin --disabled-password -G appuser appuser
+```
+Example for Debian based image:
+```shell
+groupadd -g 1000 appuser && \
+useradd -u 1000 -g appuser -s /sbin/nologin appuser
+```
+
+Use the user as early as possible with the line `USER appuser` to ensure clean permissions for the image!
+
+Set working directory for home of this user: `WORKDIR "/home/appuser"` and this is preferably empty.
+
+### Testing
+
+At least `entrypoint` and `--help` command should be tested for image.
+Possible test(s) could be added for real sample, and preferably at least one will be implemented.
+
+This requires sample file, and it should be:
+  * non-malicious
+  * free-to-use, preferably created for this purpose
+
+Tests have been implemented by using [*pytest*](https://docs.pytest.org/en/latest/), and the execution is automated with tool named [tox.](https://tox.readthedocs.io/en/latest/)
+
+See reference for [tox.ini](tox.ini)
+
+All tests can be run as:
+```
+pip install tox
+tox
+```
+Or single test by running:
+
+```
+tox <tool-directory-name>
+```
+
+Tests are dependant of some the methods of the [cincan tool](https://gitlab.com/CinCan/cincan-command) which is implemented with Python. Currently, at least following methods are available:
+  * tool_with_file(\__file__) - make instance of the tool
+  * run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
+
+### Licence should be added
+
+If there are no limitations with the licence of the tool, set it as MIT licence. Otherwise, try to be as permissive as possible with tool's own licence.
+
+
+### Previous leads to following README formatting:
+
+README should describe shortly:
+  * The purpose of the tool
+  * Format of input files
+  * Format of output files
+  * How to run the tool with 'cincan' wrapper tool
+  * How to run the tool with docker
+  * How to run test for this tool, and description of possible sample file
+  * Credits for the original creator of the tool
+    * Project link
+    * Maintainer link, twitter handle?
+  * Licence
+
+## Description of the current tools
 
 ### Linux tools
 
