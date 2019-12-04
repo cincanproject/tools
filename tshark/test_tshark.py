@@ -20,17 +20,13 @@ def test_pcap_to_json():
 def test_do_run():
     tool = dockertools.tool_with_file(__file__)
 
-    out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                             out_type='application/json', args=["-r", "^in", "-c", "2", "-Tjson"])
+    out = tool.run_get_string(
+        ["-r", tool.file_to_copy_from_context("samples//ping_localhost.pcap"), "-c", "2", "-Tjson"])
     assert out.startswith("[")
 
-    out = tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                             out_type='text/xml', args=["-r", "^in", "-c", "2", "-Tpdml"])
+    out = tool.run_get_string(
+        ["-r", tool.file_to_copy_from_context("samples//ping_localhost.pcap"), "-c", "2", "-Tpdml"])
     assert out.startswith("<?xml")
 
-    with pytest.raises(Exception):
-        tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                           args=[])
-    with pytest.raises(Exception):
-        tool.do_get_string(in_file=tool.file_to_copy_from_context("samples//ping_localhost.pcap", prefix=False),
-                           out_type='text/nosuch', args=[])
+    res = tool.run(["-r", "nosuchfile.pcap", "-c", "2", "-Tpdml"])
+    assert res.exit_code != 0
