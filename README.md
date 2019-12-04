@@ -27,7 +27,9 @@ Tool itself should be latest *stable* version, and it is hopefully installed wit
 
 It is preferable to specify dependency package versions as well to maintain repeatability of the builds.
 
-Base image *should* use specific version instead of *latest* tag. Recommended base image type is [**Alpine**](https://hub.docker.com/_/alpine) to minimize the size.
+In general, the version tag for base image should be *latest* to ensure upgrades of important security updates. However, if someone feels for being able to follow up of all important security updates, usage of precise version is allowed. 
+
+Recommended base image type is [**Alpine**](https://hub.docker.com/_/alpine) to minimize the size.
 
 #### Use checksums
 
@@ -56,7 +58,7 @@ groupadd -g 1000 appuser && \
 useradd -u 1000 -g appuser -s /sbin/nologin appuser
 ```
 
-Use the user by adding line close to end: `USER appuser`   
+Use the user as early as possible with the line `USER appuser` to ensure clean permissions for the image!
 
 Set working directory for home of this user: `WORKDIR "/home/appuser"` and this is preferably empty.
 
