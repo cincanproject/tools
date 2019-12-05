@@ -1,10 +1,9 @@
 from metatool import dockertools
 from pathlib import Path
 import pytest
-import os
 import shutil
 # Filepath relative to project root directory (expected location to call pytest)
-SAMPLE_FILE="ilspy/samples/ilspy_sample.exe"
+SAMPLE_FILE="_samples/msdos/ilspy_sample.exe"
 _tmp_path_factory = None
 
 # Should be identical for testing '--help' argument
@@ -31,7 +30,7 @@ def test_do_run_get_PDB(tmp_path):
     d = tmp_path / "pdb"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["-o", f"{d.relative_to(os.getcwd())}/", "-d", f"{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=["-o", f"{d.relative_to(Path.cwd())}/", "-d", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 1
     assert Path(d / "ilspy_sample.pdb").is_file()
 
@@ -40,7 +39,7 @@ def test_do_run_create_project(tmp_path):
     d = tmp_path / "vsp"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["-o", f"{d.relative_to(os.getcwd())}/", "-p", f"{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=["-o", f"{d.relative_to(Path.cwd())}/", "-p", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 3
     assert Path(d / "Innocent.csproj").is_file()
 
@@ -50,6 +49,6 @@ def delete_temporary_files(request, tmp_path_factory):
     _tmp_path_factory = tmp_path_factory
     def cleanup():
         tmp_path = _tmp_path_factory.getbasetemp()
-        if os.path.exists(tmp_path) and os.path.isdir(tmp_path):
+        if Path(tmp_path).exists() and Path(tmp_path).is_dir():
             shutil.rmtree(tmp_path)
     request.addfinalizer(cleanup)
