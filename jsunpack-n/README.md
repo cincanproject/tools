@@ -1,5 +1,4 @@
 
-
 # Emulates browser functionality when visiting an URL. Detects browser exploits, scans PDF.
 
 ## Input
@@ -49,7 +48,7 @@ Example 2. Url scan
 
 Example 3. Run jsunpack-n with the cincan command line tool  
 
-`$ cincan run cincan/jsunpack-n ^samples/testfile.pdf -V -d ^^result-dir`  
+`$ cincan run cincan/jsunpack-n samples/testfile.pdf -V -d result-dir`  
 
 
 ## Project homepage
