@@ -16,7 +16,7 @@ RUN apk add --no-cache wget unzip
 WORKDIR /usr/local/bin
 
 # Download,  unzip and give permissions to jd-cmd
-RUN wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$JD_CMD_VERSION/jd-cli-$VERSION-dist.zip"
+RUN wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$VERSION/jd-cli-$VERSION-dist.zip"
 RUN unzip -q "jd-cmd.zip" -d .
 RUN chmod +x "jd-cli"
 
