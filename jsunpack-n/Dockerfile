@@ -78,7 +78,7 @@ COPY --from=builder /etc/ld.* /etc/
 COPY --from=builder /usr/local /usr/local
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python-magic=1:5.22+15-2+deb8u6 \
+        python-magic=1:5.22+15-2+deb8u7 \ 
         python=2.7.9-1 \
         libpcap-dev=1.6.2-2+deb8u1 \
         libgtk2.0-dev=2.24.25-3+deb8u2 \
