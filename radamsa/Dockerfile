@@ -1,4 +1,4 @@
-FROM debian:8-slim
+FROM debian:8-slim AS builder
 
 LABEL MAINTAINER=cincan.io
 ENV VERSION=0.6
@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN git clone https://gitlab.com/akihe/radamsa.git &&\
     cd radamsa &&\
     make && make install
+
+FROM debian:8-slim AS production
+
+COPY --from=builder /radamsa /radamsa
 
 RUN ls -l /radamsa
 
