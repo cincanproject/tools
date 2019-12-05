@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import shutil
 # Filepath relative to project root directory (expected location to call pytest)
-SAMPLE_FILE="_samples/msdos/ilspy_sample.exe"
+SAMPLE_FILE="_samples/msdos/suspicious_dos_sample.exe"
 _tmp_path_factory = None
 
 # Should be identical for testing '--help' argument
@@ -32,7 +32,7 @@ def test_do_run_get_PDB(tmp_path):
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(args=["-o", f"{d.relative_to(Path.cwd())}/", "-d", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 1
-    assert Path(d / "ilspy_sample.pdb").is_file()
+    assert Path(d / "suspicious_dos_sample.pdb").is_file()
 
 def test_do_run_create_project(tmp_path):
     """Test creating of decompiled Visual Studio Project from binary"""
