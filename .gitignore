@@ -1,5 +1,6 @@
 # Custom folders
 .tmp
+.local
 
 # IDE related
 .idea/
