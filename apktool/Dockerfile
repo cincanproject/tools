@@ -18,7 +18,7 @@ RUN mkdir -p /home/appuser/tool \
 #change user and workdir
 USER appuser
 
-RUN mkdir -p ~/.local/share/apktool/framework
+RUN mkdir -p /home/appuser/.local/share/apktool/framework
 
 WORKDIR /home/appuser/tool
 
