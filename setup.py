@@ -4,7 +4,7 @@ setup(
     name='CinCan-Command-Program',
     version='0.1b',
     packages=['metatool'],
-    install_requires=['docker'],
+    install_requires=['docker', 'cincan-command'],
     entry_points = {
         'console_scripts': ['cincan=metatool.dockertools:main'],
     },
