@@ -85,14 +85,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libnet1-dev=1.1.6+dfsg-3 \
         && rm -rf /var/lib/apt/lists/* \
         && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
-        && chown -R appuser:appuser /jsunpack-n
+        && chown -R appuser:appuser /jsunpack-n \
+        && chmod +x /jsunpack-n/jsunpackn.py
+
+COPY options.config /jsunpack-n/options.config
+
+# Some inline hacks for python to make it work from everywhere...
+# Project has not not been updated for years, so maybe this is OK
+RUN sed -i -e "/fin = open('rules', 'r')/c\ \ \ \ fin = open('/jsunpack-n/rules', 'r')" \
+    -e "/fin = open('rules.ascii', 'r')/c\ \ \ \ fin = open('/jsunpack-n/rules.ascii', 'r')"  \
+    # -e "/fin = open(file, 'rb')/c\ \ \ \ \ \ \ \ \ \ \ \ fin = open('/home/appuser/' + file, 'rb')" \
+    /jsunpack-n/jsunpackn.py
+
+ENV PATH "$PATH:/jsunpack-n/"
 
 WORKDIR /jsunpack-n/depends/pynids-0.6.1
 RUN python setup.py install \
     && echo "/usr/local/lib" >> /etc/ld.so.conf \
     && ldconfig
 
-WORKDIR /jsunpack-n
-
+WORKDIR /home/appuser
 USER appuser
-ENTRYPOINT ["/usr/bin/python","jsunpackn.py"]
+
+ENTRYPOINT ["jsunpackn.py", "-c", "/jsunpack-n/options.config"]
+CMD ["--help"]
