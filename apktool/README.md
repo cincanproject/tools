@@ -3,7 +3,7 @@
 ## Input
 
 ```
-.apk-files and .jar-files
+.apk, .jar
 
 ```
 
@@ -14,14 +14,14 @@ Folder with decompiled application files
 ```
 
 ## Usage
+```
+cincan run cincan/apktool d apk_file.apk -o output_file
+```
 
 ```
 docker run --rm -v `pwd`:/data cincan/apktool:dev d apk_file.apk
 
 ```
-
-*** Options*** 
-
 
 ## Project homepage 
 

@@ -9,14 +9,14 @@ FROM openjdk:8-alpine
 LABEL MAINTAINER=cincan.io
 
 #Define jd-cmd version
-ENV JD_CMD_VERSION=1.0.0.Final
+ENV VERSION=1.0.0.Final
 RUN apk add --no-cache wget unzip
 
 #Change workdir
 WORKDIR /usr/local/bin
 
 # Download,  unzip and give permissions to jd-cmd
-RUN wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$JD_CMD_VERSION/jd-cli-$JD_CMD_VERSION-dist.zip"
+RUN wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$JD_CMD_VERSION/jd-cli-$VERSION-dist.zip"
 RUN unzip -q "jd-cmd.zip" -d .
 RUN chmod +x "jd-cli"
 
