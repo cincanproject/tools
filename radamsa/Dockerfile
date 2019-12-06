@@ -25,9 +25,10 @@ RUN ls -l /radamsa
 
 ENTRYPOINT ["/radamsa/bin/radamsa"]
 
-RUN mkdir -p /home/appuser &&\
-    adduser --gecos "" --disabled-login --disabled-password appuser &&\
-    chown -R appuser /home/appuser
+RUN groupadd -g 1000 appuser && \
+    useradd -u 1000 -g appuser -s /sbin/nologin appuser
 
 USER appuser
 WORKDIR /home/appuser
+
+CMD ["--help"]
