@@ -1,5 +1,7 @@
 from metatool import dockertools
 
+SAMPLE_FILE="_samples/pdf/general_test_file.pdf"
+
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
@@ -7,6 +9,6 @@ def test_help():
 
 def test_with_pdf():
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string([tool.file_to_copy_from_context("samples//testfile.pdf"), "-f", "-C", "js_beautify object 7"])
+    out = tool.run_get_string([SAMPLE_FILE, "-f", "-C", "js_beautify object 7"])
     assert "CinCan" in out.splitlines()[10]
 
