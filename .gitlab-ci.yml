@@ -4,14 +4,8 @@ services:
   - docker:dind
 
 before_script:
-  - apk add grep python3
-  - pip3 install pip --upgrade && pip3 install tox
+  - apk add grep
   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-
-test:
-  stage: test
-  script:
-    - tox
 
 build:
   stage: build
