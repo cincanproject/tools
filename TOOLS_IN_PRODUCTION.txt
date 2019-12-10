@@ -8,3 +8,5 @@ pdf-parser
 oledump
 jsunpack-n
 virustotal
+dex2jar
+peepdf

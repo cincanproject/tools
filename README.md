@@ -88,7 +88,22 @@ tox <tool-directory-name>
 
 Tests are dependant of some the methods of the [cincan tool](https://gitlab.com/CinCan/cincan-command) which is implemented with Python. Currently, at least following methods are available:
   * tool_with_file(\__file__) - make instance of the tool
-  * run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
+  * tool.run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
+
+  Thest wrapper named as dockertools is used for actually using the `cincan` tool, see source code in [here.](metatool)
+
+
+  #### WIP - resolve unused samples from _SAMPLES directory:
+
+  Following magic can be executed in tools root directory:
+
+  ```shell
+   find _samples -type f | grep -v "$(find . -name "test_*.py" -exec grep  "SAMPLE_FILE.*=" {} \; | tr -d " \"" | awk -F "=" '{print $2}' | sort | uniq -u)" | xargs rm -d 
+  ```
+
+This excepts that variable `SAMPLE_FILE` has been used for defining location of the the sample file(s) in test_*.py file(s). 
+
+In the future, maybe implement testing utility, which should take filename as input, and automatically detects which sample files are unused.
 
 ### Licence should be added
 

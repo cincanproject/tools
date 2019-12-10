@@ -1,17 +1,33 @@
 from metatool import dockertools
 from zipfile import ZipFile
+import os
+import shutil
 import pytest
 
 SAMPLE_FILE="_samples/android_apk/selendroid-test-app.apk"
 
-@pytest.mark.dev
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
     assert out.startswith("d2j-dex2jar")
 
-@pytest.mark.dev
-def test_apk_to_jar():
+def test_apk_to_jar(tmp_path):
+    d = tmp_path / "dex2jar_tmp"
+    d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string([tool.file_to_copy_from_context("samples/selendroid-test-app.apk")])
-    assert "./selendroid-test-app-dex2jar.jar" in out
+    output_d = d.relative_to(os.getcwd()) / "sample.jar"
+    out = tool.run_get_string(args=[SAMPLE_FILE, "-o", str(output_d)])
+    assert f"{output_d}" in out
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_temporary_files(request, tmp_path_factory):
+    """Cleanup a testing directory once we are finished."""
+    _tmp_path_factory = tmp_path_factory
+
+    def cleanup():
+        tmp_path = _tmp_path_factory.getbasetemp()
+        if os.path.exists(tmp_path) and os.path.isdir(tmp_path):
+            shutil.rmtree(tmp_path)
+
+    request.addfinalizer(cleanup)
