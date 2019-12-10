@@ -1,19 +1,23 @@
 from metatool import dockertools
 import re
+import pytest
+
+SAMPLE_FILE="_samples/pdf/text_txt.pdf"
 
 pattern = re.compile("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*$")
 
-
+@pytest.mark.dev
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
     assert out.startswith("See all commands:")
 
 
+@pytest.mark.dev
 def test_base64dump():
     tool = dockertools.tool_with_file(__file__)
-    std, err, ec = tool.run(["python", "base64dump.py", tool.file_to_copy_from_context("samples/text_txt.pdf")])
-    out = std.decode("'ascii", errors="ignore")
+    commandlog = tool.run(["python", "base64dump.py", SAMPLE_FILE])
+    out = commandlog.stdout
     values = []
     for line in out.splitlines():
         m = re.match(pattern, line)

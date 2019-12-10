@@ -1,0 +1,10 @@
+binwalk
+ilspy
+apktool
+clamav
+radamsa
+tshark
+pdf-parser
+oledump
+jsunpack-n
+virustotal

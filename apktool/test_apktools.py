@@ -1,15 +1,31 @@
 from metatool import dockertools
-from os import path
+from os import path, getcwd, path
 import shutil
+import pytest
 
+SAMPLE_FILE="_samples/android_apk/selendroid-test-app.apk"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
-    assert out.startswith("Apktool v2.4.0")
+    assert out.startswith("Apktool")
 
-def test_apk_to_jar():
+def test_apk_to_jar(tmp_path):
+    d = tmp_path / "apk_tool"
+    d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(["d", tool.file_to_copy_from_context("samples/selendroid-test-app.apk")])
-    print(out)
-    assert out.startswith("I: Using Apktool 2.4.0 on selendroid-test-app.apk")
+    tool.output_dirs = [d.relative_to(getcwd())]
+    out = tool.run_get_string(["d", SAMPLE_FILE, "-f", "-o", f"{d.relative_to(getcwd())}"])
+    assert out.startswith("I: Using Apktool")
+    assert out.endswith("Copying original files...\n")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_temporary_files(request, tmp_path_factory):
+    """Cleanup a testing directory once we are finished."""
+    _tmp_path_factory = tmp_path_factory
+    def cleanup():
+        tmp_path = _tmp_path_factory.getbasetemp()
+        if path.exists(tmp_path) and path.isdir(tmp_path):
+            shutil.rmtree(tmp_path)
+    request.addfinalizer(cleanup)
