@@ -86,9 +86,6 @@ pip install tox
 tox peframe
 ```
 
-### Sample file
-
-Sample file was created for CriM-2019 workshop (Compiled binary C# .NET Assembly). It contains simple dropper for malicous binary from remote URL.
 
 ## Project homepage
 
