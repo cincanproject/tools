@@ -1,6 +1,7 @@
 from metatool import dockertools
 import pytest
 
+SAMPLE = '_samples/msdos/suspicious_dos_sample.exe'
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])

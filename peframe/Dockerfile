@@ -4,7 +4,7 @@ LABEL MAINTAINER=cincan.io
 ENV VERSION=6.0.3
 
 RUN apk update && apk add --no-cache \
-	git=2.22.0-r0 \
+	git=2.22.2-r0 \
 	libssl1.1=1.1.1d-r0 \
 	python3=3.7.5-r1 \
 	swig=3.0.12-r4 \
