@@ -21,27 +21,39 @@ json
 
 ## Usage
 
-***1. Clone the repository***
+### Install
+
+***Method 1: Clone the repository and build by yourself***
 
 ```
 git clone https://gitlab.com/CinCan/tools
 cd tools/peframe/
-```
-
-***2. Build OR pull the docker image*** 
-
-```
 docker build . -t cincan/peframe
+```
+
+***Method 2: Pull the docker image*** 
+
+```
 docker pull cincan/peframe
 ```
 
-***3. Run the docker container***
+***Method 3: use ['cincan'](https://gitlab.com/CinCan/cincan-command) tool***
+
+Follow 'cincan' tool installation steps. If this tool is used, no need to install 'ILSpy' separately.
+
+### Running
+
+***Method 1. Run the docker container***
 
 Analyze a file in directory "/samples":
 
-`$ docker run --rm -v /samples:/samples cincan/peframe /samples/sample`  
+`$ docker run --rm -v /path/to/samples:/samples cincan/peframe /samples/peframe_sample.exe`  
 
+***Method 2. Run with ['cincan'](https://gitlab.com/CinCan/cincan-command) tool:***
 
+Analyze the example sample available in the sample folder:
+
+`$ cincan run cincan/peframe samples/peframe_sample.exe`
 
 ***Options***
 ```  
@@ -66,6 +78,22 @@ string_match: /usr/lib/python3.7/site-packages/peframe-6.0.3-py3.7.egg/peframe/s
 yara_plugins: /usr/lib/python3.7/site-packages/peframe-6.0.3-py3.7.egg/peframe/signatures/yara_plugins
 ```
 
+### Testing
+
+Couple of tests are included for testing the functionality of the container. Tox can be used for testing this tool (run from the root of this repository);
+```
+pip install tox
+tox peframe
+```
+
+### Sample file
+
+Sample file was created for CriM-2019 workshop (Compiled binary C# .NET Assembly). It contains a simple dropper for malicious binary from remote URL.
+
 ## Project homepage
 
 [https://github.com/guelfoweb/peframe](https://github.com/guelfoweb/peframe)
+
+## License
+
+GNU General Public License
