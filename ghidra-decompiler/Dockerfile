@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y wget ca-certificates unzip --no-install
 
 
 # Make multi-stage build, use jre instead of jdk here, wit h Eclipse OpenJ9
-FROM adoptopenjdk:11-jre-openj9 as runtime
+FROM adoptopenjdk:11-jdk-openj9-bionic as runtime
 
 WORKDIR /ghidra
 
@@ -40,14 +40,22 @@ RUN sed -i '/VMARG_LIST+="-XX:CICompilerCount=2 "/a VMARG_LIST+="--add-opens jav
 
 RUN tar -C /ghidra/support -zxvf /ghidra/support/loggings.tgz  \
     && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
+    && apt-get update && apt-get install -y libxml2-utils \
     && echo "===> Clean up unnecessary files..." \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/*
 
+
+COPY ghidra_decompiler.sh /ghidra
+RUN chmod +x /ghidra/ghidra_decompiler.sh
 
 RUN chown -R appuser:appuser /ghidra
 
 USER appuser
 WORKDIR /home/appuser/
 
-ENTRYPOINT ["/ghidra/support/analyzeHeadless", "/ghidra/projects/", "ANewProject", "-postScript", "DecompileHeadless.java", "-readOnly", "-import" ]
+# Define ghidra location for script, it is expecting $GHIDRA_HOME variable
+ENV GHIDRA_HOME /ghidra
+
+ENTRYPOINT ["/ghidra/ghidra_decompiler.sh" ]
+CMD ["--help"]
