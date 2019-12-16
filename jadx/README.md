@@ -19,10 +19,10 @@ cincan run cincan/jadx <JAR-FILE> -ds <OUTPUTFOLDER.ZIP>
 ```
 
 ```
-docker run --rm -v `pwd`:/data cincan/jadx -ds <Output Folder> <JAR/DEX/APK/CLASS/SMALI/ZIP/AAR/ARSC-FILE>
+docker run --rm -v `pwd`\samples:/samples cincan/jadx -ds <Output Folder> <JAR/DEX/APK/CLASS/SMALI/ZIP/AAR/ARSC-FILE>
 
 ```
 
 ## Project homepage
 
-https://github.com/kwart/jd-cmd
+https://github.com/skylot/jadx
