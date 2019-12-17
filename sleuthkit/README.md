@@ -26,6 +26,7 @@ multiple outputs
 ```
 git clone https://gitlab.com/CinCan/tools.git
 cd tools/sleuthkit
+```
 
 ***2. Build OR pull the docker image***
 
