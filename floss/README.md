@@ -1,53 +1,129 @@
-# This is a description template for CinCan Docker images. Replace this heading with the short and descriptive text of the tool
+# FireEye Labs Obfuscated String Solver
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et venenatis orci. Vestibulum id viverra sapien. Nam neque lacus, interdum sed eros et, scelerisque tincidunt nunc. Sed 
-pharetra molestie sapien, in elementum elit pellentesque ut. Quisque eget diam fringilla sem finibus placerat. Morbi ut consequat mauris, a suscipit lacus. Phasellus mattis lacus eu 
-urna mollis pretium. Proin vitae cursus felis. Nunc sit amet aliquam augue. Nulla scelerisque interdum felis, vel finibus erat fringilla a. Quisque ornare ultrices ultrices. Ut 
-faucibus maximus mi sit amet eleifend. Nullam finibus, dolor a imperdiet ullamcorper, nisi risus rhoncus lectus, nec euismod neque tellus vitae est.
+FireEye Labs Obfuscated String Solver (FLOSS) is a tool for automatically deobfuscating strings from malware binaries. It uses heuristics to identify decoding routines in a sample, extracting cross references and arguments to decoders and then emulates the decoder functions using the extracted arguments. After that it diffs the emulator memory states from before and after emulation and extracts human readable strings.
+
+Floss can also be used just like `strings`, so it can be easily implemented in the normal static analysis workflow.
 
 ## Input
 
 ```
-INPUT
+Malware with (obfuscated) strings
 ```
 
 ## Output
 
 ```
-OUTPUT
+Human-readable strings
 ```
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*"TOOLNAME"/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/"TOOLNAME"/Dockerfile))
-
-## Docker Compose file (Optional)
-
-```yml
----
-```
+* `latest` ([*FLOSS/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/FLOSS/Dockerfile))
 
 ## Usage
+### Install
 
-***EXAMPLE 1***
-
-```
-COMMAND
-```
-
-***EXAMPLE 2***
+***Method 1: Clone the repository and build by yourself***
 
 ```
-COMMAND
+git clone https://gitlab.com/CinCan/tools
+cd tools/floss/
+docker build . -t cincan/floss
 ```
+
+***Method 2: Pull the docker image*** 
+
+```
+docker pull cincan/floss
+```
+
+***Method 3: use ['cincan'](https://gitlab.com/CinCan/cincan-command) tool***
+
+Follow `cincan` tool installation steps. If this tool is used, no need to install `floss` separately.
+
+### Running
+
+***Method 1. Run the docker container***
+
+Analyze a sample:
+
+`$ docker run --rm -v /path/to/samples:/samples cincan/floss /samples/floss_sample.exe`  
+
+***Method 2. Run with ['cincan'](https://gitlab.com/CinCan/cincan-command) tool:***
+
+Analyze the example sample available in the sample folder:
+
+`$ cincan run cincan/floss samples/floss_sample.exe`
+
 
 ***Options***
-```
--x <path>             : descriptive text
--y <dir>              : descriptive text
+```shell script
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -n MIN_LENGTH, --minimum-length=MIN_LENGTH
+                        minimum string length (default is 4)
+  -f FUNCTIONS, --functions=FUNCTIONS
+                        only analyze the specified functions (comma-separated)
+  --save-workspace      save vivisect .viv workspace file in current directory
+  -m, --show-metainfo   display vivisect workspace meta information
+  --no-filter           do not filter deobfuscated strings (may result in many
+                        false positive strings)
+
+  Shellcode options:
+    Analyze raw binary file containing shellcode
+
+    -s, --shellcode     analyze shellcode
+    -e SHELLCODE_ENTRY_POINT, --shellcode_ep=SHELLCODE_ENTRY_POINT
+                        shellcode entry point
+    -b SHELLCODE_BASE, --shellcode_base=SHELLCODE_BASE
+                        shellcode base offset
+
+  Extraction options:
+    Specify which string types FLOSS shows from a file, by default all
+    types are shown
+
+    --no-static-strings
+                        do not show static ASCII and UTF-16 strings
+    --no-decoded-strings
+                        do not show decoded strings
+    --no-stack-strings  do not show stackstrings
+
+  Format Options:
+    -g, --group         group output by virtual address of decoding functions
+    -q, --quiet         suppress headers and formatting to print only
+                        extracted strings
+
+  Logging Options:
+    -v, --verbose       show verbose messages and warnings
+    -d, --debug         show all trace messages
+
+  Script output options:
+    -i IDA_PYTHON_FILE, --ida=IDA_PYTHON_FILE
+                        create an IDAPython script to annotate the decoded
+                        strings in an IDB file
+    --x64dbg=X64DBG_DATABASE_FILE
+                        create a x64dbg database/json file to annotate the
+                        decoded strings in x64dbg
+    -r RADARE2_SCRIPT_FILE, --radare=RADARE2_SCRIPT_FILE
+                        create a radare2 script to annotate the decoded
+                        strings in an .r2 file
+
+  Identification Options:
+    -p PLUGINS, --plugins=PLUGINS
+                        apply the specified identification plugins only
+                        (comma-separated)
+    -l, --list-plugins  list all available identification plugins and exit
+
+  FLOSS Profiles:
+    -x, --expert        show duplicate offset/string combinations, save
+                        workspace, group function output
 ```
 
 ## Project homepage
 
-Homepage URL of the tool used in image
+[FireEye Labs Obfuscated String Solver](https://github.com/fireeye/flare-floss)
 
+## License
+
+[Apache License 2.0](https://github.com/fireeye/flare-floss/blob/master/LICENSE.txt)
