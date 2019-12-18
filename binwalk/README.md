@@ -30,7 +30,7 @@ Binwalk report
 `$ docker run -v $PWD/samples:/samples cincan/binwalk /samples/firmware.bin`
 
 ***Usage with cincan cli tool to extract embedded compressed data blocks***
-`$ cincan run cincan/binwalk -v -Me ^samples/sample.bin -C ^^sample-output/`
+`$ cincan run cincan/binwalk -v -Me ../_samples/compressed/tampered_sample.bin -C sample-output/`
 
 ## Project homepage
 
