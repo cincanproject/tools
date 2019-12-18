@@ -8,7 +8,7 @@ RUN apk update && \
 	apk add --no-cache --update python3 \
 	python3-dev \
 	openssl-dev \
-	git=2.20.1-r0 \ 
+	git=2.20.2-r0 \ 
 	gcc \
 	libffi-dev \
 	libc-dev && \
