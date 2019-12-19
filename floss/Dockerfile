@@ -6,19 +6,21 @@ ENV DOWNLOAD_URL=https://github.com/fireeye/flare-floss/releases/download/v$VERS
 
 RUN apt update && apt -y install \
     unzip \
-    wget \
-    && apt autoclean
+    wget
 
 RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
-WORKDIR /home/appuser/
-RUN wget $DOWNLOAD_URL \
+RUN mkdir /floss \
+    && cd /floss \
+    && wget $DOWNLOAD_URL \
     && unzip floss-${VERSION}-GNU.Linux.zip \
-    && chmod +x  floss \
+    && chmod +x floss \
     && chown appuser floss \
-    && rm floss-${VERSION}-GNU.Linux.zip
+    && rm floss-${VERSION}-GNU.Linux.zip \
+    && apt -y remove unzip wget
 
+WORKDIR /home/appuser/
 USER appuser
 
-ENTRYPOINT ["./floss"]
+ENTRYPOINT ["/floss/floss"]
 CMD ["--help"]
