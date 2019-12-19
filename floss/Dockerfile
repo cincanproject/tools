@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-LABEL maintainer=cinca.io
+LABEL maintainer=cincan.io
 
 ENV VERSION=1.5.0
 ENV DOWNLOAD_URL=https://github.com/fireeye/flare-floss/releases/download/v$VERSION/floss-${VERSION}-GNU.Linux.zip

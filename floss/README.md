@@ -53,7 +53,7 @@ Analyze a sample:
 
 Analyze the example sample available in the sample folder:
 
-`$ cincan run cincan/floss samples/floss_sample.exe`
+`$ cincan run cincan/floss ../_samples/msdos/suspicious_dos_sample.exe`
 
 
 ***Options***
