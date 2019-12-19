@@ -1,34 +1,50 @@
-FROM python:3.8-alpine as build
+FROM python:3-alpine as build
 
 # olevba latest installation in python3
+
+ENV VERSION 0.55.1 
 
 LABEL MAINTAINER=cincan.io
 
 RUN apk update && \
-	# apk add --no-cache --update python3 \
-	# python3-dev \
-	# openssl-dev \
-	git=2.20.1-r0 \
-	gcc 
-	# libffi-dev \
-	# libc-dev && \
-	# pip3 install --upgrade pip && \
-	# pip3 install --upgrade pip setuptools 
+	apk add --no-cache \
+		openssl-dev \
+		gcc \
+		libffi-dev \
+		libc-dev
 
-RUN pip3 install -U oletools --user
+RUN pip3 wheel --wheel-dir=/oletools oletools=="$VERSION"
 
-FROM python:3.8-alpine as runtime
+FROM python:3-alpine as runtime
 
 RUN addgroup -S appuser && \
-    adduser -s /sbin/nologin --disabled-password -G appuser appuser && 
+	adduser -s /sbin/nologin --disabled-password -G appuser appuser
 
-COPY --from=build /root/.local /oletools
-
-ENV PATH=/oletools/.local/bin:$PATH
-
-ADD Oletools-license .
+COPY --from=build /oletools /oletools_tmp
 
 USER appuser
 
-ENTRYPOINT ["olevba"]
+RUN pip3 install \
+	--no-index \
+	--find-links=/oletools_tmp \
+	--user \
+    oletools
+
+USER root
+
+# Remove tmp files and olebrowse - it is requiring GUI
+RUN rm -rf /oletools_tmp && rm /home/appuser/.local/bin/olebrowse
+
+COPY entrypoint.sh /oletools/entrypoint.sh
+RUN chmod +x /oletools/entrypoint.sh
+
+# Following variable is used in entrypoint.sh as well
+ENV OLETOOLS_HOME /home/appuser/.local/bin
+ENV PATH="$OLETOOLS_HOME":"$PATH"
+ADD Oletools-license /oletools/
+USER appuser
+
+WORKDIR /home/appuser/
+
+ENTRYPOINT ["sh", "/oletools/entrypoint.sh"]
 CMD ["--help"]
