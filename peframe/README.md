@@ -39,7 +39,7 @@ docker pull cincan/peframe
 
 ***Method 3: use ['cincan'](https://gitlab.com/CinCan/cincan-command) tool***
 
-Follow 'cincan' tool installation steps. If this tool is used, no need to install 'ILSpy' separately.
+Follow `cincan` tool installation steps. If this tool is used, no need to install `peframe` separately.
 
 ### Running
 

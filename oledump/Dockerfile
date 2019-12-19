@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache \
 	py-setuptools=40.6.3-r0 \
 	py2-pip=18.1-r0 \
 	jq=1.6-r0 \
-	git=2.20.1-r0 \
+	git=2.20.2-r0 \
 	unzip=6.0-r4 \
 	&& wget https://didierstevens.com/files/software/oledump_V$VERSION.zip \
 	&& if [ ! "$(sha256sum oledump_V$VERSION.zip |awk '{print toupper($1)}')" = \

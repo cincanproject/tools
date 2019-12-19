@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache \
 	python2=2.7.16-r1 \
 	wget=1.20.3-r0 \
 	unzip=6.0-r4 \
-	git=2.20.1-r0 \
+	git=2.20.2-r0 \
 	jq
 
 # Get pdfid, check integrity, unzip, clean up.
