@@ -18,7 +18,7 @@ Human-readable strings
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*FLOSS/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/FLOSS/Dockerfile))
+* `latest` ([*FLOSS/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/floss/Dockerfile))
 
 ## Usage
 ### Install
