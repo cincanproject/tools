@@ -9,6 +9,7 @@ RUN pip install python-whois==0.7.1 \
 ADD query.py .
 
 USER appuser
+WORKDIR /home/appuser
 
-ENTRYPOINT ["./query.py"]
+ENTRYPOINT ["/query.py"]
 CMD ["--help"]
