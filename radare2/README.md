@@ -83,9 +83,9 @@ cincan run cincan/radare2 --help
 
 # Project homepage
 
-Website: https://www.radare.org/n/
-GitHub: https://github.com/radareorg/radare2
-Cutter (GUI): https://cutter.re/
+Website: https://www.radare.org/n/  
+GitHub: https://github.com/radareorg/radare2  
+Cutter (GUI): https://cutter.re/  
 Cutter Git: https://github.com/radareorg/cutter
 
 # Licence
