@@ -10,7 +10,8 @@ set -o nounset
 
 help() {
     printf "\n  This is shell script wrapper for radare2.\n"
-    printf "  Following tools are available. See '--help' for each tool if needed.\n\n"
+    printf "  There is one available subcommand: 'script' to specify executable script instead of tool shown below.\n"
+    printf "  Following tools are available. See '-h' for each tool if needed.\n\n"
     printf "  %s\n\n" "USAGE: <toolname> ARGS"
 
     for tool in "$R2_HOME"/*; do
@@ -22,7 +23,7 @@ help() {
 }
 
 help_script() {
-    printf "\n  'script' command needs script as argument.\n"
+    printf "  'script' command needs script as argument.\n\n"
     printf "  %s\n\n" "USAGE: script <script_name> ARGS"
 
     for script in "$R2_SCRIPTS"/*; do
@@ -40,7 +41,7 @@ case ${1-} in "" | "-h" | "--help")
 "script" | "--script")
     for script in "$R2_SCRIPTS"/*; do
         script="$(basename "$script")"
-        if [ "$script" = "${2}" ]; then
+        if [ "$script" = "${2-}" ]; then
             shift 2
             sh "$R2_SCRIPTS/$script" "$@"
             exit 0
