@@ -14,7 +14,6 @@ RUN apk add --no-cache \
         libc6-compat \
         make \
         ncurses-libs \
-       	nodejs-current \
 		npm \
         cmake \
         g++ \
@@ -58,41 +57,55 @@ USER root
 
 RUN cp -RT /radare2/lib/ /usr/lib && cp -RT /radare2/include/ /usr/include && cp -RT /radare2/share/ /usr/share
 
+# RUN rm -rf /radare2/lib /radare2/include /radare2/share
+
 USER appuser
 
 RUN r2pm init && \
     r2pm update && \
     r2pm -i r2ghidra-dec 
+
+USER root
+RUN		apk del --purge -r \
+        libc6-compat \
+        make \
+        ncurses-libs \
+		npm \
+        cmake \
+        g++ \
+        gcc \
+        git \
+        linux-headers \
+        unzip \
+        wget \
+        curl \
+        git \
+        pkgconfig \
+        bison \
+        flex \
+		&& rm -rf /tmp/* /var/cache/apk/* /var/tmp/* \
+
+USER appuser
 # Optional r2dec r2frida
 
 # SECOND STAGE
-RUN du -sh /radare2
 
-FROM alpine:edge AS runner
+# FROM alpine:edge AS runner
 
-ENV INSTALL_ROOT /radare2
+# ENV INSTALL_ROOT /radare2
 
-ENV VERSION 4.0.0
-ENV R2_PIPE_PY_VERSION=1.4.2
+# ENV VERSION 4.0.0
+# ENV R2_PIPE_PY_VERSION=1.4.2
 
 # # # Get liblarires and bins from builder
+# COPY --from=builder "$INSTALL_ROOT/" "$INSTALL_ROOT/"
 # COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/" "$INSTALL_ROOT/radare2-$VERSION/"
-COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/binr/" "$INSTALL_ROOT/radare2-$VERSION/binr"
-COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/libr/" "$INSTALL_ROOT/radare2-$VERSION/libr"
-COPY --from=builder "$INSTALL_ROOT"/bin/ "$INSTALL_ROOT"/bin
-COPY --from=builder "$INSTALL_ROOT"/lib/ /usr/lib
-COPY --from=builder "$INSTALL_ROOT"/include/ /usr/include
-COPY --from=builder "$INSTALL_ROOT"/share/ /usr/share
-COPY --from=builder /home/appuser/.local/share/radare2/ /home/appuser/.local/share/radare2
-
-# Plugin manger configuration
-ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
-ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
-ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
-ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
-
-# Remove .git directory
-# RUN rm -rf /home/appuser/.local/share/radare2/r2pm/git/
+# COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/binr/" "$INSTALL_ROOT/radare2-$VERSION/binr"
+# COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/libr/" "$INSTALL_ROOT/radare2-$VERSION/libr"
+# COPY --from=builder "$INSTALL_ROOT"/bin/ "$INSTALL_ROOT"/bin
+# COPY --from=builder "$INSTALL_ROOT"/lib/ /usr/lib
+# COPY --from=builder "$INSTALL_ROOT"/include/ /usr/include
+# COPY --from=builder "$INSTALL_ROOT"/share/ /usr/share
 
 COPY entrypoint.sh "$INSTALL_ROOT"/entrypoint.sh
 COPY scripts "$INSTALL_ROOT"/scripts
@@ -101,43 +114,41 @@ COPY scripts "$INSTALL_ROOT"/scripts
 # RUN du -sh /radare2 && du -sh /home/appuser/.local/share/radare2/
 
 
-# # # Add the dependencies we need for running
-# RUN apk add --no-cache \
-#             git 
-#          bash \
-# #          libuuid \
-#          make \
-#         cmake \
-        #  python3 \dock
-        # && pip3 install r2pipe=="$R2_PIPE_PY_VERSION"
-#          qt5-qtbase \
-#          shadow \
-#          su-exec
-
-
 
 ENV PATH="$INSTALL_ROOT"/bin:"$PATH"
 # Used by wrapper script
 ENV R2_HOME="$INSTALL_ROOT"/bin
+ENV R2_SCRIPTS="$INSTALL_ROOT"/scripts
+
+# # Plugin things
+
+# RUN apk add --no-cache git\
+#         cmake \
+#         g++ \
+#         gcc \
+#         bison
+
+# RUN r2pm init && \
+#     r2pm update && \
+#     r2pm -i r2ghidra-dec 
+
+
+# COPY --from=builder /home/appuser/.local/share/radare2/ /home/appuser/.local/share/radare2
+
+# # Plugin manager configuration
+# ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
+# ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
+# ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
+# ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
+
+# Remove .git directory
+# RUN rm -rf /home/appuser/.local/share/radare2/r2pm/git/
 
 # RUN addgroup -S appuser && \
 #     adduser -s /sbin/nologin --disabled-password -G appuser appuser
 
 # USER appuser
 
-# WORKDIR /home/appuser
+WORKDIR /home/appuser
 
-
-
-
-# # Prepare files to mount configurations later on
-# RUN mkdir /var/sharedFolder && \
-#     mkdir -p /home/r2/.config/radare2 && \
-#     touch /home/r2/.radare2rc && \
-#     chown -R r2:r2 /var/sharedFolder && \
-#     chown -R r2:r2 /home/r2/
-
-# WORKDIR /home/r2
-# ADD entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
+ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]

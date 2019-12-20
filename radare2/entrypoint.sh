@@ -1,7 +1,7 @@
 #!/bin/env/sh
 
-# Wrapper for oletools for Dockerimage
-# See project homepage: https://github.com/decalage2/oletools
+# Wrapper for radare2 for Dockerimage
+# See project homepage: https://github.com/radareorg/radare2
 
 # Exit script if command fails
 set -o errexit
@@ -9,7 +9,7 @@ set -o errexit
 set -o nounset
 
 help() {
-    printf "\n  This is shell script wrapper for radare2\n"
+    printf "\n  This is shell script wrapper for radare2.\n"
     printf "  Following tools are available. See '--help' for each tool if needed.\n\n"
     printf "  %s\n\n" "USAGE: <toolname> ARGS"
 
@@ -21,17 +21,34 @@ help() {
     exit 0
 }
 
+help_script() {
+    printf "\n  'script' command needs script as argument.\n"
+    printf "  %s\n\n" "USAGE: script <script_name> ARGS"
+
+    for script in "$R2_SCRIPTS"/*; do
+        script="$(basename "$script")"
+        printf "    %s\n" "${script}"
+    done
+    echo ""
+    exit 0
+
+}
+
 case ${1-} in "" | "-h" | "--help")
     help
     ;;
 "script" | "--script")
     for script in "$R2_SCRIPTS"/*; do
-        tool="$(basename "$script")"
-        if [ "$script" = "${1}" ]; then
-            sh "$@"
+        script="$(basename "$script")"
+        if [ "$script" = "${2}" ]; then
+            shift 2
+            sh "$R2_SCRIPTS/$script" "$@"
             exit 0
         fi
     done
+
+    echo -e "\n  \e[31mInvalid script name or no script provided.\e[0m\n"
+    help_script
     ;;
 -? | -*)
     printf '\n  WARNING: Unknown option (ignored): %s\n' "$1" >&2
