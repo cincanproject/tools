@@ -20,7 +20,7 @@ The most updated list is [here.](https://github.com/radareorg/radare2#file-forma
 
 R2 is mostly used in interactive mode, but there are variety of outputs, including graphs, JSON files, different report formats
 
-#
+# Usage
 
 # Project homepage
 
