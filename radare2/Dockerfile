@@ -23,7 +23,12 @@ RUN apk add --no-cache \
         linux-headers \
         unzip \
         wget \
-        curl 
+        curl \
+        git \
+        bison \
+        flex \
+        xxd \
+        pkgconfig
         # sudo
 
 
@@ -45,35 +50,85 @@ RUN wget --progress=bar:force -O "$INSTALL_ROOT"/radare2.zip "https://github.com
 
 WORKDIR "$INSTALL_ROOT/radare2-$VERSION/sys"
 
-RUN sh user.sh && make install
+RUN sh user.sh --install-path "$INSTALL_ROOT" && make install
 
-# RUN git clone --recurse-submodules https://github.com/radareorg/cutter.git /opt/cutter
-# RUN cd /opt/cutter && \
-#     bash build.sh && \
-#     bash -c 'if [[ ! -x "/opt/cutter/build/Cutter" ]]; then exit -1; fi'
+ENV PATH="$INSTALL_ROOT"/bin:"$PATH"
 
-# FROM alpine:edge AS runner
+USER root
 
-# # Add the dependencies we need for running
+RUN cp -RT /radare2/lib/ /usr/lib && cp -RT /radare2/include/ /usr/include && cp -RT /radare2/share/ /usr/share
+
+USER appuser
+
+RUN r2pm init && \
+    r2pm update && \
+    r2pm -i r2ghidra-dec 
+# Optional r2dec r2frida
+
+# SECOND STAGE
+RUN du -sh /radare2
+
+FROM alpine:edge AS runner
+
+ENV INSTALL_ROOT /radare2
+
+ENV VERSION 4.0.0
+ENV R2_PIPE_PY_VERSION=1.4.2
+
+# # # Get liblarires and bins from builder
+# COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/" "$INSTALL_ROOT/radare2-$VERSION/"
+COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/binr/" "$INSTALL_ROOT/radare2-$VERSION/binr"
+COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/libr/" "$INSTALL_ROOT/radare2-$VERSION/libr"
+COPY --from=builder "$INSTALL_ROOT"/bin/ "$INSTALL_ROOT"/bin
+COPY --from=builder "$INSTALL_ROOT"/lib/ /usr/lib
+COPY --from=builder "$INSTALL_ROOT"/include/ /usr/include
+COPY --from=builder "$INSTALL_ROOT"/share/ /usr/share
+COPY --from=builder /home/appuser/.local/share/radare2/ /home/appuser/.local/share/radare2
+
+# Plugin manger configuration
+ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
+ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
+ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
+ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
+
+# Remove .git directory
+# RUN rm -rf /home/appuser/.local/share/radare2/r2pm/git/
+
+COPY entrypoint.sh "$INSTALL_ROOT"/entrypoint.sh
+COPY scripts "$INSTALL_ROOT"/scripts
+
+
+# RUN du -sh /radare2 && du -sh /home/appuser/.local/share/radare2/
+
+
+# # # Add the dependencies we need for running
 # RUN apk add --no-cache \
+#             git 
 #          bash \
-#          libuuid \
+# #          libuuid \
 #          make \
-#          python3 \
+#         cmake \
+        #  python3 \dock
+        # && pip3 install r2pipe=="$R2_PIPE_PY_VERSION"
 #          qt5-qtbase \
 #          shadow \
 #          su-exec
 
-# # Get the compiled Cutter, r2 libs and bins from the builder
-# COPY --from=builder /opt/cutter /opt/cutter
-# COPY --from=builder /usr/lib /usr/lib
-# COPY --from=builder /usr/share/radare2 /usr/share/radare2
-# RUN cd /opt/cutter/radare2/binr && \
-#     make install && \
-#     make symstall install-symlink
 
-# # Add r2 user
-# RUN useradd r2
+
+ENV PATH="$INSTALL_ROOT"/bin:"$PATH"
+# Used by wrapper script
+ENV R2_HOME="$INSTALL_ROOT"/bin
+
+# RUN addgroup -S appuser && \
+#     adduser -s /sbin/nologin --disabled-password -G appuser appuser
+
+# USER appuser
+
+# WORKDIR /home/appuser
+
+
+
 
 # # Prepare files to mount configurations later on
 # RUN mkdir /var/sharedFolder && \
@@ -85,4 +140,4 @@ RUN sh user.sh && make install
 # WORKDIR /home/r2
 # ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
