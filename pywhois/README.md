@@ -1,6 +1,9 @@
 # Pywhois
 
-## Retrieve information of IP addresses
+Retrieve information of IP addresses using Python 'whois' module.
+
+In the  [CinCan project](https://cincan.io) project we have dockerized many analysis tools,
+one of them being Python 'whois'.
 
 ## Input
 
@@ -14,35 +17,27 @@ IP / list of IPs
 report in JSON
 ```
 
-## Supported tags and respective `Dockerfile` links
-
-* `latest` ([*pywhois/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/pywhois))
-
-
 ## Usage
 
-***1. Clone the repository***
+### Using cincan command
 
-```
-git clone https://gitlab.com/CinCan/tools
-cd tools/pywhois
-```
+The [cincan](https://gitlab.com/cincan/cincan-command) command makes it almost as easy
+to use dockerized tools than tools installed natively (without need to install them individually).
+You can get cincan command from PyPI, e.g. (check your Python documentation for details):
 
-***2. Build OR pull the docker image*** 
+    $ sudo pip3 install cincan-command
 
-```
-docker build . -t cincan/pywhois
-docker pull cincan/pywhois
-```
+After that it is straightforward to invoke the dockerized 'pywhois' for a pdf-file using the
+cincan command:
 
-***3. Run the docker container***
+    $ cincan run cincan/pywhois <IP>
 
-Get information of an IP:  
+Or scan through a list of IPs specified in a file:
 
-`$ docker run --rm cincan/pywhois <IP>`  
+    $ cincan run cincan/pywhois -f <FILE>
 
+### Using docker
 
-Scan through a list of IPs:
+You can use the dockerized 'pywhois' tool also directly with docker cli:
 
-`$ docker run --rm cincan/pywhois f <FILE>`  
-
+    $ docker run --rm cincan/pywhois <IP>
