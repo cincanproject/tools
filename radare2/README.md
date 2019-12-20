@@ -22,6 +22,65 @@ R2 is mostly used in interactive mode, but there are variety of outputs, includi
 
 # Usage
 
+
+### Installation
+
+***Method 1. Clone the repository and build by yourself***
+
+```
+git clone https://gitlab.com/CinCan/tools
+cd tools/radare2
+docker build . -t cincan/radare2
+```
+
+***Method 2. Pull the docker image*** 
+
+```
+docker pull cincan/radare2
+```
+
+***Method 3. use ['cincan'](https://gitlab.com/CinCan/cincan-command) tool*** 
+
+Follow 'cincan' tool installation steps. If this tool is used, no need to install 'radare2' separately.
+
+NOTE: cincan tool is not supporting interactive mode currently!
+
+### Running
+
+There is wrapper script [entrypoint.sh](entrypoint.sh) which enables only to use tools coming with radare2. It also enables for running scripts in [scripts](scripts) folder.
+
+***Method 1. Run the docker container***
+
+Let's expect that we have subfolder in current directory named as 'samples'
+
+```
+docker run --rm -itv $(pwd)/samples:/r2/samples cincan/radare2 r2 /r2/samples/hello_world
+```
+
+This will make radare2 to open file.
+
+Consult radare2 documentation to make analysis!
+
+
+***Method 2. Run with 'cincan' tool:***
+
+Currently interactive mode is not supported, but scripts can be run with 'cincan' tool.
+
+Example fo using 'r2_callgrap.sh' script, which is using 'samples' directory as argument.
+It will generate graph from binary's function calls.
+
+```
+cincan run cincan/radare2 script samples
+```
+
+Get help for specifically this tool:
+
+```
+cincan run cincan/radare2 --help
+```
+
+
+
 # Project homepage
 
 Website: https://www.radare.org/n/

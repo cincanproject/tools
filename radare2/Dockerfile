@@ -83,7 +83,19 @@ RUN		apk del --purge -r \
         pkgconfig \
         bison \
         flex \
-		&& rm -rf /tmp/* /var/cache/apk/* /var/tmp/* \
+		&& rm -rf /tmp/* /var/cache/apk/* /var/tmp/* 
+
+# Script based packages
+
+RUN apk add --no-cache graphviz
+
+# Folders for scripts
+
+RUN mkdir -p /r2/samples && \
+    mkdir -p /r2/results && \
+    chown -R appuser:appuser /r2/results && \
+    chown -R appuser:appuser /r2/samples/
+
 
 USER appuser
 # Optional r2dec r2frida
