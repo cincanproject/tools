@@ -66,14 +66,14 @@ Consult radare2 documentation to make analysis!
 
 Currently interactive mode is not supported, but scripts can be run with 'cincan' tool.
 
-Example fo using 'r2_callgrap.sh' script, which is using 'samples' directory as argument.
+Example fo using 'r2_callgraph.sh' script, which is using 'samples' directory as argument.
 It will generate graph from binary's function calls.
 
 ```
-cincan run cincan/radare2 script samples
+cincan run cincan/radare2 script r2_callgraph.sh samples
 ```
 
-Get help for specifically this tool:
+Get general help for using container:
 
 ```
 cincan run cincan/radare2 --help
