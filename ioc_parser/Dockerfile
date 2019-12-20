@@ -21,7 +21,7 @@ FROM debian:10-slim as env
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
-    python3
+    python3 git
 
 RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
