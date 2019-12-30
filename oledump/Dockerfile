@@ -4,7 +4,7 @@ FROM alpine:3.9
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=0_0_42
+ENV VERSION=0_0_44
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
@@ -14,9 +14,7 @@ RUN apk update && apk add --no-cache \
 	git=2.20.2-r0 \
 	unzip=6.0-r4 \
 	&& wget https://didierstevens.com/files/software/oledump_V$VERSION.zip \
-	&& if [ ! "$(sha256sum oledump_V$VERSION.zip |awk '{print toupper($1)}')" = \
-		"14A1FDA4AB57B09729AEB2697818782FAE498369A760FEC8AEE5CFB0A0E9D126" ]; then \
-		echo "Integrity check failed"; exit 1; fi \
+	&& echo "1a9c951e95e2fe0fdf3a3dc8e331205bc65c617953f0e30ed3e6ac045f4dd0c0  oledump_V$VERSION.zip" | sha256sum -c \
 	&& unzip oledump_V$VERSION.zip -d /oledump \
 	&& rm oledump_V$VERSION.zip \
 	&& pip install olefile==0.46 \
