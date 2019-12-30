@@ -3,9 +3,8 @@
 FROM alpine:3.5
 
 LABEL MAINTAINER=cincan.io
-LABEL io.cincan.input="application/pdf"
 
-ENV VERSION=0_7_3
+ENV VERSION=0_7_4
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
@@ -15,9 +14,7 @@ RUN apk update && apk add --no-cache \
 	git=2.11.3-r2
 
 RUN wget https://didierstevens.com/files/software/pdf-parser_V$VERSION.zip \
-	&& if [ ! "$(sha256sum pdf-parser_V$VERSION.zip |awk '{print toupper($1)}')" = \
-	"D4D5AC9C26A9D8FEF65CE58A769D3F64A737860DC26606068CCDD3F04FDEA0D7" ]; then \
-	echo "Integrity check failed"; exit 1; fi \
+	&& echo "fc318841952190d51eb70dafb0666d7d19652c8839829cc0c3871bbf7e155b6a  pdf-parser_V$VERSION.zip" |sha256sum -c \
 	&& unzip pdf-parser_V$VERSION.zip -d /pdf-parser \
 	&& wget https://github.com/DidierStevens/DidierStevensSuite/archive/master.zip \
 	&& unzip master.zip \
