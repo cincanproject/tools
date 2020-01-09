@@ -1,20 +1,22 @@
 # Ssdeep
 
+# "A Program for computing context triggered piecewise hashes (CTPH), also called fuzzy hashes."
 
 ## Input
 
 ```
-
+*
 ```
 
 ## Output
 
 ```
+CTPH / Fuzzy hash
 ```
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*pdf-parser/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/pdf-parser))
+* `latest` ([*ssdeep/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/ssdeep))
 
 
 ## Usage
@@ -23,29 +25,29 @@
 
 ```
 git clone https://gitlab.com/CinCan/tools
-cd tools/pdf-parser/
+cd tools/ssdeep/
 ```
 
 ***2. Build OR pull the docker image*** 
 
 ```
-docker build . -t cincan/pdf-parser
-docker pull cincan/pdf-parser
+docker build . -t cincan/ssdeep
+docker pull cincan/ssdeep
 ```
 
 ***3. Run the docker container***
 
-Example 1. Analyze a file:
+Example 1. Generate hash:
 
-`$ docker run --rm -v $(pwd):/input cincan/pdf-parser /input/samples/testfile.pdf -a`  
+`$ docker run --rm -v $(pwd):/input cincan/ssdeep /input/testfile`
 
 
-Example 2. Analyze a file through filters, and display content for objects without streams:  
+Example 2. Compare files, using the cincan tool:  
 
-`$ docker run --rm -v $(pwd):/input cincan/pdf-parser /input/samples/testfile.pdf -c --filter`   
-
+`$ cincan run cincan/ssdeep -c file1 file2`
 
 
 
 ## Project homepage
 
+[https://ssdeep-project.github.io/ssdeep/](https://ssdeep-project.github.io/ssdeep/)
