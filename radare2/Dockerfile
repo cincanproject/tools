@@ -66,13 +66,22 @@ WORKDIR "$SOURCE_ROOT/sys"
 
 RUN meson --prefix="$INSTALL_PREFIX" && \
     ninja && \
-    ninja install && \
-    ln -s "$INSTALL_PREFIX/bin/radare2/" "$INSTALL_PREFIX/bin/r2/" && \
-    su - appuser && \
-    r2pm init && \
+    ninja install 
+    # && \
+
+
+RUN ln -s "$INSTALL_PREFIX/bin/radare2" "$INSTALL_PREFIX/bin/r2"
+# && \
+
+USER appuser
+
+RUN r2pm init && \
     r2pm update && \
     r2pm -i r2ghidra-dec && \
-    rm -rf /usr/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git
+    r2pm cache
+    # && \
+    # r2pm clean
+    # rm -rf /usr/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git
 
 
 # RUN cp "$INSTALL_ROOT/binr/r2pm/r2pm" /usr/local/bin/ && \
@@ -141,10 +150,21 @@ FROM alpine:edge AS runner
 # ENV R2_PIPE_PY_VERSION=1.4.2
 
 # # # Get liblarires and bins from builder
-ENV DEST_PREFIX /usr/local
+ENV INSTALL_PREFIX /usr/local
+
+RUN apk add --no-cache git && \
+    addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser
 
 COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
-COPY --from=builder /usr/appuser /usr/appuser
+COPY --from=builder /home/appuser/ /home/appuser/
+
+# Plugin manager configuration
+ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
+ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
+ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
+ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
+
 # COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/" "$INSTALL_ROOT/radare2-$VERSION/"
 # COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/binr/" "$INSTALL_ROOT/radare2-$VERSION/binr"
 # COPY --from=builder "$INSTALL_ROOT/radare2-$VERSION/libr/" "$INSTALL_ROOT/radare2-$VERSION/libr"
@@ -152,6 +172,7 @@ COPY --from=builder /usr/appuser /usr/appuser
 # COPY --from=builder "$INSTALL_ROOT"/lib/ /usr/lib
 # COPY --from=builder "$INSTALL_ROOT"/include/ /usr/include
 # COPY --from=builder "$INSTALL_ROOT"/share/ /usr/share
+# USER root
 
 RUN mkdir -p /r2/samples && \
     mkdir -p /r2/results && \
@@ -185,8 +206,7 @@ ENV R2_SCRIPTS="$SOURCE_ROOT"/scripts
 # Remove .git directory
 # RUN rm -rf /home/appuser/.local/share/radare2/r2pm/git/
 
-# RUN addgroup -S appuser && \
-#     adduser -s /sbin/nologin --disabled-password -G appuser appuser
+
 
 # USER appuser
 
