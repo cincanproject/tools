@@ -98,7 +98,7 @@ ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
 ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
 ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
 
-COPY entrypoint.sh "$SOURCE_ROOT"/entrypoint.sh
+COPY entrypoint.sh "$SOURCE_ROOT/entrypoint.sh"
 COPY scripts "$SOURCE_ROOT/scripts"
 
 # Used by wrapper script
