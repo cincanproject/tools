@@ -49,22 +49,8 @@ RUN mkdir "$SOURCE_ROOT" \
 #     && echo "$radare2_SHA256  $INSTALL_ROOT/radare2.zip" | sha256sum -c - \
 #     && unzip "$INSTALL_ROOT"/radare2.zip -d "$INSTALL_ROOT"
 
-
-
 # WORKDIR "$INSTALL_ROOT/radare2-$VERSION/sys"
 
-# WORKDIR "$SOURCE_ROOT/sys"
-
-
-# RUN sh user.sh --install-path "$INSTALL_ROOT" && make install
-
-# Build portable binaries with meson
-# RUN ./meson.py --dir "/$INSTALL_ROOT/build" --local
-
-# RUN mkdir -p "${INSTALL_ROOT}/build/lib" && \
-#     sh build.sh "$INSTALL_ROOT/build/" && make install
-
-# RUN sh user.sh --install-path "$INSTALL_ROOT/build/" && make install
 USER appuser
 
 RUN git clone --depth 1 https://github.com/radareorg/radare2.git "$SOURCE_ROOT" && \
@@ -73,9 +59,6 @@ RUN git clone --depth 1 https://github.com/radareorg/radare2.git "$SOURCE_ROOT" 
     ninja && \
     ninja install && \
     ln -s "$INSTALL_PREFIX/bin/radare2" "$INSTALL_PREFIX/bin/r2"
-# && \
-
-
 
 RUN r2pm init && \
     r2pm update && \
@@ -83,49 +66,31 @@ RUN r2pm init && \
     r2pm cache && \
     # && \
     # r2pm clean
-    rm -rf /usr/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git
-
-
-# USER root
-
-# # Script based packages
-
-# RUN apk add --no-cache graphviz
-
-# Folders for scripts
+    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git
 
 # SECOND STAGE
 
 FROM alpine:latest AS runner
 
-# ENV INSTALL_ROOT /radare2
-
-# ENV VERSION 4.0.0
-# ENV R2_PIPE_PY_VERSION=1.4.2
-
 # # # Get liblarires and bins from builder
 ENV INSTALL_PREFIX /usr/local
 ENV SOURCE_ROOT /radare2
 
-RUN apk add --no-cache git && \
+# g++ required by ghidra-dec in runtime
+# graphviz required by custom scripts
+
+RUN apk add --no-cache git g++ graphviz && \
     addgroup -S appuser && \
-    adduser -s /sbin/nologin --disabled-password -G appuser appuser
-
-COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
-COPY --from=builder /home/appuser/ /home/appuser/
-
-
-
-
-RUN mkdir -p /r2/samples && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
+    mkdir -p /r2/samples && \
     mkdir -p /r2/results && \
     chown -R appuser:appuser /r2/results && \
     chown -R appuser:appuser /r2/samples/
 
+COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
+COPY --from=builder --chown=appuser:appuser /home/appuser/ /home/appuser/
 
 USER appuser
-# Optional r2dec r2frida
-
 
 # Plugin manager configuration
 ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
@@ -136,32 +101,10 @@ ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
 COPY entrypoint.sh "$SOURCE_ROOT"/entrypoint.sh
 COPY scripts "$SOURCE_ROOT"/scripts
 
-
-# RUN du -sh /radare2 && du -sh /home/appuser/.local/share/radare2/
-
 # Used by wrapper script
 ENV R2_HOME="$INSTALL_PREFIX/bin"
 ENV R2_SCRIPTS="$SOURCE_ROOT/scripts"
 
-
-
-# COPY --from=builder /home/appuser/.local/share/radare2/ /home/appuser/.local/share/radare2
-
-# # Plugin manager configuration
-# ENV R2PM_PLUGDIR=/home/appuser/.local/share/radare2/plugins
-# ENV R2PM_BINDIR=/home/appuser/.local/share/radare2/prefix/bin
-# ENV R2PM_DBDIR=/home/appuser/.local/share/radare2/r2pm/db
-# ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
-
-# Remove .git directory
-# RUN rm -rf /home/appuser/.local/share/radare2/r2pm/git/
-
-
-
-# USER appuser
-
-# WORKDIR /home/appuser
-
-USER root
+WORKDIR /home/appuser
 
 # ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
