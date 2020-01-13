@@ -107,4 +107,4 @@ ENV R2_SCRIPTS="$SOURCE_ROOT/scripts"
 
 WORKDIR /home/appuser
 
-# ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
+ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
