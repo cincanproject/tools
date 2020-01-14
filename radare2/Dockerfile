@@ -66,7 +66,9 @@ RUN r2pm init && \
     r2pm cache && \
     # && \
     # r2pm clean
-    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git
+    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git && \
+    # Disable r2agent - no use in container
+    rm /usr/local/bin/r2agent
 
 # SECOND STAGE
 

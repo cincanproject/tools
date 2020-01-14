@@ -1,9 +1,13 @@
 # radare2 - version 4.0.0
 
+*Note: Current version is from git:master just before release of 4.2.0. There are some radical bug fixes.*
+
 Radare2 is complete unix-like framework for reverse engineering and binary analysis. It is built around command line tools, but there is also graphical user interface [Cutter](https://cutter.re/) built around it.
 It is a rewrite from scratch from original radare.
 
 It supports disassembling code, debugging programs, attaching to remote gdb servers, analyzing binaries such as relocations of symbols, binary diffing with graphs, producing ROP gadgets and shellcodes and so on.
+
+This image contains additionally plugin [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec) as preinstalled.
 
 # Input
 
