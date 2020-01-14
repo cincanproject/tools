@@ -1,4 +1,4 @@
-# radare2 - version 4.0.0
+# radare2 - version 4.1.1
 
 *Note: Current version is from git:master just before release of 4.2.0. There are some radical bug fixes.*
 
