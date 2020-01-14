@@ -1,10 +1,8 @@
 FROM alpine:edge AS builder
 
 ENV VERSION 4.0.0
-ENV radare2_SHA256_4.1.0 f86a4e070c61f58290c94d97897d6433ee8c4fef102e26d94be9279b7ab70988
-ENV radare2_SHA256 5ec7639fc6625dd395ce81c192a7d4a7d624ac87405621d3aae0ecbcd89c670c
 ENV radare2_SHA256_4.1.1 c85012e11ae43eb10aa0179e4cee0dba451bf31390a360bc245cd66e960fab80 
-# ENV radare2_SHA256 c85012e11ae43eb10aa0179e4cee0dba451bf31390a360bc245cd66e960fab80 
+
 
 
 ENV SOURCE_ROOT /radare2
@@ -12,26 +10,25 @@ ENV INSTALL_PREFIX /usr/local
 
 # Dependencies
 RUN apk add --no-cache \
-        libc6-compat \
-        make \
-        ncurses-libs \
-		npm \
-        cmake \
-        g++ \
-        gcc \
-        git \
-        linux-headers \
-        unzip \
-        wget \
-        curl \
-        git \
-        bison \
-        flex \
-        xxd \
-        pkgconfig \ 
-        python3 
-
-RUN apk add --no-cache meson
+    libc6-compat \
+    make \
+    ncurses-libs \
+    npm \
+    cmake \
+    g++ \
+    gcc \
+    git \
+    linux-headers \
+    unzip \
+    wget \
+    curl \
+    git \
+    bison \
+    flex \
+    xxd \
+    pkgconfig \ 
+    python3 \
+    meson
 
 RUN addgroup -S appuser && \
     adduser -s /sbin/nologin --disabled-password -G appuser appuser
@@ -43,6 +40,7 @@ RUN mkdir "$SOURCE_ROOT" \
     && chown -R appuser:appuser "$INSTALL_PREFIX" \
     && chmod -R 775 "$INSTALL_PREFIX"
 
+
 # RUN wget --progress=bar:force -O "$INSTALL_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$VERSION.zip" \
 #     && echo "$radare2_SHA256"  \
 #     && sha256sum "$INSTALL_ROOT"/radare2.zip \
@@ -52,6 +50,8 @@ RUN mkdir "$SOURCE_ROOT" \
 # WORKDIR "$INSTALL_ROOT/radare2-$VERSION/sys"
 
 USER appuser
+
+# Waiting for 4.2 release, until then cloning master
 
 RUN git clone --depth 1 https://github.com/radareorg/radare2.git "$SOURCE_ROOT" && \
     cd "$SOURCE_ROOT/sys" && \
@@ -74,23 +74,24 @@ RUN r2pm init && \
 
 FROM alpine:latest AS runner
 
-# # # Get liblarires and bins from builder
 ENV INSTALL_PREFIX /usr/local
 ENV SOURCE_ROOT /radare2
 
-# g++ required by ghidra-dec in runtime
-# graphviz required by custom scripts
+# libstdc++ required by ghidra-dec in runtime
 
-RUN apk add --no-cache git g++ graphviz && \
+RUN apk add --no-cache libstdc++ && \
     addgroup -S appuser && \
     adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
+    # Make directories for possible volume mounting
     mkdir -p /r2/samples && \
     mkdir -p /r2/results && \
     chown -R appuser:appuser /r2/results && \
     chown -R appuser:appuser /r2/samples/
 
+# Get liblarires and bins from builder
+
 COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
-COPY --from=builder --chown=appuser:appuser /home/appuser/ /home/appuser/
+COPY --from=builder /home/appuser/ /home/appuser/
 
 USER appuser
 

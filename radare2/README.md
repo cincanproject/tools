@@ -83,6 +83,11 @@ Get general help for using container:
 cincan run cincan/radare2 --help
 ```
 
+## Blog
+
+For more examples about the tool, see some blog posts:
+
+* [cincan.io/blog/2019_12_20_radare2/](https://gitlab.com/CinCan/cincan.io/blob/master/site/blog/2019_12_20_radare2.md)
 
 
 # Project homepage
