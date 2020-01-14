@@ -5,7 +5,7 @@ FROM alpine:3.11
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=2.14.1
+ENV VERSION=2.14.2
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
