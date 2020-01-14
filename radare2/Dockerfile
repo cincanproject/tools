@@ -64,8 +64,6 @@ RUN r2pm init && \
     r2pm update && \
     r2pm -i r2ghidra-dec && \
     r2pm cache && \
-    # && \
-    # r2pm clean
     rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git && \
     # Disable r2agent - no use in container
     rm /usr/local/bin/r2agent
@@ -88,7 +86,7 @@ RUN apk add --no-cache libstdc++ && \
     chown -R appuser:appuser /r2/results && \
     chown -R appuser:appuser /r2/samples/
 
-# Get liblarires and bins from builder
+# Get libarires and bins from builder
 
 COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
 COPY --from=builder /home/appuser/ /home/appuser/
