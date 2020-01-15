@@ -1,29 +1,29 @@
 FROM alpine:3.9
-LABEL maintainer "https://gitlab.com/CinCan"
+LABEL maintainer=cinca.io
 
-ENV VOL_VERSION 2.6.1 
+ENV VERSION 2.6.1
 ENV YARA_VERSION 3.10.0
 ENV YARA_PY_VERSION 3.10.0
 
-RUN apk --update --no-cache add git \
+RUN apk --update --no-cache add \
     bison \
     ca-certificates \
     file \
+    git \
     jansson \
     openssl \
     py-crypto \
     py-lxml \
     py-pillow \
-    py-setuptools \
     python \
     su-exec \
     tini \
     unzip \
     zlib \
+    py-setuptools \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache -t .build-deps \
-    py-setuptools \
+RUN apk add --no-cache -t build-dependencies \
     openssl-dev \
     jansson-dev \
     python-dev \
@@ -40,15 +40,16 @@ RUN apk add --no-cache -t .build-deps \
     && export PIP_NO_CACHE_DIR=off \
     && export PIP_DISABLE_PIP_VERSION_CHECK=on \
     && pip install --upgrade pip==18.1 wheel \
-    && pip install simplejson \
-    construct \
-    openpyxl \
-    haystack \
-    distorm3 \
+    && pip install \
     colorama \
+    construct \
+    distorm3 \
+    haystack \
     ipython \
+    openpyxl \
     pycoin \
     pytz \
+    simplejson \
     && set -x \
     && cd /tmp \
     && echo "===> Installing Yara from source..." \
@@ -70,14 +71,16 @@ RUN apk add --no-cache -t .build-deps \
     && python setup.py install \
     && echo "===> Installing Volatility from source..." \
     && cd /tmp/ \
-    && git clone --recursive --branch $VOL_VERSION https://github.com/volatilityfoundation/volatility.git \
+    && git clone --recursive --branch $VERSION https://github.com/volatilityfoundation/volatility.git \
     && cd volatility \
     && python setup.py build install \
     && rm -rf /tmp/* \
-    && apk del --purge .build-deps
+    && apk del --purge build-dependencies
 
-VOLUME ["/samples"]
-VOLUME ["/plugins"]
-WORKDIR /volatility
+RUN adduser -s /sbin/login -D appuser
+USER appuser
+
+WORKDIR /home/appuser/
+
 ENTRYPOINT ["vol.py"]
 CMD ["--help"]

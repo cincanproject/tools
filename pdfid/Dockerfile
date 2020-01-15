@@ -2,16 +2,16 @@
 # identify PDF documents that contain (for example) JavaScript or execute 
 # an action when opened. PDFiD will also handle name obfuscation."
 
-FROM alpine:3.9
+FROM alpine:3.11
 
 LABEL MAINTAINER=cincan.io
 
 RUN apk update && apk add --no-cache \
-	python2=2.7.16-r1 \
+	python2=2.7.16-r3 \
 	wget=1.20.3-r0 \
 	unzip=6.0-r4 \
-	git=2.20.2-r0 \
-	jq
+	git=2.24.1-r0 \
+	jq=1.6-r0
 
 # Get pdfid, check integrity, unzip, clean up.
 # Replace main script of pdfid with one supporting JSON output

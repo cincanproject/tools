@@ -19,23 +19,27 @@ output.html
 ## Usage
 
 
-***1. Clone the repository***
+***1.a) Clone the repository and build docker image***
 
 ```
 git clone https://gitlab.com/CinCan/dockerfiles.git
 cd dockerfiles/access-log-visualization
-```
-
-***2. Build OR pull the docker image*** 
-
-```
 docker build . -t cincan/access-log-visualization
+```
+
+***1.b) Pull the docker image*** 
+
+```
 docker pull cincan/access-log-visualization
 ```
 
-***3. Run the docker container***
+***2. Run the tool***
 ```
-docker run -v "$PWD/samples":/samples cincan/access-log-visualization
+cincan run cincan/access-log-visualization -i samples/access.log
+```
+
+```
+docker run --rm -v $(pwd):/data cincan/access-log-visualization -i /data/samples/access.log -o /data/output-folder
 ```
 
 ## Project homepage
