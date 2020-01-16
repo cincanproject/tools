@@ -4,7 +4,7 @@
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*keyfinder/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/keyfinder/Dockerfile))
+([*keyfinder/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/keyfinder/Dockerfile))
 
 ### Input
 

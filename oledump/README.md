@@ -14,7 +14,7 @@ JSON
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*oledump/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/oledump/Dockerfile))
+* `latest` ([*oledump/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/oledump/Dockerfile))
 
 ## Usage
 

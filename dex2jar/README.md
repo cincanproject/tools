@@ -25,7 +25,7 @@ cincan run cincan/dex2jar dex2jar /path/to/apk/file
 ***1. Option A - Clone the repository and build the image***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
+git clone https://gitlab.com/CinCan/tools
 cd dockerfiles/apktools/dex2jar/
 docker build . -t cincan/dex2jar
 ```

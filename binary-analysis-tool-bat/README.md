@@ -3,7 +3,7 @@
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*binary-analysis-tool-bat/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binary-analysis-tool-bat/Dockerfile))
+([*binary-analysis-tool-bat/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/binary-analysis-tool-bat/Dockerfile))
 
 ## Input
 

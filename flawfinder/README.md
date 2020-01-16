@@ -2,7 +2,7 @@
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*flawfinder/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/flawfinder/Dockerfile))
+([*flawfinder/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/flawfinder/Dockerfile))
 
 ### Input  
 

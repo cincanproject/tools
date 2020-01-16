@@ -14,14 +14,14 @@ HTML
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*pdfxray-lite/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdfxray-lite/Dockerfile))
+([*pdfxray-lite/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/pdfxray-lite/Dockerfile))
 
 ## Usage
 
 ***1. Clone the repository***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
+git clone https://gitlab.com/CinCan/tools
 cd dockerfiles/pdfxray-lite/
 ```
 

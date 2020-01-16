@@ -14,7 +14,7 @@ trufflehog report (JSON option)
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*truffleHog/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/trufflehog/Dockerfile))
+([*truffleHog/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/trufflehog/Dockerfile))
 
 ## Usage
 

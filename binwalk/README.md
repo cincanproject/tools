@@ -5,7 +5,7 @@ Binwalk with some optional run-time dependencies.
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*binwalk/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/binwalk/Dockerfile))
+([*binwalk/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/binwalk/Dockerfile))
 
 ## Input
 

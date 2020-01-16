@@ -15,7 +15,7 @@ oledump.py
 ```
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*pdf-tools/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdf-tools/Dockerfile))
+([*pdf-tools/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/pdf-tools/Dockerfile))
 
 ## Usage 
 

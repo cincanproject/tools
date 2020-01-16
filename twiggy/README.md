@@ -14,7 +14,7 @@ twiggy report
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*twiggy/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/twiggy/Dockerfile))
+* `latest` ([*twiggy/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/twiggy/Dockerfile))
 
 ## Usage
 ```

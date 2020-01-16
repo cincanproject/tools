@@ -3,12 +3,12 @@
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*identify-file/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/hyperscan/Dockerfile))
+([*identify-file/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/hyperscan/Dockerfile))
 
 ## Usage
 
 See the full description from: 
-https://gitlab.com/CinCan/dockerfiles/blob/master/hyperscan/README.md
+https://gitlab.com/CinCan/tools/blob/master/hyperscan/README.md
 
 ## Project homepage
 

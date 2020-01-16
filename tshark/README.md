@@ -24,7 +24,7 @@ tshark report, JSON, XML
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*tshark/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/tshark/Dockerfile))
+* `latest` ([*tshark/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/tshark/Dockerfile))
 
 ## Usage
 

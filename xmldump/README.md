@@ -13,7 +13,7 @@ xmldump report
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*xmldump/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/xmldump/Dockerfile))
+* `latest` ([*xmldump/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/xmldump/Dockerfile))
 
 ## Usage
 

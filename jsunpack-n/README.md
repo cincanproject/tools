@@ -15,7 +15,7 @@ jsunpack-n report
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*jsunpack-n/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/jsunpack-n/Dockerfile))
+* `latest` ([*jsunpack-n/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/jsunpack-n/Dockerfile))
 
 
 ## Usage 

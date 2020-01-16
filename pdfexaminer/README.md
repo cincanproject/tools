@@ -19,7 +19,7 @@ json,ioc,xml,php...
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*pdfexaminer/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdfexaminer/Dockerfile))
+([*pdfexaminer/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/pdfexaminer/Dockerfile))
 
 ## Usage
 

@@ -14,7 +14,7 @@ ELF / PE
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*shellcode2exe/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/shellcode2exe/Dockerfile))
+* `latest` ([*shellcode2exe/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/shellcode2exe/Dockerfile))
 
 
 ## Usage
@@ -22,7 +22,7 @@ ELF / PE
 ***1. Clone the repository***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
+git clone https://gitlab.com/CinCan/tools
 cd dockerfiles/shellcode2exe/
 ```
 

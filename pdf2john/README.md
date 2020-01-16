@@ -14,14 +14,14 @@ Hash
 
 ## Supported tags and respective `Dockerfile` links
 * `latest`  
-([*pdf2john/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/pdf2john/Dockerfile))
+([*pdf2john/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/pdf2john/Dockerfile))
 
 ## Usage
 
 1. Clone the repository
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
+git clone https://gitlab.com/CinCan/tools
 cd dockerfiles/pdf2john/
 ```
 

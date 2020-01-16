@@ -14,7 +14,7 @@ Peepdf report (XML, JSON)
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*peepdf/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/peepdf/Dockerfile))
+* `latest` ([*peepdf/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/peepdf/Dockerfile))
 
 
 ## Usage

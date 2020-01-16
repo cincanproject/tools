@@ -13,7 +13,7 @@ threats.
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*suricata/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/suricata/Dockerfile))
+([*suricata/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/suricata/Dockerfile))
 
 ## Usage
 

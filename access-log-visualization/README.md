@@ -14,7 +14,7 @@ output.html
 
 ## Supported tags and respective `Dockerfile` links
 
-* `latest` ([*access-log-visualization/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/access-log-visualization/Dockerfile))
+* `latest` ([*access-log-visualization/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/access-log-visualization/Dockerfile))
 
 ## Usage
 
@@ -22,7 +22,7 @@ output.html
 ***1.a) Clone the repository and build docker image***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles.git
+git clone https://gitlab.com/CinCan/tools.git
 cd dockerfiles/access-log-visualization
 docker build . -t cincan/access-log-visualization
 ```

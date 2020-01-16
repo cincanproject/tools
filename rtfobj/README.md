@@ -13,7 +13,7 @@ rtfobj report
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*rtfobj/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/rtfobj/Dockerfile))
+* `latest` ([*rtfobj/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/rtfobj/Dockerfile))
 
 ## Usage
 

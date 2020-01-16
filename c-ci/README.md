@@ -6,7 +6,7 @@ Concourse Worker and PostreSQL images to deploy Concourse.
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*c-ci/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/c-ci/Dockerfile))
+([*c-ci/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/c-ci/Dockerfile))
 
 ## Docker Compose file
 

@@ -16,7 +16,7 @@ multiple outputs
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*sleuthkit/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/sleuthkit/Dockerfile))
+([*sleuthkit/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/sleuthkit/Dockerfile))
 
 
 ## Usage

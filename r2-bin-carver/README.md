@@ -16,14 +16,14 @@ binary
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
-([*r2_bin_carver/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/r2_bin_carver/Dockerfile))
+([*r2_bin_carver/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/r2_bin_carver/Dockerfile))
 
 ## Usage
 
 ***1. Clone the repository***
 
 ```
-git clone https://gitlab.com/CinCan/dockerfiles
+git clone https://gitlab.com/CinCan/tools
 cd dockerfiles/r2_bin_carver/
 ```
 

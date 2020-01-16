@@ -13,7 +13,7 @@ Folder with java files
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*apk-tools/jd-cli/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/blob/master/apk-tools/jd-cli/Dockerfile))
+* `latest` ([*apk-tools/jd-cli/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/apk-tools/jd-cli/Dockerfile))
 
 ## Usage
 

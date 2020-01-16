@@ -17,7 +17,7 @@ Manalyze report
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*manalyze/Dockerfile*](https://gitlab.com/CinCan/dockerfiles/tree/master/manalyze))
+([*manalyze/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/manalyze))
 
 
 ## Usage
