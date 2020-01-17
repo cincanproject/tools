@@ -27,7 +27,7 @@ You can get cincan command from PyPI, e.g. (check your Python documentation for 
 
     $ sudo pip3 install cincan-command
 
-After that it is straightforward to invoke the dockerized 'pywhois' for a pdf-file using the
+After that it is straightforward to invoke the dockerized 'pywhois' for a IP(s) using the
 cincan command:
 
     $ cincan run cincan/pywhois <IP>
