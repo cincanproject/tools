@@ -1,6 +1,8 @@
 FROM alpine:edge AS builder
 
-ENV VERSION 4.0.0
+MAINTAINER cincan.io
+
+ENV VERSION 4.1.1
 ENV radare2_SHA256_4.1.1 c85012e11ae43eb10aa0179e4cee0dba451bf31390a360bc245cd66e960fab80 
 
 
