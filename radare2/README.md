@@ -1,9 +1,13 @@
-# radare2 - version 4.0.0
+# radare2 - version 4.1.1
+
+*Note: Current version is from git:master just before release of 4.2.0. There are some radical bug fixes.*
 
 Radare2 is complete unix-like framework for reverse engineering and binary analysis. It is built around command line tools, but there is also graphical user interface [Cutter](https://cutter.re/) built around it.
 It is a rewrite from scratch from original radare.
 
 It supports disassembling code, debugging programs, attaching to remote gdb servers, analyzing binaries such as relocations of symbols, binary diffing with graphs, producing ROP gadgets and shellcodes and so on.
+
+This image contains additionally plugin [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec) as preinstalled.
 
 # Input
 
@@ -79,6 +83,11 @@ Get general help for using container:
 cincan run cincan/radare2 --help
 ```
 
+## Blog
+
+For more examples about the tool, see some blog posts:
+
+  * [cincan.io/blog/2019_12_20_radare2/](https://gitlab.com/CinCan/cincan.io/blob/master/site/blog/2019_12_20_radare2.md)
 
 
 # Project homepage
