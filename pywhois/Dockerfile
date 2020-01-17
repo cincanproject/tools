@@ -1,9 +1,6 @@
 FROM python:3.5-alpine
 
 LABEL MAINTAINER=cincan.io
-LABEL io.cincan.input="ip"
-
-COPY cincan /cincan
 
 RUN pip install python-whois==0.7.1 \
         PySocks==1.6.8 \
@@ -12,6 +9,7 @@ RUN pip install python-whois==0.7.1 \
 ADD query.py .
 
 USER appuser
+WORKDIR /home/appuser
 
-ENTRYPOINT ["./query.py"]
+ENTRYPOINT ["/query.py"]
 CMD ["--help"]

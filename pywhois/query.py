@@ -2,7 +2,6 @@
 
 from argparse import ArgumentParser, FileType
 import json
-import sys
 import whois
 
 def whois_query(ip):
