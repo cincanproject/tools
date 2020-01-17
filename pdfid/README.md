@@ -1,6 +1,10 @@
 # PDFID
 
-# Scan PDFs for certain keywords, Javascript, auto-open functions etc.
+Scan PDFs for certain keywords, Javascript, auto-open functions etc.
+
+In the  [CinCan project](https://cincan.io) project we have dockerized many analysis tools,
+one of them being [pdfid from Didier Stevens](https://blog.didierstevens.com/programs/pdf-tools/#pdfid)
+
 
 ## Input
 
@@ -14,82 +18,52 @@ PDF
 PDFiD report
 ```
 
-## Supported tags and respective `Dockerfile` links
-
-* `latest` ([*pdfid/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/pdfid))
-
-
 ## Usage
 
-***1. Clone the repository***
+### Using the cincan tool
 
-```
-git clone https://gitlab.com/CinCan/tools
-cd tools/pdfid/
-```
+The [cincan](https://gitlab.com/cincan/cincan-command) command makes it almost as easy
+to use dockerized tools than tools installed natively (without need to install them individually).
+You can get cincan command from PyPI, e.g. (check your Python documentation for details):
 
-***2. Build OR pull the docker image*** 
+    $ sudo pip3 install cincan-command
 
-```
-docker build . -t cincan/pdfid
-docker pull cincan/pdfid
-```
+After that it is straightforward to invoke the dockerized 'pdfid' for a pdf-file using the
+cincan command:
 
-***3. Run the docker container***
+    $ cincan run cincan/pdfid <pdf-file>
 
-Analyse a sample in directory "/samples":
+For example, using a sample file from the `_samples/` directory:
 
-`$ docker run -v /samples:/samples cincan/pdfid /samples/sample.pdf`  
+    $ cincan run cincan/pdfid _samples/pdf/text_txt.pdf
+    cincan/pdfid: <= _samples/pdf/text_txt.pdf
+    PDFiD 0.2.5 _samples/pdf/text_txt.pdf
+     PDF Header: %PDF-1.4
+     obj                   13
+    ...
+
+There are several options to configure pdfid, for quick help run the command without arguments:
+
+    $ cincan run cincan/pdfid <pdf-file>
 
 
-Run with triage-plugin:  
+For example, use the following to run with triage-plugin:
 
-`$ docker run -v /samples:/samples cincan/pdfid /samples/sample.pdf -p plugin_triage`
+    $ cincan run cincan/pdfid _samples/pdf/text_txt.pdf -p plugin_triage
+    ...
+    Triage plugin score:        0.00
+    Triage plugin instructions: Sample is likely not malicious, unless you suspect this is used in a targeted/sophisticated attack
 
+For details of the tool, go to the home page of the tool:
+[https://blog.didierstevens.com/programs/pdf-tools/#pdfid](https://blog.didierstevens.com/programs/pdf-tools/#pdfid)
 
-***Options***
-```  
+### Using docker
 
---version             : show program's version number and exit
+You can use the dockerized 'pdfid' tool also directly with docker cli, but you
+need to use volument to get the analyzed PDF document, e.g.:
 
--h, --help            : show this help message and exit
+    $docker run -v `pwd`/_samples:/samples cincan/pdfid /samples/pdf/text_txt.pdf
 
--s, --scan            : scan the given directory
-
--a, --all             : display all the names
-
--e, --extra           : display extra data, like dates
-
--f, --force           : force the scan of the file, even without proper %PDF header
-                        
--d, --disarm          :  disable JavaScript and auto launch
-
--p PLUGINS, --plugins=PLUGINS
-                      : plugins to load (separate plugins with a comma , ; @file supported)
-                      
--c, --csv             : output csv data when using plugins
-
--m MINIMUMSCORE, --minimumscore=MINIMUMSCORE
-                      : minimum score for plugin results output
-                  
--v, --verbose         : verbose (will also raise catched exceptions)
-
--S SELECT, --select=SELECT
-                      : selection expression
-                      
--n, --nozero          : supress output for counts equal to zero
-
--o OUTPUT, --output=OUTPUT
-                      : output to log file
-                    
---pluginoptions=PLUGINOPTIONS
-                      : options for the plugin
-                
--l, --literalfilenames: take filenames literally, no wildcard matching
-                
---recursedir          : Recurse directories (wildcards and here files (@...) allowed)
-```
-
-## Project homepage
+## Tool homepage
 
 [https://blog.didierstevens.com/programs/pdf-tools/#pdfid](https://blog.didierstevens.com/programs/pdf-tools/#pdfid)

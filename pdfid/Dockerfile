@@ -5,7 +5,6 @@
 FROM alpine:3.11
 
 LABEL MAINTAINER=cincan.io
-LABEL io.cincan.input="application/pdf,application/zip"
 
 RUN apk update && apk add --no-cache \
 	python2=2.7.16-r3 \
@@ -31,6 +30,7 @@ RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
 RUN adduser -s /sbin/login -D appuser
 
 USER appuser
+WORKDIR /home/appuser
 
 ENTRYPOINT ["/usr/bin/python", "/pdfid/pdfid.py"]
 CMD ["--help"]
