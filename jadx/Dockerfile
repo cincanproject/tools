@@ -1,7 +1,7 @@
 #Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
 
 #Java 1.8 is needed
-FROM openjdk:8-alpine
+FROM openjdk:8-jre-alpine
 
 LABEL MAINTAINER=cincan.io
 

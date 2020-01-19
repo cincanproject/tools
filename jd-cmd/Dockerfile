@@ -4,7 +4,7 @@
 #docker run --rm -v `pwd`:/data jdcli
 
 #Java 1.8 is needed
-FROM openjdk:8-alpine
+FROM openjdk:8-jre-alpine
 
 LABEL MAINTAINER=cincan.io
 
