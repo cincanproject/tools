@@ -4,7 +4,7 @@
 #docker run --rm -v `pwd`:/samples dex2jar path/to/your/.apk
 
 #Base image
-FROM openjdk:8-alpine
+FROM openjdk:8-jre-alpine
 
 LABEL MAINTAINER=cincan.io
 
