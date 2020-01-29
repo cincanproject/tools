@@ -2,10 +2,8 @@ FROM alpine:edge AS builder
 
 MAINTAINER cincan.io
 
-ENV VERSION 4.1.1
-ENV radare2_SHA256_4.1.1 c85012e11ae43eb10aa0179e4cee0dba451bf31390a360bc245cd66e960fab80 
-
-
+ENV VERSION 4.2.0
+ENV radare2_SHA256 cdff5eed2a495b85a3b3325f59914cfb8b360614115438d31fed9ae021dd3a98 
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -42,21 +40,15 @@ RUN mkdir "$SOURCE_ROOT" \
     && chown -R appuser:appuser "$INSTALL_PREFIX" \
     && chmod -R 775 "$INSTALL_PREFIX"
 
-
-# RUN wget --progress=bar:force -O "$INSTALL_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$VERSION.zip" \
-#     && echo "$radare2_SHA256"  \
-#     && sha256sum "$INSTALL_ROOT"/radare2.zip \
-#     && echo "$radare2_SHA256  $INSTALL_ROOT/radare2.zip" | sha256sum -c - \
-#     && unzip "$INSTALL_ROOT"/radare2.zip -d "$INSTALL_ROOT"
-
-# WORKDIR "$INSTALL_ROOT/radare2-$VERSION/sys"
-
 USER appuser
 
-# Waiting for 4.2 release, until then cloning master
+RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$VERSION.zip" \
+    && echo "$radare2_SHA256"  \
+    && sha256sum "$SOURCE_ROOT"/radare2.zip \
+    && echo "$radare2_SHA256  $SOURCE_ROOT/radare2.zip" | sha256sum -c - \
+    && unzip "$SOURCE_ROOT"/radare2.zip -d "$SOURCE_ROOT"
 
-RUN git clone --depth 1 https://github.com/radareorg/radare2.git "$SOURCE_ROOT" && \
-    cd "$SOURCE_ROOT/sys" && \
+RUN cd "$SOURCE_ROOT/radare2-$VERSION/sys" && \
     meson --prefix="$INSTALL_PREFIX" && \
     ninja && \
     ninja install && \
@@ -103,6 +95,9 @@ ENV R2PM_GITDIR=/home/appuser/.local/share/radare2/r2pm/git/
 
 COPY entrypoint.sh "$SOURCE_ROOT/entrypoint.sh"
 COPY scripts "$SOURCE_ROOT/scripts"
+
+# Copy .cincanignore file - these files are never downloaded into host
+COPY .cincanignore /home/appuser/.cincanignore
 
 # Used by wrapper script
 ENV R2_HOME="$INSTALL_PREFIX/bin"

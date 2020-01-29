@@ -1,0 +1,6 @@
+# Radare2 creates command history into user directory, not bringing it to host when using cincan-command
+.cache
+# Ignore possible changes in r2pm etc.
+.local
+# Config.
+.config

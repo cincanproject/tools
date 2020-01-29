@@ -1,6 +1,4 @@
-# radare2 - version 4.1.1
-
-*Note: Current version is from git:master just before release of 4.2.0. There are some radical bug fixes.*
+# radare2 - version 4.2.0
 
 Radare2 is complete unix-like framework for reverse engineering and binary analysis. It is built around command line tools, but there is also graphical user interface [Cutter](https://cutter.re/) built around it.
 It is a rewrite from scratch from original radare.
@@ -47,7 +45,7 @@ docker pull cincan/radare2
 
 Follow 'cincan' tool installation steps. If this tool is used, no need to install 'radare2' separately.
 
-NOTE: cincan tool is not supporting interactive mode currently!
+Tool supports interactive mode as well.
 
 ### Running
 
@@ -68,7 +66,11 @@ Consult radare2 documentation to make analysis!
 
 ***Method 2. Run with 'cincan' tool:***
 
-Currently interactive mode is not supported, but scripts can be run with 'cincan' tool.
+Above can be executed, when `--interactive` and `--tty` flags are provided (similar to docker) for cincan command.
+
+```
+cincan run -it cincan/radare2 r2 samples/hello_world
+```
 
 Example fo using 'r2_callgraph.sh' script, which is using 'samples' directory as argument.
 It will generate graph from binary's function calls.
