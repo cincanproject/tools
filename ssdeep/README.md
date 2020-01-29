@@ -51,3 +51,8 @@ Example 2. Compare files, using the cincan tool:
 ## Project homepage
 
 [https://ssdeep-project.github.io/ssdeep/](https://ssdeep-project.github.io/ssdeep/)
+
+
+## License  
+
+GNU General Public License:  [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
