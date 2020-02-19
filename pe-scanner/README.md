@@ -1,4 +1,23 @@
-# TBA
+# Get information of a PE (portable executable) file
+
+## Input
+
+```
+PE/EXE/DLL
+```
+
+## Output
+
+```
+JSON
+```
+
+## Usage
+
+### Using the cincan tool
+
+`cincan run cincan/pe-scanner sample.exe`
+
 
 ## Supported tags and respective `Dockerfile` links
 

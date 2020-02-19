@@ -1,3 +1,5 @@
+# Get information of a PE (portable executable) file
+
 FROM alpine:3.10
 
 LABEL MAINTAINER=cincan.io
@@ -38,7 +40,5 @@ RUN ln -s /usr/local/lib/libpe.so.1.0 /usr/lib/libpe.so.1 \
 
 USER appuser
 
-ENTRYPOINT ["/usr/bin/python", "/build/entrypoint.py", "/samples/sample"]
+ENTRYPOINT ["/usr/bin/python", "/build/entrypoint.py"]
 
-
-#docker run -t -i --rm -v /path/to/the.exe:/samples/sample pe_test:latest
