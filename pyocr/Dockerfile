@@ -6,7 +6,7 @@ RUN apt-get update && \
         python3-wheel \
         python3-setuptools && \
     \
-    pip3 install --user pyocr Pillow wand
+    pip3 install --user pyocr Pillow wand opencv-python numpy
 
 FROM debian:10-slim as env
 
