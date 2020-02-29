@@ -13,13 +13,20 @@ Folder with java files
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*apk-tools/jd-cli/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/apk-tools/jd-cli/Dockerfile))
+* `latest` ([*jd-cmd/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/jd-cmd/Dockerfile))
 
 ## Usage
 
+Using the `cincan` command to decompile a `.jar` file to a decompiled `.jar` file:
 
 ```
-docker run --rm -v `pwd`:/data jdcli -od <Output Folder> <JAR-FILE>
+cincan run jd-cmd -od decompiled sample.jar
+```
+
+Using the docker command to achieve the same:
+
+```
+docker run --rm -v `pwd`:/data jdcli -od decompiled sample.jar
 ```
 
 ## Project homepage

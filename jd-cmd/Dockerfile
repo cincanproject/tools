@@ -1,29 +1,26 @@
-#Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
-
-#Example command to use jd-cmd tool
-#docker run --rm -v `pwd`:/data jdcli
-
-#Java 1.8 is needed
-FROM openjdk:8-jre-alpine
+FROM alpine:3.7 as build
 
 LABEL MAINTAINER=cincan.io
 
-#Define jd-cmd version
-ENV VERSION=1.0.0.Final
-RUN apk add --no-cache wget unzip
+ENV VERSION=1.0.1.Final
+ENV SHA256=767013796e7696854ff8b1ed0a9d4c12e4bed941be0c23537c7a2cadc5022340
 
-#Change workdir
-WORKDIR /usr/local/bin
+RUN apk add --no-cache wget unzip && \
+    wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$VERSION/jd-cli-$VERSION-dist.zip" && \
+    echo "$SHA256  jd-cmd.zip" | sha256sum -c && \
+    unzip -q "jd-cmd.zip" -d . && \
+    chmod +x "jd-cli"
 
-# Download,  unzip and give permissions to jd-cmd
-RUN wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$VERSION/jd-cli-$VERSION-dist.zip"
-RUN unzip -q "jd-cmd.zip" -d .
-RUN chmod +x "jd-cli"
+FROM openjdk:8-jre-slim
 
+COPY --from=build /jd-cli.jar /usr/local/bin/
 
-VOLUME ["/data"]
+RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
+    mkdir -p /home/appuser/tool && \
+    chown -R appuser:appuser /home/appuser
 
-WORKDIR /data
+WORKDIR /home/appuser/
+USER appuser
 
-ENTRYPOINT ["/usr/local/bin/jd-cli"]
+ENTRYPOINT ["java", "-jar", "/usr/local/bin/jd-cli.jar"]
 CMD ["--help"]
