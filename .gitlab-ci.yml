@@ -22,3 +22,28 @@ build-dev:
     - branches
   except:
     - master
+
+build-list-update:
+  stage: build
+  only:
+    - master
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$GIT_SSH_PRIV_KEY" | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "cincan@cincan.io"
+    - git config --global user.name "CinCan Tools bot"
+  script:
+    - git clone git@gitlab.com:${CI_PROJECT_PATH}.git
+    - cd ${CI_PROJECT_NAME}
+    - pwd
+    - ls
+    - sh update-tools-list.sh
+    - git add README.md
+    - git commit -m "update tools list of README.md [ci skip]"
+    - echo $CI_COMMIT_REF_NAME
+    - git push origin HEAD:$CI_COMMIT_REF_NAME    
+

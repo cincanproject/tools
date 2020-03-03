@@ -125,87 +125,80 @@ README should describe shortly:
   * Licence
 
 ## Description of the current tools
-
 ### Linux tools
 
-| Tool name                | Description                                        | Input               | Platform |
-|--------------------------|----------------------------------------------------|---------------------|----------|
-| **Binary analysis**          |                                                    |                     |          |
-| [binary-analysis-tool-bat](https://gitlab.com/CinCan/tools/tree/master/binary-analysis-tool-bat) | Binary Analysis Tool BAT with extra tools          | binary              | Linux    |
-| [binwalk](https://gitlab.com/CinCan/tools/tree/master/binwalk)                  | Firmware analysis tool                             | binary              | Linux    |
-| [dotnetdecompile](https://gitlab.com/CinCan/tools/tree/master/dotnetdecompile)          | Decompiler using th ILSpy engine                   | .NET                | Linux    |
-| [ghidra-decompiler](https://gitlab.com/CinCan/tools/tree/master/ghidra-decompiler)        |                                                    |                     | Linux    |
-| [manalyze](https://gitlab.com/CinCan/tools/tree/master/manalyze)                 | A Static analyzer for executables                  | binary              | Linux    |
-| [r2-callgraph](https://gitlab.com/CinCan/tools/tree/master/r2-callgraph)             | Modificated Radare2 image to analyze binaries      | ELF / PE binary     | Linux    |
-| [snowman-decompile](https://gitlab.com/CinCan/tools/tree/master/snowman-decompile)        | A Native code to C/C++ decompiler                  | ELF Mach-O PE LE    | Linux    |
-| [twiggy](https://gitlab.com/CinCan/tools/tree/master/twiggy)                   | Analyze a binary's call graph                      | .wasm (ELF/Mach-O)  | Linux    |
-| [peframe](https://gitlab.com/CinCan/tools/tree/master/peframe)               | Static analysis on PE and MS Office documents     | binary                    | Linux    |
-| [pe-scanner](https://gitlab.com/CinCan/tools/tree/master/pe-scanner)               |                                                    |                     | Linux    |
-| **Memory analysis**          |                                                    |                     |          |
-| [r2-bin-carver](https://gitlab.com/CinCan/tools/tree/master/r2-bin-carver)            | A Script to carve files from memory dumps          | memory dumps        | Linux    |
-| [volatility](https://gitlab.com/CinCan/tools/tree/master/volatility)               | An Advanced memory forensics framework             | memory samples      | Linux    |
-| **Network analysis**         |                                                    |                     |          |
-| [dns-tools](https://gitlab.com/CinCan/tools/tree/master/dns-tools)                |                                                    |                     | Linux    |
-| [scrape-website](https://gitlab.com/CinCan/tools/tree/master/scrape-website)           |                                                    |                     | Linux    |
-| [suricata](https://gitlab.com/CinCan/tools/tree/master/suricata)                 | Network threat detection engine (IDS, IPS, NSM)    | PCAP,network traffic| Linux    |
-| [tshark](https://gitlab.com/CinCan/tools/tree/master/tshark)                   | Parse PCAP and capture network traffic             | PCAP,network traffic| Linux    |
-| [pywhois](https://gitlab.com/CinCan/tools/tree/master/pywhois)                  | Retrieve information of IP addresses               | IP                  | Linux    |
-| **Shellcode analysis**       |                                                    |                     |          |
-| [shellcode2exe](https://gitlab.com/CinCan/tools/tree/master/shellcode2exe)            | Converts shellcode into executables                | shellcode           | Linux    |
-| **Document analysis**        |                                                    |                     |          |
-| [jsunpack-n](https://gitlab.com/CinCan/tools/tree/master/jsunpack-n)               | Scans URLs and PDFs.                               | PDF,URL,PCAP,JS,SWF | Linux    |
-| [oledump](https://gitlab.com/CinCan/tools/tree/master/oledump)            | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Linux    |
-| [olevba](https://gitlab.com/CinCan/tools/tree/master/olevba)                   | Extract and analyze VBA macros from Office files   | DOC,DOT,XML,PPTM,VBA| Linux    |
-| [pdf-tools](https://gitlab.com/CinCan/tools/tree/master/pdf-tools)                | The DidierStevensSuite                             | PDF                 | Linux    |
-| [pdf2john](https://gitlab.com/CinCan/tools/tree/master/pdf2john)                 | John The Ripper for extracting hash from PDF       | Encrypted PDF       | Linux    |
-| [pdfexaminer](https://gitlab.com/CinCan/tools/tree/master/pdfexaminer)              | Uploads PDF to www.pdfexaminer.com for scanning    | PDF                 | Linux    |
-| [pdfid](https://gitlab.com/CinCan/tools/tree/master/pdfid)                    | Scan PDFs for keywords, Javascript, auto-open...   | PDF                 | Linux    |
-| [pdfxray-lite](https://gitlab.com/CinCan/tools/tree/master/pdfxray-lite)             | Analyze PDFs                                       | PDF                 | Linux    |
-| [peepdf](https://gitlab.com/CinCan/tools/tree/master/peepdf)                   | A Powerful python tool to analyze PDFs             | PDF, shellcode      | Linux    |
-| [rtfobj](https://gitlab.com/CinCan/tools/tree/master/rtfobj)                   | Detect and extract (OLE) objects in RTF files      | RTF                 | Linux    |
-| [vba2graph](https://gitlab.com/CinCan/tools/tree/master/vba2graph)                | Generate call graphs from VBA code                 | DOC,XLS,BAS         | Linux    |
-| **APK analysis tools**                    |                                                    |                     |          |
-| [apktool](https://gitlab.com/CinCan/tools/tree/master/apktool) | A tool for reverse engineering 3rd party, closed, binary Android app     | .apk | Linux    |
-| [dex2jar](https://gitlab.com/CinCan/tools/tree/master/dex2jar) | Tool to decompile dex files to jar         | .dex, .apk | Linux    |
-| [jd-cmd](https://gitlab.com/CinCan/tools/tree/master/jd-cmd) | Decompiles .dex and .jar -files to java.            | .dex, .jar | Linux    |
-| [jadx](https://gitlab.com/CinCan/tools/tree/master/jadx) | Dex to Java decompiler            | .dex, .jar | Linux    |
-| **Other**                    |                                                    |                     |          |
-| [access-log-visualization](https://gitlab.com/CinCan/tools/tree/master/access-log-visualization) | Visualizing webserver's access log data            | access.log (Apache) | Linux    |
-| [c-ci](https://gitlab.com/CinCan/tools/tree/master/c-ci)                     | The Concourse CI                                   |                     | Linux    |
-| [c-worker](https://gitlab.com/CinCan/tools/tree/master/c-worker)                 | The Concourse Worker                               |                     | Linux    |
-| [clamav](https://gitlab.com/CinCan/tools/tree/master/clamav)                 | ClamAV virus scanner                               | any                 | Linux    |
-| [flawfinder](https://gitlab.com/CinCan/tools/tree/master/flawfinder)               | Scan C/C++ code for security flaws                 | C/C++               | Linux    |
-| [hyperscan](https://gitlab.com/CinCan/tools/tree/master/hyperscan)                | Regular expression matching library                |                     | Linux    |
-| [identify-file](https://gitlab.com/CinCan/tools/tree/master/identify-file)            | Identifies file type using several techniques      |                     | Linux    |
-| [iocextract](https://gitlab.com/CinCan/tools/tree/master/iocextract)               | Extracts urls, hashes, emails and ips from a file  | any                 | Linux    |
-| [ioc_strings](https://gitlab.com/CinCan/tools/tree/master/ioc_strings)               | Extracts urls, hashes, emails, ips, domains and base64 (other) from a file.  | any                 | Linux    |
-| [keyfinder](https://gitlab.com/CinCan/tools/tree/master/keyfinder)                | Find and analyze key files on a filesystem or APK  | filesystems, APK    | Linux    |
-| [s3-resource-simple](https://gitlab.com/CinCan/tools/tree/master/s3-resource)       | A Resource to upload files to S3                   |                     | Linux    |
-| [sleuthkit](https://gitlab.com/CinCan/tools/tree/master/sleuthkit)                | Open source digital forensics                      |                     | Linux    |
-| [trufflehog](https://gitlab.com/CinCan/tools/tree/master/trufflehog)               | Search git repos for accidentally committed secrets| git repository      | Linux    |
-| [virustotal](https://gitlab.com/CinCan/tools/tree/master/virustotal)               | Analyze files and URLs to detect malware           | any                 | Linux    |
-| [xmldump](https://gitlab.com/CinCan/tools/tree/master/xmldump)                  | Parse XML files                                    | XML                 | Linux    |
-
-
+| Tool name | Description | Input               | Platform |
+|-----------|-------------|---------------------|----------|
+| xmldump |   Parse XML files. | XML  | Linux |
+| twiggy |   Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
+| shellcode2exe |   Convert shellcodes into executable files, for multiple platforms. | shellcode  | Linux |
+| rtfobj |   A Python module to detect and extract embedded objects stored in RTF files, such as OLE objects. | .rtf  | Linux |
+| volatility |   Volatility |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
+| sleuthkit |   Open Source Digital Forensics | raw, ewf, vmdk, vhd  | Linux |
+| manalyze |   Manalyze | PE files  | Linux |
+| python-extract-code |   Extract code | PE  | Linux |
+| peframe |   PEframe | PE  | Linux |
+| jsunpack-n |   | PDF, URL, PCAP, JavaScript, SWF  | Linux |
+| ioc_parser |   A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
+| pdfexaminer |   PDFExaminer | PDF files  | Linux |
+| peepdf |   Powerful Python tool to analyze PDF documents. | PDF  | Linux |
+| pdfxray-lite |   Analyze PDF files | PDF  | Linux |
+| pdf-parser |   PDF-parser | PDF  | Linux |
+| pdfid |   PDFID | PDF  | Linux |
+| tshark |   A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
+| vba2graph |   Generate call graphs from VBA code | office documents such as .doc, .xls, .bas  | Linux |
+| ilspy |   ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
+| r2-bin-carver |   R2 bin carver | memory dumps  | Linux |
+| floss |   FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
+| feature_extractor |   Feature_extractor | list of possible IoCs  | Linux |
+| jd-cmd |   The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| pywhois |   Pywhois | IP / list of IPs  | Linux |
+| trufflehog |   TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
+| keyfinder |   Keyfinder | filesystem, APK  | Linux |
+| ioc_strings |   IOC strings | File/Directory  | Linux |
+| iocextract |   Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
+| pdf2john |   John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
+| snowman-decompile |   Snowman-decompile | ELF Mach-O PE LE  | Linux |
+| radare2 |   radare2 - version 4.0.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
+| oledump |   A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
+| oletools |   Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
+| output-standardizer |   Output-standardizer | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs  | Linux |
+| flawfinder |   Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
+| binwalk |   Firmware Analysis Tool | binary  | Linux |
+| binary-analysis-tool-bat |   Binary Analysis Tool BAT with extra tools | binary  | Linux |
+| apktool |   A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
+| dex2jar |   Tool to decompile dex files to jar | APK file  | Linux |
+| jadx |   Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
+| ghidra-decompiler |   Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
+| clamav |   ClamAV virus scanner:  Release 0.102.0 | Any file or directory.  | Linux |
+| radamsa |   A Tool for parsing PCAP and capturing network traffic. | Any data  | Linux |
+| access-log-visualization |   Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
+| virustotal |   Analyze suspicious files and URLs to detect types of malware |  | Linux |
+| test2tool |   |  | Linux |
+| sysanalyzer |   Input |  | Linux |
+| suricata |   Suricata  |  | Linux |
+| scrape-website |   |  | Linux |
+| s3-resource-simple |   Simple S3 Resource for [Concourse CI](http://concourse.ci) |  | Linux |
+| regshot |   |  | Linux |
+| pe-scanner |   TBA |  | Linux |
+| pdf-tools |   The DidierStevensSuite by Didier Stevens |  | Linux |
+| identify-file |   Identify-file |  | Linux |
+| hyperscan |   High-performance regular expression matching library |  | Linux |
+| dns-tools |   |  | Linux |
+| c-worker |   Concourse Worker |  | Linux |
+| c-ci |   Concourse CI |  | Linux |
+| capture-bat |   |  | Linux |
+| add2git-lfs |   ADD2GIT-LFS |  | Linux |
 ### Windows tools
 
-| **Binary analysis**          |                                                    |                     |          |
-|--------------------------|----------------------------------------------------|---------------------|----------|
-| [binskim](https://gitlab.com/CinCan/tools/tree/master/binskim)                  | A Light-weight PE scanner                          | binary              | Windows  |
-| [jakstab](https://gitlab.com/CinCan/tools/tree/master/jakstab)                  | Analyze executables,recover control flow graphs    | ELF / PE binary     | Windows  |
-| [pestudio](https://gitlab.com/CinCan/tools/tree/master/pestudio)                 | Scan binary files for security related information | EXE,DLL,CPL,OCX...  | Windows  |
-| **System and file analysis** |                                                    |                     |          |
-| [capture-bat](https://gitlab.com/CinCan/tools/tree/master/capture-bat)              | A Behavioral analysis tool of WIN32 apps           |                     | Windows  |
-| [processhacker](https://gitlab.com/CinCan/tools/tree/master/processhacker)            | Monitor resources, debug software, detect malware  |                     | Windows  |
-| [regshot](https://gitlab.com/CinCan/tools/tree/master/regshot)                  | Registry compare utility                           |                     | Windows  |
-| [sysanalyzer](https://gitlab.com/CinCan/tools/tree/master/sysanalyzer)              | An Automated malcode runtime analysis application  |                     | Windows  |
-| [sysinternals](https://gitlab.com/CinCan/tools/tree/master/sysinternals)             | Manage, troubleshoot and diagnose Win systems/apps |                     | Windows  |
-| **Shellcode analysis**       |                                                    |                     |          |
-| [convertshellcode](https://gitlab.com/CinCan/tools/tree/master/convertshellcode)         | Shellcode disassembler                             | shellcode           | Windows  |
-| **Document analysis**        |                                                    |                     |          |
-| [officemalscanner](https://gitlab.com/CinCan/tools/tree/master/officemalscanner)         | Scan MS Office files for malicious traces          | DOC, XLS, PPT       | Windows  |
-| [oledump-win](https://gitlab.com/CinCan/tools/tree/master/oledump-win)                  | Analyze MS Office (OLE) files                      | DOC, XLS, PPT       | Windows  | 
-| [pdf-parser](https://gitlab.com/CinCan/tools/tree/master/pdf-parser)               | Parse PDF to identify the fundamental elements     | PDF                 | Windows  |
-| [pdf-stream-dumper](https://gitlab.com/CinCan/tools/tree/master/pdf-stream-dumper)        | Analyze PDF documents                              | PDF                 | Windows  |
-
-
+| Tool name | Description | Input               | Platform |
+|-----------|-------------|---------------------|----------|
+| sysinternals |   |  | Windows |
+| processhacker |   |  | Windows |
+| pestudio |   |  | Windows |
+| pdf-stream-dumper |   |  | Windows |
+| oledump-win |   |  | Windows |
+| officemalscanner |   |  | Windows |
+| jakstab |   |  | Windows |
+| convertshellcode |   |  | Windows |
+| binskim |   |  | Windows |
