@@ -129,50 +129,60 @@ README should describe shortly:
 
 | Tool name | Description | Input               | Platform |
 |-----------|-------------|---------------------|----------|
-| xmldump |   Parse XML files. | XML  | Linux |
-| twiggy |   Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
+| pastelyzer |   the paste analyzer | text  | Linux |
 | shellcode2exe |   Convert shellcodes into executable files, for multiple platforms. | shellcode  | Linux |
-| rtfobj |   A Python module to detect and extract embedded objects stored in RTF files, such as OLE objects. | .rtf  | Linux |
-| volatility |   Volatility |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | sleuthkit |   Open Source Digital Forensics | raw, ewf, vmdk, vhd  | Linux |
+| vba2graph |   Generate call graphs from VBA code | office documents such as .doc, .xls, .bas  | Linux |
+| r2-bin-carver |   R2 bin carver | memory dumps  | Linux |
+| feature_extractor |   Feature_extractor | list of possible IoCs  | Linux |
+| trufflehog |   TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
+| keyfinder |   Keyfinder | filesystem, APK  | Linux |
+| osslsigncode |   osslsigncode | exe/sys/dll  | Linux |
+| headless-thunderbird |   Headless Thunderbird to screenshot email messages | eml  | Linux |
+| eml_parser |   Library to parse .eml files | eml  | Linux |
+| output-standardizer |   Output-standardizer | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs  | Linux |
+| binwalk |   Firmware Analysis Tool | binary  | Linux |
+| binary-analysis-tool-bat |   Binary Analysis Tool BAT with extra tools | binary  | Linux |
+| access-log-visualization |   Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
+| xmldump |   Parse XML files. | XML  | Linux |
+| zsteg |   detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
+| pe-scanner |   Get information of a PE (portable executable) file | PE/EXE/DLL  | Linux |
 | manalyze |   Manalyze | PE files  | Linux |
 | python-extract-code |   Extract code | PE  | Linux |
 | peframe |   PEframe | PE  | Linux |
-| jsunpack-n |   | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | ioc_parser |   A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
+| pyocr |   Optical character recognition (OCR) wrapper for Tesseract OCR engine | PDF, png, jpg  | Linux |
+| jsunpack-n |   | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | pdfexaminer |   PDFExaminer | PDF files  | Linux |
 | peepdf |   Powerful Python tool to analyze PDF documents. | PDF  | Linux |
 | pdfxray-lite |   Analyze PDF files | PDF  | Linux |
-| pdf-parser |   PDF-parser | PDF  | Linux |
 | pdfid |   PDFID | PDF  | Linux |
+| pdf-parser |   PDF-parser | PDF  | Linux |
 | tshark |   A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
-| vba2graph |   Generate call graphs from VBA code | office documents such as .doc, .xls, .bas  | Linux |
-| ilspy |   ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
-| r2-bin-carver |   R2 bin carver | memory dumps  | Linux |
 | floss |   FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
-| feature_extractor |   Feature_extractor | list of possible IoCs  | Linux |
-| jd-cmd |   The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| steghide |   A Steganography program that is able to hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
 | pywhois |   Pywhois | IP / list of IPs  | Linux |
-| trufflehog |   TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
-| keyfinder |   Keyfinder | filesystem, APK  | Linux |
 | ioc_strings |   IOC strings | File/Directory  | Linux |
 | iocextract |   Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
 | pdf2john |   John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
+| radare2 |   radare2 - version 4.2.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
 | snowman-decompile |   Snowman-decompile | ELF Mach-O PE LE  | Linux |
-| radare2 |   radare2 - version 4.0.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
-| oledump |   A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
-| oletools |   Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
-| output-standardizer |   Output-standardizer | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs  | Linux |
 | flawfinder |   Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
-| binwalk |   Firmware Analysis Tool | binary  | Linux |
-| binary-analysis-tool-bat |   Binary Analysis Tool BAT with extra tools | binary  | Linux |
-| apktool |   A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
-| dex2jar |   Tool to decompile dex files to jar | APK file  | Linux |
-| jadx |   Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
 | ghidra-decompiler |   Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
 | clamav |   ClamAV virus scanner:  Release 0.102.0 | Any file or directory.  | Linux |
 | radamsa |   A Tool for parsing PCAP and capturing network traffic. | Any data  | Linux |
-| access-log-visualization |   Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
+| dex2jar |   Tool to decompile dex files to jar | APK file  | Linux |
+| twiggy |   Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
+| rtfobj |   A Python module to detect and extract embedded objects stored in RTF files, such as OLE objects. | .rtf  | Linux |
+| jd-cmd |   The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| oledump |   A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
+| oletools |   Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
+| apktool |   A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
+| jadx |   Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
+| ilspy |   ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
+| ssdeep |   Ssdeep | *  | Linux |
+| ssdc |   Ssdeep based clustering tool | *  | Linux |
+| volatility |   Volatility |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | virustotal |   Analyze suspicious files and URLs to detect types of malware |  | Linux |
 | test2tool |   |  | Linux |
 | sysanalyzer |   Input |  | Linux |
@@ -180,14 +190,13 @@ README should describe shortly:
 | scrape-website |   |  | Linux |
 | s3-resource-simple |   Simple S3 Resource for [Concourse CI](http://concourse.ci) |  | Linux |
 | regshot |   |  | Linux |
-| pe-scanner |   TBA |  | Linux |
 | pdf-tools |   The DidierStevensSuite by Didier Stevens |  | Linux |
 | identify-file |   Identify-file |  | Linux |
 | hyperscan |   High-performance regular expression matching library |  | Linux |
 | dns-tools |   |  | Linux |
+| capture-bat |   |  | Linux |
 | c-worker |   Concourse Worker |  | Linux |
 | c-ci |   Concourse CI |  | Linux |
-| capture-bat |   |  | Linux |
 | add2git-lfs |   ADD2GIT-LFS |  | Linux |
 ### Windows tools
 
