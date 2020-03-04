@@ -21,11 +21,11 @@ find . -mindepth 1 -maxdepth 1 -type d 2>/dev/null |while read -r output; do
 		fi
 
 		# Sort tools by OS
-		if grep -q "windowsservercore" "$TOOL_NAME/Dockerfile"
+		if grep -q "windowsservercore\|windows/servercore" "$TOOL_NAME/Dockerfile"
 		then
-			echo "| $TOOL_NAME |  $DESCRIPTION | $INPUTS | Windows |" >> temp-windows.md
+			echo "| [$TOOL_NAME](https://gitlab.com/CinCan/tools/-/tree/master/$TOOL_NAME) | $DESCRIPTION | $INPUTS | Windows |" >> temp-windows.md
 		else
-			echo "| $TOOL_NAME |  $DESCRIPTION | $INPUTS | Linux |" >> temp-linux.md
+			echo "| [$TOOL_NAME](https://gitlab.com/CinCan/tools/-/tree/master/$TOOL_NAME) | $DESCRIPTION | $INPUTS | Linux |" >> temp-linux.md
 		fi
 	fi
 done

@@ -1,5 +1,7 @@
 
-# Emulates browser functionality when visiting an URL. Detects browser exploits, scans PDF.
+# Jsunpack-n
+
+Emulates browser functionality when visiting an URL. Detects browser exploits, scans PDF.
 
 ## Input
 
@@ -10,7 +12,7 @@ PDF, URL, PCAP, JavaScript, SWF
 ## Output
 
 ```
-jsunpack-n report
+report, shellcode/other suspicious content
 ```
 
 ## Supported tags and respective `Dockerfile` links
