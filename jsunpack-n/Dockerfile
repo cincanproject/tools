@@ -9,21 +9,21 @@ LABEL MAINTAINER=cincan.io
 ENV VERSION="0.3.2c (beta)"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc=4:4.9.2-2 \
-    g++=4:4.9.2-2 \
-    make=4.0-8.1 \
-    git=1:2.1.4-2.1+deb8u7 \
-    ca-certificates=20141019+deb8u4 \
-    python=2.7.9-1 \
-    python-dev=2.7.9-1 \
-    libpcap-dev=1.6.2-2+deb8u1 \
-    pkg-config=0.28-1 \
-    libgtk2.0-dev=2.24.25-3+deb8u2 \
-    libnet1-dev=1.1.6+dfsg-3 \
-    libpcre3=2:8.35-3.3+deb8u4 \
-    python-pygraphviz=1.3~rc2-1 \
-    libboost-dev=1.55.0.2 \
-    wget=1.16-1+deb8u6 \
+    gcc \
+    g++ \
+    make \
+    git \
+    ca-certificates \
+    python \
+    python-dev \
+    libpcap-dev \
+    pkg-config \
+    libgtk2.0-dev \
+    libnet1-dev \
+    libpcre3 \
+    python-pygraphviz \
+    libboost-dev \
+    wget \
     && rm -rf /var/lib/apt/lists/* \
     && git clone https://github.com/urule99/jsunpack-n.git
 
@@ -71,18 +71,18 @@ RUN sed -i 's/use_boost = True/use_boost = False/g' config_linux2.py \
     && python setup.py build \
     && python setup.py install
 
-FROM debian:8-slim AS production
+FROM debian:10-slim AS production
 
 COPY --from=builder /jsunpack-n /jsunpack-n
 COPY --from=builder /etc/ld.* /etc/
 COPY --from=builder /usr/local /usr/local
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python-magic=1:5.22+15-2+deb8u7 \ 
-        python=2.7.9-1 \
-        libpcap-dev=1.6.2-2+deb8u1 \
-        libgtk2.0-dev=2.24.25-3+deb8u2 \
-        libnet1-dev=1.1.6+dfsg-3 \
+        python-magic \ 
+        python \
+        libpcap-dev \
+        libgtk2.0-dev \
+        libnet1-dev \
         && rm -rf /var/lib/apt/lists/* \
         && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
         && chown -R appuser:appuser /jsunpack-n \
