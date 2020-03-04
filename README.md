@@ -152,7 +152,7 @@ README should describe shortly:
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/peframe) |  PEframe | PE  | Linux |
 | [ioc_parser](https://gitlab.com/CinCan/tools/-/tree/master/ioc_parser) |  A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
 | [pyocr](https://gitlab.com/CinCan/tools/-/tree/master/pyocr) |  Optical character recognition (OCR) wrapper for Tesseract OCR engine | PDF, png, jpg  | Linux |
-| [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/jsunpack-n) |  | PDF, URL, PCAP, JavaScript, SWF  | Linux |
+| [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/jsunpack-n) |  Jsunpack-n | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/pdfexaminer) |  PDFExaminer | PDF files  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
 | [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/pdfxray-lite) |  Analyze PDF files | PDF  | Linux |
