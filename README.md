@@ -174,6 +174,7 @@ README should describe shortly:
 | [dex2jar](https://gitlab.com/CinCan/tools/-/tree/master/dex2jar) |  Tool to decompile dex files to jar | APK file  | Linux |
 | [twiggy](https://gitlab.com/CinCan/tools/-/tree/master/twiggy) |  Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
 | [rtfobj](https://gitlab.com/CinCan/tools/-/tree/master/rtfobj) |  A Python module to detect and extract embedded objects stored in RTF files, such as OLE objects. | .rtf  | Linux |
+| [fernflower](https://gitlab.com/CinCan/tools/-/tree/master/fernflower) |  Analytical decompiler for Java | .jar, .class, .zip  | Linux |
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
 | [oletools](https://gitlab.com/CinCan/tools/-/tree/master/oletools) |  Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
