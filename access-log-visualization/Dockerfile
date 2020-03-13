@@ -8,15 +8,15 @@ ENV VERSION=1.0.0
 
 ENV ACCESS_LOG_PATH=/home/appuser
 
-RUN apt-get update && apt install -y \
-	python3.7=3.7.3-2 \
-	python3-pip=18.1-5
+RUN apt-get update && apt-get install -y \
+	python3.7 \
+	python3-pip
 
-RUN pip3 install pandas==0.24.2 \
-	jupyter==1.0.0 \ 
-	plotly==3.10.0 \
-	apache-log-parser==1.7.0 \
-	tqdm==4.32.2 \
+RUN pip3 install pandas \
+	jupyter \ 
+	plotly \
+	apache-log-parser \
+	tqdm \
 	&& adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
 COPY scripts/access-log.ipynb scripts/entrypoint.py scripts/testing.ipynb /home/appuser/

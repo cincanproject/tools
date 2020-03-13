@@ -1,7 +1,7 @@
-FROM alpine:3.10
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
-ENV VERSION=3.0.4-r0
+ENV VERSION=3.0.9-r0
 
 RUN apk update && apk add --no-cache tshark=${VERSION}
 

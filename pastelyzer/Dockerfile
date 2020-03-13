@@ -3,22 +3,16 @@ FROM debian:10-slim as build
 LABEL MAINTAINER=cincan.io
 
 ENV DEBIAN_FRONTEND=noninteractive
-env VERSION=002a853a0fdd79a15c05eb8d31d73dd5ff12f67d
+ENV VERSION 0.8.1-beta
+ENV PASTELYZER_SHA256 05d259b9dbdbfdbc8366a62be8bdaa840cd641a0b2e0cc4544db73eee2ce5737
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    ca-certificates build-essential curl git libssl-dev libzmq5-dev sbcl
+    apt-get install -y --no-install-recommends ca-certificates \
+    curl sbcl
 
-RUN curl -O https://beta.quicklisp.org/quicklisp.lisp && \
-    sbcl --load quicklisp.lisp \
-       --eval '(quicklisp-quickstart:install)' \
-       --quit
-
-RUN git clone --recurse-submodules --depth=1 https://github.com/cert-lv/pastelyzer.git && \
-    cd pastelyzer && \
-    git checkout $VERSION && \
-    bin/build.sh load-deps && \
-    bin/build.sh
+RUN curl -LO https://github.com/cert-lv/pastelyzer/releases/download/rel-0.8.1-beta/pastelyzer-"${VERSION}".tgz && \
+    echo "$PASTELYZER_SHA256 pastelyzer-${VERSION}.tgz" | sha256sum -c -  && \
+    tar -xvzf pastelyzer-${VERSION}.tgz 
 
 FROM debian:10-slim as env
 
