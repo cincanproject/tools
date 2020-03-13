@@ -1,4 +1,5 @@
 # Radare2 creates command history into user directory, not bringing it to host when using cincan-command
+# Ignore file supports wildcharacter *, but we are explicitly ignoring
 .cache
 # Ignore possible changes in r2pm etc.
 .local

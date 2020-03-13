@@ -1,21 +1,24 @@
-FROM alpine:3.10.3
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
-ENV VERSION=6.0.3
+
+# Commit after 6.0.3 release
+ENV VERSION=f7d75aa2b2d39ef76e928808598d53e922bdeae5
 
 RUN apk update && apk add --no-cache \
-	git=2.22.2-r0 \
-	libssl1.1=1.1.1d-r0 \
-	python3=3.7.5-r1 \
-	swig=3.0.12-r4 \
-	g++=8.3.0-r0 \
-	make=4.2.1-r2 \
-	openssl-dev=1.1.1d-r0 \
-	python3-dev=3.7.5-r1 \
-	libffi-dev=3.2.1-r6 \
-	libmagic=5.37-r1 \
-	&& git clone --branch $VERSION --depth=1 https://github.com/guelfoweb/peframe.git \
+	git \
+	libssl1.1 \
+	python3 \
+	swig \
+	g++ \
+	make \
+	openssl-dev \
+	python3-dev \
+	libffi-dev \
+	libmagic \
+	&& git clone https://github.com/guelfoweb/peframe.git \
 	&& cd peframe \
+	&& git checkout "${VERSION}" \
 	&& chmod +x install.sh \
 	&& sh install.sh \
 	&& python3 setup.py install \

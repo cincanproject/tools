@@ -17,7 +17,7 @@ def test_with_pdf():
     for line in out.splitlines():
         m = re.match(pattern, line)
         if m is not None:
-            print("X: {}({})".format(m.group(1), m.group(2)))
+            # print("X: {}({})".format(m.group(1), m.group(2)))
             values[m.group(1)] = m.group(2)
     title = bytearray.fromhex(values['/Title'][5:][:-1].replace('00','').lower()).decode()
     assert title == "CinCan"

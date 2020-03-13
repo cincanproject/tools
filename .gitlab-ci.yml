@@ -1,11 +1,23 @@
-image: docker:git
+image: docker:stable
 
 services:
   - docker:dind
 
 before_script:
-  - apk add grep
+  - apk add grep python3 git
+  - pip3 install pip --upgrade && pip3 install pytest && pip3 install .
   - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script:
+    - pytest
+  only:
+    - master
 
 build:
   stage: build
@@ -28,7 +40,7 @@ build-list-update:
   only:
     - master
   before_script:
-    - eval $(ssh-agent -s)
+    - eval "$(ssh-agent -s)"
     - echo "$GIT_SSH_PRIV_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
