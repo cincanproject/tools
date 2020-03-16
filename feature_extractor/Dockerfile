@@ -14,6 +14,6 @@ RUN apt update && apt install -y \
 
 USER appuser
 
-WORKDIR /wp1/feature_extractor/
+WORKDIR /home/appuser
 
-ENTRYPOINT ["/usr/local/bin/python","analyze_parallel.py"]
+ENTRYPOINT ["/usr/local/bin/python","/wp1/feature_extractor/analyze_parallel.py","--confpath", "/wp1/feature_extractor"]
