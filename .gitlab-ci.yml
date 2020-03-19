@@ -22,7 +22,7 @@ test:
 build:
   stage: build
   script:
-    - sh detect_and_build.sh
+    - TAG=latest-stable sh detect_and_build.sh
   only:
     - master
 
