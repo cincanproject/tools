@@ -1,8 +1,10 @@
-FROM debian:9-slim
+FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
 
-RUN apt update && apt-get install -y --no-install-recommends \
+ENV VERSION eb636a0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
         libboost-regex-dev \
         libboost-program-options-dev \
         libboost-system-dev \
@@ -17,10 +19,12 @@ RUN apt update && apt-get install -y --no-install-recommends \
     && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
 WORKDIR /Manalyze
-RUN cmake . && make
+RUN git checkout "${VERSION}" && cmake . && make
 ENV PATH="/Manalyze/bin:${PATH}"
 
 USER appuser
+
+WORKDIR /home/appuser
 
 ENTRYPOINT ["manalyze"]
 CMD ["--help"]

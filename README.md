@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.com/CinCan/tools/badges/master/pipeline.svg)](https://gitlab.com/CinCan/tools/commits/master)
+
 ## Dockerfiles for the CinCan project
 
 This repository will automatically build and publish docker images to Docker Hub using GitLab-CI.
