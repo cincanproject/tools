@@ -1,4 +1,4 @@
-# radare2 - version 4.2.0
+# Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.3.1
 
 Radare2 is complete unix-like framework for reverse engineering and binary analysis. It is built around command line tools, but there is also graphical user interface [Cutter](https://cutter.re/) built around it.
 It is a rewrite from scratch from original radare.

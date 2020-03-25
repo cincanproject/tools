@@ -2,8 +2,11 @@ FROM alpine:edge AS builder
 
 MAINTAINER cincan.io
 
-ENV VERSION 4.2.0
-ENV radare2_SHA256 cdff5eed2a495b85a3b3325f59914cfb8b360614115438d31fed9ae021dd3a98 
+ENV TOOL_VERSION 4.3.1
+ENV radare2_SHA256 3dcce822c1af50a576fec9bd5a2bd1ba9fcf86c3cc7fb5b897ab7ab1e10e9b5d
+
+# Temporal fix,  currently the latest commit is not compatible with any radare2 release
+ENV R2_GHIDRA_DEC_VERSION=1ff56278440bfcf7a1f481aeb91feb6a8dc51613
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -42,23 +45,33 @@ RUN mkdir "$SOURCE_ROOT" \
 
 USER appuser
 
-RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$VERSION.zip" \
+RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$TOOL_VERSION.zip" \
     && echo "$radare2_SHA256"  \
     && sha256sum "$SOURCE_ROOT"/radare2.zip \
     && echo "$radare2_SHA256  $SOURCE_ROOT/radare2.zip" | sha256sum -c - \
     && unzip "$SOURCE_ROOT"/radare2.zip -d "$SOURCE_ROOT"
 
-RUN cd "$SOURCE_ROOT/radare2-$VERSION/sys" && \
+RUN cd "$SOURCE_ROOT/radare2-$TOOL_VERSION/sys" && \
     meson --prefix="$INSTALL_PREFIX" && \
     ninja && \
     ninja install && \
     ln -s "$INSTALL_PREFIX/bin/radare2" "$INSTALL_PREFIX/bin/r2"
 
+RUN git clone  https://github.com/radareorg/r2ghidra-dec.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec  && \
+    cd ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
+    git checkout "${R2_GHIDRA_DEC_VERSION}" && \
+    git submodule init && \
+    git submodule update && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=~/.local .. && \
+    make && \
+    make install
+
 RUN r2pm init && \
     r2pm update && \
-    r2pm -i r2ghidra-dec && \
+    # r2pm -i r2ghidra-dec && \
     r2pm cache && \
-    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git && \
+    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec && \
     # Disable r2agent - no use in container
     rm /usr/local/bin/r2agent
 
@@ -84,6 +97,8 @@ RUN apk add --no-cache libstdc++ && \
 
 COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
 COPY --from=builder /home/appuser/ /home/appuser/
+
+ENV TOOL_VERSION=4.3.1
 
 USER appuser
 
