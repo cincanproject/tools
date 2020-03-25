@@ -1,6 +1,6 @@
 FROM debian:10-slim as build
 
-ENV REGRIPPER_VERSION=ee874d5245fb4f26147c29dc1db02b8e68a88698
+ENV TOOL_VERSION=ee874d5245fb4f26147c29dc1db02b8e68a88698
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -17,6 +17,8 @@ RUN git clone --depth=1 https://github.com/keydet89/RegRipper2.8.git /regripper 
     && sed -i 's_("plugins");_("/regripper/plugins");_' rip.pl
 
 FROM debian:10-slim as env
+
+ENV TOOL_VERSION=ee874d5245fb4f26147c29dc1db02b8e68a88698
 
 ENV PERL5LIB=/regripper
 COPY --from=build /regripper/rip.pl /regripper/

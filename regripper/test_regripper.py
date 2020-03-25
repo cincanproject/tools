@@ -20,7 +20,7 @@ def test_samparse_plugin(sam_hive):
     tool = dockertools.tool_with_file(__file__)
     tool.output_dirs = [sam_hive.relative_to(os.getcwd())]
     out = tool.run_get_string(["-r", str(sam_hive), "-p", "samparse"])
-    assert out.startswith("Launching samparse")
+    assert out.startswith("samparse v.20160203")
     assert "S-1-5-21-3583694148-1414552638-2922671848-500" in out
     assert "S-1-5-21-3583694148-1414552638-2922671848-501" in out
     assert "S-1-5-21-3583694148-1414552638-2922671848-1000" in out
