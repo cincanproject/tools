@@ -147,6 +147,7 @@ README should describe shortly:
 | [binary-analysis-tool-bat](https://gitlab.com/CinCan/tools/-/tree/master/binary-analysis-tool-bat) |  Binary Analysis Tool BAT with extra tools | binary  | Linux |
 | [access-log-visualization](https://gitlab.com/CinCan/tools/-/tree/master/access-log-visualization) |  Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
 | [xmldump](https://gitlab.com/CinCan/tools/-/tree/master/xmldump) |  Parse XML files. | XML  | Linux |
+| [regripper](https://gitlab.com/CinCan/tools/-/tree/master/regripper) |  Extract data from Windows registry | Windows registry hive files  | Linux |
 | [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
 | [pe-scanner](https://gitlab.com/CinCan/tools/-/tree/master/pe-scanner) |  Get information of a PE (portable executable) file | PE/EXE/DLL  | Linux |
 | [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/manalyze) |  Manalyze | PE files  | Linux |
@@ -167,7 +168,7 @@ README should describe shortly:
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/ioc_strings) |  IOC strings | File/Directory  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
-| [radare2](https://gitlab.com/CinCan/tools/-/tree/master/radare2) |  radare2 - version 4.2.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
+| [radare2](https://gitlab.com/CinCan/tools/-/tree/master/radare2) |  Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.3.1 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
 | [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/snowman-decompile) |  Snowman-decompile | ELF Mach-O PE LE  | Linux |
 | [flawfinder](https://gitlab.com/CinCan/tools/-/tree/master/flawfinder) |  Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/ghidra-decompiler) |  Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
