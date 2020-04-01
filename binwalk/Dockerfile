@@ -1,7 +1,10 @@
+ARG tool_version=2.1.2~git20180830
+
 FROM debian:10-slim as build
 
 LABEL MAINTAINER=cincan.io
-ENV VERSION=2.1.2~git20180830
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get -y install --no-install-recommends \

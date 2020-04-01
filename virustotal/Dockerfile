@@ -13,8 +13,11 @@
 # [options]
 # [--send, -s] Sends file or url to be analyzed if existing report doesn't exist
 # [--verbose, -v] Sets verbosity to high
+ARG tool_version=1.0
 
 FROM python:3.6-alpine
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 LABEL MAINTAINER=cincan.io
 

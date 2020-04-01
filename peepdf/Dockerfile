@@ -1,11 +1,13 @@
 
 # docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf
+ARG tool_version="0.3 r275"
 
 FROM debian:8-slim AS builder
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION="0.3 r275"
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && apt-get install -y \
 	python \
@@ -26,8 +28,10 @@ RUN git checkout b5b04074ab901896e310cbc444dd542c06edd58c \
 WORKDIR /peepdf
 RUN git checkout c74dc65c0ac7e506bae4f2582a2435ec50741f40
 
-
 FROM debian:10-slim
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 COPY --from=builder /usr/local /usr/local
 COPY --from=builder /peepdf /peepdf

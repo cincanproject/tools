@@ -1,11 +1,14 @@
+ARG tool_version=2.0-1
+
 FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=2.0-1
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt update && apt install -y \
-        osslsigncode=$VERSION \
+        osslsigncode=$TOOL_VERSION \
         && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 
 USER appuser

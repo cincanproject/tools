@@ -1,22 +1,25 @@
 # A Program to analyse OLE files.
+ARG tool_version=0_0_48
 
-FROM alpine:3.9
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=0_0_44
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+ENV HASH=0e66e3ea42d5761301e0643a27d892b3c4531ccc2e4c95373ece9b7ad7e6dac6
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
-	py-setuptools=40.6.3-r0 \
-	py2-pip=18.1-r0 \
-	jq=1.6-r0 \
-	git=2.20.2-r0 \
-	unzip=6.0-r4 \
-	&& wget https://didierstevens.com/files/software/oledump_V$VERSION.zip \
-	&& echo "1a9c951e95e2fe0fdf3a3dc8e331205bc65c617953f0e30ed3e6ac045f4dd0c0  oledump_V$VERSION.zip" | sha256sum -c \
-	&& unzip oledump_V$VERSION.zip -d /oledump \
-	&& rm oledump_V$VERSION.zip \
+	py-setuptools \
+	py2-pip \
+	jq \
+	git \
+	unzip \
+	&& wget https://didierstevens.com/files/software/oledump_V$TOOL_VERSION.zip \
+	&& echo "$HASH  oledump_V$TOOL_VERSION.zip" | sha256sum -c \
+	&& unzip oledump_V$TOOL_VERSION.zip -d /oledump \
+	&& rm oledump_V$TOOL_VERSION.zip \
 	&& pip install olefile==0.46 \
 	&& adduser -s /sbin/login -D appuser \
 	&& chown -R appuser:appuser /oledump

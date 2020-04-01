@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y \
 	ssdeep \
 	libfuzzy-dev \
 	&& pip install pydeep \
-    && curl -OL --fail https://github.com/bwall/ssdc/archive/"v${VERSION}.zip"  \
-    && echo "$SSDC_SHA256 *v${VERSION}.zip" | sha256sum -c - \
-	&& unzip "v${VERSION}.zip" && cd "ssdc-${VERSION}" \
+    && curl -OL --fail https://github.com/bwall/ssdc/archive/"v${TOOL_VERSION}.zip"  \
+    && echo "$SSDC_SHA256 *v${TOOL_VERSION}.zip" | sha256sum -c - \
+	&& unzip "v${TOOL_VERSION}.zip" && cd "ssdc-${TOOL_VERSION}" \
 	&& python setup.py build \
 	&& python setup.py install \
 	&& adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
-	&& chown -R appuser:appuser "/ssdc-${VERSION}" \
+	&& chown -R appuser:appuser "/ssdc-${TOOL_VERSION}" \
 	&& apt-get purge curl unzip python-pip \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/* || true

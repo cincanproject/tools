@@ -1,4 +1,9 @@
+ARG tool_version=0.7.2
+
 FROM debian:10-slim as build
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -6,16 +11,19 @@ RUN apt-get update && \
         python3-wheel \
         python3-setuptools && \
     \
-    pip3 install --user pyocr Pillow wand opencv-python numpy
+    pip3 install --user pyocr==$TOOL_VERSION Pillow wand opencv-python numpy
 
 FROM debian:10-slim as env
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
         python3 \
         libmagickwand-dev \
         ghostscript \
-        tesseract-ocr \
+        tesseract-ocr=4.0.0-2 \
         tesseract-ocr-fin && \
     rm -rf /var/lib/apt/lists/*
 

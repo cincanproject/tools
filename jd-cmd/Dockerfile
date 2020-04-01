@@ -1,12 +1,15 @@
-FROM alpine:3.7 as build
+ARG tool_version=1.0.1.Final
+
+FROM alpine:3.11 as build
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=1.0.1.Final
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 ENV SHA256=767013796e7696854ff8b1ed0a9d4c12e4bed941be0c23537c7a2cadc5022340
 
 RUN apk add --no-cache wget unzip && \
-    wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$VERSION/jd-cli-$VERSION-dist.zip" && \
+    wget -q -O "jd-cmd.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$TOOL_VERSION/jd-cli-$TOOL_VERSION-dist.zip" && \
     echo "$SHA256  jd-cmd.zip" | sha256sum -c && \
     unzip -q "jd-cmd.zip" -d . && \
     chmod +x "jd-cli"

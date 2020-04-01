@@ -1,6 +1,11 @@
-FROM alpine:3.10.1
+ARG tool_version=7a0493c9724a6c4ee5bd188beb0f813494e379c8
+
+FROM alpine:3.11
 
 LABEL MAINTAINER=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apk --update --no-cache \
 	add python=2.7.16-r1 \
@@ -20,7 +25,7 @@ RUN apk --update --no-cache \
 
 WORKDIR /Vba2Graph
 
-RUN git checkout 7a0493c9724a6c4ee5bd188beb0f813494e379c8 \
+RUN git checkout -b tool $TOOL_VERSION \
 	&& pip install -U oletools==0.54.1 -r requirements.txt \
 	&& adduser -s /sbin/login -D appuser
 
