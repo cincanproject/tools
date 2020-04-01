@@ -186,7 +186,7 @@ README should describe shortly:
 | [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/snowman-decompile) |  Snowman-decompile | ELF Mach-O PE LE  | Linux |
 | [flawfinder](https://gitlab.com/CinCan/tools/-/tree/master/flawfinder) |  Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/ghidra-decompiler) |  Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
-| [clamav](https://gitlab.com/CinCan/tools/-/tree/master/clamav) |  ClamAV virus scanner:  Release 0.102.0 | Any file or directory.  | Linux |
+| [clamav](https://gitlab.com/CinCan/tools/-/tree/master/clamav) |  ClamAV virus scanner:  Release 0.102.2 | Any file or directory.  | Linux |
 | [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/radamsa) |  A Tool for parsing PCAP and capturing network traffic. | Any data  | Linux |
 | [dex2jar](https://gitlab.com/CinCan/tools/-/tree/master/dex2jar) |  Tool to decompile dex files to jar | APK file  | Linux |
 | [twiggy](https://gitlab.com/CinCan/tools/-/tree/master/twiggy) |  Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
