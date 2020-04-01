@@ -1,26 +1,29 @@
 # Modified from https://github.com/blacktop/docker-ghidra
+ARG tool_version=ghidra_9.1.2_PUBLIC_20200212
+
 FROM openjdk:11-jdk-slim as build
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION 9.1_PUBLIC
-ENV GHIDRA_SHA256 29d130dfe85da6ec45dfbf68a344506a8fdcc7cfe7f64a3e7ffb210052d1875e 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+ENV GHIDRA_SHA256 ebe3fa4e1afd7d97650990b27777bb78bd0427e8e70c1d0ee042aeb52decac61
 
 RUN apt-get update && apt-get install -y wget ca-certificates unzip --no-install-recommends \
-    && wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/ghidra_9.1_PUBLIC_20191023.zip \
+    && wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/$TOOL_VERSION.zip \
     && echo "$GHIDRA_SHA256 /tmp/ghidra.zip" | sha256sum -c - \
     && unzip /tmp/ghidra.zip \
-    && mv ghidra_${VERSION} /ghidra \
+    && mv $(echo ${TOOL_VERSION} | cut -f1-3 -d"_") /ghidra \
     && chmod +x /ghidra/ghidraRun  \
-    # && rm -rf /ghidra/docs /ghidra/Extensions/Eclipse /ghidra/licenses
-#    && echo "===> Clean up unnecessary files..." \
-#    && apt-get purge -y --auto-remove wget \
-   && apt-get clean \
-   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/* /ghidra/docs /ghidra/Extensions/Eclipse /ghidra/licenses
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/* /ghidra/docs /ghidra/Extensions/Eclipse /ghidra/licenses
 
 
 # Make multi-stage build, use jre instead of jdk here, wit h Eclipse OpenJ9
 FROM adoptopenjdk:11-jdk-openj9-bionic as runtime
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 WORKDIR /ghidra
 

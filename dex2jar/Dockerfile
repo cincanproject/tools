@@ -2,14 +2,15 @@
 
 #Example command to use dex2jar tool with docker
 #docker run --rm -v `pwd`:/samples dex2jar path/to/your/.apk
-
+ARG tool_version=2.1
 #Base image
 FROM openjdk:8-jre-alpine
 
+ARG tool_version
 LABEL MAINTAINER=cincan.io
 
 #Define apktool version
-ENV VERSION=2.1
+ENV TOOL_VERSION=${tool_version}
 #add needed tools
 RUN apk add --no-cache wget unzip
 
@@ -30,7 +31,7 @@ WORKDIR /home/appuser
 #WORKDIR /usr/local/bin
 
 #Download dex2jar tool, unzip it and give it right permissions
-RUN wget -q -O "dex-tools.zip" "https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-$VERSION-SNAPSHOT.zip"
+RUN wget -q -O "dex-tools.zip" "https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-$TOOL_VERSION-SNAPSHOT.zip"
 RUN unzip -q "dex-tools.zip" -d .
 RUN chmod +x ./dex-tools-2.1-SNAPSHOT/d2j-dex2jar.sh
 

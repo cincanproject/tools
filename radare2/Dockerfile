@@ -1,8 +1,12 @@
+ARG tool_version=4.3.1
+
 FROM alpine:edge AS builder
 
 MAINTAINER cincan.io
 
-ENV TOOL_VERSION 4.3.1
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
 ENV radare2_SHA256 3dcce822c1af50a576fec9bd5a2bd1ba9fcf86c3cc7fb5b897ab7ab1e10e9b5d
 
 # Temporal fix,  currently the latest commit is not compatible with any radare2 release
@@ -78,6 +82,9 @@ RUN r2pm init && \
 # SECOND STAGE
 
 FROM alpine:latest AS runner
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 ENV INSTALL_PREFIX /usr/local
 ENV SOURCE_ROOT /radare2

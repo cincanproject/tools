@@ -17,13 +17,27 @@ Label for maintainer should be added:
 
 `LABEL MAINTAINER=cincan.io`
 
-Each tool should use `ENV` for describing version number of the tool, and use it for installation, if possible. Variable name must be `VERSION`
- * This gives a way for reading version information of the tool from every container, just by checking VERSION environment variable.
- * Dockerfiles can be automatically parsed for documentation, and VERSION information can be acquired in this way.
+Each tool should use `ENV` for describing version number of the tool, and use it for installation, if possible. Variable name must be `TOOL_VERSION`
+ * This gives a way for reading version information of the tool from every container, just by checking TOOL_VERSION environment variable.
+ * Dockerfiles can be automatically parsed for documentation, and TOOL_VERSION information can be acquired in this way.
+ * From Docker Registry API, manifest can be parsed and version information of the tool can be acquired in this way.
 
-e.g. `ENV VERSION=1.0` or `ENV VERSION 1.0`
 
-Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
+To make automatic building attempt for different versions possible, we should use global ARG for defining version variable into actual ENV variable. This helps as well, when defining version variable into last stage in multi-stage builds. (manifest is based on last stage) This makes defining less error-prone.
+
+For example: 
+```
+ARG tool_version=2.6.1
+
+FROM alpine:3.11
+LABEL maintainer=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+```
+When defining ARG before any image base, it can be used in every stage. Later, each TOOL_VERSION ENV is defined with it. There is no other way to use global variables currently.
+
+Tool itself should be latest *stable* version, and it is hopefully installed with previously mentioned TOOL_VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
 #### Specify dependency versions and base image version
 
