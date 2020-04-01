@@ -1,9 +1,12 @@
-FROM alpine:3.9
-LABEL maintainer=cinca.io
+ARG tool_version=2.6.1
 
-ENV VERSION 2.6.1
-ENV YARA_VERSION 3.10.0
-ENV YARA_PY_VERSION 3.10.0
+FROM alpine:3.11
+LABEL maintainer=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+ENV YARA_VERSION 3.11.0
+ENV YARA_PY_VERSION 3.11.0
 
 RUN apk --update --no-cache add \
     bison \
@@ -71,7 +74,7 @@ RUN apk add --no-cache -t build-dependencies \
     && python setup.py install \
     && echo "===> Installing Volatility from source..." \
     && cd /tmp/ \
-    && git clone --recursive --branch $VERSION https://github.com/volatilityfoundation/volatility.git \
+    && git clone --recursive --branch $TOOL_VERSION https://github.com/volatilityfoundation/volatility.git \
     && cd volatility \
     && python setup.py build install \
     && rm -rf /tmp/* \

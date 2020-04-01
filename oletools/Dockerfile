@@ -1,8 +1,11 @@
+ARG tool_version=0.55.1
+
 FROM python:3-alpine as build
 
 # olevba latest installation in python3
 
-ENV VERSION 0.55.1 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 LABEL MAINTAINER=cincan.io
 
@@ -13,9 +16,12 @@ RUN apk update && \
 		libffi-dev \
 		libc-dev
 
-RUN pip3 wheel --wheel-dir=/oletools oletools=="$VERSION"
+RUN pip3 wheel --wheel-dir=/oletools oletools=="$TOOL_VERSION"
 
 FROM python:3-alpine as runtime
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN addgroup -S appuser && \
 	adduser -s /sbin/nologin --disabled-password -G appuser appuser
