@@ -4,7 +4,7 @@ FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION=1.0.0
+ENV TOOL_VERSION=1.0.0
 
 ENV ACCESS_LOG_PATH=/home/appuser
 
