@@ -16,5 +16,5 @@ do
    docker build -t cincan/"$image":"$TAG" -t cincan/"$image" "$image"/.
 
    echo -e "\e[45mRunning: docker push cincan/$image:$TAG\e[49m"
-   docker push cincan/"$image":"$TAG"
+   docker push cincan/"$image"
 done
