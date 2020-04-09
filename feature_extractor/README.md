@@ -35,11 +35,15 @@ outputs of Cortex-analyzers
 
 Analyse a file in directory "/samples":  
 
-`$ docker run --rm -v /samples:/samples cincan/feature_extractor -v /samples/iocslist --confpath /samples/ --path /samples/`
+`$ docker run --rm -v /samples:/samples cincan/feature_extractor -v /samples/iocslist --path /samples/`  
 
-Analyse a list of iocs in jsonl format, open results to a browser window (using cincan-command):  
+Analyse a list of iocs in jsonl format:  
 
-`cincan run cincan/feature_extractor --confpath . --path . --injsonl jsonl_input --browser`
+`$ docker run -v $(pwd):/data cincan/feature_extractor --path /data/ --injsonl /data/jsonl_input`  
+
+Using cincan-command, open results to a browser window:  
+
+`cincan run cincan/feature_extractor --confpath . --path . --injsonl jsonl_input --browser`  
 
 
 ***Options***
