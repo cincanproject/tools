@@ -21,26 +21,25 @@ outputs of Cortex-analyzers
 
 ## Usage
 
-***1. Clone the repository***
+1. Run once to create API.json, active_analyzers -list and other configuration files:
 
-```
-git clone https://gitlab.com/CinCan/tools
-cd tools/feature_extractor/
-```
+`$ docker run -v $(pwd):/data fe --path /data/`  
 
-***2. Build OR pull the docker image*** 
+2. Edit _active_analyzers_ file to select which analyzers to use  
 
-```
-docker build . -t cincan/feature_extractor
-docker pull cincan/feature_extractor
-```
+3. Run again to add chosen analyzers to API.json:  
 
-***3. Run the docker container***
+`$ docker run -v $(pwd):/data fe --path /data/`  
 
-Analyse a file in directory "/samples":
+4. Add API keys to API.json, then run analysis:  
 
-`$ docker run --rm -v /samples:/samples cincan/feature_extractor -v /samples/iocslist`  
+Analyse a file in directory "/samples":  
 
+`$ docker run --rm -v /samples:/samples cincan/feature_extractor -v /samples/iocslist --confpath /samples/ --path /samples/`
+
+Analyse a list of iocs in jsonl format, open results to a browser window (using cincan-command):  
+
+`cincan run cincan/feature_extractor --confpath . --path . --injsonl jsonl_input --browser`
 
 
 ***Options***
@@ -49,7 +48,8 @@ usage: analyze_parallel.py [-h] [--infile INFILE] [--injsonl INJSONL]
                            [--file FILE] [--ip IP] [--domain DOMAIN]
                            [--fqdn FQDN] [--hash HASH] [--mail MAIL]
                            [--other OTHER] [--url URL] [--iocp IOCP]
-                           [--update]
+                           [--update] [--browser] [--confpath CONFPATH]
+                           [--path PATH]
 ```
 
 ## Project homepage

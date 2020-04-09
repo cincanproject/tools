@@ -1,4 +1,4 @@
-#docker run -v $(pwd):/data cincan/feature_extractor --injsonl /data/jsonl_input --path /data
+#docker run -v $(pwd):/data cincan/feature_extractor --injsonl /data/jsonl_input --path /data/
 
 FROM python:3.6-slim-buster
 
