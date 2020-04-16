@@ -1,6 +1,9 @@
 
 # docker run -v /samples:/samples cincan/peepdf /samples/sample.pdf
-ARG tool_version="0.3 r275"
+
+# NOTE, using version number without revisions, which are hard to compare
+# This should be ok, since latest update is 4 years ago
+ARG tool_version="0.3"
 
 FROM debian:8-slim AS builder
 
