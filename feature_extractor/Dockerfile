@@ -5,7 +5,7 @@ FROM python:3.6-slim-buster
 LABEL MAINTAINER=cincan.io
 
 RUN apt update && apt install -y \
-	git \
+	git=1:2.20* \
 	&& git clone https://gitlab.com/CinCan/wp1.git \
 	&& cd wp1/feature_extractor/ \
 	&& pip install -r requirements.txt \
