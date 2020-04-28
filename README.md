@@ -213,19 +213,3 @@ README should describe shortly:
 | [c-worker](https://gitlab.com/CinCan/tools/-/tree/master/c-worker) |  Concourse Worker |  | Linux |
 | [c-ci](https://gitlab.com/CinCan/tools/-/tree/master/c-ci) |  Concourse CI |  | Linux |
 | [add2git-lfs](https://gitlab.com/CinCan/tools/-/tree/master/add2git-lfs) |  ADD2GIT-LFS |  | Linux |
-### Windows tools
-
-| Tool name | Description | Input               | Platform |
-|-----------|-------------|---------------------|----------|
-| [sysinternals](https://gitlab.com/CinCan/tools/-/tree/master/sysinternals) |  |  | Windows |
-| [sysanalyzer](https://gitlab.com/CinCan/tools/-/tree/master/sysanalyzer) |  Input |  | Windows |
-| [regshot](https://gitlab.com/CinCan/tools/-/tree/master/regshot) |  |  | Windows |
-| [processhacker](https://gitlab.com/CinCan/tools/-/tree/master/processhacker) |  |  | Windows |
-| [pestudio](https://gitlab.com/CinCan/tools/-/tree/master/pestudio) |  |  | Windows |
-| [pdf-stream-dumper](https://gitlab.com/CinCan/tools/-/tree/master/pdf-stream-dumper) |  |  | Windows |
-| [oledump-win](https://gitlab.com/CinCan/tools/-/tree/master/oledump-win) |  |  | Windows |
-| [officemalscanner](https://gitlab.com/CinCan/tools/-/tree/master/officemalscanner) |  |  | Windows |
-| [jakstab](https://gitlab.com/CinCan/tools/-/tree/master/jakstab) |  |  | Windows |
-| [convertshellcode](https://gitlab.com/CinCan/tools/-/tree/master/convertshellcode) |  |  | Windows |
-| [capture-bat](https://gitlab.com/CinCan/tools/-/tree/master/capture-bat) |  |  | Windows |
-| [binskim](https://gitlab.com/CinCan/tools/-/tree/master/binskim) |  |  | Windows |
