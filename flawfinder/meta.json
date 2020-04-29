@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/david-a-wheeler/flawfinder",
+      "repository": "david-a-wheeler",
+      "tool": "flawfinder",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

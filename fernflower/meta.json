@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/JetBrains/intellij-community/",
+      "repository": "JetBrains",
+      "tool": "intellij-community",
+      "provider": "GitHub",
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

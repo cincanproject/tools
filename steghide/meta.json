@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://packages.debian.org/buster/steghide",
+      "tool": "steghide",
+      "provider": "Debian",
+      "method": "release",
+      "suite": "buster",
+      "origin": false,
+      "docker_origin": true
+    }
+  ]
+}

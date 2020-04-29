@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://gitlab.com/akihe/radamsa",
+      "repository": "akihe",
+      "tool": "radamsa",
+      "provider": "GitLab",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

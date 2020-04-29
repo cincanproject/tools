@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/sleuthkit/sleuthkit/",
+      "repository": "sleuthkit",
+      "tool": "sleuthkit",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

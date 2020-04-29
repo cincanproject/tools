@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/skylot/jadx/",
+      "repository": "skylot",
+      "tool": "jadx",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
