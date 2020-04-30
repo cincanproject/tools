@@ -190,7 +190,6 @@ README should describe shortly:
 | [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/radamsa) |  A Tool for parsing PCAP and capturing network traffic. | Any data  | Linux |
 | [dex2jar](https://gitlab.com/CinCan/tools/-/tree/master/dex2jar) |  Tool to decompile dex files to jar | APK file  | Linux |
 | [twiggy](https://gitlab.com/CinCan/tools/-/tree/master/twiggy) |  Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
-| [rtfobj](https://gitlab.com/CinCan/tools/-/tree/master/rtfobj) |  A Python module to detect and extract embedded objects stored in RTF files, such as OLE objects. | .rtf  | Linux |
 | [fernflower](https://gitlab.com/CinCan/tools/-/tree/master/fernflower) |  Analytical decompiler for Java | .jar, .class, .zip  | Linux |
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
@@ -202,7 +201,6 @@ README should describe shortly:
 | [ssdc](https://gitlab.com/CinCan/tools/-/tree/master/ssdc) |  Ssdeep based clustering tool | *  | Linux |
 | [volatility](https://gitlab.com/CinCan/tools/-/tree/master/volatility) |  Volatility |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/virustotal) |  Analyze suspicious files and URLs to detect types of malware |  | Linux |
-| [test2tool](https://gitlab.com/CinCan/tools/-/tree/master/test2tool) |  |  | Linux |
 | [suricata](https://gitlab.com/CinCan/tools/-/tree/master/suricata) |  Suricata  |  | Linux |
 | [scrape-website](https://gitlab.com/CinCan/tools/-/tree/master/scrape-website) |  |  | Linux |
 | [s3-resource-simple](https://gitlab.com/CinCan/tools/-/tree/master/s3-resource-simple) |  Simple S3 Resource for [Concourse CI](http://concourse.ci) |  | Linux |
@@ -213,19 +211,3 @@ README should describe shortly:
 | [c-worker](https://gitlab.com/CinCan/tools/-/tree/master/c-worker) |  Concourse Worker |  | Linux |
 | [c-ci](https://gitlab.com/CinCan/tools/-/tree/master/c-ci) |  Concourse CI |  | Linux |
 | [add2git-lfs](https://gitlab.com/CinCan/tools/-/tree/master/add2git-lfs) |  ADD2GIT-LFS |  | Linux |
-### Windows tools
-
-| Tool name | Description | Input               | Platform |
-|-----------|-------------|---------------------|----------|
-| [sysinternals](https://gitlab.com/CinCan/tools/-/tree/master/sysinternals) |  |  | Windows |
-| [sysanalyzer](https://gitlab.com/CinCan/tools/-/tree/master/sysanalyzer) |  Input |  | Windows |
-| [regshot](https://gitlab.com/CinCan/tools/-/tree/master/regshot) |  |  | Windows |
-| [processhacker](https://gitlab.com/CinCan/tools/-/tree/master/processhacker) |  |  | Windows |
-| [pestudio](https://gitlab.com/CinCan/tools/-/tree/master/pestudio) |  |  | Windows |
-| [pdf-stream-dumper](https://gitlab.com/CinCan/tools/-/tree/master/pdf-stream-dumper) |  |  | Windows |
-| [oledump-win](https://gitlab.com/CinCan/tools/-/tree/master/oledump-win) |  |  | Windows |
-| [officemalscanner](https://gitlab.com/CinCan/tools/-/tree/master/officemalscanner) |  |  | Windows |
-| [jakstab](https://gitlab.com/CinCan/tools/-/tree/master/jakstab) |  |  | Windows |
-| [convertshellcode](https://gitlab.com/CinCan/tools/-/tree/master/convertshellcode) |  |  | Windows |
-| [capture-bat](https://gitlab.com/CinCan/tools/-/tree/master/capture-bat) |  |  | Windows |
-| [binskim](https://gitlab.com/CinCan/tools/-/tree/master/binskim) |  |  | Windows |
