@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/volatilityfoundation/volatility/",
+      "repository": "volatilityfoundation",
+      "tool": "volatility",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

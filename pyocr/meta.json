@@ -1,0 +1,21 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://gitlab.gnome.org/World/OpenPaperwork/pyocr",
+      "repository": "World/OpenPaperwork",
+      "tool": "pyocr",
+      "provider": "GitLab",
+      "method": "tag-release",
+      "origin": true
+    },
+    {
+      "uri": "https://pypi.org/project/pyocr/",
+      "repository": "",
+      "tool": "pyocr",
+      "provider": "PyPi",
+      "method": "release",
+      "origin": false,
+      "docker_origin": true
+    }
+  ]
+}

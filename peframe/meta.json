@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/guelfoweb/peframe",
+      "repository": "guelfoweb",
+      "tool": "peframe",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
