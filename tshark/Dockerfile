@@ -1,6 +1,6 @@
-ARG tool_version=3.0.9-r0
+ARG tool_version=3.0.10-r0
 
-FROM alpine:3.11
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
 

@@ -1,4 +1,4 @@
-# "A Tool for parsing PCAP and capturing network traffic."
+# "Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer."
 
 Radamsa is the great open source command-line fuzzer for all purposes created by Aki Helin.
 Aki describes Radamsa like this:
@@ -58,3 +58,4 @@ docker run --rm -v $(pwd):/files cincan/radamsa -n 10 -o "/files/fuzzed/%n" /fil
 ## Project homepage
 
 https://gitlab.com/akihe/radamsa
+

@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/zed-0xff/zsteg/",
+      "repository": "zed-0xff",
+      "tool": "zsteg",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
