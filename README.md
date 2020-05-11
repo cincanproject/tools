@@ -240,6 +240,7 @@ README should describe shortly:
 | [twiggy](https://gitlab.com/CinCan/tools/-/tree/master/twiggy) |  Twiggy analyzes a binary's call graph | .wasm, partial ELF & Mach-O support   | Linux |
 | [fernflower](https://gitlab.com/CinCan/tools/-/tree/master/fernflower) |  Analytical decompiler for Java | .jar, .class, .zip  | Linux |
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| [cfr](https://gitlab.com/CinCan/tools/-/tree/master/cfr) |  Class File Reader - another java decompiler | .jar -file  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
 | [oletools](https://gitlab.com/CinCan/tools/-/tree/master/oletools) |  Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
