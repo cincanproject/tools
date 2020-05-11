@@ -18,6 +18,9 @@ FROM openjdk:8-jre-slim
 
 COPY --from=build /cfr.jar /usr/bin/
 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
 RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
     mkdir -p /home/appuser/tool && \
     chown -R appuser:appuser /home/appuser
