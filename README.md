@@ -227,7 +227,7 @@ README should describe shortly:
 | [floss](https://gitlab.com/CinCan/tools/-/tree/master/floss) |  FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
 | [steghide](https://gitlab.com/CinCan/tools/-/tree/master/steghide) |  A Steganography program that is able to hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
 | [pywhois](https://gitlab.com/CinCan/tools/-/tree/master/pywhois) |  Pywhois | IP / list of IPs  | Linux |
-| [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/ioc_strings) |  IOC strings | File/Directory  | Linux |
+| [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
 | [radare2](https://gitlab.com/CinCan/tools/-/tree/master/radare2) |  Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.3.1 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
