@@ -5,8 +5,15 @@
       "tool": "ioc-strings",
       "provider": "PyPi",
       "method": "release",
+      "docker_origin": true
+    },
+    {
+      "uri": "https://gitlab.com/CinCan/ioc_strings",
+      "repository": "ioc_strings",
+      "tool": "ioc_strings",
+      "provider": "GitLab",
+      "method": "tag-release",
       "origin": true
     }
   ]
 }
-
