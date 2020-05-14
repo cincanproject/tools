@@ -1,6 +1,4 @@
-# IOC strings
-
-Extracts urls, hashes, emails, ips, domains and base64 (other) from a file.
+# Extracts urls, hashes, emails, ips, domains and base64 (other) from a file.
 
 ## Input
 
@@ -11,7 +9,7 @@ File/Directory
 ## Output
 
 ```
-jsonl format when using "-t" option
+json
 ```
 
 
@@ -23,22 +21,30 @@ jsonl format when using "-t" option
 
 ## Usage
 
-***1. Clone the repository***
+Get usage using the _cincan_ CLI:  
 
-```
-git clone https://gitlab.com/CinCan/tools
-cd ioc_strings
-```
-
-***2. Build OR pull the docker image*** 
-
-```
-docker build . -t cincan/ioc_strings
-docker pull cincan/ioc_strings
+```bash
+cincan run cincan/ioc_strings --help
 ```
 
-***3. Run the docker container***
+Get IoCs from a file:  
+
+```bash
+cincan run cincan/ioc_strings <SAMPLE>
+```
+
+Get IPs Using the _docker_ command:  
+
+```bash
+docker run -v <SAMPLES>:/samples cincan/ioc_strings --filter IP <SAMPLE>
+```
+
 
 ## Project homepage
 
 https://gitlab.com/CinCan/ioc_strings
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
