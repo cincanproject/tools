@@ -9,7 +9,7 @@
     },
     {
       "uri": "https://gitlab.com/CinCan/ioc_strings",
-      "repository": "ioc_strings",
+      "repository": "cincan",
       "tool": "ioc_strings",
       "provider": "GitLab",
       "method": "tag-release",
