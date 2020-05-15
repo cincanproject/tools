@@ -1,9 +1,14 @@
+image: docker:stable
+
 cache:
   key:
     files:
       - GREEN_MASTER_COMMIT.txt
   paths:
      - GREEN_MASTER_COMMIT.txt
+
+before_script:
+  - apk add grep python3 git
 
 stages:
   - generate-build-and-test-config
