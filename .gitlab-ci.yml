@@ -1,42 +1,73 @@
-image: docker:stable
-
-services:
-  - docker:dind
-
-before_script:
-  - apk add grep python3 git
-  - pip3 install pip --upgrade && pip3 install pytest && pip3 install .
-  - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+cache:
+  key:
+    files:
+      - GREEN_MASTER_COMMIT.txt
+  paths:
+     - GREEN_MASTER_COMMIT.txt
 
 stages:
-  - test
-  - build
+  - generate-build-and-test-config
+  - build-and-test
+  - cache-update
+  - readme-update
 
-test:
-  stage: test
-  script:
-    - pytest
+# TODO: Usage of rules is recommended instead of only-except syntax
+
+# Calls dynamical generation script
+generate-config:
+  stage: generate-build-and-test-config
+  script: TAG=latest-stable sh generate_build_and_test_config.sh build-and-test-config.yml
+  artifacts:
+    paths:
+      - build-and-test-config.yml
   only:
     - master
 
-build:
-  stage: build
-  script:
-    - TAG=latest-stable sh detect_and_build.sh
-  only:
-    - master
-
-build-dev:
-  stage: build
-  script:
-    - TAG=dev sh detect_and_build.sh
+# Generation script dev version
+generate-config-dev:
+  stage: generate-build-and-test-config
+  script: TAG=dev sh generate_build_and_test_config.sh build-and-test-config-dev.yml
+  artifacts:
+    paths:
+      - build-and-test-config-dev.yml
   only:
     - branches
   except:
     - master
 
+# Run dynamically generated pipeline
+build-and-test-pipeline:
+  stage: build-and-test
+  trigger:
+    strategy: depend
+    include:
+      - artifact: build-and-test-config.yml
+        job: generate-config
+  only:
+    - master
+
+# Run dynamically generated pipeline dev version
+build-and-test-pipeline-dev:
+  stage: build-and-test
+  trigger:
+    strategy: depend
+    include:
+      - artifact: build-and-test-config-dev.yml
+        job: generate-config-dev
+  only:
+    - branches
+  except:
+    - master
+
+# If building and testing was success update latest passed commit
+store-latest-passed-commit-to-cache:
+  stage: cache-update
+  script:
+    - echo "$CI_COMMIT_SHA" > GREEN_MASTER_COMMIT.txt
+
+# Update readme on git
 build-list-update:
-  stage: build
+  stage: readme-update
   only:
     - master
   before_script:
@@ -58,5 +89,4 @@ build-list-update:
     - git add README.md
     - git diff --cached --exit-code && exit 0 || git commit -m "update tools list of README.md [ci skip]"
     - echo $CI_COMMIT_REF_NAME
-    - git push origin HEAD:$CI_COMMIT_REF_NAME    
-
+    - git push origin HEAD:$CI_COMMIT_REF_NAME
