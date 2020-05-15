@@ -65,10 +65,13 @@ build-and-test-pipeline-dev:
     - master
 
 # If building and testing was success update latest passed commit
+# Updating cache is only allowed to master to always ensure triggering of always stable builds
 store-latest-passed-commit-to-cache:
   stage: cache-update
   script:
     - echo "$CI_COMMIT_SHA" > GREEN_MASTER_COMMIT.txt
+  only:
+    - master
 
 # Update readme on git
 build-list-update:
