@@ -39,7 +39,7 @@ echo -e "\e[4mFollowing has changed:\e[24m"
 echo -e "\e[36m $(git diff --name-only "$GREEN_MASTER"..HEAD|grep -Po "^[^/]+(?=/)"|uniq)\e[39m"
 
 # Store information if there is no jobs generated
-no_jobs_generated_for_pipeline=true
+NO_JOBS_GENERATED_FOR_PIPELINE=true
 
 for image in $(git diff --name-only "$GREEN_MASTER"..HEAD|grep -Po "^[^/]+(?=/)"|uniq)
 do
@@ -51,13 +51,14 @@ do
   fi
 
   # Skip whole tool if it is dev version (meaning it has dev-marked tests)
-   if [ ! -z $(grep pytest.mark.dev "$image"/*.py) ]; then
+  PYTEST_MARK_DEV="pytest.mark.dev"
+  if grep --quiet "$PYTEST_MARK_DEV" "$image"/*.py ; then
     echo -e "\e[33mTool $image is under development. Skipping....\e[39m"
        continue
   fi
 
   # Initial checks pass, real jobs exist
-  no_jobs_generated_for_pipeline=false
+  NO_JOBS_GENERATED_FOR_PIPELINE=false
 
   cat >> ${GENERATED_CONFIG} << EOF
 
@@ -81,7 +82,7 @@ EOF
 done
 
 # Insert dummy job if there is no real jobs to prevent pipeline being invalid
-if [ "$no_jobs_generated_for_pipeline" = true ]; then
+if [ "$NO_JOBS_GENERATED_FOR_PIPELINE" = "true" ]; then
 cat >> ${GENERATED_CONFIG} << EOF
 build-and-test-dummy:
   stage: build-and-test
