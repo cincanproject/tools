@@ -105,8 +105,6 @@ RUN apk add --no-cache libstdc++ && \
 COPY --from=builder "$INSTALL_PREFIX" "$INSTALL_PREFIX"
 COPY --from=builder /home/appuser/ /home/appuser/
 
-ENV TOOL_VERSION=4.3.1
-
 USER appuser
 
 # Plugin manager configuration
