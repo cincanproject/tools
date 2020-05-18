@@ -1,16 +1,16 @@
-ARG tool_version=4.3.1
+ARG tool_version=4.4.0
 
 FROM alpine:edge AS builder
 
-MAINTAINER cincan.io
+LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-ENV radare2_SHA256 3dcce822c1af50a576fec9bd5a2bd1ba9fcf86c3cc7fb5b897ab7ab1e10e9b5d
+ENV radare2_SHA256 c76ff5b6f0c2db37dc66877f3ca2cbe9218b0619ba70043590c578d45090045d
 
 # Temporal fix,  currently the latest commit is not compatible with any radare2 release
-ENV R2_GHIDRA_DEC_VERSION=1ff56278440bfcf7a1f481aeb91feb6a8dc51613
+ENV R2_GHIDRA_DEC_VERSION=3bf10b2bc94a3a7289723c76e9f02735bb623b56
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
