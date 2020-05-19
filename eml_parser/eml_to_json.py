@@ -30,7 +30,7 @@ def extract_attachments(raw_email, outpath):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument('eml', type=argparse.FileType('rb'), help='EML file to read')
-    argparser.add_argument('-e', dest='extract', default='.', help='Extract attachments to path')
+    argparser.add_argument('-e', dest='extract', nargs='?', const=os.getcwd(), help='Extract attachments to path')
     args = argparser.parse_args()
     eml_file = args.eml.read()
     args.eml.close()
