@@ -21,3 +21,5 @@ USER appuser
 WORKDIR /home/appuser
 
 ENTRYPOINT ["/usr/local/bin/python","/feature_extractor/analyze_parallel.py","--confpath", "/feature_extractor"]
+
+CMD ["-h"]
