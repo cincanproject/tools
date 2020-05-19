@@ -1,5 +1,6 @@
 {
   "upstreams": [
+    {
       "uri": "https://gitlab.com/CinCan/feature_extractor",
       "repository": "cincan",
       "tool": "feature_extractor",
