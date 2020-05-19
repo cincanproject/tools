@@ -1,0 +1,19 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://pypi.org/project/ioc-strings/",
+      "tool": "ioc-strings",
+      "provider": "PyPi",
+      "method": "release",
+      "docker_origin": true
+    },
+    {
+      "uri": "https://gitlab.com/CinCan/ioc_strings",
+      "repository": "cincan",
+      "tool": "ioc_strings",
+      "provider": "GitLab",
+      "method": "tag-release",
+      "origin": true
+    }
+  ]
+}

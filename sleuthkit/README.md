@@ -1,4 +1,4 @@
-# "Open Source Digital Forensics"
+# "A collection of command line tools that allows you to analyze disk images and recover files."
 
 ## Input
 

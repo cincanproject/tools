@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/JusticeRage/Manalyze",
+      "repository": "JusticeRage",
+      "tool": "Manalyze",
+      "provider": "GitHub",
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

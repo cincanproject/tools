@@ -2,11 +2,14 @@
 #
 # docker run -v $(pwd):/input cincan/jsunpack-n /input/samples/testfile.pdf -V -d /input/samples/output/
 
+ARG tool_version="0.3.2c (beta)"
+
 FROM debian:8-slim AS builder
 
 LABEL MAINTAINER=cincan.io
 
-ENV VERSION="0.3.2c (beta)"
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
@@ -72,6 +75,9 @@ RUN sed -i 's/use_boost = True/use_boost = False/g' config_linux2.py \
     && python setup.py install
 
 FROM debian:10-slim AS production
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 COPY --from=builder /jsunpack-n /jsunpack-n
 COPY --from=builder /etc/ld.* /etc/

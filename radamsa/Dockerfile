@@ -1,7 +1,11 @@
+ARG tool_version=0.6
+
 FROM debian:10-slim AS builder
 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
 LABEL MAINTAINER=cincan.io
-ENV VERSION=0.6
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
@@ -13,17 +17,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-dev \
     wget
 
-RUN git clone https://gitlab.com/akihe/radamsa.git &&\
+RUN git clone --branch=v$TOOL_VERSION https://gitlab.com/akihe/radamsa.git &&\
     cd radamsa &&\
     make && make install
 
 FROM debian:10-slim AS production
 
-COPY --from=builder /radamsa /radamsa
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
-RUN ls -l /radamsa
-
-ENTRYPOINT ["/radamsa/bin/radamsa"]
+COPY --from=builder /radamsa/bin/radamsa /usr/local/bin
 
 RUN groupadd -g 1000 appuser && \
     useradd -u 1000 -g appuser -s /sbin/nologin appuser
@@ -31,4 +34,5 @@ RUN groupadd -g 1000 appuser && \
 USER appuser
 WORKDIR /home/appuser
 
+ENTRYPOINT ["radamsa"]
 CMD ["--help"]

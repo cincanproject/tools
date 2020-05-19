@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/jesparza/peepdf",
+      "repository": "jesparza",
+      "tool": "peepdf",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

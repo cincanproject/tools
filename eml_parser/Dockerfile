@@ -1,12 +1,18 @@
+ARG tool_version=1.11.6
 FROM python:3-slim-buster as build
 
 LABEL MAINTAINER=cincan.io
 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN pip3 install --user eml-parser==1.11.6
+RUN pip3 install --user eml-parser==$TOOL_VERSION
 
 FROM python:3-slim-buster as env
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN  adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
 

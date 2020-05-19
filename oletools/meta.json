@@ -1,0 +1,21 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/decalage2/oletools",
+      "repository": "decalage2",
+      "tool": "oletools",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true
+    },
+    {
+      "uri": "https://pypi.org/pypi/oletools",
+      "repository": "",
+      "tool": "oletools",
+      "provider": "PyPi",
+      "method": "release",
+      "origin": false,
+      "docker_origin": true
+    }
+  ]
+}

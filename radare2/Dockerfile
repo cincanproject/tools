@@ -1,9 +1,16 @@
+ARG tool_version=4.4.0
+
 FROM alpine:edge AS builder
 
-MAINTAINER cincan.io
+LABEL MAINTAINER=cincan.io
 
-ENV VERSION 4.2.0
-ENV radare2_SHA256 cdff5eed2a495b85a3b3325f59914cfb8b360614115438d31fed9ae021dd3a98 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+ENV radare2_SHA256 c76ff5b6f0c2db37dc66877f3ca2cbe9218b0619ba70043590c578d45090045d
+
+# Temporal fix,  currently the latest commit is not compatible with any radare2 release
+ENV R2_GHIDRA_DEC_VERSION=3bf10b2bc94a3a7289723c76e9f02735bb623b56
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -42,29 +49,42 @@ RUN mkdir "$SOURCE_ROOT" \
 
 USER appuser
 
-RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$VERSION.zip" \
+RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/radareorg/radare2/archive/$TOOL_VERSION.zip" \
     && echo "$radare2_SHA256"  \
     && sha256sum "$SOURCE_ROOT"/radare2.zip \
     && echo "$radare2_SHA256  $SOURCE_ROOT/radare2.zip" | sha256sum -c - \
     && unzip "$SOURCE_ROOT"/radare2.zip -d "$SOURCE_ROOT"
 
-RUN cd "$SOURCE_ROOT/radare2-$VERSION/sys" && \
+RUN cd "$SOURCE_ROOT/radare2-$TOOL_VERSION/sys" && \
     meson --prefix="$INSTALL_PREFIX" && \
     ninja && \
     ninja install && \
     ln -s "$INSTALL_PREFIX/bin/radare2" "$INSTALL_PREFIX/bin/r2"
 
+RUN git clone  https://github.com/radareorg/r2ghidra-dec.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec  && \
+    cd ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
+    git checkout "${R2_GHIDRA_DEC_VERSION}" && \
+    git submodule init && \
+    git submodule update && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=~/.local .. && \
+    make && \
+    make install
+
 RUN r2pm init && \
     r2pm update && \
-    r2pm -i r2ghidra-dec && \
+    # r2pm -i r2ghidra-dec && \
     r2pm cache && \
-    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec.git && \
+    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec && \
     # Disable r2agent - no use in container
     rm /usr/local/bin/r2agent
 
 # SECOND STAGE
 
 FROM alpine:latest AS runner
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 ENV INSTALL_PREFIX /usr/local
 ENV SOURCE_ROOT /radare2

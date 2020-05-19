@@ -1,4 +1,4 @@
-# ClamAV virus scanner:  Release 0.102.0
+# ClamAV virus scanner:  Release 0.102.2
 
 ClamAV is an open source antivirus engine for detecting trojans, viruses, malware & other malicious threats.
 

@@ -1,11 +1,14 @@
 ### Usage: docker run -it -v `pwd`/samples:/samples cincan/sleuthkit [tool from sleuthkit]
 ### or cincan run cincan/sleuthkit [tool from sleuthkit]
 
+ARG tool_version=4.9.0
+
 FROM debian:10-slim AS build
 
-ENV VERSION=4.7.0
-
 LABEL MAINTAINER=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -20,9 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     wget
 
-RUN wget -qq https://github.com/sleuthkit/sleuthkit/archive/sleuthkit-$VERSION.tar.gz \
-    && tar xvf sleuthkit-$VERSION.tar.gz \
-    && cd sleuthkit-sleuthkit-$VERSION \
+RUN wget -qq https://github.com/sleuthkit/sleuthkit/archive/sleuthkit-$TOOL_VERSION.tar.gz \
+    && tar xvf sleuthkit-$TOOL_VERSION.tar.gz \
+    && cd sleuthkit-sleuthkit-$TOOL_VERSION \
     && ls -la \
     && ./bootstrap \
     && ./configure \
@@ -32,6 +35,9 @@ RUN wget -qq https://github.com/sleuthkit/sleuthkit/archive/sleuthkit-$VERSION.t
 FROM debian:10-slim as runtime
 
 COPY --from=build /usr/local/bin /usr/local/bin
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \

@@ -1,9 +1,13 @@
+ARG tool_version=3.0.10-r0
+
 FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
-ENV VERSION=3.0.9-r0
 
-RUN apk update && apk add --no-cache tshark=${VERSION}
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+RUN apk update && apk add --no-cache tshark=${TOOL_VERSION}
 
 # Add an user
 RUN addgroup -S appuser && \

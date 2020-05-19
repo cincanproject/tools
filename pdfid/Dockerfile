@@ -1,26 +1,30 @@
 #"PDFID will scan a file to look for certain PDF keywords, allowing you to 
 # identify PDF documents that contain (for example) JavaScript or execute 
 # an action when opened. PDFiD will also handle name obfuscation."
+ARG tool_version=0_2_7
 
-FROM alpine:3.11
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+ENV HASH=FE2B59FE458ECBC1F91A40095FB1536E036BDD4B7B480907AC4E387D9ADB6E60
+
 RUN apk update && apk add --no-cache \
-	python2=2.7.16-r3 \
-	wget=1.20.3-r0 \
-	unzip=6.0-r4 \
-	git=2.24.1-r0 \
-	jq=1.6-r0
+	python2 \
+	wget \
+	unzip \
+	git \
+	jq
 
 # Get pdfid, check integrity, unzip, clean up.
 # Replace main script of pdfid with one supporting JSON output
-RUN wget https://didierstevens.com/files/software/pdfid_v0_2_5.zip \
-	&& if [ ! "$(sha256sum pdfid_v0_2_5.zip |awk '{print toupper($1)}')" = \
-	"4DD43D7BDA885C5A579FC1F797E93A536E1DB5A4AB52A9337759A69D3B0250E0" ]; then \
+RUN wget https://didierstevens.com/files/software/pdfid_v$TOOL_VERSION.zip \
+	&& if [ ! "$(sha256sum pdfid_v$TOOL_VERSION.zip |awk '{print toupper($1)}')" = "$HASH" ]; then \
 	echo "Integrity check failed"; exit 1; fi \
-	&& unzip pdfid_v0_2_5.zip -d /pdfid \
-	&& rm pdfid_v0_2_5.zip && \
+	&& unzip pdfid_v$TOOL_VERSION.zip -d /pdfid \
+	&& rm pdfid_v$TOOL_VERSION.zip && \
 	rm pdfid/pdfid.py && \
 	wget https://raw.githubusercontent.com/Nicceboy/DidierStevensSuite/master/pdfid.py -P pdfid \
 	&& if [ ! "$(sha256sum pdfid/pdfid.py |awk '{print toupper($1)}')" = \

@@ -1,8 +1,11 @@
+ARG tool_version=0.7.2
 FROM python:3.5-alpine
 
 LABEL MAINTAINER=cincan.io
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
-RUN pip install python-whois==0.7.1 \
+RUN pip install python-whois=="$TOOL_VERSION" \
         PySocks==1.6.8 \
     && adduser -s /sbin/login -D appuser
 
