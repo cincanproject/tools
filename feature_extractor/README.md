@@ -58,4 +58,5 @@ usage: analyze_parallel.py [-h] [--infile INFILE] [--injsonl INJSONL]
 
 ## Project homepage
 
-[https://gitlab.com/CinCan/wp1/tree/master/feature_extractor](https://gitlab.com/CinCan/wp1/tree/master/feature_extractor)
+[https://gitlab.com/CinCan/feature_extractor/](https://gitlab.com/CinCan/feature_extractor/)
+
