@@ -1,24 +1,25 @@
-#docker run -v /samples:/samples cincan/feature-extractor /samples/input
-# --injsonl = takes jsonl as input
+#docker run -v $(pwd):/data cincan/feature_extractor --injsonl /data/jsonl_input --path /data/
+ARG tool_version=0.2
 
-FROM ubuntu:18.04
+FROM python:3.6-slim-buster
 
 LABEL MAINTAINER=cincan.io
 
-RUN apt-get update && apt-get install -y \
-	    git=1:2.17.1-1ubuntu0.4  \
-	    python3=3.6.7-1~18.04 \
-	    python3-pip=9.0.1-2.3~ubuntu1.18.04.1 \
-    && apt-get autoclean \ 
-    && git clone https://gitlab.com/CinCan/wp1.git \
-    && cd wp1/feature_extractor/ \
-    && pip3 install -r requirements.txt \
-    && adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
-    && chown -R appuser:appuser /wp1
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+RUN apt update && apt install -y \
+	git=1:2.20* \
+	&& git clone https://gitlab.com/CinCan/feature_extractor.git --branch ${TOOL_VERSION}\
+	&& cd feature_extractor/ \
+	&& pip install -r requirements.txt \
+	&& adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
+	&& chown -R appuser:appuser /feature_extractor
 
 USER appuser
 
-WORKDIR /wp1/feature_extractor/
+WORKDIR /home/appuser
 
-ENTRYPOINT ["/usr/bin/python3","analyze_parallel.py"]
-CMD ["--injsonl"]
+ENTRYPOINT ["/usr/local/bin/python","/feature_extractor/analyze_parallel.py","--confpath", "/feature_extractor"]
+
+CMD ["-h"]
