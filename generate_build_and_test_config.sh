@@ -29,7 +29,7 @@ services:
 before_script:
   - apk add grep git python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - pip3 install pip --upgrade && pip3 install pytest && pip3 install .
+  - pip3 install pip --upgrade && pip3 install pytest && pip3 install . && pip3 install cincan-registry
 
 stages:
   - build-and-test
@@ -67,18 +67,23 @@ build-and-test-$image:
   script:
 EOF
 
-  # Add testing only in master branch (when tag is latest-stable)
+  # Add testing and readme update only in master branch (when tag is latest-stable)
   MASTER_TAG="latest-stable"
   if [ "$TAG" = "$MASTER_TAG" ]; then
     cat >> ${GENERATED_CONFIG} << EOF
     - pytest -sk "not dev" --basetemp=".tmp/" --strict $image
+    - docker build -t cincan/"$image":"$TAG" "$image"/.
+    - docker push cincan/"$image"
+    - cincanregistry --tools . utils update-readme -n "$image"
+    
 EOF
-  fi
+  else
   cat >> ${GENERATED_CONFIG} << EOF
     - docker build -t cincan/"$image":"$TAG" "$image"/.
     - docker push cincan/"$image"
     
 EOF
+  fi
 done
 
 # Insert dummy job if there is no real jobs to prevent pipeline being invalid
