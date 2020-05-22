@@ -232,7 +232,7 @@ ENV TOOL_SHA256 3d61de711v84a18bdee3ed94c31429e494663l83e7d082cca5e949bbd651f051
 
 In ideal case, value change of `tool_version` and `TOOL_SHA256` is enough to upgrade version. However, later versions might bring new dependencies or break something, so that is not always the case.
 
-The source in Dockerfile and the placement of `TOOL_VERSION` variable in there defines the format of the version value.
+The source in Dockerfile and the placement of `TOOL_VERSION` variable in there defines the format of the version value. It should be same, as described in the source.
 
 Once image builds in this way and tests pass (`pytest <tool_name>`), we are ready to merge! If this specific tool is offering version check by CLI, it is also good idea to confirm that it really has been updated.
 
