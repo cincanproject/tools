@@ -8,12 +8,20 @@ There are many ways to contribute for CinCan tools!
   * Improving documentation
   * Something else? Please, suggest!
 
-This document briefly explains, how new tool should be added, or existing can be upgraded later version.
-
 
 ## Practices for adding a new tool
 
+The workflow for adding the new tool usually contains at least:
+
+ * Creation of Dockerfile
+   * Adding possible relevant external files required by this specific tool
+ * Creation of `meta.json` file
+ * Creation of tests
+ * Creation of sufficient README file
+
 ### Dockerfile
+
+#### Labels
 
 Label for maintainer should be added:
 
@@ -25,11 +33,11 @@ Each tool should use `ENV` for describing version number of the tool, and use it
 
 Variable name **must** be `TOOL_VERSION`
 
-- This gives a way for reading version information of the tool from every container, just by checking TOOL_VERSION environment variable.
+- This gives a way for reading version information of the tool from every image/container, just by checking TOOL_VERSION environment variable.
 - Dockerfiles can be automatically parsed for documentation, and TOOL_VERSION information can be acquired in this way.
 - From Docker Registry API, manifest can be parsed and version information of the tool can be acquired in this way.
 
-To make automatic building attempt for different versions possible, we should use global ARG for defining version variable into actual ENV variable. This helps as well, when defining version variable into last stage in multi-stage builds. (manifest content is based on last stage) This makes defining less error-prone.
+To make automatic building attempt for different versions possible in the future, we should use global ARG for defining version variable into actual ENV variable. This helps as well, when defining version variable into last stage in multi-stage builds. (manifest content is based on last stage) This makes defining less error-prone.
 
 For example:
 
@@ -43,42 +51,11 @@ ARG tool_version
 ENV TOOL_VERSION=$tool_version
 ```
 
-When defining ARG before any image base, value of it can be used in every stage. Later, each TOOL_VERSION ENV is defined with it. There is no other way to use global variables currently.
+When defining ARG before any image base, value of it can be used in every stage. (However, it should be 'mentioned' in every stage as `ARG tool_version`) Later, each TOOL_VERSION ENV is defined with it. 
 
-Tool itself should be latest _stable_ version, and it is hopefully installed with previously mentioned TOOL_VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
+There is no other way to use global variables currently.
 
-#### Meta information
-
-When creating Dockerfile for new tool, it is also good to add file **named as 'meta.json'.**
-
-Currently supported attribute is `upstreams`.
-This attribute can contain information about the origins of the tools in form of list.
-
-Example below shows, that tool is developed in GitHub, and GitHub is used as source for installation in Dockerfile. By using GitHub releases, upstream tool version information is available and can be also downloaded in this way.
-
-```json
-{
-  "upstreams": [
-    {
-      "uri": "https://github.com/radareorg/radare2/",
-      "repository": "radareorg",
-      "tool": "radare2",
-      "provider": "GitHub",
-      "method": "release",
-      "origin": true,
-      "docker_origin": true
-    }
-  ]
-}
-```
-
-Multiple sources can be added for different package providres/upstreams.
-Example about multiple sources can be seen in [here.](tshark/meta.json)
-It is always good to install it directly from very origin instead of other package provider to avoid middlemen.
-
-*This meta information is used to see, if Docker image is up to day.* 
-
-For all supported attributes and providers; see more details about upstream checking in [cincan-registry](https://gitlab.com/CinCan/cincan-registry)
+Tool itself should be latest _stable_ version, and it is installed with previously mentioned TOOL_VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
 #### Dependency versions and base image version
 
@@ -125,6 +102,39 @@ Use the user as early as possible with the line `USER appuser` to ensure clean p
 
 Set working directory for home of this user: `WORKDIR "/home/appuser"` and this is preferably empty.
 
+### Meta information
+
+When creating Dockerfile for new tool, it is also good to add file **named as 'meta.json'.**
+
+Currently supported attribute is `upstreams` for this JSON file.
+This attribute can contain information about the origins of the tools in form of list.
+
+Example below shows, that tool is developed in GitHub, and GitHub is used as source for installation in Dockerfile. By using GitHub releases, upstream tool version information is available and can be also downloaded in this way.
+
+```json
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/radareorg/radare2/",
+      "repository": "radareorg",
+      "tool": "radare2",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
+```
+
+Multiple sources can be added for different package providers/upstreams.
+Example about multiple sources can be seen in [here.](tshark/meta.json)
+It is always good to install it directly from very origin instead of other package provider to avoid middlemen.
+
+*This meta information is used to check that Docker image is up to day.* 
+
+For all supported attributes and providers; see more details about upstream checking in [cincan-registry](https://gitlab.com/CinCan/cincan-registry)
+
 ### Testing
 
 At least `entrypoint` and `--help` command should be tested for image.
@@ -157,7 +167,7 @@ Tests are dependant of some the methods of the [cincan tool](https://gitlab.com/
 - tool_with_file(\_\_file\_\_) - make instance of the tool
 - tool.run_get_string([\<POSSIBLE ARGS>]) - for running the tool and getting STDOUT and possible output files
 
-Thest wrapper named as dockertools is used for actually using the `cincan` tool, see source code in [here.](metatool)
+Test wrapper named as `metatool` is used for actually using the `cincan` tool, see source code in [here.](metatool)
 
 #### WIP - resolve unused samples from \_SAMPLES directory:
 
@@ -193,3 +203,12 @@ README should describe shortly:
 
 ## Practices for upgrading version of the existing tool
 
+Upgrading Dockerfile to newer version is straightforward: default value of `ARG tool_version` should be changed to the latest available version for the currently used source in Dockerfile.
+
+If build process is using checksums (e.g. SHA256), these should be updated as well.
+
+Once image builds in this way, and tests pass (`pytest <tool_name>`), we are ready to merge! If this specific tool is offering version check by CLI, it is also good idea to confirm that it really has been updated.
+
+In case the current source in Dockerfile is not the very origin (holder of the source code), it can be also updated to use it as well; it is recommended to always use this very origin!
+
+This requires also some additional changes. For example, if source in Dockerfile is Debian package, and it is changed to the origin (e.g. GitHub repository), required changes should be added for `meta.json` file. See more about content of that in [here.](#meta-information)
