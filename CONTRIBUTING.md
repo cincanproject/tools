@@ -4,7 +4,7 @@ There are many ways to contribute for CinCan tools!
 
   * By adding [a new tool](#practices-for-adding-a-new-tool)
   * [Upgrading version](#practices-for-upgrading-version-of-the-existing-tool) of the existing tool
-  * Optimizing image (reducing size, increasing performance)
+  * Optimizing image (reducing size, increasing performance, minimize security permissions)
   * Improving documentation
   * Something else? Please, suggest!
 
@@ -44,7 +44,7 @@ For example:
 ```
 ARG tool_version=2.6.1
 
-FROM alpine:3.11
+FROM alpine:latest
 LABEL maintainer=cincan.io
 
 ARG tool_version
@@ -101,6 +101,16 @@ useradd -u 1000 -g appuser -s /sbin/nologin appuser
 Use the user as early as possible with the line `USER appuser` to ensure clean permissions for the image!
 
 Set working directory for home of this user: `WORKDIR "/home/appuser"` and this is preferably empty.
+
+#### Image size
+
+Image size should be minimized. Whenever there is a benefit from running [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) in a way, that it can reduce size, it should be done.
+
+When installing run-time dependencies, it should be done without storing any cached data. 
+
+If tool contains graphical interface in the same package, can be it be stripped off?
+
+However, image should contain shell (`sh`), otherwise tool cannot be run with `cincan-command`.
 
 ### Meta information
 
@@ -205,9 +215,28 @@ README should describe shortly:
 
 Upgrading Dockerfile to newer version is straightforward: default value of `ARG tool_version` should be changed to the latest available version for the currently used source in the Dockerfile.
 
+
 If build process is using checksums (e.g. SHA256), these should be updated as well.
 
+Example beginning of Dockerfile could look something like this:
+```
+ARG tool_version=2.6.1
+
+FROM alpine:latest
+LABEL maintainer=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+ENV TOOL_SHA256 3d61de711v84a18bdee3ed94c31429e494663l83e7d082cca5e949bbd651f051
+```
+
+In ideal case, value change of `tool_version` and `TOOL_SHA256` is enough to upgrade version. However, later versions might bring new dependencies or break something, so that is not always the case.
+
+The source in Dockerfile and the placement of `TOOL_VERSION` variable in there defines the format of the version value.
+
 Once image builds in this way and tests pass (`pytest <tool_name>`), we are ready to merge! If this specific tool is offering version check by CLI, it is also good idea to confirm that it really has been updated.
+
+### Upgrading source in Dockerfile into origin upstream
 
 In case the current source in Dockerfile is not the very origin (holder of the source code), it can be also updated to use it as well; it is recommended to always use this very origin!
 
