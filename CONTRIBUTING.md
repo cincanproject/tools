@@ -203,11 +203,11 @@ README should describe shortly:
 
 ## Practices for upgrading version of the existing tool
 
-Upgrading Dockerfile to newer version is straightforward: default value of `ARG tool_version` should be changed to the latest available version for the currently used source in Dockerfile.
+Upgrading Dockerfile to newer version is straightforward: default value of `ARG tool_version` should be changed to the latest available version for the currently used source in the Dockerfile.
 
 If build process is using checksums (e.g. SHA256), these should be updated as well.
 
-Once image builds in this way, and tests pass (`pytest <tool_name>`), we are ready to merge! If this specific tool is offering version check by CLI, it is also good idea to confirm that it really has been updated.
+Once image builds in this way and tests pass (`pytest <tool_name>`), we are ready to merge! If this specific tool is offering version check by CLI, it is also good idea to confirm that it really has been updated.
 
 In case the current source in Dockerfile is not the very origin (holder of the source code), it can be also updated to use it as well; it is recommended to always use this very origin!
 
