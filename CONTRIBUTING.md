@@ -4,7 +4,7 @@ There are many ways to contribute for CinCan tools!
 
   * By adding [a new tool](#practices-for-adding-a-new-tool)
   * [Upgrading version](#practices-for-upgrading-version-of-the-existing-tool) of the existing tool
-  * Optimizing image (reducing size, increasing performance, minimize security permissions)
+  * Optimizing image (reducing size, increasing performance, minimize tool runtime permissions inside container)
   * Improving documentation
   * Something else? Please, suggest!
 
