@@ -106,11 +106,11 @@ Set working directory for home of this user: `WORKDIR "/home/appuser"` and this 
 
 Image size should be minimized. Whenever there is a benefit from running [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) in a way, that it can reduce size, it should be done.
 
-When installing run-time dependencies, it should be done without storing any cached data. 
+When installing run-time dependencies, it should be done without storing any cached data, which is not benefitting the execution speed of the tool. 
 
-If tool contains graphical interface in the same package, can be it be stripped off?
+If tool contains graphical interface in the same package, can it be stripped off?
 
-However, image should contain shell (`sh`), otherwise tool cannot be run with `cincan-command`.
+However, image should contain additionally at least shell (`sh`), otherwise tool cannot be run with `cincan-command`.
 
 ### Meta information
 
