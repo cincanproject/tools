@@ -50,10 +50,11 @@ do
       continue
   fi
 
-  # Skip whole tool if it is dev version (meaning it has dev-marked tests)
+  # Skip whole tool if it is dev version (meaning it has dev-marked tests) and this is master branch (meaning that tag is latest-stable)
+  MASTER_TAG="latest-stable"
   PYTEST_MARK_DEV="pytest.mark.dev"
-  if grep --quiet "$PYTEST_MARK_DEV" "$image"/*.py ; then
-    echo -e "\e[33mTool $image is under development. Skipping....\e[39m"
+  if grep --quiet "$PYTEST_MARK_DEV" "$image"/*.py && [ "$TAG" = "$MASTER_TAG" ] ; then
+    echo -e "\e[33mTool $image is under development. Building and pushing stable version rejected. Skipping....\e[39m"
        continue
   fi
 
@@ -68,7 +69,6 @@ build-and-test-$image:
 EOF
 
   # Add testing and readme update only in master branch (when tag is latest-stable)
-  MASTER_TAG="latest-stable"
   if [ "$TAG" = "$MASTER_TAG" ]; then
     cat >> ${GENERATED_CONFIG} << EOF
     - pytest -sk "not dev" --basetemp=".tmp/" --strict $image
