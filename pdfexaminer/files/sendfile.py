@@ -1,32 +1,65 @@
-
+import time
+from tqdm import tqdm
+import threading
 import sys
 import requests
-import json
+import argparse
 
-if len(sys.argv) > 1:
-        url = 'https://www.pdfexaminer.com/pdfapi.php'
-        file_to_send = sys.argv[1]
-        files = {'sample[]': open(file_to_send, 'rb')}
-        print ("Sending >> " + file_to_send + " <<")
+# Progress bar
+def progress_bar(stop_thread):
+    t2 = threading.currentThread()
+    with tqdm(total=100, file=sys.stdout) as pbar:
+        while getattr(t2, "run", True):
+            time.sleep(0.5)
+            pbar.update(10)
 
-        # Summary (-s) or set output format
-        if len(sys.argv) > 2:
-                if sys.argv[2] != '-s':
-                        datatype = {'type':sys.argv[2]}
-                else:
-                        datatype = {'type':'json'}
-        else:
-                datatype = {'type':'json'}
 
-        # Post request
-        r = requests.post(url, files=files, data=datatype)
+# Parse passed arguments
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='PDFExaminer')
+    parser.add_argument('-i', '--input', required=True, help="")
+    parser.add_argument('-f', '--format', required=False, help="json, xml, ioc, php, severity, rating, is_malware, text")
+    return parser.parse_args()
 
-        # If -s set, show only summary
-        if len(sys.argv) > 2 and sys.argv[2] == '-s':
-                j = json.loads(r.text.strip())
-                print ("\nSummary: " + j['summary'] + "\nIs malware:" + j['is_malware'])
-        else:
-                print(r.text.strip())
-else:
-        print ("Usage:    [pdf file] [options]\nOptions:\n json\n xml \n ioc\n php\n severity\n rating\n is_malware\n text\n summary (-s)\n ")
+
+# Send file
+def send_file(input, datatype):
+    t = threading.currentThread()
+    url = 'https://www.pdfexaminer.com/pdfapi.php'
+    print("Sending " + input)
+    files = {'sample[]': open(input, 'rb')}
+
+    # Post request
+    r = requests.post(url, files=files, data=datatype)
+
+    print(r.text.strip())
+
+
+def main():
+    args = parse_arguments()
+
+    # Use JSON format if not defined
+    if not args.format:
+        datatype =  {'type':'json'}
+    elif args.format in "json, xml, ioc, php, severity, rating, is_malware, text":
+        datatype = {'type':args.format}
+    else:
+        print("Unidentified format")
+        sys.exit()
+
+    t1 = threading.Thread(target=send_file, args=(args.input,datatype,))
+    t2 = threading.Thread(target=progress_bar, args=("run",))
+    t1.start()
+    t2.start()
+    t1.join()
+
+    # Stop progress bar when send_file finishes
+    if not t1.isAlive():
+        t2.run = False
+        t2.join()
+
+
+if __name__ == '__main__':
+    main()
+
 
