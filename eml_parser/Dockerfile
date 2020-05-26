@@ -22,8 +22,8 @@ COPY eml2json.py /home/appuser/.local/bin/eml2json
 RUN apt-get update && \
     apt-get install --no-install-recommends -y python3 && \
     adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
-    chown -R appuser:appuser /home/appuser/ && \
     mkdir -p /home/appuser/tool && \
+    chown -R appuser:appuser /home/appuser/ && \
     rm -rf /var/lib/apt/lists/*
 
 USER appuser
