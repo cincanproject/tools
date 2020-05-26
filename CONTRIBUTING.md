@@ -41,7 +41,7 @@ To make automatic building attempt for different versions possible in the future
 
 For example:
 
-```
+```docker
 ARG tool_version=2.6.1
 
 FROM alpine:latest
@@ -55,7 +55,7 @@ When defining ARG before any image base, value of it can be used in every stage.
 
 There is no other way to use global variables currently.
 
-Tool itself should be latest _stable_ version, and it is installed with previously mentioned TOOL_VERSION environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
+Tool itself should be latest _stable_ version, and it is installed with previously mentioned `TOOL_VERSION` environment variable. In this way, we can maintain the actual version of the tool and described version to be identical.
 
 #### Dependency versions and base image version
 
@@ -73,7 +73,7 @@ If something is downloaded in build phase from external source(s) as zip etc., u
 
 Example from Ghidra:
 
-```
+```docker
 ENV GHIDRA_SHA256 3d61de711b7ea18bdee3ed94c31429e4946603b3e7d082cca5e949bbd651f051
 
 RUN wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip && \
@@ -141,7 +141,7 @@ Multiple sources can be added for different package providers/upstreams.
 Example about multiple sources can be seen in [here.](tshark/meta.json)
 It is always good to install it directly from very origin instead of other package provider to avoid middlemen.
 
-*This meta information is used to check that Docker image is up to day.* 
+*This meta information is used to check that Docker image is up to date.* 
 
 For all supported attributes and providers; see more details about upstream checking in [cincan-registry](https://gitlab.com/CinCan/cincan-registry)
 
@@ -219,7 +219,7 @@ Upgrading Dockerfile to newer version is straightforward: default value of `ARG 
 If build process is using checksums (e.g. SHA256), these should be updated as well.
 
 Example beginning of Dockerfile could look something like this:
-```
+```docker
 ARG tool_version=2.6.1
 
 FROM alpine:latest
