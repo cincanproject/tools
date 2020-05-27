@@ -57,5 +57,7 @@ WORKDIR /home/appuser
 
 USER appuser
 
+COPY .cincanignore .
+
 ENTRYPOINT ["/usr/bin/python","/peepdf/peepdf.py"]
 
