@@ -1,12 +1,5 @@
 # "Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results."
-# 
-# build:
-# docker build -t cincan/pdfexaminer .
-#
-# usage:
-# docker run -v /samples:/samples cincan/pdfexaminer /samples/input/sample.pdf [options]
-#
-# [options] = output format (default json)
+ARG tool_version=
 
 FROM python:3-alpine
 
