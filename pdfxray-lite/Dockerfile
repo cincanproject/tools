@@ -7,6 +7,8 @@
 #analyze all files in a directory:
 #docker run -v /samples:/samples cincan/pdfxray-lite -d /samples/input/ -r /samples/output/report
 
+ARG tool_version=1.0
+
 FROM alpine:3.10
 
 RUN apk update && apk add --no-cache \
@@ -16,7 +18,9 @@ RUN apk update && apk add --no-cache \
     && git clone https://github.com/9b/pdfxray_lite.git \
     && adduser -s /sbin/login -D appuser
 
+WORKDIR /home/appuser
+
 USER appuser
 
-ENTRYPOINT ["/usr/bin/python","pdfxray_lite/pdfxray_lite.py"]
+ENTRYPOINT ["/usr/bin/python","/pdfxray_lite/pdfxray_lite.py"]
 
