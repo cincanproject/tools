@@ -43,6 +43,10 @@ docker pull cincan/pdfxray-lite
 
 `$ docker run -v /samples:/samples cincan/pdfxray-lite -d /input/ -r /output/report`
 
+***Run with cincan command***
+
+`$ cincan run cincan/pdfxray-lite -f input/sample.pdf -r output/report`
+
 ## Project homepage
 
 https://github.com/9b/pdfxray_lite.git
