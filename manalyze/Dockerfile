@@ -1,4 +1,4 @@
-ARG tool_version=0e724b3b04cd10aff68ce89c3fa62dd6d2c6583a
+ARG tool_version=c0500f007c86e1c4a75fecfbbab23888e13a2231
 
 FROM debian:10-slim as build
 
