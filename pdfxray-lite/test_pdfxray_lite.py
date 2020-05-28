@@ -1,9 +1,7 @@
 from metatool import dockertools
-import pytest
 
-#@pytest.mark.dev
 
-SAMPLE_FILE="_samples/pdf/general_test_file.pdf"
+SAMPLE_FILE = "_samples/pdf/general_test_file.pdf"
 
 
 def test_help():
