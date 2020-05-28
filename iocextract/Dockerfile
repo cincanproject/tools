@@ -7,7 +7,7 @@ LABEL MAINTAINER=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 ENV ALPINE_SDK_VERSION 1.0-r0
-ENV PYTHON_DEV_VERSION 2.7.16-r1
+ENV PYTHON_DEV_VERSION 2.7.18-r0
 
 RUN apk update && apk add --no-cache \
 	alpine-sdk=$ALPINE_SDK_VERSION \
