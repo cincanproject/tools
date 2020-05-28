@@ -7,11 +7,11 @@ LABEL MAINTAINER=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 ENV ALPINE_SDK_VERSION 1.0-r0
-ENV PYTHON_DEV_VERSION 2.7.18-r0
+ENV PYTHON_DEV_VERSION 3.8.2-r0
 
 RUN apk update && apk add --no-cache \
 	alpine-sdk=$ALPINE_SDK_VERSION \
-	python-dev=$PYTHON_DEV_VERSION \
+	python3-dev=$PYTHON_DEV_VERSION \
     && pip install iocextract==$TOOL_VERSION \
     && adduser -s /sbin/login -D appuser
 
