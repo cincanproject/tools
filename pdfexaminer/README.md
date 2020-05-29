@@ -1,5 +1,3 @@
-# PDFExaminer
-
 ## Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results
 
 ## Input
@@ -11,41 +9,32 @@ PDF files
 ## Output
 
 ```
-PDFExaminer report  
-
-json,ioc,xml,php...
+json,ioc,xml,php
 ```
 
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` 
+* `latest`
 ([*pdfexaminer/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/pdfexaminer/Dockerfile))
 
 ## Usage
 
-
-***1. Clone the repository***
-
-```
-git clone https://gitlab.com/CinCan/tools
-cd tools/pdfexaminer
+Get help, using the [`cincan`](https://gitlab.com/cincan/cincan-command) tool:
+```bash
+cincan run cincan/pdfexaminer --help
 ```
 
-***2. Build OR pull the docker image***
+Analyze a PDF:
 
+```bash
+cincan run cincan/pdfexaminer --input /samples/sample.pdf --format xml
+
+    or with docker:
+
+docker run -v /samples:/samples cincan/pdfexaminer --input /samples/sample.pdf --format json
 ```
-docker build . -t cincan/pdfexaminer
-docker pull cincan/pdfexaminer
-```
-
-***3. Run the docker container***
-
-Analyse a sample in directory "/samples":
-
-`$ docker run -v /samples:/samples cincan/pdfexaminer /samples/input/sample.pdf  
-[OUTPUT FORMAT(default JSON)]`
-
 
 ## Project homepage
 
-https://github.com/mwtracker/pdfexaminer_tools
+https://github.com/mwtracker/pdfexaminer_tools  
+Python API: https://gitlab.com/cincan/pdfexaminer  
