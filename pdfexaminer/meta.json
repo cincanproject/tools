@@ -6,7 +6,8 @@
       "tool": "pdfexaminer",
       "provider": "GitLab",
       "method": "tag-release",
-      "origin": true
+      "origin": true,
+      "docker_origin": true
     }
   ]
 }
