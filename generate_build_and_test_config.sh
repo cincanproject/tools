@@ -72,7 +72,7 @@ EOF
   if [ "$TAG" = "$MASTER_TAG" ]; then
     cat >> ${GENERATED_CONFIG} << EOF
     - pytest -sk "not dev" --basetemp=".tmp/" --strict $image
-    - docker build -t cincan/"$image":"$TAG" "$image"/.
+    - docker build -t cincan/"$image":"$TAG" -t cincan/"$image":latest "$image"/.
     - docker push cincan/"$image"
     - cincanregistry --tools . utils update-readme -n "$image"
     
