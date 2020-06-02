@@ -19,7 +19,6 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | Tool name | Description | Input               | Platform |
 |-----------|-------------|---------------------|----------|
 | [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/pastelyzer) |  the paste analyzer | text  | Linux |
-| [shellcode2exe](https://gitlab.com/CinCan/tools/-/tree/master/shellcode2exe) |  Convert shellcodes into executable files, for multiple platforms. | shellcode  | Linux |
 | [sleuthkit](https://gitlab.com/CinCan/tools/-/tree/master/sleuthkit) |  A collection of command line tools that allows you to analyze disk images and recover files. | raw, ewf, vmdk, vhd  | Linux |
 | [vba2graph](https://gitlab.com/CinCan/tools/-/tree/master/vba2graph) |  Generate call graphs from VBA code | office documents such as .doc, .xls, .bas  | Linux |
 | [r2-bin-carver](https://gitlab.com/CinCan/tools/-/tree/master/r2-bin-carver) |  R2 bin carver | memory dumps  | Linux |
