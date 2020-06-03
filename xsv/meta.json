@@ -1,0 +1,12 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/BurntSushi/xsv",
+      "repository": "BurntSushi",
+      "tool": "xsv",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true
+    }
+  ]
+}
