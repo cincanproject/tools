@@ -1,13 +1,13 @@
-# Output-standardizer
+# Generate md report from Cincan's Concourse pipelines, or convert single tool output to JSON.  
 
 Generate a Markdown report from CinCan project's result files of a specific Concourse pipeline,  
 
-or standardize single tool output data from plain text into to JSON format.  
+Or standardize single tool output data from plain text into to JSON format.  
 
 ## Input
 
 ```
-cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs
+cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite and cincan/strings outputs
 ```
 
 ## Output
@@ -23,48 +23,26 @@ json / markdown
 
 ## Usage
 
-***1. Clone the repository***
 
-```
-git clone https://gitlab.com/CinCan/tools
-cd tools/output-standardizer/
-```
+Standardize pdfxray_lite report in folder "samples" using cincan-command (note that --quiet must be set):
 
-***2. Build OR pull the docker image*** 
+`$ cincan run cincan/output-standardizer json --quiet --input /samples/pdfxray_lite_report.html --output /samples/output.json -t pdfxray_lite`  
 
-```
-docker build . -t cincan/output-standardizer
-docker pull cincan/output-standardizer
-```
+Standardize binwalk output using Docker command:  
 
-***3. Run the docker container***
-
-Standardize a file in folder "samples":
-
-`$ docker run --rm -v /samples:/samples cincan/output-standardizer json -i output/binwalk_output.txt -o output/binwalk_output_standardized.json -t binwalk
+`$ docker run --rm -v /samples:/samples cincan/output-standardizer json --quiet -i output/binwalk_output.txt -o output/binwalk_output_standardized.json -t binwalk
 `  
 
+Produce a markdown report from the document-pipeline's results files:  
 
+`$ cincan run cincan/output-standardizer markdown document-pipeline /path/to/results/ -o my_report_filename`
 
-***Options***
-```  
-usage: standardizer <command> [<args>]
-
-Available commands are:
-
-     markdown       To generate Markdown report of specific type from various tool result files.
-     json           To standardize specific tool output into the JSON format.
-
-Tool used to standardize output of various tools in JSON output format or as
-Markdown report.
-
-positional arguments:
-  command     Subcommand to run. Each command has their own help.
-
-optional arguments:
-  -h, --help  show this help message and exit
-```
 
 ## Project homepage
 
 [https://gitlab.com/CinCan/tools-output-standardization](https://gitlab.com/CinCan/tools-output-standardization)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
