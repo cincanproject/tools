@@ -18,6 +18,8 @@ Flawfinder report
 
 ## Usage
 
+`$ cincan run cincan/flawfinder sample.c`
+
 `$ docker run -v /samples:/samples cincan/flawfinder /samples/sample.c`
 
 ## Project homepage
