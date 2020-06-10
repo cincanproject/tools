@@ -1,26 +1,33 @@
-import lzma
 import os
-from os.path import basename
 import shutil
 
 from contextlib import contextmanager
 
-from pathlib import Path
-from tempfile import mktemp
-
 from metatool import dockertools
 import pytest
 
-def test_help():
-    tool = dockertools.tool_with_file(__file__)
+SAMPLE_FILE="_samples/txt/attachments.eml"
+
+def test_help(tool):
     out = tool.run_get_string([])
     assert out.startswith("usage: eml2json")
 
-def test_samparse_plugin(mail):
+def test_parsing(tool, tmp_path):
+    out = tool.run_get_string([SAMPLE_FILE])
+    assert ".pdf" in out
+
+def test_attachment_extract(tool, tmp_path):
+    d = tmp_path / "eml_parser_tmp"
+    d.mkdir()
+    tool.output_dirs = [d.relative_to(os.getcwd())]
+    out = tool.run_get_string([SAMPLE_FILE, "-e"])
+    assert ".pdf" in out
+    assert os.path.isfile("北京 2017年12月02-03日 销售主管 确认n.pdf")
+
+@pytest.fixture(scope='function')
+def tool(request):
     tool = dockertools.tool_with_file(__file__)
-    tool.output_dirs = [mail.relative_to(os.getcwd())]
-    out = tool.run_get_string([str(mail)])
-    assert "北京 2017年12月02-03日 销售主管 确认n.pdf" in out
+    yield tool
 
 @pytest.fixture(scope="module", autouse=True)
 def delete_temporary_files(request, tmp_path_factory):
