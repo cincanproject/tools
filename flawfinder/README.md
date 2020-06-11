@@ -1,4 +1,4 @@
-# "Finds possible security weaknesses in C/C++ source code"
+# "Flawfinder - Finds possible security weaknesses in C/C++ source code"
 
 ## Supported tags and respective `Dockerfile` links
 * `latest` 
