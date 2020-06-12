@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 	&& unzip oledump_V$TOOL_VERSION.zip -d /oledump
  
 
-FROM python:2-slim
+FROM python:2-alpine
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
@@ -25,8 +25,8 @@ ENV TOOL_VERSION=$tool_version
 COPY --from=builder /oledump /oledump
 
 RUN pip install olefile==0.46 && \
-    groupadd -g 1000 appuser && \
-    useradd -u 1000 -g appuser -s /sbin/nologin appuser
+    addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser
 
 USER appuser
 
