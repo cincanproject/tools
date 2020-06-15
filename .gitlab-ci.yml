@@ -8,7 +8,7 @@ cache:
      - GREEN_MASTER_COMMIT.txt
 
 before_script:
-  - apk add grep python3 git
+  - apk add grep python3 py3-pip git
 
 stages:
   - generate-build-and-test-config

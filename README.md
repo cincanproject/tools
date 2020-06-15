@@ -28,6 +28,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [osslsigncode](https://gitlab.com/CinCan/tools/-/tree/master/osslsigncode) |  osslsigncode | exe/sys/dll  | Linux |
 | [headless-thunderbird](https://gitlab.com/CinCan/tools/-/tree/master/headless-thunderbird) |  Headless Thunderbird to screenshot email messages | eml  | Linux |
 | [eml_parser](https://gitlab.com/CinCan/tools/-/tree/master/eml_parser) |  Library to parse .eml files | eml  | Linux |
+| [xsv](https://gitlab.com/CinCan/tools/-/tree/master/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
 | [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/output-standardizer) |  Output-standardizer | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs  | Linux |
 | [binwalk](https://gitlab.com/CinCan/tools/-/tree/master/binwalk) |  Firmware Analysis Tool | binary  | Linux |
 | [binary-analysis-tool-bat](https://gitlab.com/CinCan/tools/-/tree/master/binary-analysis-tool-bat) |  Binary Analysis Tool BAT with extra tools | binary  | Linux |
