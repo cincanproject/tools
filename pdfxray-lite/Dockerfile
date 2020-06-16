@@ -9,6 +9,13 @@
 
 ARG tool_version=1.0
 
+FROM alpine:latest
+LABEL maintainer=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+
 FROM alpine:3.10
 
 RUN apk update && apk add --no-cache \
