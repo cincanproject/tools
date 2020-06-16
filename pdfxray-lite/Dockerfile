@@ -16,8 +16,6 @@ ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
 
-FROM alpine:3.10
-
 RUN apk update && apk add --no-cache \
 	    git \
 	    python \
