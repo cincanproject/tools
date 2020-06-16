@@ -9,11 +9,12 @@ def tool_with_file(
     image: Optional[str] = None,
     pull: Optional[bool] = False,
 ) -> ToolImage:
-    path = pathlib.Path(file).parent.name
+    path = pathlib.Path(file).parent
+    name = path.name
     tag = None
     if use_tag:
-        tag = "test_{}".format(path)
+        tag = "test_{}".format(name)
         # Tag parameter overrides other
         image = None
         pull = False
-    return ToolImage(name=path, path=path, tag=tag, image=image, pull=pull)
+    return ToolImage(name=name, path=str(path), tag=tag, image=image, pull=pull)

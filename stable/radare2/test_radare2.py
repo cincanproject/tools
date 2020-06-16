@@ -1,6 +1,6 @@
-from metatool import dockertools
+from testing import dockertools
 
-SAMPLE_FILE = "_samples/amd64/hello_world_r2"
+SAMPLE_FILE = "samples/amd64/hello_world_r2"
 
 
 def test_entrypoint():
