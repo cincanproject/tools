@@ -1,12 +1,10 @@
-ARG tool_version=master
+ARG tool_version=511ecd59d54c6a3424178af6b99e4c1f699274c4
 FROM debian:10 as build
 
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-# TODO: change repo when pull request is ready
-ENV TOOL_REPO=kirk-sayre-work
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,7 +19,7 @@ RUN apt-get update && \
         build-essential \
     && wget -q https://bootstrap.pypa.io/get-pip.py && \
     pypy get-pip.py && \
-    wget -q https://github.com/$TOOL_REPO/ViperMonkey/archive/$TOOL_VERSION.zip && \
+    wget -q https://github.com/decalage2/ViperMonkey/archive/$TOOL_VERSION.zip && \
     unzip -q $TOOL_VERSION.zip && \
     mv ViperMonkey-$TOOL_VERSION vipermonkey && \
     pypy -m pip install --user -r vipermonkey/requirements.txt
