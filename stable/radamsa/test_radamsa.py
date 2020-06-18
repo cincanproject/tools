@@ -1,9 +1,9 @@
 import pathlib
 import pytest
 import shutil
-from metatool import dockertools
+from testing import dockertools
 
-SAMPLE_FILE="_samples/txt/hello.txt"
+SAMPLE_FILE="samples/txt/hello.txt"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import json
 
-SAMPLE_FILE="_samples/pcap/ping_localhost.pcap"
+SAMPLE_FILE="samples/pcap/ping_localhost.pcap"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

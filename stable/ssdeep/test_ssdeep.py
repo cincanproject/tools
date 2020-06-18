@@ -1,6 +1,6 @@
-from metatool import dockertools
+from testing import dockertools
 
-SAMPLE_FILE="_samples/android_apk/selendroid-test-app.apk"
+SAMPLE_FILE="samples/android_apk/selendroid-test-app.apk"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

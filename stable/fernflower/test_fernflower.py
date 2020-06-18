@@ -1,9 +1,9 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 import os
 import shutil
 
-SAMPLE_FILE="_samples/android_apk/selendroid-test-app-dex2jar.jar"
+SAMPLE_FILE="samples/android_apk/selendroid-test-app-dex2jar.jar"
 
 def test_tools_help(tool):
     out = tool.run_get_string([])

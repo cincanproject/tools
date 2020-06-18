@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/disks/7-ntfs-undel.dd"
+SAMPLE_FILE="samples/disks/7-ntfs-undel.dd"
 
 def test_tools_help(tool):
     out = tool.run_get_string(["help"])

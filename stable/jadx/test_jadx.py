@@ -1,10 +1,10 @@
 from os import path, getcwd
 import shutil
 import pytest
-from metatool import dockertools
+from testing import dockertools
 from pathlib import Path
 
-SAMPLE_FILE="_samples/android_apk/selendroid-test-app-dex2jar.jar"
+SAMPLE_FILE="samples/android_apk/selendroid-test-app-dex2jar.jar"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

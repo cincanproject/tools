@@ -1,11 +1,11 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 import shutil
 import json
 import os
 
 # Use same sample file than ilspy is using
-SAMPLE_FILE = "_samples/msdos/suspicious_dos_sample.exe"
+SAMPLE_FILE = "samples/msdos/suspicious_dos_sample.exe"
 
 # Should be identical for adding '--help' argument.
 

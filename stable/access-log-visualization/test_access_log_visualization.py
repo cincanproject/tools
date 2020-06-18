@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/log/access.log"
+SAMPLE_FILE="samples/log/access.log"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

@@ -1,9 +1,9 @@
-from metatool import dockertools
+from testing import dockertools
 from pathlib import Path
 import pytest
 import shutil
 # Filepath relative to project root directory (expected location to call pytest)
-SAMPLE_FILE="_samples/msdos/suspicious_dos_sample.exe"
+SAMPLE_FILE="samples/msdos/suspicious_dos_sample.exe"
 _tmp_path_factory = None
 
 # Should be identical for testing '--help' argument

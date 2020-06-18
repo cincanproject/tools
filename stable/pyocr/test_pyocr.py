@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/image/post-scam-sms.png"
+SAMPLE_FILE="samples/image/post-scam-sms.png"
 
 def test_entrypoint():
     tool = dockertools.tool_with_file(__file__)

@@ -1,4 +1,4 @@
-from metatool import dockertools
+from testing import dockertools
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

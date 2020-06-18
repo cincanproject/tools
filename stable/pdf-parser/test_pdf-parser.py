@@ -1,8 +1,8 @@
-from metatool import dockertools
+from testing import dockertools
 import re
 import pytest
 
-SAMPLE_FILE = "_samples/pdf/pdf_parser_test.pdf"
+SAMPLE_FILE = "samples/pdf/pdf_parser_test.pdf"
 pattern = re.compile("^\\s*(\\S+)\\s+(\\S.*)$")
 
 def test_help():

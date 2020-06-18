@@ -1,8 +1,8 @@
 import os
 import zipfile
-from metatool import dockertools
+from testing import dockertools
 
-SAMPLE = '_samples/memory/Win7SP1x86_23418.raw'
+SAMPLE = 'samples/memory/Win7SP1x86_23418.raw'
 
 def test_entry_point():
     tool = dockertools.tool_with_file(__file__)
@@ -18,7 +18,7 @@ def test_help():
 
 def test_do_kdbgscan():
     with zipfile.ZipFile(SAMPLE + '.zip', 'r') as f:
-        f.extractall('_samples/memory/')
+        f.extractall('samples/memory/')
     tool = dockertools.tool_with_file(__file__)
 
     out = tool.run_get_string(['kdbgscan', '-f', SAMPLE])

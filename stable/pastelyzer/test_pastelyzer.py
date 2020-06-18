@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/txt/base64.txt"
+SAMPLE_FILE="samples/txt/base64.txt"
 
 def test_tools_help(tool):
     out = tool.run_get_string(["-h"])

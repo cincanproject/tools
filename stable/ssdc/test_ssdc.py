@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/disks/"
+SAMPLE_FILE="samples/disks/"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

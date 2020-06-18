@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/pdf/javascript_test.pdf"
+SAMPLE_FILE="samples/pdf/javascript_test.pdf"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

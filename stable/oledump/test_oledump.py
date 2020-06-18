@@ -1,6 +1,6 @@
-from metatool import dockertools
+from testing import dockertools
 
-SAMPLE_FILE="_samples/msoffice/testfile.docm"
+SAMPLE_FILE="samples/msoffice/testfile.docm"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)

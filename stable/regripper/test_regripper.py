@@ -8,7 +8,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from tempfile import mktemp
 
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
 def test_help():
@@ -49,7 +49,7 @@ def extract_lzma(tmp_path, path):
 
 @pytest.fixture(scope='function')
 def test_data_dir():
-    return Path('_samples/msdos/')
+    return Path('samples/msdos/')
 
 @pytest.fixture(scope='function')
 def sam_hive(tmp_path, test_data_dir):

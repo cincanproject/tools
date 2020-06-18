@@ -1,8 +1,8 @@
 import os
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE = "_samples/compressed/tampered_sample.bin"
+SAMPLE_FILE = "samples/compressed/tampered_sample.bin"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)
