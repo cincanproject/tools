@@ -3,7 +3,7 @@
 
 ARG tool_version=0.1.3
 
-FROM debian:9-slim
+FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
 
@@ -14,14 +14,14 @@ ENV SNOWMAN_SHA256 6baf2e2dc2e66e43f708b5ee7490b08676e0756a04f059b3b6be5fe3ec385
 
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    unzip=6.0-21+deb9u2 \
-    wget=1.18-5+deb9u3 \
-    ca-certificates=20161130+nmu1+deb9u1 \
-    build-essential=12.3 \
-    cmake=3.7.2-1 \
-    libboost-dev=1.62.0.1 \
-    qt5-default=5.7.1+dfsg-3+deb9u1 \
-    ninja-build=1.7.2-1 \
+    unzip \
+    wget \
+    ca-certificates \
+    build-essential \
+    cmake \
+    libboost-dev \
+    qt5-default \
+    ninja-build \
     && wget -q "https://github.com/yegord/snowman/archive/v${TOOL_VERSION}.zip" \
     && echo "${SNOWMAN_SHA256}  v${TOOL_VERSION}.zip" | sha256sum -c - \
     && unzip "v${TOOL_VERSION}.zip" \
@@ -36,6 +36,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && chown -R appuser /tmp/snowman.ed3979dabdbc311f6c973f6a61c8c6b220b0e41b
 
 USER appuser
+WORKDIR /home/appuser
 
 ENTRYPOINT ["/snowman-master/build/nocode/nocode"]
 CMD ["--help"]
