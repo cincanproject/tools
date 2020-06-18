@@ -39,7 +39,7 @@ services:
 before_script:
   - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - pip3 install pip --upgrade && pip3 install tox pytest-custom_exit_code && pip3 install . && pip3 install cincan-registry
+  - pip3 install pip --upgrade && pip3 install tox && pip3 install . && pip3 install cincan-registry
 
 stages:
   - build-and-test
@@ -110,7 +110,7 @@ EOF
 
   # Run test and build in all cases, suppress error here if no tests
     cat >> ${GENERATED_CONFIG} << EOF
-    - tox "$image" --suppress-no-test-exit-code
+    - tox -- --suppress-no-test-exit-code "$image"
     - docker build -t cincan/"$name":"$DEV_TAG" "$image"/.
 EOF
   # Pushing development images in 'master' branch
