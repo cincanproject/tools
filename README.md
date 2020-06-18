@@ -67,6 +67,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [cfr](https://gitlab.com/CinCan/tools/-/tree/master/cfr) |  Class File Reader - another java decompiler | .jar -file  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
+| [vipermonkey](https://gitlab.com/CinCan/tools/-/tree/master/vipermonkey) |  A VBA parser and emulation engine to analyze malicious macros | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [oletools](https://gitlab.com/CinCan/tools/-/tree/master/oletools) |  Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/jadx) |  Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
