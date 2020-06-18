@@ -55,7 +55,8 @@ NO_JOBS_GENERATED_FOR_PIPELINE=true
 
 for image in $(git diff --name-only "$GREEN_MASTER"..HEAD $STABLE_DIR |grep -Po "^[$STABLE_DIR/]+[^/]+(?=/)"|uniq)
 do
-  name=$(cut -d "/" -f2 <<< "$image")
+  echo "$image"
+  name=$(echo "$image" | cut -d "/" -f2)
   if [ ! -f "$image/Dockerfile" ]
   then
       echo -e "\e[33mNo Dockerfile for: $name.\e[39m"
@@ -89,7 +90,7 @@ done
 for image in $(git diff --name-only "$GREEN_MASTER"..HEAD $DEV_DIR |grep -Po "^[$DEV_DIR/]+[^/]+(?=/)"|uniq)
 do
 
-  name=$(cut -d "/" -f2 <<< "$image")
+  name=$(echo "$image" | cut -d "/" -f2)
   if [ ! -f "$image/Dockerfile" ]
   then
       echo -e "\e[33mNo Dockerfile for: $name.\e[39m"
