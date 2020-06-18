@@ -2,8 +2,8 @@
   "upstreams": [
     {
       "uri": "https://github.com/decalage2/ViperMonkey",
-      "repository": "ViperMonkey",
-      "tool": "vipermonkey",
+      "repository": "decalage2",
+      "tool": "ViperMonkey",
       "provider": "GitHub",
       "method": "commit",
       "origin": true,
