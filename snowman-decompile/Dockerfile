@@ -37,6 +37,5 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 USER appuser
 WORKDIR /home/appuser
-WORKDIR /home/appuser
 ENTRYPOINT ["/snowman-master/build/nocode/nocode"]
 CMD ["--help"]
