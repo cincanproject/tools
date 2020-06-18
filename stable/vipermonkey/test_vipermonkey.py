@@ -1,7 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/msoffice/very_suspicious.doc"
+SAMPLE_FILE="samples/msoffice/very_suspicious.doc"
 
 def test_help(tool):
     out = tool.run_get_string([])
