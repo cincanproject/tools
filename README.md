@@ -57,7 +57,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
 | [radare2](https://gitlab.com/CinCan/tools/-/tree/master/radare2) |  Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.4.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
 | [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/snowman-decompile) |  Snowman-decompile | ELF Mach-O PE LE  | Linux |
-| [flawfinder](https://gitlab.com/CinCan/tools/-/tree/master/flawfinder) |  Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
+| [flawfinder](https://gitlab.com/CinCan/tools/-/tree/master/flawfinder) |  Flawfinder - Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/ghidra-decompiler) |  Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
 | [clamav](https://gitlab.com/CinCan/tools/-/tree/master/clamav) |  ClamAV virus scanner:  Release 0.102.2 | Any file or directory.  | Linux |
 | [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/radamsa) |  Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer. | Any data  | Linux |
