@@ -3,10 +3,10 @@ import shutil
 
 from contextlib import contextmanager
 
-from metatool import dockertools
+from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/txt/attachments.eml"
+SAMPLE_FILE="samples/txt/attachments.eml"
 
 def test_help(tool):
     out = tool.run_get_string([])
