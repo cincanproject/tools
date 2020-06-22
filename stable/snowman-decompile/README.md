@@ -40,7 +40,11 @@ docker pull cincan/snowman-decompile
 
 Analyse a sample in directory "/samples":
 
-`$ docker run --rm -v $(pwd):/samples cincan/snowman-decompile -v /samples/sample.exe`  
+`$ docker run --rm -v $(pwd):/samples cincan/snowman-decompile -v /samples/sample.exe`
+
+or with cincan command:
+
+`$ cincan run cincan/snowman-decompile /samples/sample.exe`
 
 
 
