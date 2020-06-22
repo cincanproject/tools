@@ -1,11 +1,13 @@
 ARG tool_version=2.0.11
+ARG SHA256=f67ed6af5fd9e15737908233f9c4563fb5c5702d3a023b30d3c03d21c7bcd744
 FROM alpine:latest
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
+ARG SHA256
 ENV TOOL_VERSION=$tool_version
 
-ENV FLAWFINDER_SHA256 f67ed6af5fd9e15737908233f9c4563fb5c5702d3a023b30d3c03d21c7bcd744
+ENV FLAWFINDER_SHA256=$SHA256 
 
 RUN apk update && apk add --no-cache \
     make \
@@ -16,7 +18,8 @@ RUN wget -q -O "flawfinder-${TOOL_VERSION}.zip" "https://github.com/david-a-whee
     && unzip -q "flawfinder-${TOOL_VERSION}.zip" \
     && cd flawfinder-${TOOL_VERSION} \
     && make install \
-    && adduser -s /sbin/nologin -D appuser
+    && adduser -s /sbin/nologin -D appuser \
+    && rm "../flawfinder-${TOOL_VERSION}.zip"
 
 WORKDIR /home/appuser/
 USER appuser
