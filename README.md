@@ -27,8 +27,9 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [keyfinder](https://gitlab.com/CinCan/tools/-/tree/master/keyfinder) |  Keyfinder | filesystem, APK  | Linux |
 | [osslsigncode](https://gitlab.com/CinCan/tools/-/tree/master/osslsigncode) |  osslsigncode | exe/sys/dll  | Linux |
 | [headless-thunderbird](https://gitlab.com/CinCan/tools/-/tree/master/headless-thunderbird) |  Headless Thunderbird to screenshot email messages | eml  | Linux |
-| [eml_parser](https://gitlab.com/CinCan/tools/-/tree/master/eml_parser) |  Library to parse .eml files | eml  | Linux |
-| [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/output-standardizer) |  Output-standardizer | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite, cincan/strings outputs  | Linux |
+| [eml_parser](https://gitlab.com/CinCan/tools/-/tree/master/eml_parser) |  Parse .eml email files | eml  | Linux |
+| [xsv](https://gitlab.com/CinCan/tools/-/tree/master/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
+| [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/output-standardizer) |  Generate md report from Cincan's Concourse pipelines, or convert single tool output to JSON.   | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite and cincan/strings outputs  | Linux |
 | [binwalk](https://gitlab.com/CinCan/tools/-/tree/master/binwalk) |  Firmware Analysis Tool | binary  | Linux |
 | [binary-analysis-tool-bat](https://gitlab.com/CinCan/tools/-/tree/master/binary-analysis-tool-bat) |  Binary Analysis Tool BAT with extra tools | binary  | Linux |
 | [access-log-visualization](https://gitlab.com/CinCan/tools/-/tree/master/access-log-visualization) |  Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
@@ -66,6 +67,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [cfr](https://gitlab.com/CinCan/tools/-/tree/master/cfr) |  Class File Reader - another java decompiler | .jar -file  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
+| [vipermonkey](https://gitlab.com/CinCan/tools/-/tree/master/vipermonkey) |  A VBA parser and emulation engine to analyze malicious macros | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [oletools](https://gitlab.com/CinCan/tools/-/tree/master/oletools) |  Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/jadx) |  Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |

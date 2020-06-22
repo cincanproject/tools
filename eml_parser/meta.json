@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/GOVCERT-LU/eml_parser",
+      "repository": "GOVCERT-LU",
+      "tool": "eml_parser",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
