@@ -3,7 +3,7 @@
     {
       "uri": "https://github.com/yegord/snowman",
       "repository": "yegord",
-      "tool": "snowman-decompile",
+      "tool": "snowman",
       "provider": "GitHub",
       "method": "tag-release",
       "origin": true,
