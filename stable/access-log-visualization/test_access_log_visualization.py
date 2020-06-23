@@ -11,4 +11,7 @@ def test_help():
 def test_with_log():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["-i", SAMPLE_FILE])
-    assert "[NbConvertApp] Writing" in out.splitlines()[-1]
+    for line in out.splitlines():
+        if line.startswith("[NbConvertApp] Writing"):
+            return
+    assert False
