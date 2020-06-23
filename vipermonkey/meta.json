@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/decalage2/ViperMonkey",
+      "repository": "decalage2",
+      "tool": "ViperMonkey",
+      "provider": "GitHub",
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

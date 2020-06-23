@@ -27,7 +27,7 @@ services:
   - docker:dind
 
 before_script:
-  - apk add grep git python3
+  - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
   - pip3 install pip --upgrade && pip3 install pytest && pip3 install . && pip3 install cincan-registry
 
@@ -72,7 +72,7 @@ EOF
   if [ "$TAG" = "$MASTER_TAG" ]; then
     cat >> ${GENERATED_CONFIG} << EOF
     - pytest -sk "not dev" --basetemp=".tmp/" --strict $image
-    - docker build -t cincan/"$image":"$TAG" "$image"/.
+    - docker build -t cincan/"$image":"$TAG" -t cincan/"$image":latest "$image"/.
     - docker push cincan/"$image"
     - cincanregistry --tools . utils update-readme -n "$image"
     

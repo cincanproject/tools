@@ -57,6 +57,8 @@ RUN chown -R appuser:appuser /ghidra
 USER appuser
 WORKDIR /home/appuser/
 
+COPY .cincanignore .
+
 # Define ghidra location for script, it is expecting $GHIDRA_HOME variable
 ENV GHIDRA_HOME /ghidra
 
