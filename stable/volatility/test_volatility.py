@@ -23,5 +23,4 @@ def test_do_kdbgscan():
 
     out = tool.run_get_string(['kdbgscan', '-f', SAMPLE])
     os.remove(SAMPLE)
-    assert out.startswith('**************************************************\n'
-    'Instantiating KDBG using:')
+    assert out.startswith('**************************************************\nInstantiating KDBG using:')
