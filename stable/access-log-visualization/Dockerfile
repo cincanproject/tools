@@ -23,7 +23,7 @@ COPY scripts/access-log.ipynb scripts/entrypoint.py scripts/testing.ipynb /home/
 
 USER appuser
 
-WORKDIR /home/appuser
+WORKDIR /home/appuser/
 
 RUN jupyter migrate \
 	&& jupyter nbconvert --to html --execute testing.ipynb --output testing.html
