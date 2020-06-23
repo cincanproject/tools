@@ -1,5 +1,5 @@
-ARG tool_version=1.11.6
-FROM python:3-slim-buster as build
+ARG tool_version=1.14.0
+FROM debian:10-slim as build
 
 LABEL MAINTAINER=cincan.io
 
@@ -7,21 +7,24 @@ ARG tool_version
 ENV TOOL_VERSION=$tool_version
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN pip3 install --user eml-parser==$TOOL_VERSION
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y python3-pip && \
+    pip3 install --no-cache-dir --user eml-parser==$TOOL_VERSION
 
-FROM python:3-slim-buster as env
+FROM debian:10-slim as env
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-RUN  adduser --shell /sbin/nologin --disabled-login --gecos "" appuser
-
 COPY --from=build /root/.local /home/appuser/.local
-COPY eml_to_json.py /home/appuser/.local/bin/eml2json
+COPY eml2json.py /home/appuser/.local/bin/eml2json
 
-RUN mkdir -p /home/appuser/tool && \
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y python3 && \
+    adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
+    mkdir -p /home/appuser/tool && \
     chown -R appuser:appuser /home/appuser/ && \
-    chmod +x /home/appuser/.local/bin/eml2json
+    rm -rf /var/lib/apt/lists/*
 
 USER appuser
 ENV PATH=/home/appuser/.local/bin:$PATH

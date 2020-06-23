@@ -1,6 +1,6 @@
 ARG tool_version=4.4.0
 
-FROM alpine:edge AS builder
+FROM alpine:latest AS builder
 
 LABEL MAINTAINER=cincan.io
 
