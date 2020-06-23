@@ -37,7 +37,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [regripper](https://gitlab.com/CinCan/tools/-/tree/master/regripper) |  Extract data from Windows registry | Windows registry hive files  | Linux |
 | [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
 | [pe-scanner](https://gitlab.com/CinCan/tools/-/tree/master/pe-scanner) |  Get information of a PE (portable executable) file | PE/EXE/DLL  | Linux |
-| [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/manalyze) |  Manalyze | PE files  | Linux |
+| [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/manalyze) |  Manalyze - a static analyzer for PE executables | PE files  | Linux |
 | [python-extract-code](https://gitlab.com/CinCan/tools/-/tree/master/python-extract-code) |  Extract code | PE  | Linux |
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/peframe) |  PEframe | PE  | Linux |
 | [ioc_parser](https://gitlab.com/CinCan/tools/-/tree/master/ioc_parser) |  A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
