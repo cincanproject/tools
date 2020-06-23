@@ -1,5 +1,12 @@
 #!/bin/bash
 TAG=${TAG:-latest}
+DEV_TAG="dev"
+MASTER_TAG="latest-stable"
+STABLE_DIR="stable"
+DEV_DIR="development"
+
+
+echo "$CI_COMMIT_BRANCH"
 
 # Exit on fail immediately
 set -e
@@ -23,13 +30,16 @@ fi
 cat >> ${GENERATED_CONFIG} << EOF
 image: docker:stable
 
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+
 services:
   - docker:dind
 
 before_script:
   - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - pip3 install pip --upgrade && pip3 install pytest && pip3 install . && pip3 install cincan-registry
+  - pip3 install pip --upgrade && pip3 install tox && pip3 install . && pip3 install cincan-registry
 
 stages:
   - build-and-test
@@ -41,21 +51,49 @@ echo -e "\e[36m $(git diff --name-only "$GREEN_MASTER"..HEAD|grep -Po "^[^/]+(?=
 # Store information if there is no jobs generated
 NO_JOBS_GENERATED_FOR_PIPELINE=true
 
-for image in $(git diff --name-only "$GREEN_MASTER"..HEAD|grep -Po "^[^/]+(?=/)"|uniq)
-do
+# Check diff for tools in 'stable' folder
 
+for image in $(git diff --name-only "$GREEN_MASTER"..HEAD $STABLE_DIR |grep -Po "^[$STABLE_DIR/]+[^/]+(?=/)"|uniq)
+do
+  name=$(echo "$image" | cut -d "/" -f2)
   if [ ! -f "$image/Dockerfile" ]
   then
-      echo -e "\e[33mNo Dockerfile for: $image.\e[39m"
+      echo -e "\e[33mNo Dockerfile for: $name.\e[39m"
       continue
   fi
+  # Initial checks pass, real jobs exist
+  NO_JOBS_GENERATED_FOR_PIPELINE=false
+  cat >> ${GENERATED_CONFIG} << EOF
 
-  # Skip whole tool if it is dev version (meaning it has dev-marked tests) and this is master branch (meaning that tag is latest-stable)
-  MASTER_TAG="latest-stable"
-  PYTEST_MARK_DEV="pytest.mark.dev"
-  if grep --quiet "$PYTEST_MARK_DEV" "$image"/*.py && [ "$TAG" = "$MASTER_TAG" ] ; then
-    echo -e "\e[33mTool $image is under development. Building and pushing stable version rejected. Skipping....\e[39m"
-       continue
+build-and-test-$name-stable:
+  stage: build-and-test
+  script:
+EOF
+
+  # Add testing and readme update only in master branch (when tag is latest-stable)
+    cat >> ${GENERATED_CONFIG} << EOF
+    - tox $image
+    - docker build -t "cincan/$name:$TAG" -t "cincan/$name:latest" "$image"/.
+EOF
+  if [ "$TAG" = "$MASTER_TAG" ]; then
+  cat >> ${GENERATED_CONFIG} << EOF
+    - docker push cincan/"$name"
+    - cincanregistry --tools . utils update-readme -n "$name"
+    
+EOF
+  fi
+done
+
+# Check diff for tools in 'development' folder
+
+for image in $(git diff --name-only "$GREEN_MASTER"..HEAD $DEV_DIR |grep -Po "^[$DEV_DIR/]+[^/]+(?=/)"|uniq)
+do
+
+  name=$(echo "$image" | cut -d "/" -f2)
+  if [ ! -f "$image/Dockerfile" ]
+  then
+      echo -e "\e[33mNo Dockerfile for: $name.\e[39m"
+      continue
   fi
 
   # Initial checks pass, real jobs exist
@@ -63,24 +101,21 @@ do
 
   cat >> ${GENERATED_CONFIG} << EOF
 
-build-and-test-$image:
+build-and-test-$name-dev:
   stage: build-and-test
   script:
+
 EOF
 
-  # Add testing and readme update only in master branch (when tag is latest-stable)
-  if [ "$TAG" = "$MASTER_TAG" ]; then
+  # Run test and build in all cases, suppress error here if no tests
     cat >> ${GENERATED_CONFIG} << EOF
-    - pytest -sk "not dev" --basetemp=".tmp/" --strict $image
-    - docker build -t cincan/"$image":"$TAG" -t cincan/"$image":latest "$image"/.
-    - docker push cincan/"$image"
-    - cincanregistry --tools . utils update-readme -n "$image"
-    
+    - tox -- --suppress-no-test-exit-code "$image"
+    - docker build -t cincan/"$name":"$DEV_TAG" "$image"/.
 EOF
-  else
+  # Pushing development images in 'master' branch
+  if [ "$TAG" = "$MASTER_TAG" ]; then
   cat >> ${GENERATED_CONFIG} << EOF
-    - docker build -t cincan/"$image":"$TAG" "$image"/.
-    - docker push cincan/"$image"
+    - docker push "cincan/$name"
     
 EOF
   fi
