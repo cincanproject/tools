@@ -55,7 +55,6 @@ NO_JOBS_GENERATED_FOR_PIPELINE=true
 
 for image in $(git diff --name-only "$GREEN_MASTER"..HEAD $STABLE_DIR |grep -Po "^[$STABLE_DIR/]+[^/]+(?=/)"|uniq)
 do
-  echo "$image"
   name=$(echo "$image" | cut -d "/" -f2)
   if [ ! -f "$image/Dockerfile" ]
   then

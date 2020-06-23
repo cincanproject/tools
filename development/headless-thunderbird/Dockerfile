@@ -1,4 +1,4 @@
-ARG tool_version=1:68.6.0-1~deb10u1
+ARG tool_version=1:68.7.0-1~deb10u1
 
 FROM debian:10-slim
 

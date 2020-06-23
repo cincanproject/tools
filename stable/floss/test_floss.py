@@ -1,9 +1,7 @@
-from metatool import dockertools
+from testing import dockertools
 import pytest
-import os
-import shutil
 
-SAMPLE_FILE="_samples/amd64/hello_world"
+SAMPLE_FILE="samples/amd64/hello_world"
 
 def test_tools_help(tool):
     out = tool.run_get_string([])
