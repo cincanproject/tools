@@ -18,6 +18,8 @@ def test_pe_sample():
     out = tool.run_get_string(args=['--pe', SAMPLE])
     for i, line in enumerate(out.splitlines()):
         if i == 9:
-            assert line.endswith("IMAGE_FILE_MACHINE_I386\n")
+            assert line.endswith("Subsystem:        IMAGE_SUBSYSTEM_WINDOWS_GUI")
+        if i == 16:
+            assert line.endswith("InternalName:     Innocent.exe")
 
     assert out.startswith('* Manalyze 0.9 *')
