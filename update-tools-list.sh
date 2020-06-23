@@ -11,7 +11,6 @@ write_tools_on_dir() {
 
 find "$1" -mindepth 1 -maxdepth 1 -type d 2>/dev/null |while read -r TOOL_PATH; do
 	TOOL_NAME="$(echo "${TOOL_PATH}" | sed 's:.*/::')"
-	echo "$TOOL_NAME"
 	# Add to list if a Dockerfile exists
 	if [ -f "$TOOL_PATH"/Dockerfile ]
 	then
