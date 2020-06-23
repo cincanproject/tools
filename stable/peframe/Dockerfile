@@ -17,6 +17,7 @@ RUN apk update && apk add --no-cache \
 	make \
 	openssl-dev \
 	python3-dev \
+    py3-setuptools \
 	libffi-dev \
 	libmagic \
 	&& git clone https://github.com/guelfoweb/peframe.git \
