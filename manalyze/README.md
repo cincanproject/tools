@@ -31,18 +31,20 @@ Manalyze report
 With CinCan command to get basic analysis of file:
 
 ```
-cincan run cincan/manalyze --pe sample_pe.exe
+cincan run cincan/manalyze --pe sample.exe
 ```
+
+Get help of the tool:
 
 ```
 cincan run cincan/manalyze --help
 ```
 
 
-With docker: 
+With Docker: 
 
 ```
-docker run -v /samples:/samples cincan/manalyze /samples/sample.c`
+docker run -v /samples:/samples cincan/manalyze /samples/sample.exe`
 ```
 
 ```
