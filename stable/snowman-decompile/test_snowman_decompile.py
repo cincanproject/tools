@@ -1,7 +1,7 @@
 from testing import dockertools
 import pytest
 
-SAMPLE_FILE="_samples/msdos/suspicious_dos_sample.exe"
+SAMPLE_FILE="samples/msdos/suspicious_dos_sample.exe"
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)
