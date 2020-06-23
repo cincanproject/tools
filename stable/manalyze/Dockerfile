@@ -1,4 +1,4 @@
-ARG tool_version=0e724b3b04cd10aff68ce89c3fa62dd6d2c6583a
+ARG tool_version=9a4278641e8b93f1fbdb511469784fb0069bdcbf
 
 FROM debian:10-slim as build
 
@@ -8,20 +8,19 @@ ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libboost-regex-dev \
-        libboost-program-options-dev \
-        libboost-system-dev \
-        libboost-filesystem-dev \
-        libssl-dev \
-        build-essential \
-        cmake \
-        git \
-        ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth=1 https://github.com/JusticeRage/Manalyze.git /Manalyze
+    libboost-regex-dev \
+    libboost-program-options-dev \
+    libboost-system-dev \
+    libboost-filesystem-dev \
+    libssl-dev \
+    build-essential \
+    cmake \
+    git \
+    ca-certificates
 
-WORKDIR /Manalyze
-RUN git checkout -b tool "${TOOL_VERSION}" && cmake . && make && make install
+RUN git clone --depth=1 https://github.com/JusticeRage/Manalyze.git /Manalyze && \
+    cd /Manalyze && \
+    git checkout -b tool "${TOOL_VERSION}" && cmake . && make && make install
 
 FROM debian:10-slim as env
 
