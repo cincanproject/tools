@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://gitlab.com/CinCan/pdfexaminer",
+      "repository": "cincan",
+      "tool": "pdfexaminer",
+      "provider": "GitLab",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

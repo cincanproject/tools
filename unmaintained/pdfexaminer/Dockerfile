@@ -1,22 +1,23 @@
 # "Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results."
-# 
-# build:
-# docker build -t cincan/pdfexaminer .
-#
-# usage:
-# docker run -v /samples:/samples cincan/pdfexaminer /samples/input/sample.pdf [options]
-#
-# [options] = output format (default json)
+ARG tool_version=1.0.1
 
 FROM python:3-alpine
 
 LABEL MAINTAINER=cincan.io
 
-COPY /files .
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
-RUN pip install -r requirements.txt \
-    && adduser -s /sbin/login -D appuser
+RUN apk update && apk add \
+	git>2.24.3  \
+	&& git clone https://gitlab.com/CinCan/pdfexaminer.git \
+	&& cd pdfexaminer/ \
+	&& pip install -r requirements.txt \
+	&& adduser -s /sbin/login -D appuser
 
 USER appuser
 
-ENTRYPOINT ["python", "sendfile.py"]
+WORKDIR /home/appuser
+
+ENTRYPOINT ["python", "/pdfexaminer/pdfexaminer.py"]
+CMD ["-h"]
