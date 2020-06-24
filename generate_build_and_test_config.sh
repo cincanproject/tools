@@ -1,6 +1,7 @@
 #!/bin/bash
 TAG=${TAG:-latest}
 DEV_TAG="dev"
+# latest-stable to be deprecated in future, use only 'latest' tag in stable tools
 MASTER_TAG="latest-stable"
 STABLE_DIR="stable"
 DEV_DIR="development"
@@ -73,7 +74,7 @@ EOF
   # Add testing and readme update only in master branch (when tag is latest-stable)
     cat >> ${GENERATED_CONFIG} << EOF
     - tox $image
-    - docker build -t "cincan/$name:$TAG" -t "cincan/$name:latest" "$image"/.
+    - docker build -t "cincan/$name:$TAG" -t "cincan/$name:$MASTER_TAG" "$image"/.
 EOF
   if [ "$TAG" = "$MASTER_TAG" ]; then
   cat >> ${GENERATED_CONFIG} << EOF
