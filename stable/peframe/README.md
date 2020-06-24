@@ -1,4 +1,4 @@
-# PEframe
+# PEframe - static analysis for PE executables and MS office documents
 
 An open source tool to perform static analysis on Portable Executable malware and malicious MS Office documents. 
 

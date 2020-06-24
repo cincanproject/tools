@@ -1,4 +1,4 @@
-# Snowman-decompile
+# Snowman-decompile - a native code to C/C++ decompiler
 
 A native code to C/C++ decompiler. Parses given files, decompiles them, and prints the requested
 information (by default, C++ code) to the specified files.

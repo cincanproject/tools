@@ -1,4 +1,4 @@
-# Pywhois
+# Pywhois - retrieve information from IP addresses
 
 Retrieve information of IP addresses using Python 'whois' module.
 

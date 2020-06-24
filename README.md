@@ -48,14 +48,14 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdf-parser) |  PDF-parser - parse PDF to identify fundamental elements | PDF  | Linux |
 | [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfxray-lite) |  PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects.  | PDF  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/stable/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
-| [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe | PE  | Linux |
+| [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe - static analysis for PE executables and MS office documents | PE  | Linux |
 | [pyocr](https://gitlab.com/CinCan/tools/-/tree/master/stable/pyocr) |  Optical character recognition (OCR) wrapper for Tesseract OCR engine | PDF, png, jpg  | Linux |
-| [pywhois](https://gitlab.com/CinCan/tools/-/tree/master/stable/pywhois) |  Pywhois | IP / list of IPs  | Linux |
+| [pywhois](https://gitlab.com/CinCan/tools/-/tree/master/stable/pywhois) |  Pywhois - retrieve information from IP addresses | IP / list of IPs  | Linux |
 | [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/stable/radamsa) |  Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer. | Any data  | Linux |
 | [radare2](https://gitlab.com/CinCan/tools/-/tree/master/stable/radare2) |  Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.4.0 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
 | [regripper](https://gitlab.com/CinCan/tools/-/tree/master/stable/regripper) |  Extract data from Windows registry | Windows registry hive files  | Linux |
 | [sleuthkit](https://gitlab.com/CinCan/tools/-/tree/master/stable/sleuthkit) |  A collection of command line tools that allows you to analyze disk images and recover files. | raw, ewf, vmdk, vhd  | Linux |
-| [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/stable/snowman-decompile) |  Snowman-decompile | ELF Mach-O PE LE  | Linux |
+| [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/stable/snowman-decompile) |  Snowman-decompile - a native code to C/C++ decompiler | ELF Mach-O PE LE  | Linux |
 | [ssdc](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdc) |  Ssdeep based clustering tool | *  | Linux |
 | [ssdeep](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdeep) |  Ssdeep - For computing context triggered piecewise hashes (CTPH), also called fuzzy hashes. | *  | Linux |
 | [steghide](https://gitlab.com/CinCan/tools/-/tree/master/stable/steghide) |  A Steganography program - hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
