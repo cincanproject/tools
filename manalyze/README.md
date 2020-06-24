@@ -1,6 +1,18 @@
-# Manalyze
+# Manalyze - a static analyzer for PE executables
 
-# "A static analyzer for PE executables"
+Manalyze was built for providing better analysis information than anti virus products - to tell more about why the file could be malicious.
+
+Based on project home page, it could do at least:
+
+* Identifies a PE's compiler
+* Detects packed executables
+* Applies ClamAV signatures
+* Searches for suspicious strings
+* Looks for malicious import combinations (i.e. WriteProcessMemory + CreateRemoteThread)
+* Detects cryptographic constants (just like IDA's findcrypt plugin)
+* Can submit hashes to VirusTotal
+* Verifies authenticode signatures (on Windows only)
+
 
 ## Input
 
@@ -14,39 +26,35 @@ PE files
 Manalyze report
 ```
 
-## Supported tags and respective `Dockerfile` links
-
-* `latest` 
-([*manalyze/Dockerfile*](https://gitlab.com/CinCan/tools/tree/master/manalyze))
-
-
 ## Usage
 
-***1. Clone the repository***
+With CinCan command to get basic analysis of file:
 
 ```
-git clone https://gitlab.com/CinCan/tools
-cd tools/manalyze
+cincan run cincan/manalyze --pe sample.exe
 ```
 
-***2. Build OR pull the docker image*** 
+Get help of the tool:
 
 ```
-docker build . -t cincan/manalyze
-docker pull cincan/manalyze
+cincan run cincan/manalyze --help
 ```
 
-***3. Run the docker container***
 
-Analyse a sample in directory "/samples":
+With Docker: 
 
-`$ docker run -v /samples:/samples -ti cincan/manalyze /samples/pe.exe`  
+```
+docker run -v /samples:/samples cincan/manalyze /samples/sample.exe`
+```
 
-Analyze all files in the folder:  
-
-`$ docker run -v /samples:/samples -ti cincan/manalyze -r /samples`  
-
-
+```
+docker run --rm cincan/manalyze --help
+``` 
 ## Project homepage
 
 https://github.com/JusticeRage/Manalyze
+
+
+## Licence
+
+GPLv3

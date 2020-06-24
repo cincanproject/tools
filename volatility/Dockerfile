@@ -1,12 +1,16 @@
-ARG tool_version=2.6.1
-
+ARG COMMIT="5f685e5"
+ARG tool_version="2.6.1"
+# py-crypto decprecated in 3.12
 FROM alpine:3.11
 LABEL maintainer=cincan.io
 
 ARG tool_version
-ENV TOOL_VERSION=$tool_version
+ARG COMMIT
+ENV TOOL_VERSION="$tool_version - $COMMIT"
 ENV YARA_VERSION 3.11.0
 ENV YARA_PY_VERSION 3.11.0
+
+RUN echo "$TOOL_VERSION"
 
 RUN apk --update --no-cache add \
     bison \
@@ -46,7 +50,8 @@ RUN apk add --no-cache -t build-dependencies \
     && pip install \
     colorama \
     construct \
-    distorm3 \
+    # distorm 3.5.0 breaks volatility
+    distorm3==3.4.4 \
     haystack \
     ipython \
     openpyxl \
@@ -75,8 +80,9 @@ RUN apk add --no-cache -t build-dependencies \
     && python setup.py install \
     && echo "===> Installing Volatility from source..." \
     && cd /tmp/ \
-    && git clone --recursive --branch $TOOL_VERSION https://github.com/volatilityfoundation/volatility.git \
+    && git clone --recursive https://github.com/volatilityfoundation/volatility.git \
     && cd volatility \
+    && git checkout $COMMIT \
     && python setup.py build install \
     && rm -rf /tmp/* \
     && apk del --purge build-dependencies

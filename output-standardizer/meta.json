@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://gitlab.com/CinCan/tools-output-standardization",
+      "repository": "cincan",
+      "tool": "tools-output-standardization",
+      "provider": "GitLab",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
