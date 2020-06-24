@@ -3,10 +3,11 @@
     {
       "uri": "https://github.com/9b/pdfxray_lite",
       "repository": "9b",
-      "tool": "pdfxray-lite",
+      "tool": "pdfxray_lite",
       "provider": "GitHub",
-      "method": "release",
-      "origin": true
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
     }
   ]
 }
