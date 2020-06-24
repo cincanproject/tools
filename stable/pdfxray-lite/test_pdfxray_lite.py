@@ -1,9 +1,4 @@
-<<<<<<< HEAD:development/pdfxray-lite/test_pdfxray_lite.py
 from testing import dockertools
-import pytest
-=======
-from metatool import dockertools
->>>>>>> master:pdfxray-lite/test_pdfxray_lite.py
 
 
 SAMPLE_FILE = "_samples/pdf/general_test_file.pdf"
