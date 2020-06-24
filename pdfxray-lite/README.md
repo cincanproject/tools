@@ -1,4 +1,7 @@
-# Analyze PDF files
+# PDF X-RAY Lite: Release 1.0
+
+PDF X-Ray Lite is a lightweight version of PDF X-Ray used to analyze PDF files for malicious objects. 
+
 
 ## Input
 
