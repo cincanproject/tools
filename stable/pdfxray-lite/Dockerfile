@@ -7,16 +7,26 @@
 #analyze all files in a directory:
 #docker run -v /samples:/samples cincan/pdfxray-lite -d /samples/input/ -r /samples/output/report
 
-FROM alpine:3.10
+ARG tool_version=751377faeb0d2178dcf00dd3f80652f16e04b019
+
+# On later versions of Alpine, no all python2 modules
+FROM alpine:3.11
+LABEL maintainer=cincan.io
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
 
 RUN apk update && apk add --no-cache \
 	    git \
-	    python \
+	    python2 \
 	    py-simplejson \
     && git clone https://github.com/9b/pdfxray_lite.git \
+    && cd pdfxray_lite && git checkout "$TOOL_VERSION" \
     && adduser -s /sbin/login -D appuser
+
+WORKDIR /home/appuser
 
 USER appuser
 
-ENTRYPOINT ["/usr/bin/python","pdfxray_lite/pdfxray_lite.py"]
+ENTRYPOINT ["/usr/bin/python","/pdfxray_lite/pdfxray_lite.py"]
 

@@ -45,6 +45,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/stable/pastelyzer) |  the paste analyzer | text  | Linux |
 | [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfid) |  PDFID | PDF  | Linux |
 | [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdf-parser) |  PDF-parser | PDF  | Linux |
+| [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfxray-lite) |  PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects.  | PDF  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/stable/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe | PE  | Linux |
 | [pyocr](https://gitlab.com/CinCan/tools/-/tree/master/stable/pyocr) |  Optical character recognition (OCR) wrapper for Tesseract OCR engine | PDF, png, jpg  | Linux |
@@ -70,7 +71,6 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [headless-thunderbird](https://gitlab.com/CinCan/tools/-/tree/master/development/headless-thunderbird) |  Headless Thunderbird to screenshot email messages | eml  | Linux |
 | [ioc_parser](https://gitlab.com/CinCan/tools/-/tree/master/development/ioc_parser) |  A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/development/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
-| [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/development/pdfxray-lite) |  Analyze PDF files | PDF  | Linux |
 | [scrape-website](https://gitlab.com/CinCan/tools/-/tree/master/development/scrape-website) |  |  | Linux |
 | [trufflehog](https://gitlab.com/CinCan/tools/-/tree/master/development/trufflehog) |  TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
 ### Not maintained anymore
@@ -88,7 +88,7 @@ It is very possible that some of these are not working.
 | [identify-file](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/identify-file) |  Identify-file |  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
 | [keyfinder](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/keyfinder) |  Keyfinder | filesystem, APK  | Linux |
-| [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdfexaminer) |  PDFExaminer | PDF files  | Linux |
+| [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdfexaminer) |  Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results | PDF files  | Linux |
 | [pdf-tools](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdf-tools) |  The DidierStevensSuite by Didier Stevens |  | Linux |
 | [pe-scanner](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pe-scanner) |  Get information of a PE (portable executable) file | PE/EXE/DLL  | Linux |
 | [python-extract-code](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/python-extract-code) |  Extract code | PE  | Linux |
