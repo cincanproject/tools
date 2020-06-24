@@ -1,7 +1,7 @@
 from testing import dockertools
 
 
-SAMPLE_FILE = "_samples/pdf/general_test_file.pdf"
+SAMPLE_FILE = "samples/pdf/general_test_file.pdf"
 
 
 def test_entrypoint():
