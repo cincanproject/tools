@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/InQuest/python-iocextract",
+      "repository": "InQuest",
+      "tool": "python-iocextract",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": false
+    }
+  ]
+}
