@@ -1,4 +1,4 @@
-# "Optical character recognition (OCR) wrapper for Tesseract OCR engine"
+# Optical character recognition (OCR) wrapper for Tesseract OCR engine
 
 ## Input
 

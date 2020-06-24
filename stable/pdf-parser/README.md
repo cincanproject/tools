@@ -1,4 +1,4 @@
-# PDF-parser
+# PDF-parser - parse PDF to identify fundamental elements
 
 PDF-parser tool will parse a PDF document to identify the fundamental elements used in the analyzed file
 

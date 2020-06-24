@@ -1,4 +1,4 @@
-# "The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java."
+# Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java.
 
 ## Input
 

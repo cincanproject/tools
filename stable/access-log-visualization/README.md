@@ -1,4 +1,4 @@
-# "Visualizing webserver's access log data to help detecting malicious activity"
+# Visualizing webserver's access log data to help detecting malicious activity
 
 ## Input
 

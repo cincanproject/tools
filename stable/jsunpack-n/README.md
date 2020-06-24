@@ -1,4 +1,4 @@
-# Jsunpack-n
+# Jsunpack-n - Emulates browser functionality, detect exploits etc.
 
 Emulates browser functionality when visiting an URL. Detects browser exploits, scans PDF.
 

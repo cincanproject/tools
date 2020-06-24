@@ -1,4 +1,4 @@
-# "Class File Reader - another java decompiler"
+# Class File Reader - another java decompiler
 
 Java decompiler by Lee Benfield
 

@@ -1,4 +1,4 @@
-# "Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer."
+# Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer.
 
 Radamsa is the great open source command-line fuzzer for all purposes created by Aki Helin.
 Aki describes Radamsa like this:

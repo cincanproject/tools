@@ -1,4 +1,4 @@
-# "A Tool for parsing PCAP and capturing network traffic."
+# A Tool for parsing PCAP and capturing network traffic.
 
 From Wireshark User's Guide:
 

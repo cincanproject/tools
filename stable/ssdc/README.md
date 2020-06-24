@@ -1,4 +1,4 @@
-# "Ssdeep based clustering tool"
+# Ssdeep based clustering tool
 
 ssdeep Cluster clusters files using ssdeep as a comparison algorithm.
 

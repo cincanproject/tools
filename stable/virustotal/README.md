@@ -1,4 +1,4 @@
-# "Analyze suspicious files and URLs to detect types of malware"
+# Analyze suspicious files and URLs to detect types of malware
 
 Retrieves file or url results from VirusTotal.  
 By default only sends hash of a file to check if the file has already been analyzed.  

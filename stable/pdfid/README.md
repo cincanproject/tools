@@ -1,4 +1,4 @@
-# PDFID
+# PDFID - scan PDFs for certain keywords, triage potentially malicious files
 
 Scan PDFs for certain keywords, Javascript, auto-open functions etc.
 

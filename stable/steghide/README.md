@@ -1,4 +1,4 @@
-# "A Steganography program that is able to hide data (and extract) in various kinds of image- and audio-files."
+# A Steganography program - hide data (and extract) in various kinds of image- and audio-files.
 
 ## Input
 

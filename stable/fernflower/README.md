@@ -1,4 +1,4 @@
-# "Analytical decompiler for Java"
+# Analytical decompiler for Java
 
 JetBrains developed Java decompiler for IntelliJ IDEA
 

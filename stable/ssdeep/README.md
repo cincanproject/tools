@@ -1,6 +1,4 @@
-# Ssdeep
-
-# "A Program for computing context triggered piecewise hashes (CTPH), also called fuzzy hashes."
+# Ssdeep - For computing context triggered piecewise hashes (CTPH), also called fuzzy hashes.
 
 ## Input
 

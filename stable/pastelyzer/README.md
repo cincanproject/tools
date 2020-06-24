@@ -1,4 +1,4 @@
-# "the paste analyzer"
+# pastelyzer - find security and privacy related artifacts from text documents
 
 `pastelyzer` analyzes text documents for interesting security and privacy
 related *artefacts*. Also analyzes embedded binary (eg. base64) content recursively.

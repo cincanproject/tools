@@ -1,4 +1,4 @@
-# "Firmware Analysis Tool"
+# Firmware Analysis Tool
 
 Binwalk with some optional run-time dependencies.
 

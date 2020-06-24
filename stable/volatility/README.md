@@ -1,7 +1,4 @@
-# Volatility
-
-## "An advanced memory forensics framework"
-
+# Volatility - An advanced memory forensics framework
 
 ## Supported tags and respective `Dockerfile` links
 
@@ -91,7 +88,7 @@ Three tests are included for testing the functionality of the container.
 Tox can be used for testing this tool (run from the root of this repository):
 ```
 pip install tox
-tox volatility
+tox stable/volatility
 ```
 
 ### Sample file

@@ -1,4 +1,4 @@
-# "Dex to Java decompiler"
+# jadx - Dex to Java decompiler
 
 ## Input
 
