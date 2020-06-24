@@ -3,10 +3,11 @@
     {
       "uri": "https://github.com/InQuest/python-iocextract",
       "repository": "InQuest",
-      "tool": "iocextract",
+      "tool": "python-iocextract",
       "provider": "GitHub",
       "method": "release",
-      "origin": true
+      "origin": true,
+      "docker_origin": false
     }
   ]
 }

@@ -1,25 +1,29 @@
 ARG tool_version="1.13.1"
 
-FROM python:3.6-alpine
+FROM python:alpine as builder
 
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV ALPINE_SDK_VERSION 1.0-r0
-ENV PYTHON_DEV_VERSION 3.8.3-r0
 
 RUN apk update && apk add --no-cache \
-	alpine-sdk=$ALPINE_SDK_VERSION \
-	python3-dev=$PYTHON_DEV_VERSION \
-    && pip install iocextract==$TOOL_VERSION \
-    && adduser -s /sbin/login -D appuser
+    alpine-sdk \
+    && pip install iocextract==$TOOL_VERSION --install-option="--prefix=/install"
 
-WORKDIR /home/appuser
+FROM python:alpine as runtime
 
-COPY /iocextract .
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+COPY --from=builder /install /usr/local
+
+RUN adduser -s /sbin/login -D appuser
+
+WORKDIR /home/appuser/
 
 USER appuser
 
-ENTRYPOINT ["python", "extract.py"]
+ENTRYPOINT ["iocextract"]
+CMD ["--help"]
 

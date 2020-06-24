@@ -1,63 +1,45 @@
-# "Advanced Indicator of Compromise (IOC) extractor"
+# Advanced Indicator of Compromise (IOC) extractor
 
-Extracts urls, hashes (md5, sha1, sha256, sha512), emails and ips from a file.
+Extracts urls, hashes (md5, sha1, sha256, sha512), emails and ips from a file. By default, all types are attempted to be detected.
 
 ## Input
 
 ```
-File
+File, STDIN
 ```
 
 ## Output
 
 ```
-Iocextract report. Writes results in separate directories under given output directory.
+Iocextract report. By default results are printed into STDOUT line by line. 
 ```
-
-
-## Supported tags and respective `Dockerfile` links
-
-* `latest` 
-([*iocextract/Dockerfile*](https://gitlab.com/CinCan/tools/blob/master/iocextract/Dockerfile))
-
 
 ## Usage
 
-***1. Clone the repository***
+***1. Use [cincan-command](https://gitlab.com/cincan/cincan-command)***
+
+Note that `-t` flag must be provided to act as pseudo-tty. Otherwise output is not printed to STDOUT if no other output defined.
 
 ```
-git clone https://gitlab.com/CinCan/tools
-cd dockerfiles/iocextract
+cincan run -t cincan/iocextract --input ioc_test.pdf
 ```
 
-***2. Build OR pull the docker image*** 
+
+***2. Run the docker container***
+
+Using volume mounts to get file inside container:
 
 ```
-docker build . -t cincan/iocextract
-docker pull cincan/iocextract
-```
-
-***3. Run the docker container***
-
-Load all files from /files/ and extracts hashes:  
-
-`$ docker run -v $(pwd):/files cincan/iocextract --output /files/output/ --path /files/ --hash`  
-
-Load specific file from mounted volume and exracts emails, urls:  
-
-`$ docker run -v $(pwd):/files cincan/iocextract --output /files/output/ --path /files/file -u -e`
-
-
-***Options***  
-
+docker run -tv $(pwd):/files cincan/iocextract --input /files/ioc_test.pdf
 ```  
-[--verbose, -v] Sets verbosity to high, prints lists of found urls and hashes
-[--url, -u] Extracts urls
-[--hash] Extracts hashes (md5, sha1, sha256, sha512)
-[--email, -e] Extracts emails
-[--ip, -i] Extracts ips (ipv4, ipv6)
-```
+
+
+Use `--help` to see all available options of the tool or consult project home page.
 
 ## Project homepage
 
 https://github.com/InQuest/python-iocextract
+
+## Licence
+
+GNU GPL v2
