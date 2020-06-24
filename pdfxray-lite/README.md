@@ -1,4 +1,7 @@
-# Analyze PDF files
+# PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects. 
+
+PDF X-Ray Lite is a lightweight version of PDF X-Ray used to analyze PDF files for malicious objects. 
+
 
 ## Input
 
@@ -42,6 +45,10 @@ docker pull cincan/pdfxray-lite
 ***Analyze all files in a directory***  
 
 `$ docker run -v /samples:/samples cincan/pdfxray-lite -d /input/ -r /output/report`
+
+***Run with cincan command***
+
+`$ cincan run cincan/pdfxray-lite -f input/sample.pdf -r output/report`
 
 ## Project homepage
 
