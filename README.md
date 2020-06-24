@@ -45,7 +45,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/jsunpack-n) |  Jsunpack-n | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/pdfexaminer) |  PDFExaminer | PDF files  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
-| [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/pdfxray-lite) |  Analyze PDF files | PDF  | Linux |
+| [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/pdfxray-lite) |  PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects.  | PDF  | Linux |
 | [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/pdfid) |  PDFID | PDF  | Linux |
 | [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/pdf-parser) |  PDF-parser | PDF  | Linux |
 | [tshark](https://gitlab.com/CinCan/tools/-/tree/master/tshark) |  A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
