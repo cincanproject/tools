@@ -15,10 +15,9 @@ LABEL maintainer=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-
 RUN apk update && apk add --no-cache \
 	    git \
-	    python \
+	    python3 \
 	    py-simplejson \
     && git clone https://github.com/9b/pdfxray_lite.git \
     && adduser -s /sbin/login -D appuser
