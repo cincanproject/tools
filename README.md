@@ -35,17 +35,17 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [ilspy](https://gitlab.com/CinCan/tools/-/tree/master/stable/ilspy) |  ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/stable/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
-| [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
-| [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
-| [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/stable/jsunpack-n) |  Jsunpack-n | PDF, URL, PCAP, JavaScript, SWF  | Linux |
+| [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  jadx - Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
+| [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cmd) |  Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/stable/jsunpack-n) |  Jsunpack-n - Emulates browser functionality, detect exploits etc. | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/stable/manalyze) |  Manalyze - a static analyzer for PE executables | PE files  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/stable/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
-| [oletools](https://gitlab.com/CinCan/tools/-/tree/master/stable/oletools) |  Oletools - version 0.55.1 | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
+| [oletools](https://gitlab.com/CinCan/tools/-/tree/master/stable/oletools) |  Oletools - version 0.55.1 to analyze Microsoft OLE2 files | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [osslsigncode](https://gitlab.com/CinCan/tools/-/tree/master/stable/osslsigncode) |  osslsigncode | exe/sys/dll  | Linux |
 | [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/stable/output-standardizer) |  Generate md report from Cincan's Concourse pipelines, or convert single tool output to JSON.   | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite and cincan/strings outputs  | Linux |
-| [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/stable/pastelyzer) |  the paste analyzer | text  | Linux |
-| [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfid) |  PDFID | PDF  | Linux |
-| [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdf-parser) |  PDF-parser | PDF  | Linux |
+| [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/stable/pastelyzer) |  pastelyzer - find security and privacy related artifacts from text documents | text  | Linux |
+| [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfid) |  PDFID - scan PDFs for certain keywords, triage potentially malicious files | PDF  | Linux |
+| [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdf-parser) |  PDF-parser - parse PDF to identify fundamental elements | PDF  | Linux |
 | [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfxray-lite) |  PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects.  | PDF  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/stable/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe | PE  | Linux |
@@ -57,12 +57,12 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [sleuthkit](https://gitlab.com/CinCan/tools/-/tree/master/stable/sleuthkit) |  A collection of command line tools that allows you to analyze disk images and recover files. | raw, ewf, vmdk, vhd  | Linux |
 | [snowman-decompile](https://gitlab.com/CinCan/tools/-/tree/master/stable/snowman-decompile) |  Snowman-decompile | ELF Mach-O PE LE  | Linux |
 | [ssdc](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdc) |  Ssdeep based clustering tool | *  | Linux |
-| [ssdeep](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdeep) |  Ssdeep | *  | Linux |
-| [steghide](https://gitlab.com/CinCan/tools/-/tree/master/stable/steghide) |  A Steganography program that is able to hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
+| [ssdeep](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdeep) |  Ssdeep - For computing context triggered piecewise hashes (CTPH), also called fuzzy hashes. | *  | Linux |
+| [steghide](https://gitlab.com/CinCan/tools/-/tree/master/stable/steghide) |  A Steganography program - hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
 | [tshark](https://gitlab.com/CinCan/tools/-/tree/master/stable/tshark) |  A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
 | [vipermonkey](https://gitlab.com/CinCan/tools/-/tree/master/stable/vipermonkey) |  A VBA parser and emulation engine to analyze malicious macros | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/stable/virustotal) |  Analyze suspicious files and URLs to detect types of malware |  | Linux |
-| [volatility](https://gitlab.com/CinCan/tools/-/tree/master/stable/volatility) |  Volatility |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
+| [volatility](https://gitlab.com/CinCan/tools/-/tree/master/stable/volatility) |  Volatility - An advanced memory forensics framework |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | [xsv](https://gitlab.com/CinCan/tools/-/tree/master/stable/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
 | [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/stable/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
 ### In Development
