@@ -33,6 +33,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [floss](https://gitlab.com/CinCan/tools/-/tree/master/stable/floss) |  FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/stable/ghidra-decompiler) |  Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
 | [ilspy](https://gitlab.com/CinCan/tools/-/tree/master/stable/ilspy) |  ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
+| [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/stable/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cmd) |  The jd-cmd is a simple command line wrapper around JD Core Java Decompiler project. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
@@ -86,7 +87,6 @@ It is very possible that some of these are not working.
 | [dns-tools](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/dns-tools) |  |  | Linux |
 | [hyperscan](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/hyperscan) |  High-performance regular expression matching library |  | Linux |
 | [identify-file](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/identify-file) |  Identify-file |  | Linux |
-| [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File  | Linux |
 | [keyfinder](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/keyfinder) |  Keyfinder | filesystem, APK  | Linux |
 | [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdfexaminer) |  Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results | PDF files  | Linux |
 | [pdf-tools](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdf-tools) |  The DidierStevensSuite by Didier Stevens |  | Linux |
