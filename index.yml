@@ -1,5 +1,6 @@
 # Contains list of paths, which are expected to contain tools
 # Helps when external tools are using repository for listing etc.
-stable
-development
-unmaintained
+tools:
+  - stable
+  - development
+  - unmaintained
