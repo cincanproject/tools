@@ -19,6 +19,10 @@ The workflow for adding the new tool usually contains at least:
  * Creation of tests
  * Creation of sufficient README file
 
+Initially, development of the tool is started in the `development` folder. Once you want to publish `dev` image of your partially implemented tool, merge request should be made to merge it into master branch. Possible tests and build of the image should pass already in this phase.
+
+Once all minimum requirements are met, tool can be moved in to `stable` folder and image with tag `latest` (stable) is published.
+
 ### Dockerfile
 
 #### Labels
