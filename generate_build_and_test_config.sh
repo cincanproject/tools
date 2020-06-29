@@ -1,6 +1,7 @@
 #!/bin/bash
 TAG=${TAG:-latest}
 DEV_TAG="dev"
+STABLE_TAG="latest"
 # latest-stable to be deprecated in future, use only 'latest' tag in stable tools
 MASTER_TAG="latest-stable"
 STABLE_DIR="stable"
@@ -76,7 +77,7 @@ EOF
     - tox $image
     - docker build -t "cincan/$name:$TAG" -t "cincan/$name:$MASTER_TAG" "$image"/.
 EOF
-  if [ "$TAG" = "$MASTER_TAG" ]; then
+  if [ "$TAG" = "$STABLE_TAG" ]; then
   cat >> ${GENERATED_CONFIG} << EOF
     - docker push cincan/"$name"
     - cincanregistry --tools . utils update-readme -n "$name"
@@ -114,7 +115,7 @@ EOF
     - docker build -t cincan/"$name":"$DEV_TAG" "$image"/.
 EOF
   # Pushing development images in 'master' branch
-  if [ "$TAG" = "$MASTER_TAG" ]; then
+  if [ "$TAG" = "$STABLE_TAG" ]; then
   cat >> ${GENERATED_CONFIG} << EOF
     - docker push "cincan/$name"
     
