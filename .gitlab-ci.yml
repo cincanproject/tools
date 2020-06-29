@@ -24,7 +24,7 @@ stages:
 # Calls dynamical generation script
 generate-config:
   stage: generate-build-and-test-config
-  script: TAG=latest-stable sh generate_build_and_test_config.sh build-and-test-config.yml
+  script: TAG=latest sh generate_build_and_test_config.sh build-and-test-config.yml
   artifacts:
     paths:
       - build-and-test-config.yml
