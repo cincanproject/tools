@@ -1,5 +1,8 @@
 image: docker:stable
 
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+
 cache:
   key:
     files:
