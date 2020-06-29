@@ -33,8 +33,8 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [floss](https://gitlab.com/CinCan/tools/-/tree/master/stable/floss) |  FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/stable/ghidra-decompiler) |  Ghidra Headless Analyzer - Version 9.1 | Any software binary in native instructions.  | Linux |
 | [ilspy](https://gitlab.com/CinCan/tools/-/tree/master/stable/ilspy) |  ILSpy (console only) - version 5.0.2 | .NET Assembly  | Linux |
-| [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/stable/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
+| [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  jadx - Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
 | [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cmd) |  Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/stable/jsunpack-n) |  Jsunpack-n - Emulates browser functionality, detect exploits etc. | PDF, URL, PCAP, JavaScript, SWF  | Linux |
@@ -44,8 +44,8 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [osslsigncode](https://gitlab.com/CinCan/tools/-/tree/master/stable/osslsigncode) |  osslsigncode | exe/sys/dll  | Linux |
 | [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/stable/output-standardizer) |  Generate md report from Cincan's Concourse pipelines, or convert single tool output to JSON.   | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite and cincan/strings outputs  | Linux |
 | [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/stable/pastelyzer) |  pastelyzer - find security and privacy related artifacts from text documents | text  | Linux |
-| [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfid) |  PDFID - scan PDFs for certain keywords, triage potentially malicious files | PDF  | Linux |
 | [pdf-parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdf-parser) |  PDF-parser - parse PDF to identify fundamental elements | PDF  | Linux |
+| [pdfid](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfid) |  PDFID - scan PDFs for certain keywords, triage potentially malicious files | PDF  | Linux |
 | [pdfxray-lite](https://gitlab.com/CinCan/tools/-/tree/master/stable/pdfxray-lite) |  PDF X-RAY Lite 1.0 to analyze PDF files for malicious objects.  | PDF  | Linux |
 | [peepdf](https://gitlab.com/CinCan/tools/-/tree/master/stable/peepdf) |  Powerful Python tool to analyze PDF documents. | PDF  | Linux |
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe - static analysis for PE executables and MS office documents | PE  | Linux |
@@ -88,8 +88,8 @@ It is very possible that some of these are not working.
 | [hyperscan](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/hyperscan) |  High-performance regular expression matching library |  | Linux |
 | [identify-file](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/identify-file) |  Identify-file |  | Linux |
 | [keyfinder](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/keyfinder) |  Keyfinder | filesystem, APK  | Linux |
-| [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdfexaminer) |  Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results | PDF files  | Linux |
 | [pdf-tools](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdf-tools) |  The DidierStevensSuite by Didier Stevens |  | Linux |
+| [pdfexaminer](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pdfexaminer) |  Upload a PDF to www.pdfexaminer.com/pdfapi.php and get results | PDF files  | Linux |
 | [pe-scanner](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/pe-scanner) |  Get information of a PE (portable executable) file | PE/EXE/DLL  | Linux |
 | [python-extract-code](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/python-extract-code) |  Extract code | PE  | Linux |
 | [r2-bin-carver](https://gitlab.com/CinCan/tools/-/tree/master/unmaintained/r2-bin-carver) |  R2 bin carver | memory dumps  | Linux |
