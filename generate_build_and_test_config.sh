@@ -30,7 +30,7 @@ if [ -z "$1" ]; then
 fi
 
 cat >> ${GENERATED_CONFIG} << EOF
-image: docker:stable
+image: docker:edge
 
 variables:
   DOCKER_HOST: tcp://docker:2375/
@@ -41,7 +41,7 @@ services:
 before_script:
   - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - pip3 install pip --upgrade && pip3 install tox==3.15.2 && pip3 install . && pip3 install cincan-registry
+  - pip3 install pip --upgrade && pip3 install tox && pip3 install . && pip3 install cincan-registry
 
 stages:
   - build-and-test
