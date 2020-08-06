@@ -1,4 +1,4 @@
-ARG tool_version=0.7.2
+ARG tool_version=0.7.3
 FROM python:3.5-alpine
 
 LABEL MAINTAINER=cincan.io
