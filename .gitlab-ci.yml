@@ -11,7 +11,7 @@ cache:
      - GREEN_MASTER_COMMIT.txt
 
 before_script:
-  - apk add grep python3 py3-pip git
+  - apk add grep python3 py3-pip git && apk del py3-distlib
 
 stages:
   - generate-build-and-test-config
