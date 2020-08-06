@@ -1,4 +1,4 @@
-ARG tool_version=rel-0.9-beta
+ARG tool_version=rel-0.10-beta
 
 FROM debian:10-slim as build
 
