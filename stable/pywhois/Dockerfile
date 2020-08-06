@@ -2,6 +2,7 @@ ARG tool_version=0.7.3
 FROM python:3.5-alpine
 
 LABEL MAINTAINER=cincan.io
+
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 

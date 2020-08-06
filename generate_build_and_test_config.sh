@@ -15,8 +15,7 @@ set -e
 
 if [ ! -f GREEN_MASTER_COMMIT.txt ];then
     echo "Cache file not found, should be fixed manually"
-    GREEN_MASTER="274ab3f4"
-    # exit 1
+    exit 1
 
 else
     echo "Cache file found."
