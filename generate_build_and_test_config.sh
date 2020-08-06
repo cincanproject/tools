@@ -41,7 +41,7 @@ services:
 before_script:
   - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - pip3 install pip --upgrade && pip3 install tox==3.17.1 && pip3 install . && pip3 install cincan-registry
+  - pip3 install pip --upgrade && pip3 install tox==3.16.1 && pip3 install . && pip3 install cincan-registry
 
 stages:
   - build-and-test
