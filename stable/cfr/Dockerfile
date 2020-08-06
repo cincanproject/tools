@@ -1,5 +1,5 @@
-ARG tool_version=0.149
-ARG dist_sha256=db683b5b3bc2c20fd2fabcc9d749d5b8bcbba736f334e5ac2092173242967aca
+ARG tool_version=0.150
+ARG dist_sha256=d2755995ba1f3994d71d1905544b250c49ac6529433eb4383923430b6f109826
 
 FROM alpine:3.11 as build
 
