@@ -1,4 +1,4 @@
-ARG tool_version=0.102.2
+ARG tool_version=0.102.4
 
 FROM debian:buster-slim
 
