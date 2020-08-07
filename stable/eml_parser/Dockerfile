@@ -1,4 +1,4 @@
-ARG tool_version=1.14.0
+ARG tool_version=1.14.1
 FROM debian:10-slim as build
 
 LABEL MAINTAINER=cincan.io
