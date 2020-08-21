@@ -1,4 +1,4 @@
-# ILSpy (console only) - version 5.0.2
+# ILSpy (console only) - version 6.1.0
 
 A Dotnet assembly decompiler and portable PDB generator. 
 
