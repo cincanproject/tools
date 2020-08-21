@@ -24,7 +24,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/stable/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
 | [binwalk](https://gitlab.com/CinCan/tools/-/tree/master/stable/binwalk) |  Firmware Analysis Tool | binary  | Linux |
 | [cfr](https://gitlab.com/CinCan/tools/-/tree/master/stable/cfr) |  Class File Reader - another java decompiler | .jar -file  | Linux |
-| [clamav](https://gitlab.com/CinCan/tools/-/tree/master/stable/clamav) |  ClamAV virus scanner:  Release 0.102.2 | Any file or directory.  | Linux |
+| [clamav](https://gitlab.com/CinCan/tools/-/tree/master/stable/clamav) |  ClamAV virus scanner | Any file or directory.  | Linux |
 | [dex2jar](https://gitlab.com/CinCan/tools/-/tree/master/stable/dex2jar) |  Tool to decompile dex files to jar | APK file  | Linux |
 | [eml_parser](https://gitlab.com/CinCan/tools/-/tree/master/stable/eml_parser) |  Parse .eml email files | eml  | Linux |
 | [feature_extractor](https://gitlab.com/CinCan/tools/-/tree/master/stable/feature_extractor) |  Feature_extractor | list of possible IoCs  | Linux |
