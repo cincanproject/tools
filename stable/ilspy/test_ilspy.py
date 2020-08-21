@@ -30,7 +30,7 @@ def test_do_run_get_PDB(tmp_path):
     d = tmp_path / "pdb"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(args=["-o", f"{d.relative_to(Path.cwd())}/", "-d", f"{SAMPLE_FILE}"])
+    out = tool.run_get_string(args=["-o", f"{d.relative_to(Path.cwd())}/", "-genpdb", f"{SAMPLE_FILE}"])
     assert len(list(d.iterdir())) == 1
     assert Path(d / "suspicious_dos_sample.pdb").is_file()
 
