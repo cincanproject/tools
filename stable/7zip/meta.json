@@ -1,0 +1,11 @@
+{
+  "upstreams": [
+      "uri": "https://sources.debian.org/api/src/p7zip/",
+      "tool": "p7zip-full",
+      "provider": "Debian",
+      "method": "release",
+      "suite": "buster",
+      "docker_origin": true
+    }
+  ]
+}
