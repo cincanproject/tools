@@ -14,9 +14,9 @@ echo "$CI_COMMIT_BRANCH"
 set -e
 
 if [ ! -f GREEN_MASTER_COMMIT.txt ];then
-    GREEN_MASTER="b084a1c9c845a1a2bf15375679195151f13f0812"
-    #echo "Cache file not found, should be fixed manually"
-    #exit 1
+    # File is updated only when the whole pipeline finishes
+    echo "Cache file not found, should be fixed manually"
+    exit 1
 
 else
     echo "Cache file found."
