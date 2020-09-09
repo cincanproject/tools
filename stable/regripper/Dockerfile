@@ -1,4 +1,4 @@
-ARG tool_version=1b87d069e4a79e4a6e8940492527f10bb2b91840
+ARG tool_version=4719da7b977ddb810392cce6ca118719a3dbfaad
 FROM debian:10-slim as build
 
 ARG tool_version
@@ -10,7 +10,7 @@ RUN apt-get update \
        ca-certificates
 
 # TODO: wait for upstream to support alternative plugins dir
-RUN git clone --depth=1 https://github.com/keydet89/RegRipper2.8.git /regripper \
+RUN git clone --depth=1 https://github.com/keydet89/RegRipper3.0.git /regripper \
     && cd /regripper \
     && git checkout $REGRIPPER_VERSION \
     && sed -i 's_#my $plugindir_my $plugindir_g' rip.pl \
