@@ -54,5 +54,5 @@ cincan run cincan/regripper -r samples/SOFTWARE -p winver
 
 ## Project homepage
 
-[https://github.com/keydet89/RegRipper2.8](https://github.com/keydet89/RegRipper2.8)
+[https://github.com/keydet89/RegRipper3.0](https://github.com/keydet89/RegRipper3.0)
 
