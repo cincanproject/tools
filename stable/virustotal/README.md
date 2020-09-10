@@ -1,8 +1,6 @@
 # Analyze suspicious files and URLs to detect types of malware
 
-Retrieves file or url results from VirusTotal.  
-By default only sends hash of a file to check if the file has already been analyzed.  
-It's possible to send the whole file if report doesn't exist with --send argument
+Official CLI for VirusTotal API. Retrieves file or url results from the VirusTotal database. File, hash, url/IP can be used for searching.
 
 ## Input
 `
@@ -38,41 +36,49 @@ docker build . -t cincan/virustotal
 docker pull cincan/virustotal
 ```
 
-***3. Run the docker container***
+***3. Run the Docker container***
 
-Scans all urls in the newline delimited file:  
+### Information from hashes
 
-`$ docker run -v /files:/files cincan/virustotal --output /files/ --url_file /files/url_file [options]`  
+**With `cincan-command` or using Docker**:
 
-Scans all files in the folder:  
+Get information about file hash:
 
-`$ docker run -v /files:/files cincan/virustotal --output /files/ --files /files/ [options]`
+```console
+cincan run cincan/virustotal -k <APIKEY> file <HASH>
+# Or similar with Docker
+docker run cincan/virustotal -k <APIKEY> file <HASH>
+```
 
-***Method 2. Run with 'cincan' tool:***
+Scans all hashes in the newline delimited file. Note `-i` flag to pass *stdin* into container.
 
-Query virustotal with the provided example sample from this directory:
+```console
+cat hashes.txt | cincan run -i cincan/virustotal -k <APIKEY> file -`
+# Same with Docker
+cat hashes.txt | docker run -i cincan/virustotal -k <APIKEY> file -
+```
 
-`$ cincan run cincan/virustotal --api_key <api_key_here> --files_hash samples/hash_example.txt --output samples/`
+### Scan actual file
 
-Get help for specifically this tool:
+With cincan-command
+```
+cincan run cincan/virustotal -k <APIKEY> scan file yourfile.exe 
+```
+Or Docker:
 
-`$ cincan run cincan/virustotal --help `
+```
+docker run -v /files:/files cincan/virustotal -k <APIKEY> scan file  /files/yourfile.exe 
+```
+
+For more information, use `--help` option of the tool.
 
 ## Testing
 Tox can be used for testing this tool (run from root of this repository):
 ```
 pip install tox
-tox virustotal
+tox stable/virustotal
 ```
-
-
-## Options
-
-`
-[--send, -s] Sends file or url to be analyzed if existing report doesn't exist
-[--verbose, -v] Sets verbosity to high
-`
 
 ## Project homepage
 
-https://github.com/VirusTotal
+https://github.com/VirusTotal/vt-cli

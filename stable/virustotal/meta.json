@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/VirusTotal/vt-cli/",
+      "repository": "VirusTotal",
+      "tool": "vt-cli",
+      "provider": "GitHub",
+      "method": "release",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
