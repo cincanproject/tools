@@ -20,6 +20,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 
 | Tool name | Description | Input               | Platform |
 |-----------|-------------|---------------------|----------|
+| [7zip](https://gitlab.com/CinCan/tools/-/tree/master/stable/7zip) |  Command line port of 7-Zip which provides utilities to (un)pack compressed archives | 7z, ZIP, GZIP, BZIP2, XZ, TAR, APM, ARJ, CAB, CHM, CPIO, CramFS, DEB, DMG, FAT, HFS, ISO, LZH, LZMA, LZMA2, MBR, MSI, MSLZ, NSIS, NTFS, RAR, RPM, SquashFS, UDF,VHD, WIM, XAR, Z  | Linux |
 | [access-log-visualization](https://gitlab.com/CinCan/tools/-/tree/master/stable/access-log-visualization) |  Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/stable/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
 | [binwalk](https://gitlab.com/CinCan/tools/-/tree/master/stable/binwalk) |  Firmware Analysis Tool | binary  | Linux |
