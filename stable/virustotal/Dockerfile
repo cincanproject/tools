@@ -1,34 +1,30 @@
-# Retrieves file or url results from VirusTotal
-# By default only sends hash of a file to check if the file has already been analyzed
-# It's possible to send the whole file if report doesn't exist with --send argument
-#
-# build:
-# docker build -t cincan/virustotal .
-#
-# usage (urls, scans all urls in the newline delimited file):
-# docker run -v /files:/files cincan/virustotal --output /files/ --url_file /files/url_file [options]
-# usage (files, scans all files in the folder):
-# docker run -v /files:/files cincan/virustotal --output /files/ --files /files/ [options]
-#
-# [options]
-# [--send, -s] Sends file or url to be analyzed if existing report doesn't exist
-# [--verbose, -v] Sets verbosity to high
-ARG tool_version=1.0
+ARG tool_version=0.8.0
 
-FROM python:3.6-alpine
+FROM golang:1.15-buster as build
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
 LABEL MAINTAINER=cincan.io
 
-COPY /virustotal .
+RUN mkdir /vt && cd /vt && go mod init virustotal \
+    && go get -d -v  "github.com/VirusTotal/vt-cli/vt@$TOOL_VERSION" \
+    && go build -o /go/bin/vt github.com/VirusTotal/vt-cli/vt
 
-RUN pip3 install -r requirements.txt \
-    && adduser -s /sbin/login -D appuser
+FROM alpine:latest as runtime
+COPY --from=build /go/bin/vt /usr/bin/vt
+
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+RUN apk update && apk add --no-cache \
+    ca-certificates \
+    libc6-compat \
+    && addgroup -S appuser \
+    && adduser -s /sbin/nologin --disabled-password -G appuser appuser
+
 
 USER appuser
 
 WORKDIR "/home/appuser"
-RUN cp /config.json /home/appuser/
-
-ENTRYPOINT ["python3", "/virustotal.py"]
+ENTRYPOINT ["vt"]
+CMD ["--help"]
