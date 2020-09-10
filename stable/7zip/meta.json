@@ -1,7 +1,7 @@
 {
-  "upstreams": [
+  "upstreams": [{
       "uri": "https://sources.debian.org/api/src/p7zip/",
-      "tool": "p7zip-full",
+      "tool": "p7zip",
       "provider": "Debian",
       "method": "release",
       "suite": "buster",

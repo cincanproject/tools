@@ -33,7 +33,7 @@ or using `docker` directly, the sample in absolute directory <SAMPLES>
 (e.g. `/home/myname/mysamples`)
 
 ```
-docker run --rm -v <SAMPLES>:/samples cincan/7zip x sample.zip
+docker run --rm -v <SAMPLES>:/samples cincan/7zip x /samples/sample.zip
 ```
 
 ## Project homepage
