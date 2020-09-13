@@ -1,6 +1,6 @@
-# Analyze suspicious files and URLs to detect types of malware
+# Official CLI for VirusTotal API. Analyze suspicious files and URLs to detect malware.
 
-Official CLI for VirusTotal API. Retrieves file or url results from the VirusTotal database. File, hash, url/IP can be used for searching.
+Official CLI for VirusTotal API. Retrieves file or url results from the VirusTotal database. File, hash, URL/IP can be used for searching.
 
 ## Input
 `
