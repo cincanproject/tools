@@ -62,7 +62,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [steghide](https://gitlab.com/CinCan/tools/-/tree/master/stable/steghide) |  A Steganography program - hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
 | [tshark](https://gitlab.com/CinCan/tools/-/tree/master/stable/tshark) |  A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
 | [vipermonkey](https://gitlab.com/CinCan/tools/-/tree/master/stable/vipermonkey) |  A VBA parser and emulation engine to analyze malicious macros | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
-| [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/stable/virustotal) |  Analyze suspicious files and URLs to detect types of malware |  | Linux |
+| [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/stable/virustotal) |  Official CLI for VirusTotal API. Analyze suspicious files and URLs to detect malware. |  | Linux |
 | [volatility](https://gitlab.com/CinCan/tools/-/tree/master/stable/volatility) |  Volatility - An advanced memory forensics framework |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | [xsv](https://gitlab.com/CinCan/tools/-/tree/master/stable/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
 | [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/stable/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
