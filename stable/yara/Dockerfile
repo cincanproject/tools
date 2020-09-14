@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libmagic-dev \
     libjansson-dev \
     && git clone --depth 1 --branch "${TOOL_VERSION}" https://github.com/VirusTotal/yara.git /yara \
+    && git clone --depth 1 https://github.com/Yara-Rules/rules.git /rules \
     && cd /yara \
     && ./bootstrap.sh \
     && ./configure --enable-cuckoo --enable-magic --enable-dotnet \
