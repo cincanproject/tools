@@ -12,7 +12,6 @@ E.g. path to `index.yar` is `/rules/index.yar`.
 ```
 Any file as target
 ```
-The most updated list is [here.](https://github.com/radareorg/radare2#file-formats)
 
 # Output
 
@@ -69,7 +68,7 @@ Let's expect that we have subfolder in current directory named as 'samples'
 docker run --rm -v $(pwd)/samples:/samples cincan/yara -w "/rules/index.yar" /samples/suspicious_dos_sample.exe
 ```
 
-This will make yara to scan the file.
+This will make yara to scan the file with all rules.
 
 Consult yara [documentation](https://yara.readthedocs.io/en/stable/commandline.html) for more information!
 
