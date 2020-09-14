@@ -3,15 +3,15 @@
 Official CLI for VirusTotal API. Retrieves file or url results from the VirusTotal database. File, hash, URL/IP can be used for searching.
 
 ## Input
-`
+```
 any file
-`
+```
 
 ## Output
 
-`
+```
 Virustotal report
-`
+```
 
 ## Supported tags and respective `Dockerfile` links
 
