@@ -65,6 +65,7 @@ For adding a new tool or upgrading the version of existing one, see [CONTRIBUTIN
 | [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/stable/virustotal) |  Official CLI for VirusTotal API. Analyze suspicious files and URLs to detect malware. |   | Linux |
 | [volatility](https://gitlab.com/CinCan/tools/-/tree/master/stable/volatility) |  Volatility - An advanced memory forensics framework |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | [xsv](https://gitlab.com/CinCan/tools/-/tree/master/stable/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
+| [yara](https://gitlab.com/CinCan/tools/-/tree/master/stable/yara) |  Yara - The pattern matching swiss knife  | Any file as target  | Linux |
 | [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/stable/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
 ### In Development
 
