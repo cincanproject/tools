@@ -1,4 +1,6 @@
-ARG tool_version=4.5.0
+ARG tool_version=4.5.1
+ARG ghidra_tool_version=4.5.1
+
 # Version number is used in r2ghidra plugin as well for selecting correct tag
 
 FROM alpine:latest AS builder
@@ -8,7 +10,10 @@ LABEL MAINTAINER=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-ENV radare2_SHA256 ff971c41ed87d72c3349184dbc2886e9e81de030c8115bef67295e0d2b89d0ef
+ARG ghidra_tool_version
+ENV GHIDRA_TOOL_VERSION=$ghidra_tool_version
+
+ENV radare2_SHA256 6fa9dfa6c3229372ecdf71c65f7ee1bee4706ad71a28521400a0a087757d0db9
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -61,7 +66,7 @@ RUN cd "$SOURCE_ROOT/radare2-$TOOL_VERSION/sys" && \
 
 RUN git clone  https://github.com/radareorg/r2ghidra-dec.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec  && \
     cd ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
-    git checkout "tags/v$TOOL_VERSION" && \
+    git checkout "tags/v$GHIDRA_TOOL_VERSION" && \
     git submodule init && \
     git submodule update && \
     mkdir build && cd build && \
