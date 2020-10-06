@@ -1,4 +1,4 @@
-ARG tool_version=0.55.1
+ARG tool_version=0.56
 
 FROM python:3-alpine as build
 
