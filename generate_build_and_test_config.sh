@@ -42,7 +42,7 @@ services:
 before_script:
   - apk add grep git py3-pip python3
   - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - docker login -u "\$QUAY_USER" -p "\$QUAY_PASS"
+  - docker login -u "\$QUAY_USER" -p "\$QUAY_PASS" quay.io
   - pip3 install pip --upgrade && pip3 install tox && pip3 install . && pip3 install cincan-registry
 
 stages:
