@@ -41,10 +41,17 @@ services:
 
 before_script:
   - apk add grep git py3-pip python3
-  - docker login -u "\$DOCKERHUB_USER" -p "\$DOCKERHUB_PASS"
-  - docker login -u "\$QUAY_USER" -p "\$QUAY_PASS" quay.io
   - pip3 install pip --upgrade && pip3 install tox && pip3 install . && pip3 install cincan-registry
 
+EOF
+  # Log in only in master branch
+  if [ "$CI_COMMIT_BRANCH" = "master" ]; then
+  cat >> ${GENERATED_CONFIG} << EOF
+  - echo "\$DOCKERHUB_PASS" | docker login -u "\$DOCKERHUB_USER" --password-stdin
+  - echo "\$QUAY_PASS" | docker login -u "\$QUAY_USER" quay.io --password-stdin
+EOF
+  fi
+cat >> ${GENERATED_CONFIG} << EOF
 stages:
   - build-and-test
 EOF
