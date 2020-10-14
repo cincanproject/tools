@@ -49,6 +49,7 @@ EOF
   cat >> ${GENERATED_CONFIG} << EOF
   - echo "\$DOCKERHUB_PASS" | docker login -u "\$DOCKERHUB_USER" --password-stdin
   - echo "\$QUAY_PASS" | docker login -u "\$QUAY_USER" quay.io --password-stdin
+  - echo "\$GITHUB_PASS" | docker login -u "\$GITHUB_USER" ghcr.io --password-stdin
 EOF
   fi
 cat >> ${GENERATED_CONFIG} << EOF
@@ -90,6 +91,7 @@ EOF
   cat >> ${GENERATED_CONFIG} << EOF
     - docker push cincan/"$name"
     - docker push quay.io/cincan/"$name"
+    - docker push ghcr.io/cincanproject/"$name"
     - cincanregistry --tools . utils update-readme -n "$name"
     
 EOF
