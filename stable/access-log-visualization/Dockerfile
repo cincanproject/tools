@@ -1,10 +1,13 @@
 # This docker image loads access.log to Jupyter Notebook for visualization, and then converts the output to html
 
+ARG tool_version=1.0.0
+
 FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
 
-ENV TOOL_VERSION=1.0.0
+ARG tool_version
+ENV TOOL_VERSION=${tool_version}
 
 ENV ACCESS_LOG_PATH=/home/appuser
 
