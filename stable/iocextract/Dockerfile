@@ -9,7 +9,7 @@ ENV TOOL_VERSION=$tool_version
 
 RUN apk update && apk add --no-cache \
     alpine-sdk \
-    && pip install iocextract==$TOOL_VERSION --install-option="--prefix=/install"
+    && pip install iocextract==$TOOL_VERSION --prefix=/install
 
 FROM python:alpine as runtime
 
