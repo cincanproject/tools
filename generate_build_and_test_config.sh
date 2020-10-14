@@ -92,6 +92,9 @@ EOF
     - docker push cincan/"$name"
     - docker push quay.io/cincan/"$name"
     - docker push ghcr.io/cincanproject/"$name"
+    # Temporal fix to use correct credentials for readme update
+    - docker logout quay.io
+    - docker logout ghcr.io
     - cincanregistry --tools . utils update-readme -n "$name"
     
 EOF
