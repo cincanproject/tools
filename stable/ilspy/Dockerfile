@@ -7,7 +7,7 @@
 # Example:
 # docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe
 
-ARG tool_version=6.1
+ARG tool_version=6.2
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 
