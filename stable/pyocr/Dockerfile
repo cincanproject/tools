@@ -7,10 +7,11 @@ ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
+	python3-dev \
         python3-pip \
         python3-wheel \
-        python3-setuptools && \
-    \
+        python3-setuptools \
+   	build-essential && \ 
     pip3 install --user pyocr==$TOOL_VERSION Pillow wand opencv-python numpy
 
 FROM debian:10-slim as env
