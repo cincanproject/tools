@@ -75,6 +75,7 @@ do
   fi
   # Initial checks pass, real jobs exist
   NO_JOBS_GENERATED_FOR_PIPELINE=false
+  VERSION_TAG=$(grep "tool_version" -m 1 $image/Dockerfile | cut -d "=" -f 2 | tr -d "\"\'()" | sed -e "s/[ +~]/_/g")
   cat >> ${GENERATED_CONFIG} << EOF
 
 build-and-test-$name-stable:
@@ -85,16 +86,13 @@ EOF
   # Add testing and readme update only in master branch (when tag is latest-stable)
     cat >> ${GENERATED_CONFIG} << EOF
     - tox $image
-    - docker build -t "cincan/$name:$TAG" -t "cincan/$name:$MASTER_TAG" -t "quay.io/cincan/$name:$TAG" -t "ghcr.io/cincanproject/$name:$TAG" "$image"/.
+    - docker build -t "cincan/$name:$TAG" -t "cincan/$name:$MASTER_TAG" -t "cincan/$name:$VERSION_TAG" -t "quay.io/cincan/$name:$TAG" -t "quay.io/cincan/$name:$VERSION_TAG" -t "ghcr.io/cincanproject/$name:$TAG" -t "ghcr.io/cincanproject/$name:$VERSION_TAG" "$image"/.
 EOF
   if [ "$TAG" = "$STABLE_TAG" ]; then
   cat >> ${GENERATED_CONFIG} << EOF
     - docker push cincan/"$name"
     - docker push quay.io/cincan/"$name"
     - docker push ghcr.io/cincanproject/"$name"
-    # Temporal fix to use correct credentials for readme update
-    - docker logout quay.io
-    - docker logout ghcr.io
     - cincanregistry --tools . utils update-readme -n "$name"
     
 EOF
