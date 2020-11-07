@@ -15,6 +15,6 @@ def tool_with_file(
     if use_tag:
         tag = "test_{}".format(name)
         # Tag parameter overrides other
-        image = None
+        image = "undefined"
         pull = False
     return ToolImage(name=name, path=str(path), tag=tag, image=image, pull=pull)
