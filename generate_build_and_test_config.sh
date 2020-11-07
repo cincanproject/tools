@@ -93,10 +93,9 @@ EOF
     - docker push cincan/"$name"
     - docker push quay.io/cincan/"$name"
     - docker push ghcr.io/cincanproject/"$name"
-    # Temporal fix until next cincan-registry release
-    - docker logout quay.io
-    - docker logout ghcr.io
-    - cincanregistry --tools . utils update-readme -n "$name"
+    # Update description in Quay and DockerHub
+    - cincanregistry --registry Quay --tools . utils update-readme -n "$name"
+    - cincanregistry --registry DockerHub --tools . utils update-readme -n "$name"
     
 EOF
   fi
