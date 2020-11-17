@@ -64,6 +64,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [ssdc](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdc) |  Ssdeep based clustering tool | *  | Linux |
 | [ssdeep](https://gitlab.com/CinCan/tools/-/tree/master/stable/ssdeep) |  Ssdeep - For computing context triggered piecewise hashes (CTPH), also called fuzzy hashes. | *  | Linux |
 | [steghide](https://gitlab.com/CinCan/tools/-/tree/master/stable/steghide) |  A Steganography program - hide data (and extract) in various kinds of image- and audio-files. | JPEG, BMP, WAV, AU  | Linux |
+| [trufflehog](https://gitlab.com/CinCan/tools/-/tree/master/stable/trufflehog) |  TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
 | [tshark](https://gitlab.com/CinCan/tools/-/tree/master/stable/tshark) |  A Tool for parsing PCAP and capturing network traffic. | PCAP, network traffic  | Linux |
 | [vipermonkey](https://gitlab.com/CinCan/tools/-/tree/master/stable/vipermonkey) |  A VBA parser and emulation engine to analyze malicious macros | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [virustotal](https://gitlab.com/CinCan/tools/-/tree/master/stable/virustotal) |  Official CLI for VirusTotal API. Analyze suspicious files and URLs to detect malware. |   | Linux |
@@ -79,7 +80,6 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [ioc_parser](https://gitlab.com/CinCan/tools/-/tree/master/development/ioc_parser) |  A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/development/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
 | [scrape-website](https://gitlab.com/CinCan/tools/-/tree/master/development/scrape-website) |  |  | Linux |
-| [trufflehog](https://gitlab.com/CinCan/tools/-/tree/master/development/trufflehog) |  TruffleHog Searches through git repositories for accidentally committed secrets | git repository  | Linux |
 ### Not maintained anymore
 
 It is very possible that some of these are not working.
