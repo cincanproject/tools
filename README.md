@@ -15,6 +15,8 @@ Actual images can be found from:
 
 For adding a new tool or upgrading the version of existing one, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
+For running these tools, take an additional look for [cincan-command.](https://gitlab.com/CinCan/cincan-command)
+
 ## Description of the current tools
 ### Linux tools
 
