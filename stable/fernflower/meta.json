@@ -5,7 +5,7 @@
       "repository": "JetBrains",
       "tool": "intellij-community",
       "provider": "GitHub",
-      "method": "release",
+      "method": "tag",
       "origin": true,
       "docker_origin": true
     }
