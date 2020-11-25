@@ -75,7 +75,7 @@ do
   fi
   # Initial checks pass, real jobs exist
   NO_JOBS_GENERATED_FOR_PIPELINE=false
-  VERSION_TAG=$(grep "tool_version" -m 1 $image/Dockerfile | cut -d "=" -f 2 | tr -d "\"\'()" | sed -e "s/[ +~]/_/g")
+  VERSION_TAG=$(grep "tool_version" -m 1 $image/Dockerfile | cut -d "=" -f 2 | tr -d "\"\'()" | sed -e "s/[/ +~]/_/g")
   cat >> ${GENERATED_CONFIG} << EOF
 
 build-and-test-$name-stable:
