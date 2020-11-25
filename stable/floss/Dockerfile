@@ -1,11 +1,11 @@
-ARG tool_version=1.5.0
+ARG tool_version=1.6.1
 
-FROM debian:buster-slim as builder
+FROM python:2.7-buster as build 
 LABEL maintainer=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV DOWNLOAD_URL=https://github.com/fireeye/flare-floss/releases/download/v$TOOL_VERSION/floss-${TOOL_VERSION}-GNU.Linux.zip
+ENV DOWNLOAD_URL=https://github.com/fireeye/flare-floss/archive/v$TOOL_VERSION.zip
 
 RUN apt-get update && apt-get -y install \
     unzip \
@@ -14,21 +14,28 @@ RUN apt-get update && apt-get -y install \
 RUN mkdir /floss \
     && cd /floss \
     && wget ${DOWNLOAD_URL} \
-    && unzip floss-${TOOL_VERSION}-GNU.Linux.zip \
-    && chmod +x floss
+    && unzip v${TOOL_VERSION}.zip \
+    && groupadd -g 1000 appuser \
+    && useradd -m -u 1000 -g appuser appuser 
 
-FROM debian:buster-slim as runtime
+USER appuser
+
+RUN cd /floss && pip install flare-floss-${TOOL_VERSION}/. --user 
+
+FROM python:2.7-buster as runtime
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-COPY --from=builder /floss/floss /floss
 
-RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser \
-    && chown appuser /floss
+RUN groupadd -g 1000 appuser && \
+    useradd -m -u 1000 -g appuser -s /sbin/nologin appuser
 
+COPY --from=build /home/appuser/.local /home/appuser/.local
+
+ENV PATH=/home/appuser/.local/bin:$PATH
 WORKDIR /home/appuser/
 USER appuser
 
-ENTRYPOINT ["/floss"]
+ENTRYPOINT ["floss"]
 CMD ["--help"]
