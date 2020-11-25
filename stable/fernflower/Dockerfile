@@ -1,5 +1,5 @@
 # Java Decompiler
-ARG tool_version=8b1358fa509b209b72f8e8ac832fa5043b56bf57
+ARG tool_version=idea/203.5981.41
 
 FROM openjdk:8-alpine as build
 
@@ -7,17 +7,16 @@ LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=${tool_version}
-ENV TOOL_SHA256 49d788b4eee6e27d2c394564719b1f9c97b7269240a27a4446a866e4ab319fc4
-ENV FERNFLOWER_LOC=intellij-community-$TOOL_VERSION/plugins/java-decompiler/engine
+ENV TOOL_SHA256 cd310646b2dacc9275b795c004e985682dcdbe7b1c78e72832af942e7254d04d
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apk add --no-cache wget unzip && \
     wget -q -O archive.zip https://github.com/JetBrains/intellij-community/archive/$TOOL_VERSION.zip
 
-RUN echo "$TOOL_SHA256  archive.zip" | sha256sum -c - \
-	&& unzip archive.zip $FERNFLOWER_LOC/*
-
-RUN cd $FERNFLOWER_LOC && \
+RUN FERNFLOWER_LOC=intellij-community-$(echo $TOOL_VERSION | tr / -)/plugins/java-decompiler/engine && \
+    echo "$TOOL_SHA256  archive.zip" | sha256sum -c - \
+    && unzip archive.zip $FERNFLOWER_LOC/* && \
+    cd $FERNFLOWER_LOC && \
     chmod +x gradlew && \
     ./gradlew jar --no-daemon && \
     mv build/libs/fernflower.jar /
