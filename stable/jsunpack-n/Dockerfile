@@ -2,7 +2,7 @@
 #
 # docker run -v $(pwd):/input cincan/jsunpack-n /input/samples/testfile.pdf -V -d /input/samples/output/
 
-ARG tool_version="0.3.2c (beta)"
+ARG tool_version="c01f406fd1ac113838f5e9ede8c04a63ef0acd5d"
 
 FROM debian:8-slim AS builder
 
@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && git clone https://github.com/urule99/jsunpack-n.git
 
 WORKDIR /jsunpack-n/depends
-RUN git checkout c01f406fd1ac113838f5e9ede8c04a63ef0acd5d \
+RUN git checkout $TOOL_VERSION \
     && tar xvfz pynids-0.6.1.tar.gz \
     && tar xvfz js-1.8.0-rc1-src.tar.gz \
     && tar xvfz yara-1.6.tar.gz \
