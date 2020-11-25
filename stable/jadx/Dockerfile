@@ -1,6 +1,6 @@
 #Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
 
-ARG tool_version=1.1.0
+ARG tool_version=1.2.0
 
 #Java 1.8 is needed
 FROM openjdk:8-jre-alpine
@@ -10,7 +10,7 @@ LABEL MAINTAINER=cincan.io
 #Define jadx  version
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV JADX_SHA256 91948067a60feee36512e043b288f726678ddd760aa11a01496b53df95465b16
+ENV JADX_SHA256 e6ae92be16edae2098b1a9951533feba4278bb18f00fbab54eb23a427b98d425
 RUN apk add --no-cache wget unzip \
     # Add an user
     && mkdir -p /home/appuser/tool \
