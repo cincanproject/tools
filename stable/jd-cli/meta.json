@@ -1,9 +1,9 @@
 {
   "upstreams": [
     {
-      "uri": "https://github.com/kwart/jd-cmd",
+      "uri": "https://github.com/kwart/jd-cli",
       "repository": "kwart",
-      "tool": "jd-cmd",
+      "tool": "jd-cli",
       "provider": "GitHub",
       "method": "tag-release",
       "origin": true,
