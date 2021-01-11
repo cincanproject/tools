@@ -1,4 +1,4 @@
-ARG tool_version=0.7.2
+ARG tool_version=0.8.0
 
 FROM debian:10-slim as build
 
