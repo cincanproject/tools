@@ -41,7 +41,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/stable/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  jadx - Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
-| [jd-cmd](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cmd) |  Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
+| [jd-cli](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cli) |  Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/stable/jsunpack-n) |  Jsunpack-n - Emulates browser functionality, detect exploits etc. | PDF, URL, PCAP, JavaScript, SWF  | Linux |
 | [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/stable/manalyze) |  Manalyze - a static analyzer for PE executables | PE files  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/stable/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
