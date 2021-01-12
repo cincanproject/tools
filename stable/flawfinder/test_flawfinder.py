@@ -12,6 +12,6 @@ def test_analysis():
     out = tool.run_get_string([SAMPLE_FILE])
     for i, line in enumerate(out.splitlines()):
         if i == 1:
-            assert line.startswith("Number of rules (primarily dangerous function names) in C/C++ ruleset: 223")
+            assert line.startswith("Number of rules (primarily dangerous function names) in C/C++ ruleset: 222")
         if i == 6:
             assert line.startswith("samples/source/c/overflow.c:7:  [4] (buffer) strcpy:")
