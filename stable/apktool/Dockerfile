@@ -1,34 +1,43 @@
 #Analyzes Android apk files using apktool 
-ARG tool_version=2.4.1
-#Java 1.8 is needed
-FROM openjdk:8-jre-alpine
+ARG tool_version=2.5.0
+ARG tool_sha256=b392d7cb99b592e9c5acc3c06f1b0f180edde96c66b86b3d6932b7c0c4079fe4
+
+#Java 1.8 is required
+FROM openjdk:8-jre-alpine as build
 
 ARG tool_version
+ARG tool_sha256
+
 LABEL MAINTAINER=cincan.io
 
-#Define apktool version
 ENV TOOL_VERSION=${tool_version}
+ENV TOOL_SHA256=${tool_sha256}
 
-RUN apk add --no-cache curl bash
+RUN apk add --no-cache curl bash \
+    && addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser
 
-# Add an user
-RUN mkdir -p /home/appuser/tool \
-    && adduser -D appuser \
-    && chown -R appuser:appuser /home/appuser
-
-#change user and workdir
 USER appuser
-
-RUN mkdir -p /home/appuser/.local/share/apktool/framework
-
-WORKDIR /home/appuser/tool
-
-#Download Linux wrapper script and give it right permissions
-RUN curl -sLO https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool && chmod +x apktool
-#Download apktool, make sha256 checksum and give apktool right permissions
-RUN curl -sLO https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${TOOL_VERSION}.jar  && echo "bdeb66211d1dc1c71f138003ce35f6d0cd19af6f8de7ffbdd5b118d02d825a52  apktool_${TOOL_VERSION}.jar" | sha256sum -c 
-RUN mv apktool_${TOOL_VERSION}.jar apktool.jar && chmod +x apktool.jar
-
 WORKDIR /home/appuser/
 
-ENTRYPOINT ["/home/appuser/tool/apktool"]
+# Check integrity of external script file as well
+ENV SCRIPT_SHA256=e9a49351b4df65d532e7c3cef27144c7e0e1c2daad1e367e65b2acef6715b863
+RUN curl -sLO https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool \
+    && echo "${SCRIPT_SHA256}  apktool" \
+    && curl -sLO https://github.com/iBotPeaches/Apktool/releases/download/v${TOOL_VERSION}/apktool_${TOOL_VERSION}.jar  && echo "${TOOL_SHA256}  apktool_${TOOL_VERSION}.jar" | sha256sum -c \
+    && mv apktool_${TOOL_VERSION}.jar apktool.jar && chmod +x apktool.jar
+
+FROM openjdk:8-jre-alpine as runtime
+
+arg tool_version
+ENV TOOL_VERSION=${tool_version}
+
+RUN addgroup -S appuser && \
+    adduser -s /sbin/nologin --disabled-password -G appuser appuser
+
+USER appuser
+WORKDIR /home/appuser/tool
+
+COPY --from=build /home/appuser/apktool /home/appuser/apktool.jar /home/appuser/tool/
+
+ENTRYPOINT ["sh", "/home/appuser/tool/apktool"]
