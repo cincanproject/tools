@@ -5,7 +5,7 @@
       "repository": "guelfoweb",
       "tool": "peframe",
       "provider": "GitHub",
-      "method": "release",
+      "method": "commit",
       "origin": true,
       "docker_origin": true
     }
