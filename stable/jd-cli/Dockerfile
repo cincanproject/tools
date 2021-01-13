@@ -9,7 +9,7 @@ ENV TOOL_VERSION=$tool_version
 ENV SHA256=767013796e7696854ff8b1ed0a9d4c12e4bed941be0c23537c7a2cadc5022340
 
 RUN apk add --no-cache wget unzip && \
-    wget -q -O "jd-cli.zip" "https://github.com/kwart/jd-cmd/releases/download/jd-cmd-$TOOL_VERSION/jd-cli-$TOOL_VERSION-dist.zip" && \
+    wget -q -O "jd-cli.zip" "https://github.com/kwart/jd-cli/releases/download/jd-cmd-$TOOL_VERSION/jd-cli-$TOOL_VERSION-dist.zip" && \
     echo "$SHA256  jd-cli.zip" | sha256sum -c && \
     unzip -q "jd-cli.zip" -d .
 
