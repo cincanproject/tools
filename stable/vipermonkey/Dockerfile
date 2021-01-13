@@ -1,4 +1,4 @@
-ARG tool_version=5c71444ad4cd2057e841c41b8071b7e161dc2f19
+ARG tool_version=511ecd59d54c6a3424178af6b99e4c1f699274c4
 FROM debian:10 as build
 
 LABEL MAINTAINER=cincan.io
