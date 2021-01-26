@@ -1,11 +1,11 @@
 {
   "upstreams": [
     {
-      "uri": "https://bitbucket.org/iBotPeaches/apktool/",
+      "uri": "https://github.com/iBotPeaches/Apktool",
       "repository": "iBotPeaches",
       "tool": "apktool",
-      "provider": "Bitbucket",
-      "method": "tag-release",
+      "provider": "GitHub",
+      "method": "release",
       "origin": true,
       "docker_origin": true
     }
