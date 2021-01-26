@@ -56,7 +56,6 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [peframe](https://gitlab.com/CinCan/tools/-/tree/master/stable/peframe) |  PEframe - static analysis for PE executables and MS office documents | PE  | Linux |
 | [pyocr](https://gitlab.com/CinCan/tools/-/tree/master/stable/pyocr) |  Optical character recognition (OCR) wrapper for Tesseract OCR engine | PDF, png, jpg  | Linux |
 | [pywhois](https://gitlab.com/CinCan/tools/-/tree/master/stable/pywhois) |  Pywhois - retrieve information from IP addresses | IP / list of IPs  | Linux |
-| [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/stable/radamsa) |  Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer. | Any data  | Linux |
 | [radare2](https://gitlab.com/CinCan/tools/-/tree/master/stable/radare2) |  Radare2 is complete unix-like framework for reverse engineering and binary analysis - version 4.5.1 | ELF, Mach-O, Fatmach-O, PE, PE+, MZ, COFF, OMF, TE, XBE, BIOS/UEFI, Dyldcache, DEX, ART, CGC, Java class, Android boot image, Plan9 executable, ZIMG, MBN/SBL bootloader, ELF coredump, MDMP (Windows minidump), WASM (WebAssembly binary), Commodore VICE emulator, QNX, Game Boy (Advance), Nintendo DS ROMs and Nintendo 3DS FIRMs, various filesystems.  | Linux |
 | [regripper](https://gitlab.com/CinCan/tools/-/tree/master/stable/regripper) |  Extract data from Windows registry | Windows registry hive files  | Linux |
 | [sleuthkit](https://gitlab.com/CinCan/tools/-/tree/master/stable/sleuthkit) |  A collection of command line tools that allows you to analyze disk images and recover files. | raw, ewf, vmdk, vhd  | Linux |
@@ -79,6 +78,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [headless-thunderbird](https://gitlab.com/CinCan/tools/-/tree/master/development/headless-thunderbird) |  Headless Thunderbird to screenshot email messages | eml  | Linux |
 | [ioc_parser](https://gitlab.com/CinCan/tools/-/tree/master/development/ioc_parser) |  A tool to extract indicators of compromise from security reports | PDF, txt, xlsx, html  | Linux |
 | [pdf2john](https://gitlab.com/CinCan/tools/-/tree/master/development/pdf2john) |  John the Ripper for extracting hash from PDF files | Encrypted PDF  | Linux |
+| [radamsa](https://gitlab.com/CinCan/tools/-/tree/master/development/radamsa) |  Radamsa is a test case generator for robustness testing, a.k.a. a fuzzer. | Any data  | Linux |
 | [scrape-website](https://gitlab.com/CinCan/tools/-/tree/master/development/scrape-website) |  |  | Linux |
 ### Not maintained anymore
 
