@@ -21,18 +21,13 @@ RUN git clone --branch=v$TOOL_VERSION https://gitlab.com/akihe/radamsa.git &&\
     cd radamsa &&\
     make && make install
 
-FROM debian:10-slim AS production
+FROM gcr.io/distroless/base-debian10 AS production
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-COPY --from=builder /radamsa/bin/radamsa /usr/local/bin
-
-RUN groupadd -g 1000 appuser && \
-    useradd -u 1000 -g appuser -s /sbin/nologin appuser
-
-USER appuser
 WORKDIR /home/appuser
+COPY --from=builder /radamsa/bin/radamsa /home/appuser/
 
-ENTRYPOINT ["radamsa"]
+ENTRYPOINT ["/home/appuser/radamsa"]
 CMD ["--help"]
