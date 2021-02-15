@@ -5,16 +5,16 @@
       "repository": "ReFirmLabs",
       "tool": "binwalk",
       "provider": "GitHub",
-      "method": "release",
-      "origin": true
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
     },
     {
       "uri": "https://sources.debian.org/api/src/binwalk/",
       "tool": "binwalk",
       "provider": "Debian",
       "method": "release",
-      "suite": "buster",
-      "docker_origin": true
+      "suite": "buster"
     }
   ]
 }
