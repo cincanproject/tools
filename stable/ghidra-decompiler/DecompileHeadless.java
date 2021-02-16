@@ -20,15 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import ghidra.app.plugin.core.script.Ingredient;
-import ghidra.app.plugin.core.script.IngredientDescription;
 import ghidra.app.script.GatherParamPanel;
 import ghidra.app.script.GhidraScript;
 import ghidra.app.util.Option;
 import ghidra.app.util.exporter.CppExporter;
 
-@SuppressWarnings("deprecation")
-public class DecompileHeadless extends GhidraScript implements Ingredient {
+public class DecompileHeadless extends GhidraScript {
 
     @Override
     public void run() throws Exception {
@@ -47,13 +44,6 @@ public class DecompileHeadless extends GhidraScript implements Ingredient {
 	    {
 		System.out.println(input.nextLine());
 	    }
-    }
-
-    @Override
-    public IngredientDescription[] getIngredientDescriptions() {
-	IngredientDescription[] retVal = new IngredientDescription[] {
-	    new IngredientDescription("COutputFile", "Output C File", GatherParamPanel.FILE, "") };
-	return retVal;
     }
 
 }
