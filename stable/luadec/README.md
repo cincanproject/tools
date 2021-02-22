@@ -31,6 +31,13 @@ Using the docker command to achieve the same:
 docker run --rm -v `pwd`:/data cincan/luadec compiled.lua
 ```
 
+## Changing entrypoint
+
+Luadec has two additional binaries, `luaopswap` and `luareplace`. You can access them by changing entrypoint, for example
+```
+cincan run --entrypoint /usr/local/bin/luaopswap cincan/luadec <input>
+```
+
 ## Project homepage
 
 [Project GitHub viruscamp/luadec](https://github.com/viruscamp/luadec)
