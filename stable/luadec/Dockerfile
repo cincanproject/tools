@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cd ../luadec && \
     make LUAVER=5.1
 
-FROM gcr.io/distroless/base as env
+FROM gcr.io/distroless/base-debian10 as env
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
