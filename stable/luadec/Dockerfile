@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cd ../luadec && \
     make LUAVER=5.1
 
-FROM debian:10-slim as env
+FROM gcr.io/distroless/base as env
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
@@ -25,10 +25,7 @@ COPY --from=build /luadec/luadec/luadec /usr/local/bin/
 COPY --from=build /luadec/luadec/luaopswap /usr/local/bin/
 COPY --from=build /luadec/luadec/luareplace /usr/local/bin/
 
-RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
-    mkdir -p /home/appuser/tool
-
-USER appuser
-WORKDIR /home/appuser/tool
+USER nonroot
+WORKDIR /home/nonroot/tool
 
 ENTRYPOINT ["/usr/local/bin/luadec"]
