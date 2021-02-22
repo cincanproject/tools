@@ -15,7 +15,7 @@ lua source code
 ```
 
 ## Supported tags and respective `Dockerfile` links
-* `latest` ([*luadec/Dockerfile*](https://gitlab.com/CinCan/tools/-/blob/master/stable/binwalk/Dockerfile))
+* `latest` ([*luadec/Dockerfile*](Dockerfile))
 
 ## Usage
 
