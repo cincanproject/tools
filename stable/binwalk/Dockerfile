@@ -61,7 +61,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     python3 setup.py install && \
     cd / && \
     rm -rf /binwalk/ && \
-    apt remove -y git build-essential manpages manpages-dev python3-dev python2-dev python-pip python3-pip wget unzip && \
+    apt remove -y git build-essential manpages manpages-dev python3-dev python2-dev python-pip python3-pip wget && \
     apt autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -m -u 1000 -s /sbin/nologin appuser
