@@ -23,5 +23,5 @@ RUN apt-get update && apt-get install -y \
 USER appuser
 
 WORKDIR /tools-output-standardization
-
+COPY meta.json /opt/
 ENTRYPOINT ["standardizer"]
