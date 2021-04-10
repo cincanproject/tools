@@ -24,6 +24,8 @@ WORKDIR /home/appuser/
 
 USER appuser
 
+COPY meta.json /opt/
+
 ENTRYPOINT ["iocextract"]
 CMD ["--help"]
 
