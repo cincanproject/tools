@@ -8,7 +8,7 @@ def test_tools_help(tool):
     assert "pastelyzer" in out
 
 def test_nested_base64_gzip(tool):
-    out = tool.run_get_string([SAMPLE_FILE])
+    out = tool.run_get_string(["+C", SAMPLE_FILE])
     assert "IP-ADDRESS: 8.8.8.8" in out
     assert "IP-ADDRESS: 1.1.1.1" in out
     assert "DOMAIN: google.com" in out
