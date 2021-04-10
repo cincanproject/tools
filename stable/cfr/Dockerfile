@@ -1,5 +1,5 @@
-ARG tool_version=0.150
-ARG dist_sha256=d2755995ba1f3994d71d1905544b250c49ac6529433eb4383923430b6f109826
+ARG tool_version=0.151
+ARG dist_sha256=316e9015b9af2953fcff4fe86bf3bba705f32e7cd25bd6e535c698de8a25e837
 
 FROM alpine:3.11 as build
 
@@ -27,6 +27,7 @@ RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
 
 WORKDIR /home/appuser/
 USER appuser
+COPY meta.json /opt/
 
 ENTRYPOINT ["java", "-jar", "/usr/bin/cfr.jar"]
 CMD ["--help"]
