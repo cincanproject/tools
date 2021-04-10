@@ -14,9 +14,9 @@ RUN apt-get update && \
 
 USER appuser
 
-RUN mkdir /home/appuser/tool
-
 WORKDIR /home/appuser/tool
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["7z"]
 CMD ["-h"]
