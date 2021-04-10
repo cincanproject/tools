@@ -1,4 +1,4 @@
-ARG tool_version=0.56
+ARG tool_version=0.56.1
 
 FROM python:3-alpine as build
 
@@ -14,7 +14,9 @@ RUN apk update && \
 		openssl-dev \
 		gcc \
 		libffi-dev \
-		libc-dev
+		libc-dev \
+        rust \
+        cargo
 
 RUN pip3 wheel --wheel-dir=/oletools oletools=="$TOOL_VERSION"
 
@@ -51,6 +53,9 @@ ADD Oletools-license /oletools/
 USER appuser
 
 WORKDIR /home/appuser/
+
+# Keep as final modification for layers! Fetched separately
+COPY meta.json /opt/
 
 ENTRYPOINT ["sh", "/oletools/entrypoint.sh"]
 CMD ["--help"]
