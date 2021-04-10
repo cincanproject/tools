@@ -35,6 +35,6 @@ RUN adduser -s /sbin/login -D appuser
 
 USER appuser
 WORKDIR /home/appuser
-
+COPY meta.json /opt/
 ENTRYPOINT ["/usr/bin/python", "/pdfid/pdfid.py"]
 CMD ["--help"]
