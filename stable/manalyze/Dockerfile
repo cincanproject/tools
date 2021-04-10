@@ -1,4 +1,4 @@
-ARG tool_version=ce7093c0b7b6601149dc1f15756f3fab5b0d0b90
+ARG tool_version=04cee36f6c17175b6850d733ab2c76fde82e8503
 
 FROM debian:10-slim as build
 
@@ -44,6 +44,8 @@ RUN apt-get update && \
 
 USER appuser
 WORKDIR /home/appuser/tool
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["manalyze"]
 CMD ["--help"]
