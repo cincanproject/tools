@@ -43,6 +43,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  jadx - Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
 | [jd-cli](https://gitlab.com/CinCan/tools/-/tree/master/stable/jd-cli) |  Command line wrapper around JD Core Java Decompiler. Decompiles .dex and .jar -files to java. | .jar -file  | Linux |
 | [jsunpack-n](https://gitlab.com/CinCan/tools/-/tree/master/stable/jsunpack-n) |  Jsunpack-n - Emulates browser functionality, detect exploits etc. | PDF, URL, PCAP, JavaScript, SWF  | Linux |
+| [luadec](https://gitlab.com/CinCan/tools/-/tree/master/stable/luadec) |  luadec: Lua decompiler | .luac .lua  | Linux |
 | [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/stable/manalyze) |  Manalyze - a static analyzer for PE executables | PE files  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/stable/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
 | [oletools](https://gitlab.com/CinCan/tools/-/tree/master/stable/oletools) |  Oletools - version 0.56 to analyze Microsoft OLE2 files | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
