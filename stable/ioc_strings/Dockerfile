@@ -17,5 +17,7 @@ RUN apk update && apk add --no-cache \
 
 USER appuser
 
+COPy meta.json /opt/
+
 ENTRYPOINT ["iocstrings", "-t"]
 
