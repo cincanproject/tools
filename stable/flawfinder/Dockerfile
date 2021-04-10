@@ -23,4 +23,7 @@ RUN wget -q -O "flawfinder-${TOOL_VERSION}.zip" "https://github.com/david-a-whee
 
 WORKDIR /home/appuser/
 USER appuser
+
+COPY meta.json /opt/
+
 ENTRYPOINT ["flawfinder"]
