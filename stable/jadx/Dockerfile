@@ -27,4 +27,7 @@ RUN wget -q -O "jadx-${TOOL_VERSION}.zip" "https://github.com/skylot/jadx/releas
     && unzip -q "jadx-${TOOL_VERSION}.zip" \
     && chmod +x "./bin/jadx" 
 
+# Should be final modification for layers to be useful!
+COPY meta.json /opt/
+
 ENTRYPOINT ["./bin/jadx"]
