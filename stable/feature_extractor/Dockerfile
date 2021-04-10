@@ -20,6 +20,8 @@ USER appuser
 
 WORKDIR /home/appuser
 
+COPY meta.json /opt/
+
 ENTRYPOINT ["/usr/local/bin/python","/feature_extractor/analyze_parallel.py","--confpath", "/feature_extractor"]
 
 CMD ["-h"]
