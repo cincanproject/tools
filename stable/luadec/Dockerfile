@@ -28,4 +28,7 @@ COPY --from=build /luadec/luadec/luareplace /usr/local/bin/
 USER nonroot
 WORKDIR /home/nonroot/tool
 
+# Keep metafile as final modification for layers! Easily fetchable in that case
+COPY meta.json /opt/
+
 ENTRYPOINT ["/usr/local/bin/luadec"]
