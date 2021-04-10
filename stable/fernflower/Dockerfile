@@ -1,5 +1,5 @@
 # Java Decompiler
-ARG tool_version=idea/203.5981.41
+ARG tool_version=idea/211.6693.111 
 
 FROM openjdk:8-alpine as build
 
@@ -33,5 +33,7 @@ RUN mkdir -p /home/appuser/tool \
 
 USER appuser
 WORKDIR /home/appuser/tool
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["java", "-jar", "/app/fernflower.jar"]
