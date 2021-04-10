@@ -7,6 +7,15 @@
       "provider": "GitHub",
       "method": "tag-release",
       "origin": true
+    },
+    {
+      "uri": "https://sources.debian.org/api/src/clamav/",
+      "tool": "clamav",
+      "provider": "Debian",
+      "method": "release",
+      "suite": "buster",
+      "origin": false,
+      "docker_origin": true
     }
   ]
 }

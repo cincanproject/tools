@@ -1,4 +1,4 @@
-ARG tool_version=0.102.4
+ARG tool_version=0.102.4+dfsg-0+deb10u1
 
 FROM debian:buster-slim
 
@@ -7,7 +7,7 @@ LABEL MAINTAINER=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-RUN apt-get update && apt-get install -y clamav="$TOOL_VERSION"+dfsg-0+deb10u1  jq && \
+RUN apt-get update && apt-get install -y clamav="$TOOL_VERSION" jq && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/*  &&\
     # Change permissions suitable for future user creation
     chown -R clamav:clamav /var/lib/clamav/ && \
@@ -23,6 +23,7 @@ USER appuser
 RUN freshclam 
 
 WORKDIR /home/appuser/
+COPY meta.json /opt/
 
 ENTRYPOINT ["/usr/bin/clamscan"]
 CMD ["--help"]
