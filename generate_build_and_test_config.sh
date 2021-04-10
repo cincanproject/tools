@@ -16,7 +16,8 @@ set -e
 if [ ! -f GREEN_MASTER_COMMIT.txt ];then
     # File is updated only when the whole pipeline finishes
     echo "Cache file not found, should be fixed manually"
-    exit 1
+    # exit 1
+    GREEN_MASTER="9759aece1a5b25a86c065730fa05c32f277afee0"
 
 else
     echo "Cache file found."
