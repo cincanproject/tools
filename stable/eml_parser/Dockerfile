@@ -1,4 +1,4 @@
-ARG tool_version=1.14.3
+ARG tool_version=1.14.6
 FROM debian:10-slim as build
 
 LABEL MAINTAINER=cincan.io
@@ -29,6 +29,8 @@ RUN apt-get update && \
 USER appuser
 ENV PATH=/home/appuser/.local/bin:$PATH
 WORKDIR /home/appuser/tool
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["eml2json"]
 CMD ["--help"]
