@@ -28,6 +28,6 @@ RUN adduser -s /sbin/login -D appuser && ls -la /pdf-parser
 USER appuser
 
 WORKDIR /pdf-parser
-
+COPY meta.json /opt/
 ENTRYPOINT ["/usr/bin/python3", "pdf-parser.py"]
 CMD ["--help"]
