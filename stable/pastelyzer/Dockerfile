@@ -1,4 +1,4 @@
-ARG tool_version=rel-0.10-beta
+ARG tool_version=rel-0.11.1-beta
 
 FROM debian:10-slim as build
 
@@ -41,6 +41,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 USER appuser
-
+COPY meta.json /opt/
 ENTRYPOINT ["pastelyzer"]
 CMD ["-h"]
