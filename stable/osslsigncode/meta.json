@@ -7,6 +7,15 @@
       "provider": "GitHub",
       "method": "release",
       "origin": true,
+      "docker_origin": false
+    },
+    {
+      "uri": "https://sources.debian.org/api/src/osslsigncode/",
+      "tool": "osslsigncode",
+      "provider": "Debian",
+      "method": "release",
+      "suite": "buster",
+      "origin": false,
       "docker_origin": true
     }
   ]
