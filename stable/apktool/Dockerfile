@@ -39,5 +39,6 @@ USER appuser
 WORKDIR /home/appuser/tool
 
 COPY --from=build /home/appuser/apktool /home/appuser/apktool.jar /home/appuser/tool/
+COPY meta.json /opt/
 
 ENTRYPOINT ["sh", "/home/appuser/tool/apktool"]
