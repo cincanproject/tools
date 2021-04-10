@@ -113,5 +113,7 @@ RUN python setup.py install \
 WORKDIR /home/appuser
 USER appuser
 
+COPY meta.json /opt/
+
 ENTRYPOINT ["jsunpackn.py", "-c", "/jsunpack-n/options.config"]
 CMD ["--help"]
