@@ -1,4 +1,4 @@
-ARG tool_version=1.0.1.Final
+ARG tool_version=jd-cli-1.2.0
 
 FROM alpine:3.11 as build
 
@@ -6,10 +6,10 @@ LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV SHA256=767013796e7696854ff8b1ed0a9d4c12e4bed941be0c23537c7a2cadc5022340
+ENV SHA256=ae589be342b8ea2ccfa48f9da09c78e1c54f263d6695c7a4385a9f748c22bb25
 
 RUN apk add --no-cache wget unzip && \
-    wget -q -O "jd-cli.zip" "https://github.com/kwart/jd-cli/releases/download/jd-cmd-$TOOL_VERSION/jd-cli-$TOOL_VERSION-dist.zip" && \
+    wget -q -O "jd-cli.zip" "https://github.com/kwart/jd-cli/releases/download/$TOOL_VERSION/$TOOL_VERSION-dist.zip" && \
     echo "$SHA256  jd-cli.zip" | sha256sum -c && \
     unzip -q "jd-cli.zip" -d .
 
@@ -26,6 +26,9 @@ RUN adduser --shell /sbin/nologin --disabled-login --gecos "" appuser && \
 
 WORKDIR /home/appuser/
 USER appuser
+
+# Should be final modification for layers to be usable! Keep as final
+COPY meta.json /opt/
 
 ENTRYPOINT ["java", "-jar", "/usr/local/bin/jd-cli.jar"]
 CMD ["--help"]
