@@ -1,13 +1,14 @@
 # Java Decompiler
 ARG tool_version=idea/211.6693.111 
 
-FROM openjdk:8-alpine as build
+# FROM openjdk:11-alpine as build
+FROM adoptopenjdk/openjdk11:alpine as build
 
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=${tool_version}
-ENV TOOL_SHA256 cd310646b2dacc9275b795c004e985682dcdbe7b1c78e72832af942e7254d04d
+ENV TOOL_SHA256 9f9ca666985c9b55eb9ab0e3418cf4ea9266bf35f35caf9e915596df74eacada
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apk add --no-cache wget unzip && \
@@ -21,7 +22,8 @@ RUN FERNFLOWER_LOC=intellij-community-$(echo $TOOL_VERSION | tr / -)/plugins/jav
     ./gradlew jar --no-daemon && \
     mv build/libs/fernflower.jar /
 
-FROM openjdk:8-jre-alpine as env
+# FROM openjdk:8-jre-alpine as env
+FROM adoptopenjdk/openjdk11:alpine-jre as env
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
