@@ -1,4 +1,4 @@
-ARG tool_version=1.6.1
+ARG tool_version=1.7.0
 
 FROM python:2.7-buster as build 
 LABEL maintainer=cincan.io
@@ -36,6 +36,8 @@ COPY --from=build /home/appuser/.local /home/appuser/.local
 ENV PATH=/home/appuser/.local/bin:$PATH
 WORKDIR /home/appuser/
 USER appuser
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["floss"]
 CMD ["--help"]
