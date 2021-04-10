@@ -7,7 +7,7 @@
 # Example:
 # docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe
 
-ARG tool_version=6.2.0
+ARG tool_version=7.0.0.6472-rc1 
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 
@@ -30,6 +30,8 @@ RUN   groupadd -g 1000 appuser \
 
 USER appuser
 WORKDIR "/home/appuser"
+
+COPY meta.json /opt/
 
 ENTRYPOINT ["/usr/local/bin/ilspycmd"]
 CMD ["--help"]
