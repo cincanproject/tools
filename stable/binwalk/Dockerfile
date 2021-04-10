@@ -1,4 +1,4 @@
-ARG tool_version=3154b0012e7dbaf2b20edd5c0a2350ec64009869
+ARG tool_version=772f271f0bcce18771f814b5f20cb19b29082831
 
 FROM debian:10-slim as build
 
@@ -71,5 +71,6 @@ USER appuser
 
 # dummy run because it creates some files on first run in home dir
 RUN binwalk -h > /dev/null
+COPY meta.json /opt/
 
 ENTRYPOINT ["binwalk"]
