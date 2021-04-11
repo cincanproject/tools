@@ -1,4 +1,4 @@
-ARG tool_version=ad8a9f4705e75e96f205b77df90bd8bcc30691b8
+ARG tool_version=05ef95773b2b417d0a3e14382f6002c0a57db6c3
 FROM debian:10-slim as build
 
 ARG tool_version
@@ -36,5 +36,6 @@ RUN apt-get update \
 
 USER appuser
 WORKDIR /home/appuser/tool
-
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["perl", "/regripper/rip.pl"]
