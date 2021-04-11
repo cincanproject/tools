@@ -37,5 +37,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 USER appuser
 WORKDIR /home/appuser
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/snowman-master/build/nocode/nocode"]
 CMD ["--help"]
