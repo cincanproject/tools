@@ -1,4 +1,4 @@
-ARG tool_version=0.8.0
+ARG tool_version=0.9.2
 
 FROM golang:1.15-buster as build
 ARG tool_version
@@ -26,5 +26,7 @@ RUN apk update && apk add --no-cache \
 USER appuser
 
 WORKDIR "/home/appuser"
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["vt"]
 CMD ["--help"]
