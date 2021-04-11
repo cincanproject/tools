@@ -32,5 +32,7 @@ USER appuser
 
 WORKDIR /home/appuser
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/ssdeep/ssdeep"]
 CMD ["-h"]
