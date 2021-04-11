@@ -59,5 +59,8 @@ USER appuser
 
 COPY .cincanignore .
 
+# Copying meta.json should be final modification of layers - fetched separately in some cases
+COPY meta.json /opt/
+
 ENTRYPOINT ["/usr/bin/python","/peepdf/peepdf.py"]
 
