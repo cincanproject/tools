@@ -1,5 +1,5 @@
 # Commit after 6.0.3 release
-ARG tool_version=f7d75aa2b2d39ef76e928808598d53e922bdeae5
+ARG tool_version=ad02a1767dce0fe092da561b5efe1ae24b451608
 
 FROM alpine:latest
 
@@ -31,6 +31,9 @@ RUN apk update && apk add --no-cache \
 USER appuser
 
 WORKDIR /home/appuser/peframe
+
+# Should be final modification for layers - fetched separately
+COPY meta.json /opt/
 
 ENTRYPOINT ["peframe"]
 CMD ["-h"]
