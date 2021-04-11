@@ -1,5 +1,5 @@
 # Modified from https://github.com/blacktop/docker-ghidra
-ARG tool_version=ghidra_9.2_PUBLIC_20201113
+ARG tool_version=ghidra_9.2.2_PUBLIC_20201229
 
 FROM openjdk:11-jdk-slim as build
 
@@ -7,7 +7,7 @@ LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV GHIDRA_SHA256 ffebd3d87bc7c6d9ae1766dd3293d1fdab3232a99b170f8ea8b57497a1704ff6
+ENV GHIDRA_SHA256 8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8
 
 RUN apt-get update && apt-get install -y wget ca-certificates unzip --no-install-recommends \
     && wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/$TOOL_VERSION.zip \
@@ -62,5 +62,7 @@ COPY .cincanignore .
 # Define ghidra location for script, it is expecting $GHIDRA_HOME variable
 ENV GHIDRA_HOME /ghidra
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/ghidra/ghidra_decompiler.sh" ]
 CMD ["--help"]
