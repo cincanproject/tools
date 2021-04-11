@@ -1,4 +1,4 @@
-ARG tool_version=511ecd59d54c6a3424178af6b99e4c1f699274c4
+ARG tool_version=fb4290ebd4aa98d9e34e51b67f0b53ccf7b3fc97
 FROM debian:10 as build
 
 LABEL MAINTAINER=cincan.io
@@ -18,7 +18,7 @@ RUN apt-get update && \
 	pypy-dev \
         libssl-dev \
         build-essential \
-    && wget -q https://bootstrap.pypa.io/get-pip.py && \
+    && wget -q https://bootstrap.pypa.io/pip/2.7/get-pip.py && \
     pypy get-pip.py "pip<20.2" --no-wheel || true && \
     pypy -m pip install setuptools --user && wget -q https://github.com/kirk-sayre-work/ViperMonkey/archive/$TOOL_VERSION.zip && \
     unzip -q $TOOL_VERSION.zip && \
@@ -43,6 +43,7 @@ RUN apt-get update && \
 USER appuser
 ENV PATH=/home/appuser/.local/bin:$PATH
 WORKDIR /home/appuser/tool
-
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["pypy", "/home/appuser/vipermonkey/vipermonkey/vmonkey.py"]
 CMD ["--help"]
