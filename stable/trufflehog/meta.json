@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/dxa4481/truffleHog",
+      "repository": "dxa4481",
+      "tool": "truffleHog",
+      "provider": "GitHub",
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}

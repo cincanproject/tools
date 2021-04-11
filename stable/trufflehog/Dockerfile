@@ -37,5 +37,10 @@ ENV PATH=/home/appuser/.local/bin:$PATH
 
 USER appuser
 
+ARG tool_version
+ENV TOOL_VERSION=$tool_version
+
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["trufflehog"]
 CMD ["-h"]
