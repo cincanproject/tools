@@ -1,4 +1,4 @@
-ARG COMMIT="5f685e5"
+ARG COMMIT="a438e76"
 ARG tool_version="2.6.1"
 # py-crypto decprecated in 3.12
 FROM alpine:3.11
@@ -92,5 +92,7 @@ USER appuser
 
 WORKDIR /home/appuser/
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["vol.py"]
 CMD ["--help"]
