@@ -1,4 +1,4 @@
-ARG tool_version=3.2.10-r0
+ARG tool_version=3.4.4-r0
 
 FROM alpine:latest
 
@@ -21,6 +21,7 @@ RUN addgroup -S appuser && \
 
 USER appuser
 WORKDIR /home/appuser
-
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["tshark"]
 CMD ["--help"]
