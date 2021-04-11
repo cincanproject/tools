@@ -14,7 +14,7 @@ RUN \
   sha256sum xsv && \
   echo "271e798160472830d7151673383afaba4c37209673f5157cf37e8f5e308f1cac  xsv" | sha256sum -c
 
-FROM alpine:3.11 as env
+FROM alpine:latest as env
 COPY --from=build /xsv /xsv
 
 ARG tool_version
@@ -27,6 +27,7 @@ RUN chmod +x /xsv && \
 
 USER appuser
 WORKDIR /home/appuser/tool
-
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/xsv"]
 
