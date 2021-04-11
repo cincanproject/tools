@@ -27,6 +27,6 @@ RUN apk update && apk add --no-cache \
 WORKDIR /home/appuser
 
 USER appuser
-
+COPY meta.json /opt/
 ENTRYPOINT ["/usr/bin/python","/pdfxray_lite/pdfxray_lite.py"]
 
