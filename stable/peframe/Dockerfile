@@ -12,6 +12,7 @@ RUN apk update && apk add --no-cache \
 	git \
 	libssl1.1 \
 	python3 \
+    py3-pip \
 	swig \
 	g++ \
 	make \
@@ -20,10 +21,13 @@ RUN apk update && apk add --no-cache \
     py3-setuptools \
 	libffi-dev \
 	libmagic \
+    rust \
+    cargo \
 	&& git clone https://github.com/guelfoweb/peframe.git \
 	&& cd peframe \
 	&& git checkout "${TOOL_VERSION}" \
 	&& chmod +x install.sh \
+    && pip install setuptools-rust wheel \
 	&& sh install.sh \
 	&& python3 setup.py install \
 	&& adduser --shell /sbin/login --gecos "" appuser -DH
