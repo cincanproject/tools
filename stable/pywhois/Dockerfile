@@ -15,5 +15,7 @@ ADD query.py .
 USER appuser
 WORKDIR /home/appuser
 
+# Should be final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/query.py"]
 CMD ["--help"]
