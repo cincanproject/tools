@@ -1,7 +1,7 @@
 # "Ssdeep is a program for computing context triggered piecewise hashes (CTPH), also called fuzzy hashes"
 #  GNU General Public License:  https://www.gnu.org/licenses/gpl-3.0.html
 
-ARG tool_version=2.14.2
+ARG tool_version=d8705da60369a27a2b5d22da488416e8ab348d8f
 
 FROM alpine:3.11
 
@@ -20,7 +20,7 @@ RUN apk update && apk add --no-cache \
 	git>2.24.1-r0 \
 	&& git clone https://github.com/ssdeep-project/ssdeep.git \
 	&& cd ssdeep \
-	&& git checkout d8705da60369a27a2b5d22da488416e8ab348d8f \
+	&& git checkout $TOOL_VERSION \
 	&& ./bootstrap \
 	&& ./configure --prefix=/ssdeep \
 	&& make \

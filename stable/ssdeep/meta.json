@@ -1,0 +1,13 @@
+{
+  "upstreams": [
+    {
+      "uri": "https://github.com/ssdeep-project/ssdeep",
+      "repository": "ssdeep-project",
+      "tool": "ssdeep",
+      "provider": "GitHub",
+      "method": "commit",
+      "origin": true,
+      "docker_origin": true
+    }
+  ]
+}
