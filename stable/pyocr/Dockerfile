@@ -39,6 +39,9 @@ WORKDIR /home/appuser/tool
 
 COPY ocr.py /home/appuser/ocr.py
 
+# Should be kept as final modification for layers
+COPY meta.json /opt/
+
 ENTRYPOINT ["/home/appuser/ocr.py"]
 
 CMD ["-h"]
