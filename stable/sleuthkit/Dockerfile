@@ -1,7 +1,7 @@
 ### Usage: docker run -it -v `pwd`/samples:/samples cincan/sleuthkit [tool from sleuthkit]
 ### or cincan run cincan/sleuthkit [tool from sleuthkit]
 
-ARG tool_version=4.10.1
+ARG tool_version=4.10.2
 
 FROM debian:10-slim AS build
 
@@ -56,5 +56,7 @@ RUN chmod +x /entrypoint.sh && \
 USER appuser
 WORKDIR "/home/appuser/"
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["help"]
