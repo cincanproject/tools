@@ -1,4 +1,4 @@
-ARG tool_version=c144a6ddd86f427c8abc4fda0af142417813f5f2
+ARG tool_version=5d85bfb7a860b66cd94d03f9609a83bf6cbbf9c0
 
 FROM alpine:latest AS builder
 
