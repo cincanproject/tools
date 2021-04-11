@@ -1,5 +1,5 @@
 
-ARG tool_version=v4.0.2
+ARG tool_version=v4.0.5
 FROM debian:buster-slim as build
 
 LABEL MAINTAINER=cincan.io
@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libmagic-dev \
     libjansson-dev \
+    flex \
     && git clone --depth 1 --branch "${TOOL_VERSION}" https://github.com/VirusTotal/yara.git /yara \
     && git clone --depth 1 https://github.com/Yara-Rules/rules.git /rules \
     && cd /yara \
@@ -32,5 +33,7 @@ RUN apt-get update && apt-get install -y \
 USER appuser
 WORKDIR /home/appuser
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT [ "yara" ]
 CMD [ "--help" ]

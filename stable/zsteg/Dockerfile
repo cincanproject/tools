@@ -1,4 +1,4 @@
-ARG tool_version=0.2.2
+ARG tool_version=0.2.4
 
 FROM alpine:latest
 
@@ -7,7 +7,7 @@ LABEL MAINTAINER=cincan.io
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
-ENV SHA_CHECK 108ed106e8ef663f9a2bd1d1552ac30c8b65e38e2c49ba5a468942fb31ec867e
+ENV SHA_CHECK 52a8ed71c5f5efaae121aa0bcbbcfa55bf67b7ba7a7822ac337dcdfa31135ed9
 
 RUN apk update && apk add --no-cache \
 	curl-dev \
@@ -30,5 +30,7 @@ USER appuser
 
 WORKDIR /home/appuser
 
+# meta.json should be kept as final modification for layers
+COPY meta.json /opt/
 ENTRYPOINT ["/zsteg-0.2.2//bin/zsteg"]
 CMD ["--help"]
