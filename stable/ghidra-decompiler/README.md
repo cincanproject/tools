@@ -1,4 +1,4 @@
-# Ghidra Headless Analyzer - Version 9.1
+# Ghidra Headless Analyzer
 
 Ghidra is a software reverse engineering (SRE) framework created by National Security Agency.
 This is an attempt to make docker image for purely decompiling binaries with headless version of Ghidra, and to produce decompiled C - code.
