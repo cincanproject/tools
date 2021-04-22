@@ -1,5 +1,5 @@
-ARG tool_version=4.5.1
-ARG ghidra_tool_version=4.5.1
+ARG tool_version=5.2.1
+ARG ghidra_tool_version=v5.2.1
 
 # Version number is used in r2ghidra plugin as well for selecting correct tag
 
@@ -13,7 +13,7 @@ ENV TOOL_VERSION=$tool_version
 ARG ghidra_tool_version
 ENV GHIDRA_TOOL_VERSION=$ghidra_tool_version
 
-ENV radare2_SHA256 6fa9dfa6c3229372ecdf71c65f7ee1bee4706ad71a28521400a0a087757d0db9
+ENV radare2_SHA256 bd528e83e9a0a80387c4566a762a4068512a9ea92805bd634ea4ac28dda40a30
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -61,12 +61,11 @@ RUN wget --progress=bar:force -O "$SOURCE_ROOT"/radare2.zip "https://github.com/
 RUN cd "$SOURCE_ROOT/radare2-$TOOL_VERSION/sys" && \
     meson --prefix="$INSTALL_PREFIX" && \
     ninja && \
-    ninja install && \
-    ln -s "$INSTALL_PREFIX/bin/radare2" "$INSTALL_PREFIX/bin/r2"
+    ninja install
 
-RUN git clone  https://github.com/radareorg/r2ghidra-dec.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec  && \
+RUN git clone  https://github.com/radareorg/r2ghidra.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
     cd ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
-    git checkout "tags/v$GHIDRA_TOOL_VERSION" && \
+    git checkout "tags/$GHIDRA_TOOL_VERSION" && \
     git submodule init && \
     git submodule update && \
     mkdir build && cd build && \

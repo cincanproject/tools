@@ -42,7 +42,7 @@ def test_rabin2():
 def test_radiff2():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["radiff2", "-h"])
-    assert out.startswith("Usage: radiff2 [-abBcCdjrspOxuUvV] ")
+    assert out.startswith("Usage: radiff2 [-abBcCdeGhijnrOpqsSxuUvVzZ]")
 
 
 def test_rafind2():
@@ -60,7 +60,7 @@ def test_ragg2():
 def test_rahash2():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["rahash2", "-h"])
-    assert out.startswith("Usage: rahash2 [-rBhLkv] [")
+    assert out.startswith("Usage: rahash2 [-BhjkLqrv]")
 
 
 def test_rarun2():
@@ -83,7 +83,7 @@ def test_rax2():
 
 def test_simple_inline_analysis():
     tool = dockertools.tool_with_file(__file__)
-    out = tool.run_get_string(["r2", "-Aqc", "'pdf @main'", SAMPLE_FILE])
+    out = tool.run_get_string(["r2", "-e", "bin.cache=true", "-Aqc", "'pdf @main'", SAMPLE_FILE])
     assert out.startswith("\x1b[2K\r")
 
 
