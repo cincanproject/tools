@@ -126,5 +126,5 @@ ENV R2_HOME="$INSTALL_PREFIX/bin"
 ENV R2_SCRIPTS="$SOURCE_ROOT/scripts"
 
 WORKDIR /home/appuser
-
+COPY meta.json /opt/
 ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
