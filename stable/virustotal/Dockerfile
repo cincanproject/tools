@@ -1,4 +1,4 @@
-ARG tool_version=0.9.2
+ARG tool_version=0.9.5
 
 FROM golang:1.15-buster as build
 ARG tool_version
