@@ -18,7 +18,7 @@ if [ -z ${GREEN_MASTER+x} ];then
 
   if [ ! -f GREEN_MASTER_COMMIT.txt ];then
       # File is updated only when the whole pipeline finishes
-      echo "Cache file not found or expired. Pass variable with git push options e.g. "
+      echo "Cache file not found or expired. Pass variable with git push options e.g. git push -o ci.variable=\"GREEN_MASTER=<commit>\""
       exit 1 
   else
     echo "Cache file found."
