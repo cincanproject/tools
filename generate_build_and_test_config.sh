@@ -13,17 +13,21 @@ echo "$CI_COMMIT_BRANCH"
 # Exit on fail immediately
 set -e
 
-if [ ! -f GREEN_MASTER_COMMIT.txt ];then
-    # File is updated only when the whole pipeline finishes
-    echo "Cache file not found, should be fixed manually"
-    exit 1
+if [ -z ${GREEN_MASTER+x} ];then
+   # Variable not set
 
-else
+  if [ ! -f GREEN_MASTER_COMMIT.txt ];then
+      # File is updated only when the whole pipeline finishes
+      echo "Cache file not found or expired. Pass variable with git push options e.g. git push -o ci.variable=\"GREEN_MASTER=<commit>\""
+      exit 1 
+  else
     echo "Cache file found."
     GREEN_MASTER="$(cat GREEN_MASTER_COMMIT.txt)"
     echo "Latest commit with passed pipeline: $GREEN_MASTER"
+  fi
+else
+  echo "git push option used, latest commit with passed pipeline: $GREEN_MASTER";
 fi
-
 
 GENERATED_CONFIG=${1}
 if [ -z "$1" ]; then
