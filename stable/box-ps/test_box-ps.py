@@ -6,6 +6,12 @@ import pytest
 
 SAMPLE_FILE="samples/source/powershell/hello.ps1"
 
+def test_entrypoint():
+    tool = dockertools.tool_with_file(__file__)
+    out = tool.run_get_string([])
+    assert out.replace('\r', '').startswith("[-] must give either script contents or input file\n")
+
+
 def test_encodedbinary_deobfuscation(tmp_path, tool):
     d = tmp_path / "box-ps"
     d.mkdir()
