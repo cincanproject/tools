@@ -1,4 +1,4 @@
-# box-ps
+# box-ps - A Powershell sandboxing utility used to deobfuscate PowerShell scripts
 
 A Powershell sandboxing utility by [Connor Shride](https://github.com/ConnorShride) used to deobfuscate PowerShell scripts
 
