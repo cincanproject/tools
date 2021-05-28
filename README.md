@@ -28,7 +28,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [access-log-visualization](https://gitlab.com/CinCan/tools/-/tree/master/stable/access-log-visualization) |  Visualizing webserver's access log data to help detecting malicious activity | access.log (Apache)  | Linux |
 | [apktool](https://gitlab.com/CinCan/tools/-/tree/master/stable/apktool) |  A tool for reverse engineering 3rd party, closed, binary Android apps. | .apk, .jar   | Linux |
 | [binwalk](https://gitlab.com/CinCan/tools/-/tree/master/stable/binwalk) |  Firmware Analysis Tool | binary  | Linux |
-| [box-ps](https://gitlab.com/CinCan/tools/-/tree/master/stable/box-ps) |  box-ps | ps1, psm1  | Linux |
+| [box-ps](https://gitlab.com/CinCan/tools/-/tree/master/stable/box-ps) |  box-ps - A Powershell sandboxing utility used to deobfuscate PowerShell scripts | ps1, psm1  | Linux |
 | [cfr](https://gitlab.com/CinCan/tools/-/tree/master/stable/cfr) |  Class File Reader - another java decompiler | .jar -file  | Linux |
 | [clamav](https://gitlab.com/CinCan/tools/-/tree/master/stable/clamav) |  ClamAV virus scanner | Any file or directory.  | Linux |
 | [dex2jar](https://gitlab.com/CinCan/tools/-/tree/master/stable/dex2jar) |  Tool to decompile dex files to jar | APK file  | Linux |
