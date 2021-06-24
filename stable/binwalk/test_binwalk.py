@@ -4,9 +4,14 @@ import pytest
 
 SAMPLE_FILE = "samples/compressed/tampered_sample.bin"
 
-def test_help():
+def test_entrypoint():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
+    assert out.startswith("\nBinwalk")
+
+def test_help():
+    tool = dockertools.tool_with_file(__file__)
+    out = tool.run_get_string(["--help"])
     assert out.startswith("\nBinwalk")
 
 def test_with_sample():
