@@ -4,7 +4,7 @@
 
 This repository will automatically build and publish Docker images into Docker Hub, GitHub Container Registry and Quay.io using GitLab-CI.
 
-The pipeline will try to build a new image for each directory that **_has changes_** _since the latest passed commit_, once provided tests have been passed. The most of the tools are tested with real samples to see that they work as excepted.
+The pipeline will try to build a new image for each directory that **_has changes_** _since the latest passed commit_, once provided tests have been passed. The most of the tools are tested with real samples to see that they work as excepted. 
 
 README description of each tool is synchronized into Docker Hub as well.
 
