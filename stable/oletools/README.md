@@ -1,4 +1,4 @@
-# Oletools - version 0.56 to analyze Microsoft OLE2 files
+# Oletools - a set of tools to analyze Microsoft OLE2 files
 
 "Oletools is a package of python tools to analyze Microsoft OLE2 files (also called Structured Storage, Compound File Binary Format or Compound Document File Format) Extract and analyse VBA macro source code from Office documents."
 
