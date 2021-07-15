@@ -1,4 +1,4 @@
-ARG tool_version=0.102.4+dfsg-0+deb10u1
+ARG tool_version=0.103.2+dfsg-0+deb10u1
 
 FROM debian:buster-slim
 
