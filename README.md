@@ -47,7 +47,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [luadec](https://gitlab.com/CinCan/tools/-/tree/master/stable/luadec) |  luadec: Lua decompiler | .luac .lua  | Linux |
 | [manalyze](https://gitlab.com/CinCan/tools/-/tree/master/stable/manalyze) |  Manalyze - a static analyzer for PE executables | PE files  | Linux |
 | [oledump](https://gitlab.com/CinCan/tools/-/tree/master/stable/oledump) |  A Program to analyse OLE files. | .doc, .xls, .ppt  | Linux |
-| [oletools](https://gitlab.com/CinCan/tools/-/tree/master/stable/oletools) |  Oletools - version 0.56 to analyze Microsoft OLE2 files | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
+| [oletools](https://gitlab.com/CinCan/tools/-/tree/master/stable/oletools) |  Oletools - a set of tools to analyze Microsoft OLE2 files | .doc, .dot, .docm, .dotm, .xml, .mht, .xls, .xlsm, .xlsb, .pptm, .ppsm, VBA/VBScript source  | Linux |
 | [osslsigncode](https://gitlab.com/CinCan/tools/-/tree/master/stable/osslsigncode) |  osslsigncode | exe/sys/dll  | Linux |
 | [output-standardizer](https://gitlab.com/CinCan/tools/-/tree/master/stable/output-standardizer) |  Generate md report from Cincan's Concourse pipelines, or convert single tool output to JSON.   | cincan/binwalk, cincan/pdf2john, cincan/pdfxray_lite and cincan/strings outputs  | Linux |
 | [pastelyzer](https://gitlab.com/CinCan/tools/-/tree/master/stable/pastelyzer) |  pastelyzer - find security and privacy related artifacts from text documents | text  | Linux |
