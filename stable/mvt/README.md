@@ -14,7 +14,7 @@ iTunes/Finder backup, iOS filesystem dump
 ## Output
 
 ```
-JSON, text
+JSON, text, .apk
 ```
 
 ## Example usage
