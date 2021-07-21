@@ -7,7 +7,7 @@ Full documentation is available in [here.](https://mvt.readthedocs.io/en/latest/
 ## Input
 
 ```
-Android backup, Android filesystem dump
+Android backup, Android filesystem dump, Android device with adb
 iTunes/Finder backup, iOS filesystem dump
 ```
 

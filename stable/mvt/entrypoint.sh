@@ -29,6 +29,11 @@ case ${1-} in "" | "-h" | "--help")
     ;;
 "mvt-android" | "--mvt-android")
     shift 1
+    echo "Android forensics requires ADB. Listing available devices..."
+    adb start-server
+    adb devices
+    echo "You must accept connection from your phone in 5 seconds."
+    sleep 5
     mvt-android "$@"
     exit 0
     ;;
