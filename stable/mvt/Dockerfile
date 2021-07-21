@@ -24,15 +24,19 @@ RUN apt-get update && apt-get install -y libusb-1.0-0 \
 
 # Use existing comprehensive list https://github.com/M0Rf30/android-udev-rules
 RUN wget -O /etc/udev/rules.d/51-android.rules https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules && \
-    chmod a+r /etc/udev/rules.d/51-android.rules
+    chmod a+r /etc/udev/rules.d/51-android.rules && \
+    gosu appuser mkdir /home/appuser/tool && \
+    # First run to create some default files
+    gosu appuser adb start-server && \
+    gosu appuser adb kill-server
 
 WORKDIR /home/appuser/
 COPY entrypoint.sh .
 COPY meta.json /opt/
 
-USER appuser
-
 WORKDIR /home/appuser/tool
+
+USER appuser
 
 ENTRYPOINT [ "bash", "/home/appuser/entrypoint.sh" ]
 CMD ["--help"]
