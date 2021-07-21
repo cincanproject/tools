@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y clamav="$TOOL_VERSION" jq && \
     chmod -R 775 /var/lib/clamav/ && \
     chmod -R 775 /var/log/clamav/ && \
     groupadd -g 1000 appuser && \
-    useradd -u 1000 -g appuser -s /sbin/nologin appuser \
+    useradd -u 1000 -g appuser -s /sbin/nologin -m appuser \
     && usermod -a -G clamav appuser
 
 USER appuser

@@ -36,6 +36,8 @@ def test_do_run_get_tmp_json(tmp_path):
     d = tmp_path / "clamav_tmp"
     d.mkdir()
     tool = dockertools.tool_with_file(__file__)
+    relative_dir = d.relative_to(os.getcwd())
+    tool.output_dirs = [relative_dir]
     out = tool.run_get_string(
         args=[
             "--gen-json",
@@ -45,7 +47,7 @@ def test_do_run_get_tmp_json(tmp_path):
         ]
     )
     # Get files
-    files = [x for x in d.iterdir() if x.is_file()]
+    files = [x for x in relative_dir.glob('**/*') if x.is_file()]
 
     assert len(files) == 1
     with open(files[0]) as jsonfile:
