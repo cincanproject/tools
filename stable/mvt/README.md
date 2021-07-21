@@ -14,12 +14,14 @@ iTunes/Finder backup, iOS filesystem dump
 ## Output
 
 ```
-JSON
+JSON, text
 ```
 
 ## Example usage
 
-Use with Docker for iOS filesystem dump:
+Commands `mvt-ios` and `mvt-android` have been provided with wrapper script.
+
+For example, use with Docker for iOS filesystem dump:
 
 ```
 docker run -v /dump:/dump quay.io/cincan/mvt mvt-ios check-fs /dump
