@@ -1,4 +1,4 @@
-ARG tool_version=3.4.5-r0
+ARG tool_version=3.4.6-r0
 
 FROM alpine:latest
 
