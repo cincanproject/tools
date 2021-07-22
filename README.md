@@ -38,7 +38,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [flawfinder](https://gitlab.com/CinCan/tools/-/tree/master/stable/flawfinder) |  Flawfinder - Finds possible security weaknesses in C/C++ source code | C/C++ code  | Linux |
 | [floss](https://gitlab.com/CinCan/tools/-/tree/master/stable/floss) |  FireEye Labs Obfuscated String Solver | Malware with (obfuscated) strings  | Linux |
 | [ghidra-decompiler](https://gitlab.com/CinCan/tools/-/tree/master/stable/ghidra-decompiler) |  Ghidra Headless Analyzer | Any software binary in native instructions.  | Linux |
-| [ilspy](https://gitlab.com/CinCan/tools/-/tree/master/stable/ilspy) |  ILSpy (console only) - version 7.0.0 rc1 | .NET Assembly  | Linux |
+| [ilspy](https://gitlab.com/CinCan/tools/-/tree/master/stable/ilspy) |  ILSpy (console only) - version 7.1.0 | .NET Assembly  | Linux |
 | [ioc_strings](https://gitlab.com/CinCan/tools/-/tree/master/stable/ioc_strings) |  Extracts urls, hashes, emails, ips, domains and base64 (other) from a file. | File/Directory  | Linux |
 | [iocextract](https://gitlab.com/CinCan/tools/-/tree/master/stable/iocextract) |  Advanced Indicator of Compromise (IOC) extractor | File, STDIN  | Linux |
 | [jadx](https://gitlab.com/CinCan/tools/-/tree/master/stable/jadx) |  jadx - Dex to Java decompiler | .apk, .dex, .jar, .class, .smali, .zip, .aar, .arsc  | Linux |
