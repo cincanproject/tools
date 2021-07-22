@@ -21,22 +21,31 @@ JSON, text, .apk
 
 Commands `mvt-ios` and `mvt-android` have been provided with wrapper script.
 
-For example, use with Docker for iOS filesystem dump:
+Example use with Docker for iOS filesystem dump:
 
 ```
 docker run -v /dump:/dump quay.io/cincan/mvt mvt-ios check-fs /dump
+```
+
+Example use with ADB bridge for Android devices.
+Device shared into the container with `--device` parameter.
+JSON output stored into shared volume `/dump`.
+
+```
+docker run --device /dev/bus/usb -v /dump:/dump quay.io/cincan/mvt mvt-android check-adb -o /dump
 ```
 
 ***Method 2. use ['cincan'](https://gitlab.com/CinCan/cincan-command) tool*** 
 
 Follow 'cincan' tool installation steps. 
 
-To get same functionality as above, simply run
+To analyse filesystem dump
 
 ```console
 cincan run cincan/mvt mvt-ios check-fs /dump
 ```
 
+ADB is not currently supported with `cincan` tool. Device cannot be shared into container.
 
 ## License
 
