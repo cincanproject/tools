@@ -1,16 +1,17 @@
 # Modified from https://github.com/blacktop/docker-ghidra
-ARG tool_version=ghidra_9.2.2_PUBLIC_20201229
-
 FROM openjdk:11-jdk-slim as build
 
 LABEL MAINTAINER=cincan.io
 
-ARG tool_version
+ARG tool_version=ghidra_10.0.1_PUBLIC_20210708
+ARG tool_tag=Ghidra_10.0.1_build
+
 ENV TOOL_VERSION=$tool_version
-ENV GHIDRA_SHA256 8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8
+ENV TOOL_TAG=$tool_tag
+ENV GHIDRA_SHA256 9b68398fcc4c2254a3f8ff231c4e8b2ac75cc8105f819548c7eed3997f8c5a5d
 
 RUN apt-get update && apt-get install -y wget ca-certificates unzip --no-install-recommends \
-    && wget --progress=bar:force -O /tmp/ghidra.zip https://ghidra-sre.org/$TOOL_VERSION.zip \
+    && wget --progress=bar:force -O /tmp/ghidra.zip https://github.com/NationalSecurityAgency/ghidra/releases/download/${TOOL_TAG}/${TOOL_VERSION}.zip \
     && echo "$GHIDRA_SHA256 /tmp/ghidra.zip" | sha256sum -c - \
     && unzip /tmp/ghidra.zip \
     && mv $(echo ${TOOL_VERSION} | cut -f1-3 -d"_") /ghidra \
