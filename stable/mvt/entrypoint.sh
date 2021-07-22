@@ -25,14 +25,10 @@ case ${1-} in "" | "-h" | "--help")
 "mvt-ios" | "--mvt-ios")
     shift 1
     mvt-ios "$@"
-    exit 0
     ;;
 "mvt-android" | "--mvt-android")
     shift 1
-    # echo "Android forensics requires ADB. Listing available devices..."
-    # echo "You must accept connection from your phone in 5 seconds."
     mvt-android "$@"
-    exit 0
     ;;
 -? | -*)
     printf '\n  WARNING: Unknown option (ignored): %s\n' "$1" >&2
