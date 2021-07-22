@@ -21,6 +21,8 @@ JSON, text, .apk
 
 Commands `mvt-ios` and `mvt-android` have been provided with wrapper script.
 
+***Method 1. use Docker CLI***
+
 Example use with Docker for iOS filesystem dump:
 
 ```
@@ -28,7 +30,7 @@ docker run -v /dump:/dump quay.io/cincan/mvt mvt-ios check-fs /dump
 ```
 
 Example use with ADB bridge for Android devices.
-Device shared into the container with `--device` parameter.
+Device is shared into the container with `--device` parameter.
 JSON output stored into shared volume `/dump`.
 
 ```
@@ -41,7 +43,7 @@ Follow 'cincan' tool installation steps.
 
 To analyse filesystem dump
 
-```console
+```
 cincan run cincan/mvt mvt-ios check-fs /dump
 ```
 
