@@ -8,6 +8,15 @@
       "method": "release",
       "origin": false,
       "docker_origin": true
+    },
+    {
+      "uri": "https://github.com/mvt-project/mvt",
+      "repository": "mvt-project",
+      "tool": "mvt",
+      "provider": "GitHub",
+      "method": "tag-release",
+      "origin": true,
+      "docker_origin":false 
     }
   ]
 }

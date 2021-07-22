@@ -20,15 +20,15 @@ RUN apt-get update && apt-get install -y libusb-1.0-0 \
     useradd -u 1000 -g appuser -s /sbin/nologin -m appuser && \
     usermod -aG plugdev appuser && \
     usermod -aG adbusers appuser && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/*
-
-# Use existing comprehensive list https://github.com/M0Rf30/android-udev-rules
-RUN wget -O /etc/udev/rules.d/51-android.rules https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules && \
+    # Use existing comprehensive list https://github.com/M0Rf30/android-udev-rules \
+    wget -O /etc/udev/rules.d/51-android.rules https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules && \
     chmod a+r /etc/udev/rules.d/51-android.rules && \
     gosu appuser mkdir /home/appuser/tool && \
-    # First run to create some default files
+    # Run adb once to create some default files, required by mvt \
     gosu appuser adb start-server && \
-    gosu appuser adb kill-server
+    gosu appuser adb kill-server && \
+    apt-get purge -y wget unzip && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/* /var/tmp/* 
 
 WORKDIR /home/appuser/
 COPY entrypoint.sh .
