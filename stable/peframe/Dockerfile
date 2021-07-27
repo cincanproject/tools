@@ -1,11 +1,11 @@
-# Commit after 6.0.3 release
-ARG tool_version=ad02a1767dce0fe092da561b5efe1ae24b451608
-
-FROM alpine:latest
+FROM alpine:3.13
+# Latest alpine with python 3.8
 
 LABEL MAINTAINER=cincan.io
 
-ARG tool_version
+# Commit after 6.0.3 release
+# Python version 3.6 <= ver < 3.9
+ARG tool_version=70683b6db71c7a1c44c2d8f817822a0815fc6137
 ENV TOOL_VERSION=$tool_version
 
 RUN apk update && apk add --no-cache \
