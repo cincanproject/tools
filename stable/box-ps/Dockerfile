@@ -1,9 +1,8 @@
-ARG tool_version=a74551578b49e9552e2f06e7663d09f8bddb5ad6
-
 FROM debian:10-slim as env
 
 LABEL MAINTAINER=cincan.io
-ARG tool_version
+
+ARG tool_version=93e36e8f049a15666146eb508c96e785f3861493
 ENV TOOL_VERSION=$tool_version
 
 ENV DEBIAN_FRONTEND=noninteractive
