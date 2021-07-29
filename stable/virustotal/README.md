@@ -16,7 +16,7 @@ Virustotal report
 ## Supported tags and respective `Dockerfile` links
 
 * `latest` 
-([*virustotal/Dockerfile*](https://gitlab.com/CinCan/Tools/blob/master/pipelines/tools/virustotal/Dockerfile))
+([*virustotal/Dockerfile*](https://gitlab.com/CinCan/tools/-/blob/master/stable/virustotal/Dockerfile))
 
 ## Usage
 
