@@ -1,4 +1,4 @@
-ARG tool_version=v1.0.11
+ARG tool_version=v1.0.13
 
 FROM python:3-slim-buster
 
