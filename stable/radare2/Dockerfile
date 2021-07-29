@@ -1,5 +1,6 @@
-ARG tool_version=5.2.1
-ARG ghidra_tool_version=v5.2.1
+ARG tool_version=5.3.1
+# use commit for while (pre 5.4.0, huge submodule removed)
+ARG ghidra_tool_version=55ecb8666ecb8405d962871215c6f9731360e5a5
 
 # Version number is used in r2ghidra plugin as well for selecting correct tag
 
@@ -13,7 +14,7 @@ ENV TOOL_VERSION=$tool_version
 ARG ghidra_tool_version
 ENV GHIDRA_TOOL_VERSION=$ghidra_tool_version
 
-ENV radare2_SHA256 bd528e83e9a0a80387c4566a762a4068512a9ea92805bd634ea4ac28dda40a30
+ENV radare2_SHA256 3be923f7d67f7a800fada59d035b1caad46c3b206ea87b0c02ae273f2c7305dd
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -47,7 +48,7 @@ RUN addgroup -S appuser && \
 RUN mkdir "$SOURCE_ROOT" \
     && chown -R appuser:appuser "$SOURCE_ROOT" \
     && chmod -R 775 "$SOURCE_ROOT" \
-    && chown -R appuser:appuser "$INSTALL_PREFIX" \
+    && chown -R appuser:appuser "$INSTALL_PREFIX" \ 
     && chmod -R 775 "$INSTALL_PREFIX"
 
 USER appuser
@@ -63,21 +64,26 @@ RUN cd "$SOURCE_ROOT/radare2-$TOOL_VERSION/sys" && \
     ninja && \
     ninja install
 
-RUN git clone  https://github.com/radareorg/r2ghidra.git ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
-    cd ~/.local/share/radare2/r2pm/git/r2ghidra-dec && \
-    git checkout "tags/$GHIDRA_TOOL_VERSION" && \
-    git submodule init && \
-    git submodule update && \
-    mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=~/.local .. && \
-    make && \
-    make install
+USER root
+RUN apk add patch
+USER appuser
+
+RUN git clone  https://github.com/radareorg/r2ghidra ~/.local/share/radare2/r2pm/git/r2ghidra && \
+    cd ~/.local/share/radare2/r2pm/git/r2ghidra && \
+    git checkout "$GHIDRA_TOOL_VERSION" && \
+#     # git submodule init && \
+    git submodule update --init
+#     make ghidra/ghidra/Ghidra && \
+#     mkdir build && cd build && \
+#     cmake -DCMAKE_INSTALL_PREFIX=~/.local .. && \
+#     make && \
+#     make install
 
 RUN r2pm init && \
     r2pm update && \
-    # r2pm -i r2ghidra-dec && \
+    r2pm -ci r2ghidra && \
     r2pm cache && \
-    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra-dec && \
+    rm -rf /home/appuser/.local/share/radare2/r2pm/git/r2ghidra && \
     # Disable r2agent - no use in container
     rm /usr/local/bin/r2agent
 
