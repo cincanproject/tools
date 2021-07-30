@@ -1,5 +1,5 @@
-ARG tool_version=2.0.15
-ARG SHA256=a3aa71de70b2ab5433fca5a7cf597e913c05155407f4e0a1881c52ee7115f2a7
+ARG tool_version=2.0.17
+ARG SHA256=eb00fb26e6ff19d9b953101217ebd0c00c35dbf58553cc7ebf9b14ced958cb93
 FROM alpine:latest
 LABEL MAINTAINER=cincan.io
 
@@ -27,3 +27,4 @@ USER appuser
 COPY meta.json /opt/
 
 ENTRYPOINT ["flawfinder"]
+CMD ["--help"]
