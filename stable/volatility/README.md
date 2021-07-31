@@ -1,4 +1,4 @@
-# Volatility - An advanced memory forensics framework
+# Volatility - An advanced memory forensics framework - 2.6.1 a438e76
 
 ## Supported tags and respective `Dockerfile` links
 
