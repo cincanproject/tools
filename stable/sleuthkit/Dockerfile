@@ -1,7 +1,7 @@
 ### Usage: docker run -it -v `pwd`/samples:/samples cincan/sleuthkit [tool from sleuthkit]
 ### or cincan run cincan/sleuthkit [tool from sleuthkit]
 
-ARG tool_version=4.10.2
+ARG tool_version=4.11.0
 
 FROM debian:10-slim AS build
 
