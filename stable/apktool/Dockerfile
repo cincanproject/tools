@@ -1,6 +1,6 @@
 #Analyzes Android apk files using apktool 
-ARG tool_version=2.5.0
-ARG tool_sha256=b392d7cb99b592e9c5acc3c06f1b0f180edde96c66b86b3d6932b7c0c4079fe4
+ARG tool_version=2.6.0
+ARG tool_sha256=f750a3cd2c1f942f27f5f7fd5d17eada3bdaff0a6643f49db847e842579fdda5
 
 #Java 1.8 is required
 FROM openjdk:8-jre-alpine as build
