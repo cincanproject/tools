@@ -1,4 +1,4 @@
-ARG tool_version=v1.0.17
+ARG tool_version=v1.2.9
 
 FROM python:3-slim-buster
 
@@ -8,6 +8,8 @@ ENV TOOL_VERSION=$tool_version
 LABEL MAINTAINER=cincan.io
 
 RUN apt-get update && apt-get install -y libusb-1.0-0 \
+    gcc \ 
+    libffi-dev \
     wget \
     unzip \ 
     gosu \
