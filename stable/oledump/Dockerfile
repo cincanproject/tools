@@ -1,5 +1,5 @@
 # A Program to analyse OLE files.
-ARG tool_version=0_0_61
+ARG tool_version=0_0_62
 
 FROM python:2-slim as builder
 
@@ -7,7 +7,7 @@ LABEL MAINTAINER=cincan.io
 
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
-ENV HASH=41a68aba19bba74dae653be62d4a63a5ae409fb6dc1daeeb2d419aa1b493728a
+ENV HASH=4ae5df2cc8e8f5a395027a8056b1a33b8f05c0ab6fc18d56d46dc151bb4302fb
 
 RUN apt-get update && apt-get install -y \
     curl \
