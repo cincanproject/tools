@@ -8,7 +8,7 @@ pattern = re.compile("^\\s*(\\S+)\\s+(\\S.*)$")
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
-    assert out.startswith("This program has not been tested with this version of P")
+    assert out.startswith("Usage: pdf-parser.py [options] pdf-file|zip-file|url\npdf-parser, use it to parse a PDF document")
 
 def test_with_pdf():
     tool = dockertools.tool_with_file(__file__)

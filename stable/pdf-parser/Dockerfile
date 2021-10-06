@@ -1,5 +1,5 @@
 # PDF-parser tool will parse a PDF document to identify it's fundamental elements
-ARG tool_version=0_7_4
+ARG tool_version=0_7_5
 
 FROM alpine:latest
 
@@ -16,7 +16,7 @@ RUN apk update && apk add --no-cache \
 	git
 
 RUN wget https://didierstevens.com/files/software/pdf-parser_V$TOOL_VERSION.zip \
-	&& echo "fc318841952190d51eb70dafb0666d7d19652c8839829cc0c3871bbf7e155b6a  pdf-parser_V$TOOL_VERSION.zip" |sha256sum -c \
+	&& echo "5d970afac501a71d4fddeecbd63060062226bf1d587a6a74702dda79b5c2d3fb  pdf-parser_V$TOOL_VERSION.zip" |sha256sum -c \
 	&& unzip pdf-parser_V$TOOL_VERSION.zip -d /pdf-parser \
 	&& wget https://github.com/DidierStevens/DidierStevensSuite/archive/master.zip \
 	&& unzip master.zip \
