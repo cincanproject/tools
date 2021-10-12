@@ -16,12 +16,15 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libmagic-dev \
     libjansson-dev \
-    flex \
-    && git clone --depth 1 --branch "${TOOL_VERSION}" https://github.com/VirusTotal/yara.git /yara \
+    flex 
+
+RUN  git clone --depth 1 --branch "${TOOL_VERSION}" https://github.com/VirusTotal/yara.git /yara \
     && git clone --depth 1 https://github.com/Yara-Rules/rules.git /rules \
     && cd /yara \
     && ./bootstrap.sh \
-    && ./configure --enable-cuckoo --enable-magic --enable-dotnet \
+    && ./configure --enable-cuckoo --enable-magic --enable-dotnet 
+
+RUN cd /yara \
     && make && make install && make check \
     && apt-get --purge autoremove -y git automake libtool make gcc pkg-config \
     && apt-get clean \
