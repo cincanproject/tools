@@ -1,6 +1,6 @@
-ARG tool_version=5.3.1
+ARG tool_version=5.4.2
 # use commit for while (pre 5.4.0, huge submodule removed)
-ARG ghidra_tool_version=55ecb8666ecb8405d962871215c6f9731360e5a5
+ARG ghidra_tool_version=5.4.1
 
 # Version number is used in r2ghidra plugin as well for selecting correct tag
 
@@ -14,7 +14,7 @@ ENV TOOL_VERSION=$tool_version
 ARG ghidra_tool_version
 ENV GHIDRA_TOOL_VERSION=$ghidra_tool_version
 
-ENV radare2_SHA256 3be923f7d67f7a800fada59d035b1caad46c3b206ea87b0c02ae273f2c7305dd
+ENV radare2_SHA256 36769fbf8ad0ac5755f8f8d0f05b174f7e1299c95d33c4c5f1517c55702c1599
 
 ENV SOURCE_ROOT /radare2
 ENV INSTALL_PREFIX /usr/local
@@ -70,7 +70,7 @@ USER appuser
 
 RUN git clone  https://github.com/radareorg/r2ghidra ~/.local/share/radare2/r2pm/git/r2ghidra && \
     cd ~/.local/share/radare2/r2pm/git/r2ghidra && \
-    git checkout "$GHIDRA_TOOL_VERSION" && \
+    git checkout tags/"$GHIDRA_TOOL_VERSION" && \
 #     # git submodule init && \
     git submodule update --init
 #     make ghidra/ghidra/Ghidra && \
@@ -100,8 +100,7 @@ ENV SOURCE_ROOT /radare2
 # libstdc++ required by ghidra-dec in runtime
 
 RUN apk add --no-cache libstdc++ && \
-    addgroup -S appuser && \
-    adduser -s /sbin/nologin --disabled-password -G appuser appuser && \
+    adduser -s /sbin/nologin -u 1001 --disabled-password appuser && \
     # Make directories for possible volume mounting
     mkdir -p /r2/samples && \
     mkdir -p /r2/results && \
@@ -132,5 +131,9 @@ ENV R2_HOME="$INSTALL_PREFIX/bin"
 ENV R2_SCRIPTS="$SOURCE_ROOT/scripts"
 
 WORKDIR /home/appuser
+
+RUN mkdir /home/appuser/static_name.tar && touch /home/appuser/static_name.tar/stuff.txt
+RUN mkdir /home/appuser/static_name && touch /home/appuser/static_name/stuff.txt
+
 COPY meta.json /opt/
 ENTRYPOINT ["sh", "/radare2/entrypoint.sh"]
