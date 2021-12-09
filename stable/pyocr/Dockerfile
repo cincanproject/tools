@@ -7,7 +7,10 @@ ENV TOOL_VERSION=$tool_version
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-	python3-dev \
+        zlib1g-dev \
+        libjpeg-dev \
+        libtiff-dev \
+        python3-dev \
         python3-pip \
         python3-wheel \
         python3-setuptools \
@@ -37,6 +40,7 @@ RUN mkdir -p /home/appuser/tool && \
 USER appuser
 WORKDIR /home/appuser/tool
 
+COPY policy.xml /etc/ImageMagick-6/policy.xml
 COPY ocr.py /home/appuser/ocr.py
 
 # Should be kept as final modification for layers
