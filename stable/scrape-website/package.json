@@ -1,0 +1,13 @@
+{
+  "name": "scrape-website",
+  "version": "1.0.0",
+  "description": "Open URL with a browser",
+  "main": "scrape-website.js",
+  "author": "Kimmo Linnavuo",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^2.1.1",
+    "chrome-har-capturer": "^0.13.6",
+    "argparse": "1.0.10"
+  }
+}
