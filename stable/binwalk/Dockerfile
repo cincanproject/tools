@@ -20,7 +20,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     git sudo build-essential wget unzip ca-certificates \
     mtd-utils gzip bzip2 tar arj lhasa p7zip p7zip-full \
     cabextract util-linux cramfsswap squashfs-tools \
-    zlib1g-dev liblzma-dev liblzo2-dev \
+    zlib1g-dev liblzma-dev liblzo2-dev libjpeg-dev \
     sleuthkit fastjar lzop cpio \
     python-setuptools python-wheel python-crypto python-lzo python-lzma python-pip \
     python3-crypto python3-pip python3-setuptools python3-dev python3-wheel && \
