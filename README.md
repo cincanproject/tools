@@ -75,7 +75,7 @@ For running these tools, take an additional look for [cincan-command.](https://g
 | [volatility](https://gitlab.com/CinCan/tools/-/tree/master/stable/volatility) |  Volatility - An advanced memory forensics framework - 2.6.1 a438e76 |   - Raw linear sample (dd)   - Hibernation file (from Windows 7 and earlier)   - Crash dump file   - VirtualBox ELF64 core dump   - VMware saved state and snapshot files   - EWF format (E01)    - LiME format   - Mach-O file format   - QEMU virtual machine dumps   - Firewire    - HPAK (FDPro)  | Linux |
 | [xsv](https://gitlab.com/CinCan/tools/-/tree/master/stable/xsv) |  Fast CSV command line toolkit | csv, tsv  | Linux |
 | [yara](https://gitlab.com/CinCan/tools/-/tree/master/stable/yara) |  Yara - The pattern matching swiss knife  | Any file as target  | Linux |
-| [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/stable/zsteg) |  detect stegano-hidden data in PNG & BMP | PNG, BMP  | Linux |
+| [zsteg](https://gitlab.com/CinCan/tools/-/tree/master/stable/zsteg) |  detect stegano-hidden data in PNG and BMP | PNG, BMP  | Linux |
 ### In Development
 
 | Tool name | Description | Input               | Platform |
