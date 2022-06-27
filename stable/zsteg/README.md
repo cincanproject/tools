@@ -1,4 +1,4 @@
-# detect stegano-hidden data in PNG & BMP
+# detect stegano-hidden data in PNG and BMP
 
 ## Input
 
