@@ -1,6 +1,6 @@
 ARG tool_version=0.2.4
 
-FROM alpine:latest
+FROM alpine:3.15
 
 LABEL MAINTAINER=cincan.io
 
