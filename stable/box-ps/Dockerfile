@@ -1,5 +1,4 @@
 FROM debian:10-slim as env
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version=93e36e8f049a15666146eb508c96e785f3861493
