@@ -13,7 +13,8 @@ ENV ACCESS_LOG_PATH=/home/appuser
 
 RUN apt-get update && apt-get install -y \
 	python3.7 \
-	python3-pip
+	python3-pip \
+    libffi-dev
 
 RUN pip3 install pandas \
 	jupyter \ 
