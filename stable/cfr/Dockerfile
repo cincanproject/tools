@@ -1,7 +1,7 @@
 ARG tool_version=0.151
 ARG dist_sha256=316e9015b9af2953fcff4fe86bf3bba705f32e7cd25bd6e535c698de8a25e837
 
-FROM alpine:3.11 as build
+FROM alpine:latest as build
 
 LABEL MAINTAINER=cincan.io
 
