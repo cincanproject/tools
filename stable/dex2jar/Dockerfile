@@ -1,5 +1,4 @@
 #Dex files to jar
-
 #Example command to use dex2jar tool with docker
 #docker run --rm -v `pwd`:/samples dex2jar path/to/your/.apk
 ARG tool_version=2.1
