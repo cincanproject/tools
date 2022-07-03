@@ -1,5 +1,4 @@
 ARG tool_version=16.02+dfsg-6
-
 FROM debian:10-slim as env
 
 ARG tool_version
