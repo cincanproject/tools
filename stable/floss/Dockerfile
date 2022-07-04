@@ -1,5 +1,4 @@
 ARG tool_version=1.7.0
-
 FROM python:2.7-buster as build 
 LABEL maintainer=cincan.io
 
