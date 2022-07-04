@@ -2,7 +2,6 @@
 ARG tool_version=0_0_62
 
 FROM python:2-slim as builder
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
