@@ -1,6 +1,5 @@
 # Java Decompiler
 ARG tool_version=idea/211.6693.111 
-
 # FROM openjdk:11-alpine as build
 FROM adoptopenjdk/openjdk11:alpine as build
 
