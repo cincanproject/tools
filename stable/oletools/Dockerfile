@@ -1,7 +1,6 @@
 ARG tool_version=0.60
 
 FROM python:3-alpine as build
-
 # olevba latest installation in python3
 
 ARG tool_version
