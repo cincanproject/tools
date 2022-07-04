@@ -1,6 +1,7 @@
 ARG tool_version=2.0.17
 ARG SHA256=eb00fb26e6ff19d9b953101217ebd0c00c35dbf58553cc7ebf9b14ced958cb93
-FROM alpine:latest
+FROM alpine:3.15
+
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
