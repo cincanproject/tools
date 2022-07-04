@@ -1,5 +1,4 @@
 ARG tool_version=2.0-1
-
 FROM debian:10-slim
 # TODO update into bullseye when released
 
