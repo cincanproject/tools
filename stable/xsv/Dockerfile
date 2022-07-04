@@ -1,6 +1,6 @@
 ARG tool_version=0.13.0
 
-FROM alpine:3.11 as build
+FROM alpine:latest as build
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
