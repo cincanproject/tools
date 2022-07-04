@@ -2,7 +2,6 @@
 ARG tool_version=0_7_5
 
 FROM alpine:latest
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
