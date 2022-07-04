@@ -2,7 +2,6 @@
 # docker run -v /samples:/samples cincan/snowman-decompile /samples/executable
 
 ARG tool_version=0.1.3
-
 FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
