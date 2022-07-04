@@ -2,7 +2,6 @@
 ### or cincan run cincan/sleuthkit [tool from sleuthkit]
 
 ARG tool_version=4.11.0
-
 FROM debian:10-slim AS build
 
 LABEL MAINTAINER=cincan.io
