@@ -1,7 +1,6 @@
 ARG tool_version=1.3
 
 FROM node:alpine as build
-
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
