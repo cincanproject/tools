@@ -1,7 +1,6 @@
 ARG tool_version=rel-0.11.1-beta
 
 FROM debian:10-slim as build
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
