@@ -1,7 +1,6 @@
 ARG tool_version=895d92313fabaee260121c758c8320d1b21dd741
 
 FROM debian:10-slim as build
-
 ARG tool_version
 ENV TOOL_VERSION=$tool_version
 
