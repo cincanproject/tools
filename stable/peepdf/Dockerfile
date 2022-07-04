@@ -6,7 +6,6 @@
 ARG tool_version="0.3"
 
 FROM debian:8-slim AS builder
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
