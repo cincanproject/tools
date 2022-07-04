@@ -10,7 +10,7 @@
 ARG tool_version=751377faeb0d2178dcf00dd3f80652f16e04b019
 
 # On later versions of Alpine, no all python2 modules
-FROM alpine:3.11
+FROM alpine:3.15
 LABEL maintainer=cincan.io
 
 ARG tool_version
