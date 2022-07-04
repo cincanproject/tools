@@ -1,7 +1,6 @@
-ARG tool_version=639735735ef9a3753def23d2baee0d1e55a7c828
+ARG tool_version=42e91de76ac2161a1eced915cc42f4fba36043a3
 
 FROM debian:10-slim as build
-
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
