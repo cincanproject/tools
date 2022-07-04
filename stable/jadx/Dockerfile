@@ -1,7 +1,6 @@
 #Analyzes Android apk files using apk tool and greps permission from AndroidManifest.xml file
 
 ARG tool_version=1.2.0
-
 #Java 1.8 is needed
 FROM openjdk:8-jre-alpine
 
