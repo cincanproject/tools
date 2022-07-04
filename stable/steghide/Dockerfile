@@ -1,5 +1,4 @@
 ARG tool_version=0.5.1-13
-
 FROM debian:10-slim
 
 LABEL MAINTAINER=cincan.io
