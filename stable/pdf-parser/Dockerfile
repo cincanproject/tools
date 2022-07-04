@@ -1,7 +1,7 @@
 # PDF-parser tool will parse a PDF document to identify it's fundamental elements
 ARG tool_version=0_7_5
 
-FROM alpine:latest
+FROM python:3.8-alpine
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
@@ -9,7 +9,6 @@ ENV TOOL_VERSION=$tool_version
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update && apk add --no-cache \
-	python3 \
 	wget \
 	unzip \
 	git
@@ -28,5 +27,5 @@ USER appuser
 
 WORKDIR /pdf-parser
 COPY meta.json /opt/
-ENTRYPOINT ["/usr/bin/python3", "pdf-parser.py"]
+ENTRYPOINT ["/usr/local/bin/python3", "pdf-parser.py"]
 CMD ["--help"]
