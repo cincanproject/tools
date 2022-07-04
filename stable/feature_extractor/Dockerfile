@@ -1,6 +1,5 @@
 #docker run -v $(pwd):/data cincan/feature_extractor --injsonl /data/jsonl_input --path /data/
 ARG tool_version=0.2
-
 FROM python:3.6-slim-buster
 
 LABEL MAINTAINER=cincan.io
