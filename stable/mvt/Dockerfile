@@ -1,5 +1,4 @@
 ARG tool_version=v1.2.9
-
 FROM python:3-slim-buster
 
 ARG tool_version
