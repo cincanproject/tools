@@ -1,6 +1,5 @@
 ARG tool_version=jd-cli-1.2.1
-
-FROM alpine:3.11 as build
+FROM alpine:latest as build
 
 LABEL MAINTAINER=cincan.io
 
