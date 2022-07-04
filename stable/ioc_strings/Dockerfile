@@ -1,5 +1,4 @@
 ARG tool_version=0.1.5
-
 FROM python:3.6-alpine
 
 LABEL MAINTAINER=cincan.io
