@@ -1,5 +1,4 @@
 ARG tool_version=21503d0b181800f8c9ea460fc11f85b1de716e41
-
 FROM alpine:latest AS builder
 
 LABEL MAINTAINER=cincan.io
