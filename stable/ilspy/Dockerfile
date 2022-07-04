@@ -8,7 +8,6 @@
 # docker run -v /samples:/samples cincan/ilspy /samples/ilspysample.exe
 
 ARG tool_version=7.1.0.6543
-
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 
 ARG tool_version
