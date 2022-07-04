@@ -2,8 +2,7 @@
 #  GNU General Public License:  https://www.gnu.org/licenses/gpl-3.0.html
 
 ARG tool_version=d8705da60369a27a2b5d22da488416e8ab348d8f
-
-FROM alpine:3.11
+FROM alpine:latest
 
 LABEL MAINTAINER=cincan.io
 
