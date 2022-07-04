@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:latest
 # Latest alpine with python 3.8
 
 LABEL MAINTAINER=cincan.io
