@@ -3,8 +3,7 @@
 # an action when opened. PDFiD will also handle name obfuscation."
 ARG tool_version=0_2_8
 
-FROM alpine:latest
-
+FROM alpine:3.15
 LABEL MAINTAINER=cincan.io
 
 ARG tool_version
