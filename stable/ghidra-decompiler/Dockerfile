@@ -2,7 +2,6 @@
 FROM openjdk:11-jdk-slim as build
 
 LABEL MAINTAINER=cincan.io
-
 ARG tool_version=ghidra_10.0.1_PUBLIC_20210708
 ARG tool_tag=Ghidra_10.0.1_build
 
