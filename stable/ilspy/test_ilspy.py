@@ -7,15 +7,17 @@ SAMPLE_FILE="samples/msdos/suspicious_dos_sample.exe"
 _tmp_path_factory = None
 
 # Should be identical for testing '--help' argument
+HELP_START = "ilspycmd: 7.2.1.0\nICSharpCode.Decompiler: 7.2.1.6856\n\ndotnet tool for decompiling .NET assemblies and generating portable PDBs"
+
 def test_entry_point():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string([])
-    assert out.startswith("dotnet tool for decompiling .NET assemblies and generating portable PDBs\n\nUsage: ilspycmd [arguments] [options]")
+    assert out.startswith(HELP_START)
 
 def test_help():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(["--help"])
-    assert out.startswith("dotnet tool for decompiling .NET assemblies and generating portable PDBs\n\nUsage: ilspycmd [arguments] [options]")
+    assert out.startswith(HELP_START)
 
 
 def test_do_run_no_options_only_input_file():
@@ -23,7 +25,6 @@ def test_do_run_no_options_only_input_file():
     tool = dockertools.tool_with_file(__file__)
     out = tool.run_get_string(args=[f"{SAMPLE_FILE}"])
     assert out.startswith("using System;")
-    assert out.endswith("ProcessWindowStyle.Hidden\n\t\t\t});\n\t\t}\n\t}\n}\n")
 
 #def test_do_run_get_PDB(tmp_path):
 #    """Test creating of PDB file"""
