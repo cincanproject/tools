@@ -1,4 +1,4 @@
-ARG tool_version=v4.1.2
+ARG tool_version=v4.2.3
 FROM debian:buster-slim as build
 LABEL MAINTAINER=cincan.io
 
