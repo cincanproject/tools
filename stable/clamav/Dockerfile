@@ -1,5 +1,5 @@
-ARG tool_version=0.103.5+dfsg-0+deb10u1
-FROM debian:buster-slim
+ARG tool_version=0.103.7+dfsg-0+deb11u1
+FROM debian:bullseye-slim
 
 LABEL MAINTAINER=cincan.io
 
